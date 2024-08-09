@@ -9,8 +9,8 @@ const Links = ({ direction = "row", toggle, setToggle }) => {
       path: "/events",
     },
     {
-      title: "Create Events",
-      path: "/ticket",
+      title: "Create Event",
+      path: "/create-event",
     },
   ];
 

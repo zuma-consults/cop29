@@ -7,17 +7,15 @@ import Events from "./pages/events";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import Loader from "./components/ui/Loader";
+import CreateEvent from "./pages/create-event";
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate a delay for demonstration purposes
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000); // 1-second delay to mimic loading time
-
-    // Cleanup the timer in case the component unmounts before the timer finishes
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -30,9 +28,10 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/" element={<AppLayout />}>
-        <Route path="/" index element={<Home />} />
-        <Route path="/events" index element={<Events />} />
-        <Route path="/event/:id" index element={<EventDetails />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/create-event" element={<CreateEvent />} />
+        <Route path="/event/:id" element={<EventDetails />} />
         {/* <Route path="*" element={<NotFound />} /> */}
       </Route>
     </Routes>

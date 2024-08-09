@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "../../components/ui/Card";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../../components/ui/Pagination";
 
 const eventData = [
   {
@@ -106,16 +107,47 @@ const eventData = [
 ];
 
 function Events() {
-  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const eventsPerPage = 6;
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reset to first page on search
+  };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+    setCurrentPage(1); // Reset to first page on category change
+  };
+
+  const filteredEvents = eventData.filter((event) => {
+    return (
+      event.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (selectedCategory ? event.category === selectedCategory : true)
+    );
+  });
+
+  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
+  const indexOfLastEvent = currentPage * eventsPerPage;
+  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
+  const currentEvents = filteredEvents.slice(
+    indexOfFirstEvent,
+    indexOfLastEvent
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <section
       id="getStarted"
-      className="pb-[5%] md:pb-[2%] pt-[10%] md:pt-[1%] flex items-center justify-center flex-col gap-20 px-5 md:px-20 relative"
+      className="pb-[5%] md:pb-[2%] flex items-center justify-center flex-col gap-20 px-5 md:px-20 relative"
     >
       {/* Gradient Divs */}
-      <div className="absolute top-20 right-0 w-50 h-50 bg-gradient-to-r from-green-400 via-green-600 to-green-700 opacity-70 rounded-full mix-blend-multiply filter blur-[100px] md:w-52 md:h-52 lg:w-[500px] lg:h-[200px] animate-blob animation-delay-4000 z-0"></div>
-      {/* <div className="absolute bottom-0 left-0 w-50 h-50 bg-gradient-to-r from-green-600 via-green-400 to-green-300 opacity-70 rounded-full mix-blend-multiply filter blur-[100px] md:w-52 md:h-52 lg:w-[500px] lg:h-[200px] animate-blob animation-delay-4000 z-0"></div> */}
+      <div className="absolute top-10 right-0 w-50 h-50 bg-gradient-to-r from-green-400 via-green-600 to-green-700 opacity-70 rounded-full mix-blend-multiply filter blur-[100px] md:w-52 md:h-52 lg:w-[500px] lg:h-[200px] animate-blob animation-delay-4000 z-0"></div>
 
       {/* Content */}
       <div
@@ -132,12 +164,34 @@ function Events() {
           </h1>
         </div>
       </div>
-      <div className="flex items-center justify-center gap-2 px-10 flex-wrap">
-        <input type="text" />
+
+      {/* Search and Filter Inputs */}
+      <div className="flex flex-col md:flex-row items-center justify-center gap-4 px-10 flex-wrap w-full">
+        <input
+          type="text"
+          placeholder="Search events..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="border border-gray-300 rounded px-4 py-2 w-full md:w-1/4 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+        />
+        <select
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          className="border border-gray-300 rounded px-4 py-2 w-full md:w-1/4 text-black bg-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+        >
+          <option value="">All Categories</option>
+          <option value="Music">Music</option>
+          <option value="Tech">Tech</option>
+          <option value="Art">Art</option>
+        </select>
+        <button className="bg-green-600 text-white px-4 py-2 rounded focus:outline-none hover:bg-green-700 transition">
+          Search
+        </button>
       </div>
 
+      {/* Events Grid */}
       <div className="w-full grid md:grid-cols-3 gap-5 text-black relative z-10">
-        {eventData.map((event, index) => (
+        {filteredEvents.map((event, index) => (
           <Card
             key={index}
             id={event.id}
@@ -149,6 +203,12 @@ function Events() {
           />
         ))}
       </div>
+      {/* Pagination */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </section>
   );
 }
