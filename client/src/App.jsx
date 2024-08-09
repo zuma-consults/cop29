@@ -1,19 +1,37 @@
+import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import EventDetails from "./pages/eventDetails";
 import Home from "./pages/home";
 import AppLayout from "./layouts/AppLayout";
 import Events from "./pages/events";
 import Login from "./pages/login";
-import SignUp from "./pages/signup";
+import Signup from "./pages/signup";
+import Loader from "./components/ui/Loader";
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate a delay for demonstration purposes
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // 1-second delay to mimic loading time
+
+    // Cleanup the timer in case the component unmounts before the timer finishes
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/login" element={<SignUp />} />
+      <Route path="/signup" element={<Signup />} />
       <Route path="/" element={<AppLayout />}>
         <Route path="/" index element={<Home />} />
-        <Route path="/event" index element={<Events />} />
+        <Route path="/events" index element={<Events />} />
         <Route path="/event/:id" index element={<EventDetails />} />
         {/* <Route path="*" element={<NotFound />} /> */}
       </Route>

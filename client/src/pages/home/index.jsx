@@ -1,9 +1,16 @@
 import React from "react";
+import Hero from "../../components/home/Hero";
+import World from "../../components/home/World";
+import LatestEvents from "../../components/home/LatestEvents";
+import Data from "../../components/home/Data";
 
 function Home() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline text-red-500">big red</h1>
+    <div className="w-[100vw] h-[100%] relative overflow-x-hidden">
+      <Hero />
+      <LatestEvents />
+      <World />
+      <Data />
     </div>
   );
 }

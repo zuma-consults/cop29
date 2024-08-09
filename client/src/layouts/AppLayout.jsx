@@ -1,16 +1,17 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/ui/Navbar";
 import Footer from "../components/ui/Footer";
+import "react-alice-carousel/lib/alice-carousel.css";
+import NewsLetter from "../components/ui/newsLetter";
 
 function AppLayout() {
   return (
-    <div className="w-full h-[100vh] flex flex-col md:flex-row">
+    <div className="w-[100vw] text-[12px] h-full overflow-x-hidden">
       <Navbar />
-      <div
-        className={`flex-grow ml-0 md:ml-[20%] mt-[80px] mr-7 h-full mb-[200px] p-1 transition-all duration-300`}
-      >
+      <div>
         <Outlet />
       </div>
+      <NewsLetter />
       <Footer />
     </div>
   );
