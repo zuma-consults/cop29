@@ -20,37 +20,63 @@ interface TableRow {
   status: string;
   name: string;
   date: string;
-  email: string;
+  state: string;
+  category: string;
 }
 
 const EventDatas = [
   {
     id: 1,
-    status: "Approved",
-    name: "James Bond",
-    date: "Sat, October 17 ",
-    email: "chris@gmail.com",
     imageUrl:
       "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    status: "Approved",
+    name: "Kaduna Young Entrepreneurship Summit 2024",
+    date: "Sat, October 17 ",
+    category: "Tech",
+    state: "Kaduna",
   },
   {
     id: 2,
-    status: "Pending",
-    name: "Chris Brown",
-    date: "Mon, November 20 ",
-    email: "musa@gmail.com",
     imageUrl:
       "https://images.pexels.com/photos/3100960/pexels-photo-3100960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    status: "Pending",
+    name: "Tech Conference 2024",
+    date: "Mon, November 20 ",
+    category: "Tech",
+    state: "Kaduna",
+  },
+  {
+    id: 3,
+    imageUrl:
+      "https://images.pexels.com/photos/210682/pexels-photo-210682.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    status: "Pending",
+    name: "Music Festival 2024",
+    date: "Fri, December 5 ",
+    category: "Music",
+    state: "Kaduna",
+  },
+  {
+    id: 4,
+    imageUrl:
+      "https://images.pexels.com/photos/167964/pexels-photo-167964.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    status: "Approved",
+    name: "Tech Conference 2024",
+    date: "Mon, November 20 ",
+    category: "Tech",
+    state: "Kaduna",
   },
 ];
 
-const DelegateTable: React.FC = () => {
+const OrganisationTable: React.FC = () => {
   const [_, setPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleDownloadCSV = () => {
-    saveAsCSV({ data: filteredData, filename: "COP29 Delegates List" });
+    saveAsCSV({
+      data: filteredData,
+      filename: "COP29 Members/organisation List",
+    });
   };
 
   const handlePageChange = (page: number) => {
@@ -99,8 +125,13 @@ const DelegateTable: React.FC = () => {
       sortable: true,
     },
     {
-      name: "Email",
-      selector: (row: { email: any }) => row.email,
+      name: "State",
+      selector: (row: { state: any }) => row.state,
+      sortable: true,
+    },
+    {
+      name: "Category",
+      selector: (row: { category: any }) => row.category,
       sortable: true,
     },
 
@@ -240,7 +271,10 @@ const DelegateTable: React.FC = () => {
                   {selectedEvent.date}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {selectedEvent.email}
+                  {selectedEvent.state}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {selectedEvent.category}
                 </Typography>
 
                 <div className="mb-4">
@@ -278,4 +312,4 @@ const DelegateTable: React.FC = () => {
   );
 };
 
-export default DelegateTable;
+export default OrganisationTable;

@@ -12,7 +12,8 @@ import {
 } from "@mui/material";
 import React, { useState, ChangeEvent } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
-import { GoArrowRight } from "react-icons/go";
+import { GoArrowRight, GoDownload } from "react-icons/go";
+import saveAsCSV from "json-to-csv-export";
 
 interface TableRow {
   id: number;
@@ -139,9 +140,13 @@ const EventDatas = [
 ];
 
 const AllEventTable: React.FC = () => {
-  const [page, setPage] = useState(1);
+  const [_, setPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const handleDownloadCSV = () => {
+    saveAsCSV({ data: filteredData, filename: "COP29 All Events List" });
+  };
 
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -246,7 +251,29 @@ const AllEventTable: React.FC = () => {
 
   return (
     <div className="rounded-[.5rem] px-2 bg-white shadow">
-      <div className="flex items-center justify-end px-5 py-2">
+      <div className="flex items-center md:flex-row flex-col justify-between px-5 py-2">
+        <Button
+          sx={{
+            backgroundColor: "green",
+            color: "white",
+            width: "fit-content",
+            paddingY: "8px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            fontSize: "13px",
+            gap: "8px",
+            "&:hover": {
+              backgroundColor: "#e8f5e9",
+              color: "black",
+            },
+          }}
+          onClick={handleDownloadCSV}
+        >
+          Export to Excel
+          <GoDownload size={20} />
+        </Button>
         <TextField
           label="Search events by title"
           variant="outlined"

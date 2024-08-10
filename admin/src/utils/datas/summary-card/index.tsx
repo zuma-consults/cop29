@@ -1,5 +1,6 @@
 import { CgOrganisation } from "react-icons/cg";
 import { FcApproval } from "react-icons/fc";
+import { HiBuildingOffice2 } from "react-icons/hi2";
 import { IoIosPeople } from "react-icons/io";
 import { VscGitStashApply } from "react-icons/vsc";
 
@@ -26,5 +27,28 @@ export const DelegateSummaryCardData = [
     icon: <FcApproval size={24} />,
     title: "TOTAL APPROVED",
     number: 2307,
+  },
+];
+
+export const OrganisationSummaryCardData = [
+  {
+    icon: <VscGitStashApply size={24} />,
+    title: "TOTAL APPLLICATIONS",
+    number: 90341024,
+  },
+  {
+    icon: <FcApproval size={24} />,
+    title: "TOTAL APPROVED",
+    number: 2307,
+  },
+  {
+    icon: <CgOrganisation size={24} />,
+    title: "MDAs",
+    number: 24307,
+  },
+  {
+    icon: <HiBuildingOffice2 size={24} />,
+    title: "NGOs",
+    number: 112307,
   },
 ];
