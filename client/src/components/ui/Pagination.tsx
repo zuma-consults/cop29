@@ -1,6 +1,16 @@
 import React from "react";
 
-function Pagination({ currentPage, totalPages, onPageChange }) {
+interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}
+
+const Pagination: React.FC<PaginationProps> = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}) => {
   const pages = [];
 
   for (let i = 1; i <= totalPages; i++) {
@@ -46,6 +56,6 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
       </button>
     </div>
   );
-}
+};
 
 export default Pagination;

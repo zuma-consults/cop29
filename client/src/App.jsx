@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import EventDetails from "./pages/eventDetails";
 import Home from "./pages/home";
-import AppLayout from "./layouts/AppLayout";
 import Events from "./pages/events";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
-import Loader from "./components/ui/Loader";
 import CreateEvent from "./pages/create-event";
+import Loader from "./components/ui/Loader";
+import AppLayout from "./layouts/AppLayout";
 
 function App() {
   const [loading, setLoading] = useState(true);

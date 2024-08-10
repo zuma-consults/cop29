@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Hero({ handleGithubLogin }) {
+const Hero: React.FC = () => {
   return (
     <section
       className="relative flex items-center justify-center flex-col gap-20 h-[92vh] w-full bg-cover bg-center"
@@ -39,6 +39,6 @@ function Hero({ handleGithubLogin }) {
       </div>
     </section>
   );
-}
+};
 
 export default Hero;

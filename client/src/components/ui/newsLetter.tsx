@@ -1,9 +1,11 @@
-"use client";
 import React, { useState } from "react";
-function NewsLetter() {
+
+const NewsLetter: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
 
-  const handleChange = (e) => {
+  const handleChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setInputValue(e.target.value);
   };
   return (
@@ -38,6 +40,6 @@ function NewsLetter() {
       </div>
     </section>
   );
-}
+};
 
 export default NewsLetter;

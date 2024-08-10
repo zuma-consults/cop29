@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Card from "../../components/ui/Card";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/ui/Pagination";
+import Card from "../../components/ui/Card";
 
 const eventData = [
   {
@@ -12,6 +12,7 @@ const eventData = [
     title: "Kaduna Young Entrepreneurship Summit 2024",
     time: "Sat, October 17 • 6:00 PM GMT+1",
     price: "Free",
+    category: "Kaduna",
   },
   {
     id: 2,
@@ -21,6 +22,7 @@ const eventData = [
     title: "Tech Conference 2024",
     time: "Mon, November 20 • 10:00 AM GMT+1",
     price: "$10",
+    category: "Tech",
   },
   {
     id: 3,
@@ -30,6 +32,7 @@ const eventData = [
     title: "Music Festival 2024",
     time: "Fri, December 5 • 8:00 PM GMT+1",
     price: "$50",
+    category: "Music",
   },
   {
     id: 4,
@@ -39,6 +42,7 @@ const eventData = [
     title: "Art Exhibition 2024",
     time: "Sun, October 22 • 2:00 PM GMT+1",
     price: "Free",
+    category: "Art",
   },
   {
     id: 6,
@@ -48,6 +52,7 @@ const eventData = [
     title: "Startup Pitch Competition 2024",
     time: "Tue, November 11 • 3:00 PM GMT+1",
     price: "$15",
+    category: "Startup",
   },
   {
     id: 7,
@@ -57,6 +62,7 @@ const eventData = [
     title: "Cooking Masterclass 2024",
     time: "Wed, December 12 • 11:00 AM GMT+1",
     price: "$30",
+    category: "Cooking",
   },
   {
     id: 8,
@@ -66,6 +72,7 @@ const eventData = [
     title: "Photography Workshop 2024",
     time: "Thu, January 25 • 9:00 AM GMT+1",
     price: "$25",
+    category: "Photography",
   },
   {
     id: 9,
@@ -75,6 +82,7 @@ const eventData = [
     title: "Business Networking Event 2024",
     time: "Fri, February 14 • 5:00 PM GMT+1",
     price: "Free",
+    category: "Business",
   },
   // Additional data
   {
@@ -85,6 +93,7 @@ const eventData = [
     title: "Web Development Bootcamp 2024",
     time: "Mon, March 1 • 10:00 AM GMT+1",
     price: "$200",
+    category: "Web Development",
   },
   {
     id: 11,
@@ -94,6 +103,7 @@ const eventData = [
     title: "AI Innovations Summit 2024",
     time: "Wed, April 10 • 1:00 PM GMT+1",
     price: "$50",
+    category: "AI",
   },
   {
     id: 12,
@@ -103,6 +113,7 @@ const eventData = [
     title: "Digital Marketing Workshop 2024",
     time: "Sat, May 15 • 9:00 AM GMT+1",
     price: "$75",
+    category: "Digital Marketing",
   },
 ];
 
@@ -112,12 +123,16 @@ function Events() {
   const [currentPage, setCurrentPage] = useState(1);
   const eventsPerPage = 6;
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1); // Reset to first page on search
   };
 
-  const handleCategoryChange = (e) => {
+  const handleCategoryChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setSelectedCategory(e.target.value);
     setCurrentPage(1); // Reset to first page on category change
   };
@@ -137,7 +152,7 @@ function Events() {
     indexOfLastEvent
   );
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (page: React.SetStateAction<number>) => {
     setCurrentPage(page);
   };
 

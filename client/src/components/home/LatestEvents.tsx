@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Card from "../ui/Card";
 import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import AliceCarousel from "react-alice-carousel";
+import Card from "../ui/Card";
 
 const eventData = [
   {
+    id: 0,
     imageUrl:
       "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     status: "Just added",
@@ -14,6 +15,7 @@ const eventData = [
     price: "Free",
   },
   {
+    id: 1,
     imageUrl:
       "https://images.pexels.com/photos/3100960/pexels-photo-3100960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     status: "Coming Soon",
@@ -22,6 +24,7 @@ const eventData = [
     price: "$10",
   },
   {
+    id: 2,
     imageUrl:
       "https://images.pexels.com/photos/210682/pexels-photo-210682.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     status: "New Event",
@@ -30,6 +33,7 @@ const eventData = [
     price: "$50",
   },
   {
+    id: 3,
     imageUrl:
       "https://images.pexels.com/photos/167964/pexels-photo-167964.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     status: "Just added",
@@ -38,6 +42,7 @@ const eventData = [
     price: "Free",
   },
   {
+    id: 4,
     imageUrl:
       "https://images.pexels.com/photos/212286/pexels-photo-212286.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     status: "New Event",
@@ -46,6 +51,7 @@ const eventData = [
     price: "$15",
   },
   {
+    id: 5,
     imageUrl:
       "https://images.pexels.com/photos/1629225/pexels-photo-1629225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     status: "Coming Soon",
@@ -54,6 +60,7 @@ const eventData = [
     price: "$30",
   },
   {
+    id: 6,
     imageUrl:
       "https://images.pexels.com/photos/3100960/pexels-photo-3100960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     status: "Just added",
@@ -62,6 +69,7 @@ const eventData = [
     price: "$25",
   },
   {
+    id: 7,
     imageUrl:
       "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     status: "New Event",
@@ -78,7 +86,7 @@ const responsive = {
   1024: { items: 3 },
 };
 
-function LatestEvents() {
+const LatestEvents: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
@@ -172,5 +180,5 @@ function LatestEvents() {
       </div> */}
     </section>
   );
-}
+};
 export default LatestEvents;
