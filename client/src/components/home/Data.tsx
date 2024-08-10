@@ -42,26 +42,26 @@ const Data: React.FC = () => {
   }, [hasAnimated]);
 
   return (
-    <section className="relative flex flex-col gap-20 pt-10 h-[80vh] w-full bg-cover bg-center">
-      <div className="flex justify-center items-center">
-        <p className="text-[42px] text-gray-800">Testing Simulation Data</p>
+    <section className="relative flex flex-col gap-10 md:gap-20 pt-10 h-auto md:h-[80vh] w-full bg-cover bg-center" data-aos="fade-up">
+      <div className="flex justify-center items-center mb-4" data-aos="fade-up" data-aos-duration="1000">
+        <p className="text-[28px] md:text-[42px] text-gray-800 font-bold">Testing Simulation Data</p>
       </div>
-      <div className="flex h-[60%]">
-        <div className="flex flex-col text-green-800 border-r-[1px] border-b-[1px] border-t-[1px] border-green-200 h-full items-center justify-center w-1/3 text-[80px] font-bold">
-          <div ref={orgsRef}>0</div> {/* Animated number */}
-          <span className="text-[20px] font-semibold">
+      <div className="flex flex-col md:flex-row h-auto md:h-[60%] w-full">
+        <div className="flex flex-col text-green-800 border-r-[1px] border-b-[1px] border-t-[1px] p-3 border-green-200 items-center justify-center w-full md:w-1/3 text-[50px] md:text-[80px] font-bold mb-8 md:mb-0" data-aos="fade-up" data-aos-duration="1000">
+          <div ref={orgsRef}>0</div>
+          <span className="text-[16px] md:text-[20px] font-semibold">
             Participating Organisations
           </span>
         </div>
-        <div className="flex flex-col text-green-800 border-r-[1px] border-b-[1px] border-t-[1px] border-green-200 h-full items-center justify-center w-1/3 text-[80px] font-bold">
-          <div ref={govsRef}>0</div> 
-          <span className="text-[20px] font-semibold">
+        <div className="flex flex-col text-green-800 border-r-[1px] border-b-[1px] border-t-[1px] p-3 border-green-200 items-center justify-center w-full md:w-1/3 text-[50px] md:text-[80px] font-bold mb-8 md:mb-0" data-aos="fade-up" data-aos-duration="1000">
+          <div ref={govsRef}>0</div>
+          <span className="text-[16px] md:text-[20px] font-semibold">
             National Governments
           </span>
         </div>
-        <div className="flex flex-col text-green-800 border-r-[1px] border-b-[1px] border-t-[1px] border-green-200 h-full items-center justify-center w-1/3 text-[80px] font-bold">
-          <div ref={sessionsRef}>0</div> 
-          <span className="text-[20px] font-semibold">Testing Sessions</span>
+        <div className="flex flex-col text-green-800 border-r-[1px] border-b-[1px] border-t-[1px] p-3 border-green-200 items-center justify-center w-full md:w-1/3 text-[50px] md:text-[80px] font-bold" data-aos="fade-up" data-aos-duration="1000">
+          <div ref={sessionsRef}>0</div>
+          <span className="text-[16px] md:text-[20px] font-semibold">Testing Sessions</span>
         </div>
       </div>
     </section>

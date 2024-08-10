@@ -21,6 +21,7 @@ const Card: React.FC<CardProps> = ({
   return (
     <Link
       to={`/event/${id}`}
+      data-aos="zoom-in-right"
       state={{ imageUrl, status, title, time, price, }}
       className="h-[380px] w-[400px] cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
     >
