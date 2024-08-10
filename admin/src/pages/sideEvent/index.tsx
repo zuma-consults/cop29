@@ -1,8 +1,10 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import React from "react";
 import { SummaryCard } from "../../components/custom";
 import EventTable from "../../components/tabel/EventTable";
 import { DelegateSummaryCardData } from "../../utils/datas/summary-card";
+import { GroupAdd } from "@mui/icons-material";
+import { IoCreateSharp } from "react-icons/io5";
 
 const Event: React.FC = () => {
   return (
@@ -20,10 +22,34 @@ const Event: React.FC = () => {
           ))}
         </Grid>
       </Box>
-      <div className="flex flex-col gap-2 px-4 md:px-0  sm:mt-[2.5rem] mt-1">
-        <span className="text-sm font-extrabold text-[#2E7D31]">
-          All Events
-        </span>
+      <div className="flex flex-col gap-2 px-5 md:px-0  sm:mt-[2.5rem] mt-1">
+        <div className="flex align-center md:flex-row flex-col sm:gap-10 w-auto justify-between">
+          <span className="text-sm  font-extrabold text-[#2E7D31]">
+            All Events
+          </span>
+          <Button
+            sx={{
+              backgroundColor: "green",
+              color: "white",
+              width: "fit-content",
+              paddingY: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              fontSize: "13px",
+              gap: "8px",
+              "&:hover": {
+                backgroundColor: "#e8f5e9",
+                color: "black",
+              },
+            }}
+          >
+            Create a new event
+            <IoCreateSharp size={20} />
+          </Button>
+        </div>
+
         <div className="">
           <div className="w-[103px] h-[8px] bg-[#2E7D31]"></div>
           <hr
