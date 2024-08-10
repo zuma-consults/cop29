@@ -125,7 +125,7 @@ const Nav: React.FC<{
             }}
           >
             {navConfig.map((item: any) => (
-              <Box key={item.title} sx={{ mb: "40px", mr: "20px" }}>
+              <Box key={item.title} sx={{ mb: "30px", mr: "20px" }}>
                 <Box onClick={() => navigate(item.path)}>
                   <NavItem
                     key={item.title}
@@ -139,6 +139,7 @@ const Nav: React.FC<{
             <UserAccount
               image="https://avatars.githubusercontent.com/u/68823331?v=4"
               name="Abraham Christopher"
+              role={"Admin"}
             />
           </Box>
         </Box>

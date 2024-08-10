@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Chip,
   Modal,
   TextField,
   Typography,
@@ -29,7 +30,7 @@ const EventDatas = [
     id: 1,
     imageUrl:
       "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Just added",
+    status: "Approved",
     title: "Kaduna Young Entrepreneurship Summit 2024",
     time: "Sat, October 17 • 6:00 PM GMT+1",
     price: "Free",
@@ -39,7 +40,7 @@ const EventDatas = [
     id: 2,
     imageUrl:
       "https://images.pexels.com/photos/3100960/pexels-photo-3100960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Coming Soon",
+    status: "Approved",
     title: "Tech Conference 2024",
     time: "Mon, November 20 • 10:00 AM GMT+1",
     price: "$10",
@@ -49,7 +50,7 @@ const EventDatas = [
     id: 3,
     imageUrl:
       "https://images.pexels.com/photos/210682/pexels-photo-210682.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "New Event",
+    status: "Pending",
     title: "Music Festival 2024",
     time: "Fri, December 5 • 8:00 PM GMT+1",
     price: "$50",
@@ -59,7 +60,7 @@ const EventDatas = [
     id: 4,
     imageUrl:
       "https://images.pexels.com/photos/167964/pexels-photo-167964.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Just added",
+    status: "Approved",
     title: "Art Exhibition 2024",
     time: "Sun, October 22 • 2:00 PM GMT+1",
     price: "Free",
@@ -69,7 +70,7 @@ const EventDatas = [
     id: 6,
     imageUrl:
       "https://images.pexels.com/photos/212286/pexels-photo-212286.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "New Event",
+    status: "Pending",
     title: "Startup Pitch Competition 2024",
     time: "Tue, November 11 • 3:00 PM GMT+1",
     price: "$15",
@@ -79,7 +80,7 @@ const EventDatas = [
     id: 7,
     imageUrl:
       "https://images.pexels.com/photos/1629225/pexels-photo-1629225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Coming Soon",
+    status: "Approved",
     title: "Cooking Masterclass 2024",
     time: "Wed, December 12 • 11:00 AM GMT+1",
     price: "$30",
@@ -89,7 +90,7 @@ const EventDatas = [
     id: 8,
     imageUrl:
       "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Just added",
+    status: "Approved",
     title: "Photography Workshop 2024",
     time: "Thu, January 25 • 9:00 AM GMT+1",
     price: "$25",
@@ -99,7 +100,7 @@ const EventDatas = [
     id: 9,
     imageUrl:
       "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "New Event",
+    status: "Pending",
     title: "Business Networking Event 2024",
     time: "Fri, February 14 • 5:00 PM GMT+1",
     price: "Free",
@@ -110,7 +111,7 @@ const EventDatas = [
     id: 10,
     imageUrl:
       "https://images.pexels.com/photos/1742720/pexels-photo-1742720.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Just added",
+    status: "Approved",
     title: "Web Development Bootcamp 2024",
     time: "Mon, March 1 • 10:00 AM GMT+1",
     price: "$200",
@@ -120,7 +121,7 @@ const EventDatas = [
     id: 11,
     imageUrl:
       "https://images.pexels.com/photos/2933350/pexels-photo-2933350.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Coming Soon",
+    status: "Approved",
     title: "AI Innovations Summit 2024",
     time: "Wed, April 10 • 1:00 PM GMT+1",
     price: "$50",
@@ -130,7 +131,7 @@ const EventDatas = [
     id: 12,
     imageUrl:
       "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "New Event",
+    status: "Pending",
     title: "Digital Marketing Workshop 2024",
     time: "Sat, May 15 • 9:00 AM GMT+1",
     price: "$75",
@@ -163,31 +164,9 @@ const Table: React.FC = () => {
         fontSize: "14px",
       },
     },
-    rows: {
-      style: {
-        minHeight: "56px",
-        textTransform: "capitalize",
-        cursor: "default",
-      },
-    },
   };
 
   const columns: TableColumn<TableRow>[] = [
-    {
-      name: "Banner",
-      selector: (row: { imageUrl: any }) => row.imageUrl,
-      cell: (row: {
-        imageUrl: string | undefined;
-        title: string | undefined;
-      }) => (
-        <img
-          src={row.imageUrl}
-          alt={row.title}
-          style={{ width: "50px", height: "50px", objectFit: "cover" }}
-        />
-      ),
-      sortable: true,
-    },
     {
       name: "Title",
       selector: (row: { title: any }) => row.title,
@@ -222,9 +201,11 @@ const Table: React.FC = () => {
           | undefined;
       }) => (
         <div className="text-left capitalize flex items-center">
-          <span className="mr-2">{row.status}</span>
-          {row.status === "Just added" && <MdCheckCircle color="blue" />}
-          {row.status === "Coming Soon" && <MdPending color="orange" />}
+          {row.status === "Approved" ? (
+            <Chip label={row?.status} color="success" />
+          ) : (
+            <Chip label={row?.status} color="error" />
+          )}
         </div>
       ),
       sortable: true,
@@ -252,7 +233,7 @@ const Table: React.FC = () => {
             }}
             onClick={() => setSelectedEvent(row)}
           >
-            View Details
+            View event
             <GoArrowRight size={19} />
           </Button>
         </div>
@@ -282,6 +263,8 @@ const Table: React.FC = () => {
         columns={columns}
         data={filteredData}
         pagination
+        fixedHeader
+        fixedHeaderScrollHeight="500px"
         onChangePage={handlePageChange}
       />
 
@@ -308,7 +291,7 @@ const Table: React.FC = () => {
                 image={selectedEvent.imageUrl}
                 alt={selectedEvent.title}
               />
-              <CardContent>
+              <CardContent className="flex flex-col gap-3">
                 <Typography variant="h5" component="div">
                   {selectedEvent.title}
                 </Typography>
@@ -321,9 +304,13 @@ const Table: React.FC = () => {
                 <Typography variant="body2" color="text.secondary">
                   {selectedEvent.category}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {selectedEvent.status}
-                </Typography>
+                <div className="">
+                  {selectedEvent.status === "Approved" ? (
+                    <Chip label={selectedEvent.status} color="success" />
+                  ) : (
+                    <Chip label={selectedEvent.status} color="error" />
+                  )}
+                </div>
               </CardContent>
             </Card>
           )}

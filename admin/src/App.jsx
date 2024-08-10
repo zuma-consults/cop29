@@ -7,6 +7,11 @@ import AppLayout from "./layouts/AppLayout";
 import Home from "./pages/home";
 import Delegate from "./pages/delegate";
 import Organization from "./pages/organization";
+import Calender from "./pages/calender";
+import Event from "./pages/sideEvent";
+import Invoice from "./pages/invoice";
+import User from "./pages/user";
+import Announcement from "./pages/announcement";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -30,6 +35,11 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/delegate" element={<Delegate />} />
         <Route path="/organization" element={<Organization />} />
+        <Route path="/calender" element={<Calender />} />
+        <Route path="/event" element={<Event />} />
+        <Route path="/invoice" element={<Invoice />} />
+        <Route path="/user" element={<User />} />
+        <Route path="/announcement" element={<Announcement />} />
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Route>
