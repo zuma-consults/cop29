@@ -1,15 +1,15 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
-import { summaryCardData } from "../../utils/datas/summary-card";
 import { SummaryCard } from "../../components/custom";
-import Table from "../../components/event-table/Table";
+import AllEventTable from "../../components/tabel/AllEventTable";
+import { HomeSummaryCardData } from "../../utils/datas/summary-card";
 
 const Home: React.FC = () => {
   return (
     <div className="w-[100%] h-[100%] relative overflow-x-hidden">
       <Box sx={{ marginTop: "10px" }}>
         <Grid container spacing={3}>
-          {summaryCardData?.map((card, index) => (
+          {HomeSummaryCardData?.map((card, index) => (
             <Grid item key={index} xs={12} sm={6} md={6}>
               <SummaryCard
                 icon={card.icon}
@@ -36,7 +36,7 @@ const Home: React.FC = () => {
         </div>
       </div>
       <div>
-        <Table />
+        <AllEventTable />
       </div>
     </div>
   );

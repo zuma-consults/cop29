@@ -1,4 +1,3 @@
-"use client";
 import {
   Box,
   Button,
@@ -13,16 +12,14 @@ import {
 import React, { useState, ChangeEvent } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight } from "react-icons/go";
-import { MdCheckCircle, MdPending } from "react-icons/md";
 
 interface TableRow {
   id: number;
   imageUrl: string;
   status: string;
-  title: string;
-  time: string;
-  price: string;
-  category: string;
+  name: string;
+  date: string;
+  email: string;
 }
 
 const EventDatas = [
@@ -31,115 +28,22 @@ const EventDatas = [
     imageUrl:
       "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     status: "Approved",
-    title: "Kaduna Young Entrepreneurship Summit 2024",
-    time: "Sat, October 17 • 6:00 PM GMT+1",
-    price: "Free",
-    category: "Kaduna",
+    name: "James Bond",
+    date: "Sat, October 17 ",
+    email: "chris@gmail.com",
   },
   {
     id: 2,
     imageUrl:
       "https://images.pexels.com/photos/3100960/pexels-photo-3100960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
-    title: "Tech Conference 2024",
-    time: "Mon, November 20 • 10:00 AM GMT+1",
-    price: "$10",
-    category: "Tech",
-  },
-  {
-    id: 3,
-    imageUrl:
-      "https://images.pexels.com/photos/210682/pexels-photo-210682.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
     status: "Pending",
-    title: "Music Festival 2024",
-    time: "Fri, December 5 • 8:00 PM GMT+1",
-    price: "$50",
-    category: "Music",
-  },
-  {
-    id: 4,
-    imageUrl:
-      "https://images.pexels.com/photos/167964/pexels-photo-167964.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
-    title: "Art Exhibition 2024",
-    time: "Sun, October 22 • 2:00 PM GMT+1",
-    price: "Free",
-    category: "Art",
-  },
-  {
-    id: 6,
-    imageUrl:
-      "https://images.pexels.com/photos/212286/pexels-photo-212286.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Pending",
-    title: "Startup Pitch Competition 2024",
-    time: "Tue, November 11 • 3:00 PM GMT+1",
-    price: "$15",
-    category: "Startup",
-  },
-  {
-    id: 7,
-    imageUrl:
-      "https://images.pexels.com/photos/1629225/pexels-photo-1629225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
-    title: "Cooking Masterclass 2024",
-    time: "Wed, December 12 • 11:00 AM GMT+1",
-    price: "$30",
-    category: "Cooking",
-  },
-  {
-    id: 8,
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
-    title: "Photography Workshop 2024",
-    time: "Thu, January 25 • 9:00 AM GMT+1",
-    price: "$25",
-    category: "Photography",
-  },
-  {
-    id: 9,
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Pending",
-    title: "Business Networking Event 2024",
-    time: "Fri, February 14 • 5:00 PM GMT+1",
-    price: "Free",
-    category: "Business",
-  },
-  // Additional data
-  {
-    id: 10,
-    imageUrl:
-      "https://images.pexels.com/photos/1742720/pexels-photo-1742720.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
-    title: "Web Development Bootcamp 2024",
-    time: "Mon, March 1 • 10:00 AM GMT+1",
-    price: "$200",
-    category: "Web Development",
-  },
-  {
-    id: 11,
-    imageUrl:
-      "https://images.pexels.com/photos/2933350/pexels-photo-2933350.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
-    title: "AI Innovations Summit 2024",
-    time: "Wed, April 10 • 1:00 PM GMT+1",
-    price: "$50",
-    category: "AI",
-  },
-  {
-    id: 12,
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Pending",
-    title: "Digital Marketing Workshop 2024",
-    time: "Sat, May 15 • 9:00 AM GMT+1",
-    price: "$75",
-    category: "Digital Marketing",
+    name: "Chris Brown",
+    date: "Mon, November 20 ",
+    email: "musa@gmail.com",
   },
 ];
 
-const Table: React.FC = () => {
+const DelegateTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -152,8 +56,20 @@ const Table: React.FC = () => {
     setSearchQuery(event.target.value);
   };
 
+  const handleAccept = () => {
+    console.log("Accepted");
+    // Handle accept logic here
+    setSelectedEvent(null);
+  };
+
+  const handleReject = () => {
+    console.log("Rejected");
+    // Handle reject logic here
+    setSelectedEvent(null);
+  };
+
   const filteredData = EventDatas.filter((event) =>
-    event.title.toLowerCase().includes(searchQuery.toLowerCase())
+    event.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const customStyles = {
@@ -168,25 +84,21 @@ const Table: React.FC = () => {
 
   const columns: TableColumn<TableRow>[] = [
     {
-      name: "Title",
-      selector: (row: { title: any }) => row.title,
+      name: "name",
+      selector: (row: { name: any }) => row.name,
       sortable: true,
     },
     {
-      name: "Time",
-      selector: (row: { time: any }) => row.time,
+      name: "date",
+      selector: (row: { date: any }) => row.date,
       sortable: true,
     },
     {
-      name: "Price",
-      selector: (row: { price: any }) => row.price,
+      name: "email",
+      selector: (row: { email: any }) => row.email,
       sortable: true,
     },
-    {
-      name: "Category",
-      selector: (row: { category: any }) => row.category,
-      sortable: true,
-    },
+
     {
       name: "Status",
       selector: (row: { status: any }) => row.status,
@@ -204,7 +116,7 @@ const Table: React.FC = () => {
           {row.status === "Approved" ? (
             <Chip label={row?.status} color="success" />
           ) : (
-            <Chip label={row?.status} color="error" />
+            <Chip label={row?.status} color="warning" />
           )}
         </div>
       ),
@@ -218,8 +130,8 @@ const Table: React.FC = () => {
             sx={{
               backgroundColor: "green",
               color: "white",
-              width: "150px",
-              paddingY: "12px",
+              width: "100px",
+              paddingY: "8px",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -233,7 +145,7 @@ const Table: React.FC = () => {
             }}
             onClick={() => setSelectedEvent(row)}
           >
-            View event
+            View
             <GoArrowRight size={19} />
           </Button>
         </div>
@@ -259,6 +171,8 @@ const Table: React.FC = () => {
         />
       </div>
       <DataTable
+        highlightOnHover={true}
+        responsive={true}
         customStyles={customStyles}
         columns={columns}
         data={filteredData}
@@ -275,7 +189,7 @@ const Table: React.FC = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            width: 600,
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
@@ -289,28 +203,45 @@ const Table: React.FC = () => {
                 component="img"
                 height="200"
                 image={selectedEvent.imageUrl}
-                alt={selectedEvent.title}
+                alt={selectedEvent.name}
               />
               <CardContent className="flex flex-col gap-3">
                 <Typography variant="h5" component="div">
-                  {selectedEvent.title}
+                  {selectedEvent.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {selectedEvent.time}
+                  {selectedEvent.date}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {selectedEvent.price}
+                  {selectedEvent.email}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {selectedEvent.category}
-                </Typography>
-                <div className="">
+
+                <div className="mb-4">
                   {selectedEvent.status === "Approved" ? (
                     <Chip label={selectedEvent.status} color="success" />
                   ) : (
                     <Chip label={selectedEvent.status} color="error" />
                   )}
                 </div>
+
+                {selectedEvent.status === "Pending" && (
+                  <Box className="flex justify-between">
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={handleAccept}
+                    >
+                      Accept
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={handleReject}
+                    >
+                      Reject
+                    </Button>
+                  </Box>
+                )}
               </CardContent>
             </Card>
           )}
@@ -320,4 +251,4 @@ const Table: React.FC = () => {
   );
 };
 
-export default Table;
+export default DelegateTable;
