@@ -104,8 +104,8 @@ const UserAccount: React.FC<{ image: string; name: string; role: any }> = ({
       <Box
         sx={{ position: "absolute", right: { xs: -40, sm: 0 }, top: { md: 0 } }}
       >
-        <Button aria-describedby={id} onClick={handleClick}>
-          <MoreVert />
+        <Button aria-describedby={id} onClick={handleClick} color="success">
+          <MoreVert color="success" />
         </Button>
         <Popover
           id={id}

@@ -24,7 +24,7 @@ createRoot(document.getElementById("root")).render(
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          className="z-[20000]"
+          className="z-[999999999]"
         />
       </BrowserRouter>
     </QueryClientProvider>

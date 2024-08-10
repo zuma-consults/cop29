@@ -125,7 +125,13 @@ const Nav: React.FC<{
             }}
           >
             {navConfig.map((item: any) => (
-              <Box key={item.title} sx={{ mb: "30px", mr: "20px" }}>
+              <Box
+                key={item.title}
+                sx={{
+                  mb: { xs: "0px", md: "30px" },
+                  mr: { xs: "0px", md: "20px" },
+                }}
+              >
                 <Box onClick={() => navigate(item.path)}>
                   <NavItem
                     key={item.title}
