@@ -24,10 +24,6 @@ const Signup: React.FC = () => {
     setIsLoading(false);
   };
 
-  const handleForgotPassword = () => {
-    // Redirect or perform forgot password logic here
-  };
-
   const handleEmailChange = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
@@ -41,9 +37,9 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-green-800 justify-between">
+    <div className="flex flex-col md:flex-row h-screen bg-green-800">
       <div className="flex-1 flex items-center justify-center">
-        <div className="bg-white w-full h-max  md:w-[480px] p-5 grid gap-3 rounded-lg ">
+        <div className="bg-white w-full md:w-[480px] p-5 m-10 md:m-0 grid gap-3 rounded-lg" data-aos="zoom-in-right">
           <div className="w-full h-max flex flex-col items-center justify-center gap-1">
             <img
               src="/images/coat.png"
@@ -93,11 +89,10 @@ const Signup: React.FC = () => {
           <button
             type="submit"
             onClick={handleLogin}
-            className={`mt-3 px-4 py-3 rounded font-semibold ${
-              agreed
-                ? "bg-green-700 text-white"
-                : "bg-green-700 text-white cursor-not-allowed"
-            }`}
+            className={`mt-3 px-4 py-3 rounded font-semibold ${agreed
+              ? "bg-green-700 text-white"
+              : "bg-green-700 text-white cursor-not-allowed"
+              }`}
             disabled={!email || !password}
           >
             Log In
@@ -105,11 +100,20 @@ const Signup: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 bg-green-200">
+      <div className="hidden md:flex flex-1 bg-green-200">
         <img
           src="/images/globe.jpg"
           alt="Image description"
           className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Mobile Background Image */}
+      <div className="hidden md:flex-1 relative">
+        <img
+          src="/images/globe.jpg"
+          alt="Image description"
+          className="absolute inset-0 w-full h-full object-cover"
         />
       </div>
     </div>
