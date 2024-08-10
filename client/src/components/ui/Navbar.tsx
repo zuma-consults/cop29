@@ -3,9 +3,9 @@ import Links from "./Links";
 import { IoClose, IoMenu } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 
-function Navbar() {
-  const [toggle, setToggle] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+const Navbar: React.FC = () => {
+  const [toggle, setToggle] = useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -18,12 +18,12 @@ function Navbar() {
   const navigate = useNavigate();
 
   const challenges = () => {
-    navigate.push("/challenges/myChallenges");
+    navigate("/challenges/myChallenges");
     setIsDropdownOpen(false);
   };
 
   const medal = () => {
-    navigate.push("/medals");
+    navigate("/medals");
     setIsDropdownOpen(false);
   };
 
@@ -50,7 +50,7 @@ function Navbar() {
           <Links direction="row" toggle={toggle} />
         </ul>
 
-        <div className="sm:hidden flex  justify-end items-center hover:bg-gray-100 px-3 py-2 rounded-full w-max">
+        <div className="sm:hidden flex justify-end items-center hover:bg-gray-100 px-3 py-2 rounded-full w-max">
           {toggle ? (
             <IoClose
               className="text-[#31363F] text-2xl cursor-pointer"
@@ -71,6 +71,6 @@ function Navbar() {
       )}
     </nav>
   );
-}
+};
 
 export default Navbar;

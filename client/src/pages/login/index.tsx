@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 
-function Signup() {
+const Login: React.FC = () => {
   const [agreed, setAgreed] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleCheckboxChange = (event) => {
+  const handleCheckboxChange = (event: {
+    target: { checked: boolean | ((prevState: boolean) => boolean) };
+  }) => {
     setAgreed(event.target.checked);
   };
 
@@ -26,11 +28,15 @@ function Signup() {
     // Redirect or perform forgot password logic here
   };
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setPassword(e.target.value);
   };
 
@@ -48,14 +54,14 @@ function Signup() {
               onClick={() => window.location.replace("/")}
             />
           </div>
-          <p className="text-[22px] font-semibold">Create an account</p>
+          <p className="text-[22px] font-semibold">Log into your account</p>
           <p className="text-[14px] font-medium text-gray-600">
-            Already have an account?{" "}
+            Don’t have an account?{" "}
             <button
               className="text-green-500 cursor-pointer"
-              onClick={() => window.location.replace("/login")}
+              onClick={() => window.location.replace("/signup")}
             >
-              Login
+              Sign up
             </button>
           </p>
           <input
@@ -84,6 +90,29 @@ function Signup() {
               )}
             </div>
           </div>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="terms"
+                className="form-checkbox text-green-500 h-4 w-4"
+                checked={agreed}
+                onChange={handleCheckboxChange}
+              />
+              <label
+                htmlFor="terms"
+                className="ml-2 text-gray-600 text-[12px] font-medium"
+              >
+                Remember me
+              </label>
+            </div>
+            <button
+              onClick={handleForgotPassword}
+              className="text-green-500 text-[12px] font-medium"
+            >
+              Forgot Password?
+            </button>
+          </div>
           <button
             type="submit"
             onClick={handleLogin}
@@ -108,6 +137,6 @@ function Signup() {
       </div>
     </div>
   );
-}
+};
 
-export default Signup;
+export default Login;

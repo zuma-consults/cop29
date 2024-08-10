@@ -1,11 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Card({ imageUrl, status, title, time, price, id }) {
+interface CardProps {
+  imageUrl: string;
+  status: string;
+  title: string;
+  time: string;
+  price: string;
+  id: string | number;
+}
+
+const Card: React.FC<CardProps> = ({
+  imageUrl,
+  status,
+  title,
+  time,
+  price,
+  id,
+}) => {
   return (
     <Link
       to={`/event/${id}`}
-      state={{ imageUrl, status, title, time, price }}
+      state={{ imageUrl, status, title, time, price, }}
       className="h-[380px] w-[400px] cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
     >
       <div className="relative h-[40%] w-full overflow-hidden">
@@ -25,6 +41,6 @@ function Card({ imageUrl, status, title, time, price, id }) {
       </div>
     </Link>
   );
-}
+};
 
 export default Card;

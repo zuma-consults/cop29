@@ -1,6 +1,6 @@
 import React from "react";
 
-function Footer() {
+const Footer: React.FC = () => {
   return (
     <footer className="bg-[#162415] w-full py-10 px-6 md:px-10 xl:px-40 flex flex-col items-center">
       <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
@@ -44,6 +44,6 @@ function Footer() {
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;

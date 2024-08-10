@@ -1,6 +1,6 @@
 import React from "react";
 
-function World() {
+const World: React.FC = () => {
   return (
     <div className="w-full h-[85vh] ">
       <img
@@ -10,6 +10,6 @@ function World() {
       />
     </div>
   );
-}
+};
 
 export default World;

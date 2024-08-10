@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/ui/Navbar";
-import Footer from "../components/ui/Footer";
 import "react-alice-carousel/lib/alice-carousel.css";
+import Navbar from "../components/ui/Navbar";
 import NewsLetter from "../components/ui/newsLetter";
+import Footer from "../components/ui/Footer";
 
 function AppLayout() {
   return (
