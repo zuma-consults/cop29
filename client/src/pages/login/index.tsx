@@ -41,9 +41,9 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-green-800 justify-between">
+    <div className="flex flex-col md:flex-row h-screen bg-green-800">
       <div className="flex-1 flex items-center justify-center">
-        <div className="bg-white w-full h-max  md:w-[480px] p-5 grid gap-3 rounded-lg" data-aos="zoom-in-right">
+        <div className="bg-white w-full md:w-[480px] p-5 m-10 md:m-0 grid gap-3 rounded-lg" data-aos="zoom-in-right">
           <div className="w-full h-max flex flex-col items-center justify-center gap-1">
             <img
               src="/images/coat.png"
@@ -90,7 +90,7 @@ const Login: React.FC = () => {
               )}
             </div>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-2">
             <div className="flex items-center">
               <input
                 type="checkbox"
@@ -127,11 +127,20 @@ const Login: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 bg-green-200">
+      <div className="hidden md:flex flex-1 bg-green-200">
         <img
           src="/images/globe.jpg"
           alt="Image description"
           className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Mobile Background Image */}
+      <div className="hidden md:flex-1 md:relative">
+        <img
+          src="/images/globe.jpg"
+          alt="Image description"
+          className="absolute inset-0 w-full h-full object-cover"
         />
       </div>
     </div>

@@ -17,7 +17,7 @@ const NewsLetter: React.FC = () => {
         <div className="  flex flex-col items-center  md:flex-row justify-center  md:gap-40 pt-5 md:pt-0 ">
           <div className="flex justify-center items-center flex-col">
             <h1 className="text-[20px] md:text-[40px] font-extrabold">
-              Stay Conneted.
+              Stay Connected.
             </h1>
             <h2 className="text-[10px] md:text-[16px] font-normal">
               Subcribe to our newsletter and stay up to date!
