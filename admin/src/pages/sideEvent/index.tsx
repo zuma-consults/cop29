@@ -1,15 +1,15 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
 import { SummaryCard } from "../../components/custom";
-import AllEventTable from "../../components/tabel/AllEventTable";
-import { HomeSummaryCardData } from "../../utils/datas/summary-card";
+import EventTable from "../../components/tabel/EventTable";
+import { DelegateSummaryCardData } from "../../utils/datas/summary-card";
 
-const Home: React.FC = () => {
+const Event: React.FC = () => {
   return (
     <div className="w-[100%] h-[100%] relative overflow-x-hidden">
       <Box sx={{ marginTop: "10px" }}>
         <Grid container spacing={3}>
-          {HomeSummaryCardData?.map((card, index) => (
+          {DelegateSummaryCardData?.map((card, index) => (
             <Grid item key={index} xs={12} sm={6} md={6}>
               <SummaryCard
                 icon={card.icon}
@@ -36,10 +36,10 @@ const Home: React.FC = () => {
         </div>
       </div>
       <div>
-        <AllEventTable />
+        <EventTable />
       </div>
     </div>
   );
 };
 
-export default Home;
+export default Event;

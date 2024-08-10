@@ -1,13 +1,16 @@
-import { Box, Button, Popover, Skeleton, Typography } from "@mui/material";
+import { Box, Skeleton, Typography } from "@mui/material";
+import { MoreVert } from "@mui/icons-material";
 import React from "react";
-import { ImageFrame40 } from "../../image-frames";
-import { CgMoreVertical } from "react-icons/cg";
-import AlertDialog from "../../Reusable-Dialog";
+import Button from "@mui/material/Button";
+import Popover from "@mui/material/Popover";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import AlertDialog from "../../Reusable-Dialog";
+import { ImageFrame40 } from "../../image-frames";
 
-const UserAccount: React.FC<{ image: string; name: string }> = ({
+const UserAccount: React.FC<{ image: string; name: string; role: any }> = ({
   image,
   name,
+  role,
 }) => {
   const [openDialog, setOpenDialog] = React.useState(false);
 
@@ -19,7 +22,9 @@ const UserAccount: React.FC<{ image: string; name: string }> = ({
     setOpenDialog(false);
   };
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    localStorage.clear();
+  };
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -34,6 +39,7 @@ const UserAccount: React.FC<{ image: string; name: string }> = ({
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+
   return (
     <Box
       sx={{
@@ -50,7 +56,7 @@ const UserAccount: React.FC<{ image: string; name: string }> = ({
       </Box>
       <Box sx={{ flexGrow: 1, mr: "20px" }}>
         <Box>
-          {name ? (
+          {role ? (
             <Typography
               sx={{
                 fontSize: "16px",
@@ -72,13 +78,34 @@ const UserAccount: React.FC<{ image: string; name: string }> = ({
             />
           )}
         </Box>
-        <Box></Box>
+        <Box>
+          {role ? (
+            <Typography
+              sx={{
+                textTransform: "capitalize",
+                fontSize: "12px",
+                color: "#908E8F",
+                fontWeight: 500,
+                wordBreak: "break-all",
+              }}
+            >
+              {role}
+            </Typography>
+          ) : (
+            <Skeleton
+              variant="rectangular"
+              width={50}
+              height={10}
+              sx={{ mb: 0.5 }}
+            />
+          )}
+        </Box>
       </Box>
       <Box
         sx={{ position: "absolute", right: { xs: -40, sm: 0 }, top: { md: 0 } }}
       >
-        <Button aria-describedby={id} onClick={handleClick}>
-          <CgMoreVertical />
+        <Button aria-describedby={id} onClick={handleClick} color="success">
+          <MoreVert color="success" />
         </Button>
         <Popover
           id={id}
@@ -128,7 +155,7 @@ const UserAccount: React.FC<{ image: string; name: string }> = ({
           onAgree={handleLogout}
           title={"Logout"}
           content={
-            "Are you sure you want to logout? You can always login back anytime."
+            "We don't want to see you go, please check on us soon. Are you still willing to checkout?"
           }
           disagreeText={"Cancel"}
           agreeText={"Yes, continue"}

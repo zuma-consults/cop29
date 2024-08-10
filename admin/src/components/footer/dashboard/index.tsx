@@ -15,6 +15,7 @@ const DashboardFooter: React.FC<{ isLargeNavOpen: boolean; text: string }> = ({
         justifyContent: "center",
         paddingY: "20px",
         width: "100%",
+        zIndex: 90,
       }}
     >
       <Typography

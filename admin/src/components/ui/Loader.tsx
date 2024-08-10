@@ -3,7 +3,7 @@ import { DotLoader } from "react-spinners";
 
 const Loader: React.FC = () => {
   return (
-    <div className="fixed inset-0 bg-co-primary  flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-co-primary  flex items-center justify-center z-9999">
       <DotLoader color="green" size={60} />
     </div>
   );

@@ -10,7 +10,7 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [openSmallNav, setOpenSmallNav] = useState(false);
 
   return (
-    <Box>
+    <Box >
       <Nav
         large={openLargeNav}
         small={openSmallNav}

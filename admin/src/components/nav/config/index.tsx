@@ -1,6 +1,9 @@
 import { CgOrganisation } from "react-icons/cg";
-import { FaHome } from "react-icons/fa";
 import { IoIosPeople } from "react-icons/io";
+import { MdEvent } from "react-icons/md";
+import { RiAdminFill } from "react-icons/ri";
+import { FaCalendarAlt, FaFileInvoiceDollar, FaHome } from "react-icons/fa";
+import { GrAnnounce } from "react-icons/gr";
 
 export const navConfig = [
   {
@@ -17,5 +20,30 @@ export const navConfig = [
     title: "Organizations",
     icon: <CgOrganisation size={24} />,
     path: "/organization",
+  },
+  {
+    title: "Events",
+    icon: <MdEvent size={24} />,
+    path: "/event",
+  },
+  {
+    title: "Users",
+    icon: <RiAdminFill size={24} />,
+    path: "/user",
+  },
+  {
+    title: "Invoices",
+    icon: <FaFileInvoiceDollar size={24} />,
+    path: "/invoice",
+  },
+  {
+    title: "Calendar",
+    icon: <FaCalendarAlt size={24} />,
+    path: "/calender",
+  },
+  {
+    title: "Announcements",
+    icon: <GrAnnounce size={24} />,
+    path: "/announcement",
   },
 ];
