@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+import Login from "./pages/login";
+import Signup from "./pages/signup";
+import Loader from "./components/ui/Loader";
+import AppLayout from "./layouts/AppLayout";
+import Home from "./pages/home";
+import Delegate from "./pages/delegate";
+import Organization from "./pages/organization";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/" element={<AppLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/delegate" element={<Delegate />} />
+        <Route path="/organization" element={<Organization />} />
+
+        {/* <Route path="*" element={<NotFound />} /> */}
+      </Route>
+    </Routes>
+  );
 }
 
-export default App
+export default App;
