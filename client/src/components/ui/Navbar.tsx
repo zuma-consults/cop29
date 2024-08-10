@@ -1,32 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Links from "./Links";
 import { IoClose, IoMenu } from "react-icons/io5";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const [toggle, setToggle] = useState<boolean>(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  useEffect(() => {
-    console.log(isDropdownOpen, "toggle");
-  }, [toggle]);
-
-  const navigate = useNavigate();
-
-  const challenges = () => {
-    navigate("/challenges/myChallenges");
-    setIsDropdownOpen(false);
-  };
-
-  const medal = () => {
-    navigate("/medals");
-    setIsDropdownOpen(false);
-  };
-
   return (
     <nav className="w-full flex items-center justify-between md:p-4 bg-white shadow-sm h-[70px]">
       <div className="flex items-center justify-between w-full">

@@ -8,10 +8,16 @@ import Signup from "./pages/signup";
 import CreateEvent from "./pages/create-event";
 import Loader from "./components/ui/Loader";
 import AppLayout from "./layouts/AppLayout";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function App() {
   const [loading, setLoading] = useState(true);
-
+  AOS.init({
+    duration: 1200,
+    offset: 100,
+    easing: 'ease-in-out',
+  });
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
