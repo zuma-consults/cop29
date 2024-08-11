@@ -12,6 +12,8 @@ import Event from "./pages/sideEvent";
 import Invoice from "./pages/invoice";
 import User from "./pages/user";
 import Announcement from "./pages/announcement";
+import PrivateRoute from "./layouts/PrivateRoute";
+import PublicRoute from "./layouts/PublicRoute";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -29,19 +31,21 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Route>
       <Route path="/" element={<AppLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/delegate" element={<Delegate />} />
-        <Route path="/organization" element={<Organization />} />
-        <Route path="/calender" element={<Calender />} />
-        <Route path="/event" element={<Event />} />
-        <Route path="/invoice" element={<Invoice />} />
-        <Route path="/user" element={<User />} />
-        <Route path="/announcement" element={<Announcement />} />
-
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/delegate" element={<Delegate />} />
+          <Route path="/organization" element={<Organization />} />
+          <Route path="/calender" element={<Calender />} />
+          <Route path="/event" element={<Event />} />
+          <Route path="/invoice" element={<Invoice />} />
+          <Route path="/user" element={<User />} />
+          <Route path="/announcement" element={<Announcement />} />
+        </Route>
       </Route>
     </Routes>
   );

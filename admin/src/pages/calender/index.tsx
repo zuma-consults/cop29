@@ -7,67 +7,73 @@ import { Box, Typography } from "@mui/material";
 const myEventsList = [
   {
     id: 0,
-    title: "Strategy Meeting",
-    start: new Date(2024, 8, 11, 10, 0), // August 11, 2024, 10:00 AM
-    end: new Date(2024, 7, 11, 11, 30), // August 11, 2024, 11:30 AM
+    title: "Strategy Meeting and now",
+    start: "2024-08-11T10:00:00.000Z", // ISO format date string
+    end: "2024-08-11T11:30:00.000Z", // ISO format date string
   },
   {
     id: 1,
     title: "Team Sync",
-    start: new Date(2024, 9, 12, 12, 0), // August 12, 2024, 12:00 PM
-    end: new Date(2024, 7, 12, 13, 0), // August 12, 2024, 1:00 PM
+    start: "2024-08-12T12:00:00.000Z",
+    end: "2024-08-12T13:00:00.000Z",
   },
   {
     id: 2,
     title: "Client Presentation",
-    start: new Date(2024, 6, 13, 15, 0), // August 13, 2024, 3:00 PM
-    end: new Date(2024, 7, 13, 16, 0), // August 13, 2024, 4:00 PM
+    start: "2024-08-13T15:00:00.000Z",
+    end: "2024-08-13T16:00:00.000Z",
   },
   {
     id: 3,
     title: "Project Review",
-    start: new Date(2024, 7, 14, 11, 30), // August 14, 2024, 11:30 AM
-    end: new Date(2024, 7, 14, 12, 30), // August 14, 2024, 12:30 PM
+    start: "2024-08-14T11:30:00.000Z",
+    end: "2024-08-14T12:30:00.000Z",
   },
   {
     id: 4,
     title: "Marketing Update",
-    start: new Date(2024, 7, 15, 14, 0), // August 15, 2024, 2:00 PM
-    end: new Date(2024, 7, 15, 15, 0), // August 15, 2024, 3:00 PM
+    start: "2024-08-15T14:00:00.000Z",
+    end: "2024-08-15T15:00:00.000Z",
   },
   {
     id: 5,
     title: "Code Review",
-    start: new Date(2024, 7, 16, 17, 0), // August 16, 2024, 5:00 PM
-    end: new Date(2024, 8, 16, 18, 30), // August 16, 2024, 6:30 PM
+    start: "2024-08-16T17:00:00.000Z",
+    end: "2024-08-16T18:30:00.000Z",
   },
   {
     id: 6,
     title: "Design Workshop",
-    start: new Date(2024, 7, 17, 10, 30), // August 17, 2024, 10:30 AM
-    end: new Date(2024, 7, 17, 12, 0), // August 17, 2024, 12:00 PM
+    start: "2024-08-17T10:30:00.000Z",
+    end: "2024-08-17T12:00:00.000Z",
   },
   {
     id: 7,
     title: "Sprint Planning",
-    start: new Date(2024, 9, 18, 9, 30), // August 18, 2024, 9:30 AM
-    end: new Date(2024, 7, 18, 11, 0), // August 18, 2024, 11:00 AM
+    start: "2024-08-18T09:30:00.000Z",
+    end: "2024-08-18T11:00:00.000Z",
   },
   {
     id: 8,
     title: "Weekly Sync",
-    start: new Date(2024, 7, 19, 13, 30), // August 19, 2024, 1:30 PM
-    end: new Date(2024, 7, 19, 14, 30), // August 19, 2024, 2:30 PM
+    start: "2024-08-19T13:30:00.000Z",
+    end: "2024-08-19T14:30:00.000Z",
   },
   {
     id: 9,
     title: "Leadership Meeting",
-    start: new Date(2024, 7, 20, 16, 0), // August 20, 2024, 4:00 PM
-    end: new Date(2024, 8, 20, 17, 30), // August 20, 2024, 5:30 PM
+    start: "2024-08-20T16:00:00.000Z",
+    end: "2024-08-20T17:30:00.000Z",
   },
 ];
 
 const localizer = momentLocalizer(moment);
+
+const parsedEvents = myEventsList.map((event) => ({
+  ...event,
+  start: new Date(event.start),
+  end: new Date(event.end),
+}));
 
 const eventStyleGetter = () => {
   return {
@@ -114,7 +120,7 @@ const MyCalendar: React.FC = () => {
 
       <Calendar
         localizer={localizer}
-        events={myEventsList}
+        events={parsedEvents}
         defaultView={Views.MONTH}
         defaultDate={defaultDate}
         startAccessor="start"
