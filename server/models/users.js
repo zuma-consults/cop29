@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const userSchema = mongoose.Schema(
   {
@@ -60,7 +59,6 @@ const userSchema = mongoose.Schema(
   }
 );
 
-userSchema.plugin(AutoIncrement, { inc_field: "countId" });
 
 const User = mongoose.model("Users", userSchema);
 
