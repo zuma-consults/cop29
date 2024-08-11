@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema(
   {
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
+    name: {
       type: String,
       required: true,
     },
@@ -30,6 +26,10 @@ const userSchema = mongoose.Schema(
     role: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Role",
+    },
+    suspended: {
+      type: Boolean,
+      default: false,
     },
   },
   {
