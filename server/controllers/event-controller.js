@@ -27,17 +27,6 @@ module.exports = {
             );
           }
 
-          if ((start, end)) {
-            const existingEvent = await Event.findOne({ start, end, date });
-            if (existingEvent) {
-              return errorHandler(
-                res,
-                "An event exists with for the same time and date.",
-                400
-              );
-            }
-          }
-
           let organizer = await User.findOne({ _id: organizerId });
 
           // If slotId is present, get start and end times from the slot
@@ -54,8 +43,16 @@ module.exports = {
             if (slot) {
               const result = getStartAndEndTime(slot.timeSpan);
               if (result) {
-                start = result.start;
-                end = result.end;
+                // Parse the provided date from req.body
+                const eventDate = new Date(date);
+
+                // Combine date with start and end times from the slot
+                const startTime = parse(result.start, "h:mm a", eventDate);
+                const endTime = parse(result.end, "h:mm a", eventDate);
+
+                // Convert to ISO string format (UTC)
+                start = startTime.toISOString();
+                end = endTime.toISOString();
               } else {
                 return errorHandler(
                   res,
@@ -116,9 +113,9 @@ module.exports = {
       } else {
         try {
           const { body, files } = req;
-          let { title, date, slotId, start, end } = body;
+          let { title, date, start, end } = body;
           // Check if required fields are provided
-          if (!title || !date) {
+          if (!title || !date || !start || !end) {
             return errorHandler(
               res,
               "Some fields are still blank. Could you please provide the missing details?",
@@ -126,43 +123,13 @@ module.exports = {
             );
           }
 
-          if ((start, end)) {
-            const existingEvent = await Event.findOne({ start, end, date });
-            if (existingEvent) {
-              return errorHandler(
-                res,
-                "An event exists with for the same time and date.",
-                400
-              );
-            }
-          }
-
-          // If slotId is present, get start and end times from the slot
-          if (slotId) {
-            const existingEvent = await Event.findOne({ slotId, date });
-            if (existingEvent) {
-              return errorHandler(
-                res,
-                "An event for the same slot and date already exists.",
-                400
-              );
-            }
-            const slot = await Slot.findOne({ _id: slotId });
-            if (slot) {
-              const result = getStartAndEndTime(slot.timeSpan);
-              if (result) {
-                start = result.start;
-                end = result.end;
-              } else {
-                return errorHandler(
-                  res,
-                  "The provided slot ID does not correspond to a valid time span.",
-                  400
-                );
-              }
-            } else {
-              return errorHandler(res, "Invalid slot ID provided.", 400);
-            }
+          const existingEvent = await Event.findOne({ start, end, date });
+          if (existingEvent) {
+            return errorHandler(
+              res,
+              "An event exists with for the same time slot and date.",
+              400
+            );
           }
 
           // Handle image uploads
