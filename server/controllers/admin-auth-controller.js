@@ -76,7 +76,7 @@ module.exports = {
       const admins = await Admin.find()
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
-        .limit(parseInt(limit));
+        .limit(parseInt(limit)).populate("role", "name");
 
       const totalAdmins = await Admin.countDocuments();
 
