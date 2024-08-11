@@ -108,7 +108,7 @@ module.exports = {
   getAdminByToken: async (req, res) => {
     try {
       let id = req.admin;
-      let admin = await Admin.findOne({ _id: id });
+      let admin = await Admin.findOne({ _id: id }).populate("role", "name");
       if (!admin) return errorHandler(res, "No Admin found", 404);
       return successHandler(res, "Admin Found", admin);
     } catch (error) {
