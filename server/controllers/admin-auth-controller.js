@@ -4,6 +4,7 @@ const Admin = require("../models/admin");
 const { generateTokens } = require("../utils/generateToken");
 const bcrypt = require("bcrypt");
 const UserToken = require("../models/token");
+const Role = require("../models/role");
 
 module.exports = {
   createAdmin: async (req, res) => {
@@ -211,6 +212,17 @@ module.exports = {
         return successHandler(res, "Logged Out Successfully");
       }
       return successHandler(res, "Logged Out Successfully");
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode);
+    }
+  },
+  getAllRoles: async (req, res) => {
+    try {
+      const roles = await Role.find().sort({ name: 1 });
+
+      const message = `All Roles Found`;
+
+      return successHandler(res, message, roles);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
     }
