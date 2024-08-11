@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Chip,
-  Modal,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, MenuItem, Modal, TextField } from "@mui/material";
 import React, { useState, ChangeEvent } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
@@ -16,41 +6,45 @@ import saveAsCSV from "json-to-csv-export";
 
 interface TableRow {
   id: number;
-  imageUrl: string;
-  status: string;
+  role: string;
   name: string;
-  date: string;
   email: string;
 }
 
 const EventDatas = [
   {
     id: 1,
-    status: "Approved",
+    role: "Admin",
     name: "James Bond",
-    date: "Sat, October 17 ",
-    email: "chris@gmail.com",
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    email: "musa@gmail.come",
   },
   {
     id: 2,
-    status: "Pending",
+    role: "User",
     name: "Chris Brown",
-    date: "Mon, November 20 ",
-    email: "musa@gmail.com",
-    imageUrl:
-      "https://images.pexels.com/photos/3100960/pexels-photo-3100960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    email: "chirs@gmial.com",
+  },
+  {
+    id: 3,
+    role: "User",
+    name: "Chris Brown",
+    email: "faith@gmail.com",
+  },
+  {
+    id: 4,
+    role: "COP desk officer",
+    name: "Chris Brown",
+    email: "brown@gmail.com",
   },
 ];
 
-const DelegateTable: React.FC = () => {
+const UserTable: React.FC = () => {
   const [_, setPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleDownloadCSV = () => {
-    saveAsCSV({ data: filteredData, filename: "COP29 Delegates List" });
+    saveAsCSV({ data: filteredData, filename: "Admins/users List" });
   };
 
   const handlePageChange = (page: number) => {
@@ -62,15 +56,16 @@ const DelegateTable: React.FC = () => {
   };
 
   const handleAccept = () => {
-    console.log("Accepted");
-    // Handle accept logic here
-    setSelectedEvent(null);
-  };
+    if (selectedEvent) {
+      // Example: Update the user data in your state or send an API request
+      console.log("User details updated:", selectedEvent);
 
-  const handleReject = () => {
-    console.log("Rejected");
-    // Handle reject logic here
-    setSelectedEvent(null);
+      // const updatedData = EventDatas.map((event) =>
+      //   event.id === selectedEvent.id ? selectedEvent : event
+      // );
+
+      setSelectedEvent(null);
+    }
   };
 
   const filteredData = EventDatas.filter((event) =>
@@ -93,40 +88,18 @@ const DelegateTable: React.FC = () => {
       selector: (row: { name: any }) => row.name,
       sortable: true,
     },
-    {
-      name: "Date",
-      selector: (row: { date: any }) => row.date,
-      sortable: true,
-    },
+
     {
       name: "Email",
       selector: (row: { email: any }) => row.email,
       sortable: true,
     },
-
     {
-      name: "Status",
-      selector: (row: { status: any }) => row.status,
-      cell: (row: {
-        status:
-          | string
-          | number
-          | boolean
-          | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-          | Iterable<React.ReactNode>
-          | null
-          | undefined;
-      }) => (
-        <div className="text-left capitalize flex items-center">
-          {row.status === "Approved" ? (
-            <Chip label={row?.status} color="success" />
-          ) : (
-            <Chip label={row?.status} color="warning" />
-          )}
-        </div>
-      ),
+      name: "Role",
+      selector: (row: { role: any }) => row.role,
       sortable: true,
     },
+
     {
       name: "Action",
       cell: (row: React.SetStateAction<TableRow | null>) => (
@@ -227,52 +200,62 @@ const DelegateTable: React.FC = () => {
           }}
         >
           {selectedEvent && (
-            <Card>
-              <CardMedia
-                component="img"
-                height="200"
-                image={selectedEvent.imageUrl}
-                alt={selectedEvent.name}
+            <form>
+              <TextField
+                label="Name"
+                value={selectedEvent.name}
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                onChange={(e) =>
+                  setSelectedEvent({ ...selectedEvent, name: e.target.value })
+                }
               />
-              <CardContent className="flex flex-col gap-3">
-                <Typography variant="h5" component="div">
-                  {selectedEvent.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {selectedEvent.date}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {selectedEvent.email}
-                </Typography>
+              <TextField
+                label="Email"
+                value={selectedEvent.email}
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                onChange={(e) =>
+                  setSelectedEvent({ ...selectedEvent, email: e.target.value })
+                }
+              />
+              <TextField
+                select
+                label="Role"
+                value={selectedEvent.role}
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                onChange={(e) =>
+                  setSelectedEvent({ ...selectedEvent, role: e.target.value })
+                }
+              >
+                <MenuItem value="Admin">Admin</MenuItem>
+                <MenuItem value="Admin">User</MenuItem>
+                <MenuItem value="Finance">Finance</MenuItem>
+                <MenuItem value="Super Admin">Super Admin</MenuItem>
+                <MenuItem value="COP Desk Officer">COP Desk Officer</MenuItem>
+              </TextField>
 
-                <div className="mb-4">
-                  {selectedEvent.status === "Approved" ? (
-                    <Chip label={selectedEvent.status} color="success" />
-                  ) : (
-                    <Chip label={selectedEvent.status} color="error" />
-                  )}
-                </div>
-
-                {selectedEvent.status === "Pending" && (
-                  <Box className="flex justify-between">
-                    <Button
-                      variant="contained"
-                      color="success"
-                      onClick={handleAccept}
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      onClick={handleReject}
-                    >
-                      Reject
-                    </Button>
-                  </Box>
-                )}
-              </CardContent>
-            </Card>
+              <Box className="flex justify-between mt-4">
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleAccept}
+                >
+                  Save Changes
+                </Button>
+                <Button
+                  variant="contained"
+                  color="info"
+                  onClick={() => setSelectedEvent(null)}
+                >
+                  Cancel
+                </Button>
+              </Box>
+            </form>
           )}
         </Box>
       </Modal>
@@ -280,4 +263,4 @@ const DelegateTable: React.FC = () => {
   );
 };
 
-export default DelegateTable;
+export default UserTable;

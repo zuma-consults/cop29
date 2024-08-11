@@ -275,7 +275,7 @@ const AllEventTable: React.FC = () => {
           <GoDownload size={20} />
         </Button>
         <TextField
-          label="Search events by title"
+          label="Search"
           variant="outlined"
           color="success"
           margin="normal"
@@ -302,8 +302,10 @@ const AllEventTable: React.FC = () => {
             position: "absolute" as "absolute",
             top: "50%",
             left: "50%",
+            maxHeight: "90vh",
+            overflowY: "auto",
             transform: "translate(-50%, -50%)",
-            width: 600,
+            width: 800,
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
@@ -336,7 +338,7 @@ const AllEventTable: React.FC = () => {
                   {selectedEvent.status === "Approved" ? (
                     <Chip label={selectedEvent.status} color="success" />
                   ) : (
-                    <Chip label={selectedEvent.status} color="error" />
+                    <Chip label={selectedEvent.status} color="warning" />
                   )}
                 </div>
               </CardContent>

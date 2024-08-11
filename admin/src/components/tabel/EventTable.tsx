@@ -23,6 +23,7 @@ interface TableRow {
   time: string;
   price: string;
   category: string;
+  invoice?: string;
 }
 
 const EventDatas = [
@@ -30,7 +31,7 @@ const EventDatas = [
     id: 1,
     imageUrl:
       "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
+    status: "Pending",
     title: "Kaduna Young Entrepreneurship Summit 2024",
     time: "Sat, October 17 • 6:00 PM GMT+1",
     price: "Free",
@@ -55,6 +56,8 @@ const EventDatas = [
     time: "Fri, December 5 • 8:00 PM GMT+1",
     price: "$50",
     category: "Music",
+    invoice:
+      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
     id: 4,
@@ -75,6 +78,8 @@ const EventDatas = [
     time: "Tue, November 11 • 3:00 PM GMT+1",
     price: "$15",
     category: "Startup",
+    invoice:
+      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
     id: 7,
@@ -95,6 +100,8 @@ const EventDatas = [
     time: "Thu, January 25 • 9:00 AM GMT+1",
     price: "$25",
     category: "Photography",
+    invoice:
+      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
     id: 9,
@@ -105,6 +112,8 @@ const EventDatas = [
     time: "Fri, February 14 • 5:00 PM GMT+1",
     price: "Free",
     category: "Business",
+    invoice:
+      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   // Additional data
   {
@@ -287,7 +296,7 @@ const EventTable: React.FC = () => {
           <GoDownload size={20} />
         </Button>
         <TextField
-          label="Search events by title"
+          label="Search"
           variant="outlined"
           color="success"
           margin="normal"
@@ -315,10 +324,14 @@ const EventTable: React.FC = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 600,
+            width: 800,
+            my: 10,
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
+            maxHeight: "90vh",
+            overflowY: "auto",
+            margin: "auto",
             outline: "none",
             borderRadius: "8px",
           }}
@@ -327,7 +340,8 @@ const EventTable: React.FC = () => {
             <Card>
               <CardMedia
                 component="img"
-                height="200"
+                height={"200px"}
+                width={"800px"}
                 image={selectedEvent.imageUrl}
                 alt={selectedEvent.title}
               />
@@ -345,29 +359,54 @@ const EventTable: React.FC = () => {
                   {selectedEvent.category}
                 </Typography>
                 <div className="mb-4">
-                  {selectedEvent.status === "Approved" ? (
-                    <Chip label={selectedEvent.status} color="success" />
-                  ) : (
-                    <Chip label={selectedEvent.status} color="error" />
-                  )}
+                  <Chip
+                    label={selectedEvent.status}
+                    color={
+                      selectedEvent.status === "Approved" ? "success" : "error"
+                    }
+                  />
                 </div>
 
-                {selectedEvent.status === "Pending" && (
-                  <Box className="flex justify-between">
-                    <Button
-                      variant="contained"
-                      color="success"
-                      onClick={handleAccept}
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      onClick={handleReject}
-                    >
-                      Reject
-                    </Button>
+                {selectedEvent?.status === "Pending" && (
+                  <Box className="flex flex-col gap-2">
+                    {selectedEvent.invoice ? (
+                      <>
+                        <Typography variant="h6">Invoice</Typography>
+                        <CardMedia
+                          title="Invoice"
+                          component="img"
+                          height="150"
+                          image={selectedEvent.invoice}
+                          alt="Invoice"
+                        />
+                      </>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                          /* Function to generate invoice */
+                        }}
+                      >
+                        Click to Generate Invoice
+                      </Button>
+                    )}
+                    <Box className="flex justify-between mt-4">
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={handleAccept}
+                      >
+                        Accept
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={handleReject}
+                      >
+                        Reject
+                      </Button>
+                    </Box>
                   </Box>
                 )}
               </CardContent>

@@ -1,18 +1,20 @@
-import { Box, Button, Grid } from "@mui/material";
-import React from "react";
+import { Box, Button, Grid, Modal } from "@mui/material";
+import React, { useState } from "react";
 import { SummaryCard } from "../../components/custom";
 import EventTable from "../../components/tabel/EventTable";
-import { DelegateSummaryCardData } from "../../utils/datas/summary-card";
-import { GroupAdd } from "@mui/icons-material";
+import { EventSummaryCardData } from "../../utils/datas/summary-card";
 import { IoCreateSharp } from "react-icons/io5";
+import CreateEvent from "../../components/create-event";
 
 const Event: React.FC = () => {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="w-[100%] h-[100%] relative overflow-x-hidden">
       <Box sx={{ marginTop: "10px" }}>
         <Grid container spacing={3}>
-          {DelegateSummaryCardData?.map((card, index) => (
-            <Grid item key={index} xs={12} sm={6} md={6}>
+          {EventSummaryCardData?.map((card, index) => (
+            <Grid item key={index} xs={12} sm={6} md={4}>
               <SummaryCard
                 icon={card.icon}
                 title={card.title}
@@ -28,6 +30,7 @@ const Event: React.FC = () => {
             All Events
           </span>
           <Button
+            onClick={() => setOpen(true)}
             sx={{
               backgroundColor: "green",
               color: "white",
@@ -50,7 +53,7 @@ const Event: React.FC = () => {
           </Button>
         </div>
 
-        <div className="">
+        <div>
           <div className="w-[103px] h-[8px] bg-[#2E7D31]"></div>
           <hr
             style={{
@@ -64,6 +67,33 @@ const Event: React.FC = () => {
       <div>
         <EventTable />
       </div>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="create-event-modal"
+        aria-describedby="create-event-form"
+      >
+        <Box
+          sx={{
+            position: "absolute" as "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 800,
+            my: 10,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            maxHeight: "90vh",
+            overflowY: "auto",
+            margin: "auto",
+            outline: "none",
+            borderRadius: "8px",
+          }}
+        >
+          <CreateEvent />
+        </Box>
+      </Modal>
     </div>
   );
 };

@@ -8,19 +8,19 @@ const myEventsList = [
   {
     id: 0,
     title: "Strategy Meeting",
-    start: new Date(2024, 7, 11, 10, 0), // August 11, 2024, 10:00 AM
+    start: new Date(2024, 8, 11, 10, 0), // August 11, 2024, 10:00 AM
     end: new Date(2024, 7, 11, 11, 30), // August 11, 2024, 11:30 AM
   },
   {
     id: 1,
     title: "Team Sync",
-    start: new Date(2024, 7, 12, 12, 0), // August 12, 2024, 12:00 PM
+    start: new Date(2024, 9, 12, 12, 0), // August 12, 2024, 12:00 PM
     end: new Date(2024, 7, 12, 13, 0), // August 12, 2024, 1:00 PM
   },
   {
     id: 2,
     title: "Client Presentation",
-    start: new Date(2024, 7, 13, 15, 0), // August 13, 2024, 3:00 PM
+    start: new Date(2024, 6, 13, 15, 0), // August 13, 2024, 3:00 PM
     end: new Date(2024, 7, 13, 16, 0), // August 13, 2024, 4:00 PM
   },
   {
@@ -39,7 +39,7 @@ const myEventsList = [
     id: 5,
     title: "Code Review",
     start: new Date(2024, 7, 16, 17, 0), // August 16, 2024, 5:00 PM
-    end: new Date(2024, 7, 16, 18, 30), // August 16, 2024, 6:30 PM
+    end: new Date(2024, 8, 16, 18, 30), // August 16, 2024, 6:30 PM
   },
   {
     id: 6,
@@ -50,7 +50,7 @@ const myEventsList = [
   {
     id: 7,
     title: "Sprint Planning",
-    start: new Date(2024, 7, 18, 9, 30), // August 18, 2024, 9:30 AM
+    start: new Date(2024, 9, 18, 9, 30), // August 18, 2024, 9:30 AM
     end: new Date(2024, 7, 18, 11, 0), // August 18, 2024, 11:00 AM
   },
   {
@@ -63,7 +63,7 @@ const myEventsList = [
     id: 9,
     title: "Leadership Meeting",
     start: new Date(2024, 7, 20, 16, 0), // August 20, 2024, 4:00 PM
-    end: new Date(2024, 7, 20, 17, 30), // August 20, 2024, 5:30 PM
+    end: new Date(2024, 8, 20, 17, 30), // August 20, 2024, 5:30 PM
   },
 ];
 
