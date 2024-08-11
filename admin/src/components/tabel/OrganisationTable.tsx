@@ -219,7 +219,7 @@ const OrganisationTable: React.FC = () => {
           <GoDownload size={20} />
         </Button>
         <TextField
-          label="Search events by title"
+          label="Search"
           variant="outlined"
           color="success"
           margin="normal"
@@ -247,7 +247,9 @@ const OrganisationTable: React.FC = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 600,
+            width: 800,
+            maxHeight: "90vh",
+            overflowY: "auto",
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,

@@ -44,7 +44,13 @@ const Header: React.FC<{
       >
         <ImMenu size={24} />
       </Box>
-      <Typography variant="h4" color={green[800]}>
+      <Typography
+        variant="h4"
+        color={green[800]}
+        sx={{
+          display: { xs: small ? "block" : "none", md: "block" }, // Show on small screens when menu is closed
+        }}
+      >
         Welcome to COP29 Nigeria
       </Typography>
     </Box>
