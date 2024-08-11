@@ -85,6 +85,7 @@ const eventSchema = mongoose.Schema(
     },
     countId: {
       type: Number,
+      default: 1,
     },
   },
   {
