@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const Role = require("../models/role");
 const Slot = require("../models/slot");
 
-const roles = [{ name: "admin" }, { name: "officer" }, { name: "finance" }];
+const roles = [{ name: "admin" }, { name: "officer" }, { name: "super-admin" }];
 const timeSlots = [
-  { start: "9:00am", end: " 9:45am" },
+  { timeSpan: "9:00am to 9:45am" },
   { timeSpan: "10:00am to 10:45am" },
   { timeSpan: "11:00am to 11:45am" },
   { timeSpan: "12:00pm to 12:45pm" },
