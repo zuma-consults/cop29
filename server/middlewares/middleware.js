@@ -64,7 +64,7 @@ const authAdmin = async (req, res, next) => {
       return errorHandler(res, "Access Denied: Admin not found.", 404);
     }
 
-    req.user = admin._id;
+    req.admin = admin._id;
     next();
   } catch (err) {
     return errorHandler(res, "Access Denied: Invalid Token.", 403);
