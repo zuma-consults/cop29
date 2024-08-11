@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema(
     },
     phone: {
       type: String,
-      default: "+234",
+      default: "",
     },
     category: {
       type: String,
@@ -41,10 +41,6 @@ const userSchema = mongoose.Schema(
       type: String,
       enum: ["CSO", "MDA", "NGO"],
     },
-    countId: {
-      type: Number,
-      unique: true,
-    },
   },
   {
     toJSON: {
@@ -58,7 +54,6 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-
 
 const User = mongoose.model("Users", userSchema);
 
