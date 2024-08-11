@@ -7,6 +7,8 @@ const {
   updateAdminById,
   changeAdminPasswordById,
   deleteAdminById,
+  logout,
+  getAllRoles,
 } = require("../../controllers/admin-auth-controller");
 const { authAdmin } = require("../../middlewares/middleware");
 let routes = (app) => {
@@ -19,6 +21,7 @@ let routes = (app) => {
   app.delete("/staff/:id", deleteAdminById);
   app.post("/login/staff", login);
   app.post("/logout/staff", authAdmin, logout);
+  app.get("/roles", getAllRoles);
 };
 
 module.exports = routes;
