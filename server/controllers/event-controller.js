@@ -107,10 +107,8 @@ module.exports = {
     });
   },
   createEventByAdmin: async (req, res) => {
-    console.log("here");
     upload(req, res, async (err) => {
       if (err) {
-        console.log(err, "errorsssss");
         return errorHandler(res, err.code, 400);
       } else {
         try {
@@ -124,7 +122,6 @@ module.exports = {
               400
             );
           }
-          console.log("hereeee");
 
           const existingEvent = await Event.findOne({ start, end, date });
           if (existingEvent) {
@@ -134,7 +131,6 @@ module.exports = {
               400
             );
           }
-          console.log("here 33");
           // Handle image uploads
           let image = "";
           if (files) {
@@ -169,7 +165,6 @@ module.exports = {
           // Send success response
           return successHandler(res, "Event Successfully Added.", newEvent);
         } catch (error) {
-          console.log(error);
           return errorHandler(res, error.message, error.statusCode || 500);
         }
       }
