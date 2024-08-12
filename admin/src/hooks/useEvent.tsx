@@ -1,6 +1,7 @@
 import { useQuery, useMutation, QueryClient } from "react-query";
 import { createEvent, getAllEvents } from "../services/event";
 import { toast } from "react-toastify";
+import { useMemo } from "react";
 
 const queryClient = new QueryClient();
 
@@ -30,13 +31,24 @@ export const useCreateEvent = () => {
 // };
 
 export const useGetAllEvents = (queryParams: Record<string, any>) => {
-  return useQuery(["AllEvents", queryParams], () => getAllEvents(queryParams), {
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
-    refetchInterval: false,
-    cacheTime: 30 * 60 * 1000,
-    retry: 1,
-  });
+  const memoizedQueryParams = useMemo(() => {
+    // Only pass queryParams if it has values that are not empty strings
+    return Object.fromEntries(
+      Object.entries(queryParams).filter(([_, value]) => value !== "")
+    );
+  }, [queryParams]);
+
+  return useQuery(
+    ["AllEvents", memoizedQueryParams],
+    () => getAllEvents(memoizedQueryParams),
+    {
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+      cacheTime: 30 * 60 * 1000,
+      retry: 1,
+    }
+  );
 };
 
 export const useGetCalender = () => {

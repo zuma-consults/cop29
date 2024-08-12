@@ -9,7 +9,7 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
@@ -44,54 +44,55 @@ const EventTable: React.FC = () => {
     invoiceStatus: "",
   });
 
-  const memoizedFilters = React.useMemo(() => filters, [filters]);
+  const memoizedFilters = useMemo(
+    () => ({
+      search: filters.search,
+      price: filters.price,
+      location: filters.location,
+      invoiceStatus: filters.invoiceStatus,
+    }),
+    [filters.search, filters.price, filters.location, filters.invoiceStatus]
+  );
 
-  const handleFilterChange = (key: string, value: string) => {
+  const { data, isFetching, refetch } = useGetAllEvents(memoizedFilters);
+
+  const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [key]: value,
     }));
-  };
+  }, []);
 
-  const handleResetFilter = (key: string) => {
+  const handleResetFilter = useCallback((key: string) => {
     setFilters((prevFilters: any) => {
-      // Create a new filter state without the specified key
       const { [key]: removedFilter, ...rest } = prevFilters;
       return rest;
     });
-  };
-
-  const { data, isFetching, refetch } = useGetAllEvents(
-    Object.fromEntries(
-      Object.entries(filters).filter(([_, value]) => value !== "")
-    )
-  );
+  }, []);
 
   useEffect(() => {
     refetch();
   }, [memoizedFilters]);
 
-  const extratedDat = React.useMemo(() => data?.data, [data]);
+  const extratedDat = useMemo(() => data?.data, [data]);
 
-  const handleDownloadCSV = () => {
+  const handleDownloadCSV = useCallback(() => {
     saveAsCSV({ data: extratedDat?.events, filename: "COP29 Events List" });
-  };
+  }, [extratedDat?.events]);
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setPage(page);
-  };
+  }, []);
 
-  const handleAccept = () => {
+  const handleAccept = useCallback(() => {
     console.log("Accepted");
-    // Handle accept logic here
     setSelectedEvent(null);
-  };
+  }, []);
 
-  const handleReject = () => {
+  const handleReject = useCallback(() => {
     console.log("Rejected");
-    // Handle reject logic here
     setSelectedEvent(null);
-  };
+  }, []);
 
   const customStyles = {
     headCells: {
@@ -147,7 +148,6 @@ const EventTable: React.FC = () => {
         </div>
       ),
       selector: (row: { location: any }) => row.location,
-      sortable: true,
     },
     {
       name: "Category",

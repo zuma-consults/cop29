@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
-import Loader from "./components/ui/Loader";
 import AppLayout from "./layouts/AppLayout";
 import Home from "./pages/home";
 import Delegate from "./pages/delegate";
@@ -24,11 +22,10 @@ function App() {
       </Route>
       <Route path="/" element={<AppLayout />}>
         <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Home />} />
           <Route path="/delegate" element={<Delegate />} />
           <Route path="/organization" element={<Organization />} />
           <Route path="/calender" element={<Calender />} />
-          <Route path="/event" element={<Event />} />
+          <Route path="/" element={<Event />} />
           <Route path="/invoice" element={<Invoice />} />
           <Route path="/user" element={<User />} />
           <Route path="/announcement" element={<Announcement />} />

@@ -119,11 +119,7 @@ const UserTable: React.FC = () => {
 
   return (
     <>
-      {isFetching ? (
-        <div className="fixed inset-0 bg-co-primary  flex items-center justify-center z-[9999999999999]">
-          <Loader />
-        </div>
-      ) : null}
+      {isFetching ? <Loader /> : null}
       <div className="rounded-[.5rem] px-2 bg-white shadow">
         <div className="flex items-center md:flex-row flex-col justify-between px-5 py-2">
           <Button

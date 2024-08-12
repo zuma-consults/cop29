@@ -5,7 +5,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 interface ColumnFilterProps {
   columnKey: string;
   onFilterChange: (key: string, value: string) => void;
-  onResetFilter: (key: string) => void; // Add this prop
+  onResetFilter: (key: string) => void;
 }
 
 const ColumnFilter: React.FC<ColumnFilterProps> = ({
@@ -22,13 +22,13 @@ const ColumnFilter: React.FC<ColumnFilterProps> = ({
 
   const handleApplyFilter = () => {
     onFilterChange(columnKey, filterValue);
-    setAnchorEl(null); // Close the dropdown after applying the filter
+    setAnchorEl(null);
   };
 
   const handleResetFilter = () => {
     setFilterValue("");
-    onResetFilter(columnKey); // Notify parent to remove the filter
-    setAnchorEl(null); // Close the dropdown after resetting
+    onResetFilter(columnKey);
+    setAnchorEl(null);
   };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -62,7 +62,11 @@ const ColumnFilter: React.FC<ColumnFilterProps> = ({
             onChange={handleInputChange}
             sx={{ mb: 1 }}
           />
-          <Button variant="contained" color="success" onClick={handleApplyFilter}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleApplyFilter}
+          >
             Apply filter
           </Button>
           <Button variant="outlined" onClick={handleResetFilter} sx={{ mt: 1 }}>
