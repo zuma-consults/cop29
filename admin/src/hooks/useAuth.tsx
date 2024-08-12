@@ -6,6 +6,7 @@ import {
   getProfile,
   login,
   logout,
+  registerAdmin,
 } from "../services/auth";
 import { Alert } from "@mui/material";
 
@@ -16,6 +17,7 @@ export const useLogin = () => {
   return useMutation(login, {
     onSuccess: (result) => {
       if (result?.status) {
+        <Alert severity="success">Logged In Successfully</Alert>;
         const accessToken = result?.data;
         cookies.set("accessToken", accessToken, { path: "/" });
         queryClient.invalidateQueries("profile");
@@ -31,10 +33,34 @@ export const useLogin = () => {
 export const useLogout = () => {
   return useMutation(logout, {
     onSuccess: () => {
+      cookies.remove("accessToken");
+      cookies.remove("profile");
       queryClient.invalidateQueries("profile");
     },
   });
 };
+
+export const useAddAmin = ({
+  refetchAllProfile,
+}: {
+  refetchAllProfile: () => void;
+}) => {
+  return useMutation(registerAdmin, {
+    onSuccess: (result) => {
+      if (result?.status) {
+        refetchAllProfile();
+        <Alert severity="success">Admin Added Successfully</Alert>;
+        queryClient.invalidateQueries("profile");
+      }
+    },
+    onError: (error: any) => {
+      <Alert severity="error">Error Logging In</Alert>;
+      queryClient.invalidateQueries("profile");
+    },
+  });
+};
+
+
 
 export const useGetProfile = () => {
   return useQuery("profile", getProfile, {

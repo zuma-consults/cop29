@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useGetCalender } from "../../hooks/useEvent";
 import { Alert } from "@mui/material";
+import Loader from "../ui/Loader";
 
 const localizer = momentLocalizer(moment);
 
@@ -61,20 +62,23 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ onSelectSlot }) => {
   };
 
   return (
-    <div style={{ height: 400 }}>
-      <Calendar
-        selectable
-        localizer={localizer}
-        events={parsedEvents}
-        defaultDate={defaultDate}
-        defaultView={Views.MONTH}
-        views={["month", "week", "day"]}
-        eventPropGetter={eventStyleGetter}
-        dayPropGetter={dayPropGetter}
-        onSelectEvent={handleSelectEvent}
-        onSelectSlot={handleSelectSlot}
-      />
-    </div>
+    <>
+      {isFetching && <Loader />}
+      <div style={{ height: 400 }}>
+        <Calendar
+          selectable
+          localizer={localizer}
+          events={parsedEvents}
+          defaultDate={defaultDate}
+          defaultView={Views.MONTH}
+          views={["month", "week", "day"]}
+          eventPropGetter={eventStyleGetter}
+          dayPropGetter={dayPropGetter}
+          onSelectEvent={handleSelectEvent}
+          onSelectSlot={handleSelectSlot}
+        />
+      </div>
+    </>
   );
 };
 

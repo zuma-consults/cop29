@@ -1,6 +1,5 @@
 import { Cookies } from "react-cookie";
 import { request } from "../utils/api";
-import { Alert } from "@mui/material";
 
 const cookies = new Cookies();
 
@@ -12,9 +11,20 @@ export const login = async (data: any) => {
       data,
     };
     const responseData = await request(config);
-    const accessToken = responseData?.token;
-    <Alert severity="success">Login Successful</Alert>;
-    cookies.set("accessToken", accessToken, { path: "/" });
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const registerAdmin = async (data: any) => {
+  try {
+    const config = {
+      method: "post",
+      url: "staff",
+      data,
+    };
+    const responseData = await request(config);
     return responseData;
   } catch (error) {
     console.log(error);
@@ -25,7 +35,7 @@ export const logout = async () => {
   try {
     const config = {
       method: "get",
-      url: "authentication/admin/logout",
+      url: "logout/staff",
     };
     const responseData = await request(config);
     return responseData;

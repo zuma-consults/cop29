@@ -15,8 +15,8 @@ export const useCreateEvent = ({
   return useMutation(createEvent, {
     onSuccess: (result) => {
       if (result?.status) {
-        setOpen(false); // Close the modal
-        refetchAllEvents(); // Manually refetch the events
+        setOpen(false);
+        refetchAllEvents();
         <Alert severity="success">Event Created Successfully</Alert>;
       }
     },
@@ -41,7 +41,6 @@ export const useGetAllEvents = (queryParams?: Record<string, any>) => {
       Object.entries(queryParams || {}).filter(([_, value]) => value !== "")
     );
   }, [queryParams]);
-
   return useQuery(
     ["AllEvents", memoizedQueryParams],
     () => getAllEvents(memoizedQueryParams),

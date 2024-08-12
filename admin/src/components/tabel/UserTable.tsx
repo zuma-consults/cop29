@@ -3,11 +3,18 @@ import React, { useState, ChangeEvent } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
-import { useGetAllProfile } from "../../hooks/useAuth";
+import {
+  useAddAmin,
+  useGetAllProfile,
+  useGetAllRoles,
+} from "../../hooks/useAuth";
 import Loader from "../ui/Loader";
 
 interface TableRow {
   id: string;
+  firstName: string;
+  lastName: string;
+  password: string;
   role: {
     id: string;
     name: string;
@@ -21,13 +28,13 @@ interface TableRow {
 }
 
 const UserTable: React.FC = () => {
-  const { isFetching, data } = useGetAllProfile();
+  const { isFetching, data, refetch: refetchAllProfile } = useGetAllProfile();
+  const { data: roleData } = useGetAllRoles();
+  const { mutate, isLoading } = useAddAmin({ refetchAllProfile });
 
   const extratedData = data?.data?.admins;
-  console.log("extratedData", extratedData);
   const [_, setPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const handleDownloadCSV = () => {
     saveAsCSV({ data: extratedData, filename: "Admins/users List" });
@@ -37,19 +44,17 @@ const UserTable: React.FC = () => {
     setPage(page);
   };
 
-  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
   const handleAccept = () => {
     if (selectedEvent) {
-      // Example: Update the user data in your state or send an API request
-      console.log("User details updated:", selectedEvent);
-
-      // const updatedData = EventDatas.map((event) =>
-      //   event.id === selectedEvent.id ? selectedEvent : event
-      // );
-
+      const userPayload = {
+        firstName: selectedEvent.firstName,
+        lastName: selectedEvent.lastName,
+        email: selectedEvent.email,
+        password: selectedEvent.password,
+        phone: selectedEvent.phone,
+        role: selectedEvent.role.name,
+      };
+      mutate(userPayload);
       setSelectedEvent(null);
     }
   };
@@ -119,9 +124,9 @@ const UserTable: React.FC = () => {
 
   return (
     <>
-      {isFetching ? <Loader /> : null}
+      {isFetching || isLoading ? <Loader /> : null}
       <div className="rounded-[.5rem] px-2 bg-white shadow">
-        <div className="flex items-center md:flex-row flex-col justify-between px-5 py-2">
+        <div className="flex items-center md:flex-row flex-col justify-between py-2">
           <Button
             sx={{
               backgroundColor: "green",
@@ -144,15 +149,6 @@ const UserTable: React.FC = () => {
             Export to Excel
             <GoDownload size={20} />
           </Button>
-          <TextField
-            label="Search"
-            variant="outlined"
-            color="success"
-            margin="normal"
-            hiddenLabel
-            value={searchQuery}
-            onChange={handleSearch}
-          />
         </div>
         <DataTable
           highlightOnHover={true}
@@ -183,6 +179,9 @@ const UserTable: React.FC = () => {
               borderRadius: "8px",
             }}
           >
+            <h1 className="text-green-700 font-bold text-[26px] text-center md:text-left">
+              User Details
+            </h1>
             {selectedEvent && (
               <form>
                 <TextField
@@ -211,22 +210,28 @@ const UserTable: React.FC = () => {
                 <TextField
                   select
                   label="Role"
-                  value={selectedEvent?.role?.name || ""} // Adjust this if `role` is an object
+                  variant="outlined"
+                  value={selectedEvent?.role?.id || ""} // Ensure `value` is the role ID
                   fullWidth
                   margin="normal"
-                  variant="outlined"
                   onChange={(e) =>
                     setSelectedEvent({
                       ...selectedEvent!,
-                      role: { ...selectedEvent!.role, name: e.target.value }, // Update `role` object
+                      role: {
+                        id: e.target.value,
+                        name:
+                          roleData?.data?.find(
+                            (role: any) => role.id === e.target.value
+                          )?.name || "",
+                      },
                     })
                   }
                 >
-                  <MenuItem value="Admin">Admin</MenuItem>
-                  <MenuItem value="User">User</MenuItem>
-                  <MenuItem value="Finance">Finance</MenuItem>
-                  <MenuItem value="Super Admin">Super Admin</MenuItem>
-                  <MenuItem value="COP Desk Officer">COP Desk Officer</MenuItem>
+                  {roleData?.data?.map((role: any) => (
+                    <MenuItem key={role?.id} value={role?.id}>
+                      {role.name}
+                    </MenuItem>
+                  ))}
                 </TextField>
 
                 <Box className="flex justify-between mt-4">
