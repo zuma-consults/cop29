@@ -3,16 +3,14 @@ import { request } from "../utils/api";
 
 const cookies = new Cookies();
 
-export const login = async (data: any) => {
+export const createEvent = async (data: any) => {
   try {
     const config = {
       method: "post",
-      url: "login/staff",
+      url: "event/admin",
       data,
     };
     const responseData = await request(config);
-    const accessToken = responseData?.token;
-    cookies.set("accessToken", accessToken, { path: "/" });
     return responseData;
   } catch (error) {
     console.log(error);
@@ -52,7 +50,7 @@ export const getAllEvents = async (params?: Record<string, any>) => {
     const config = {
       method: "get",
       url: "events",
-      params, 
+      params,
     };
     const responseData = await request(config);
     return responseData;
@@ -66,7 +64,6 @@ export const getAllCalender = async (params: Record<string, any>) => {
     const config = {
       method: "get",
       url: "events",
-    
     };
     const responseData = await request(config);
     return responseData;

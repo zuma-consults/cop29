@@ -1,56 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { TextField, Button } from "@mui/material";
+import { useCreateEvent } from "../../hooks/useEvent";
+import CalendarModal from "../CalendarModal";
 
 const CreateEvent: React.FC = () => {
+  const [selectedStart, setSelectedStart] = useState<Date | null>(null);
+  const [selectedEnd, setSelectedEnd] = useState<Date | null>(null);
+  const { mutate, isLoading, data } = useCreateEvent();
+
+  const [openCalendar, setOpenCalendar] = useState(false);
+
+  const handleDateSelection = (start: Date, end: Date) => {
+    setSelectedStart(start);
+    setSelectedEnd(end);
+    formik.setFieldValue(
+      "date",
+      `${start.toISOString()} - ${end.toISOString()}`
+    );
+    const date = start.toISOString().split("T")[0]; // Extracts "YYYY-MM-DD"
+    formik.setFieldValue("date", date);
+  };
+
   const formik = useFormik({
     initialValues: {
-      imageUrl: "",
+      imageUrl: null, // Initialize as null for file input
       title: "",
-      zoomLink: "",
-      time: "",
+      externalLink: "",
+      date: "",
       location: "",
       description: "",
       tags: "",
-      organizedBy: "",
+      price: "",
     },
     validationSchema: Yup.object({
-      imageUrl: Yup.string()
-        .url("Invalid URL")
-        .required("Image URL is required"),
+      imageUrl: Yup.mixed().required("Image is required"),
       title: Yup.string().required("Event title is required"),
-      zoomLink: Yup.string()
+      externalLink: Yup.string()
         .url("Invalid URL")
         .required("Zoom link is required"),
-      time: Yup.string().required("Time of the event is required"),
+      date: Yup.string().required("Time of the event is required"),
       location: Yup.string().required("Location is required"),
       description: Yup.string().required("Event description is required"),
       tags: Yup.string().required("Tags are required"),
-      organizedBy: Yup.string().required("Organizer is required"),
+      price: Yup.string().required("Price is required"),
     }),
     onSubmit: async (values) => {
-      try {
-        const response = await fetch("https://your-server-url.com/upload", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...values,
-            tags: values.tags.split(",").map((tag) => tag.trim()),
-          }),
-        });
-
-        if (response.ok) {
-          alert("Event details uploaded successfully!");
-        } else {
-          alert("Failed to upload event details.");
-        }
-      } catch (error) {
-        console.error("Error uploading event details:", error);
+      const formData = new FormData();
+      if (values.imageUrl !== null) {
+        formData.append("image", values.imageUrl);
       }
+      formData.append("title", values.title);
+      formData.append("externalLink", values.externalLink);
+      formData.append("date", values.date);
+      formData.append("location", values.location);
+      formData.append("description", values.description);
+      // Convert comma-separated string to array and then to JSON string
+      const tagsArray = values.tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag.length > 0); // Remove any empty tags
+      formData.append("tags", JSON.stringify(tagsArray)); // Convert array to JSON string
+
+      formData.append("price", values.price);
+      formData.append("start", selectedStart?.toISOString() || "");
+      formData.append("end", selectedEnd?.toISOString() || "");
+
+      mutate(formData);
     },
   });
 
@@ -63,16 +81,49 @@ const CreateEvent: React.FC = () => {
         <h1 className="text-green-700 font-bold text-[26px] text-center md:text-left">
           Create an Event
         </h1>
-        <div className="p-6 rounded-lg w-full flex flex-col items-center justify-center gap-3 mt-2 bg-green-50">
+        <div
+          className="p-6 rounded-lg w-full flex flex-col items-center justify-center gap-3 mt-2 bg-green-50"
+          onClick={() => document.getElementById("imageUrl")?.click()}
+        >
           <h2 className="text-gray-600 font-bold text-center">
             Upload Event Header Image
           </h2>
-          <input type="file" accept="image/*" style={{ display: "none" }} />
+          <input
+            id="imageUrl"
+            name="imageUrl"
+            type="file"
+            accept="image/jpeg, image/png"
+            onChange={(event) => {
+              if (event?.currentTarget?.files) {
+                formik.setFieldValue("imageUrl", event.currentTarget.files[0]);
+              }
+            }}
+            onBlur={formik.handleBlur}
+            style={{ display: "none" }}
+          />
           <MdOutlineCloudUpload className="text-[46px] text-green-700" />
           <span className="text-gray-400">
             Drag & Drop or choose a file to upload
           </span>
           <span className="text-gray-500">Supported formats: JPEG, PNG</span>
+
+          {/* Image Preview */}
+          {formik.values.imageUrl && (
+            <div className="mt-4 text-center">
+              <img
+                src={URL.createObjectURL(formik.values.imageUrl)}
+                alt="Selected Image"
+                className="w-32 h-32 object-cover rounded-md"
+              />
+              <p className="text-gray-600 mt-2">
+                {(formik.values.imageUrl as File)?.name}
+              </p>
+            </div>
+          )}
+
+          {formik.touched.imageUrl && formik.errors.imageUrl ? (
+            <div className="text-red-500 text-sm">{formik.errors.imageUrl}</div>
+          ) : null}
         </div>
         <form
           onSubmit={formik.handleSubmit}
@@ -98,16 +149,21 @@ const CreateEvent: React.FC = () => {
           {/* Zoom Link */}
           <div className="flex flex-col gap-2">
             <TextField
-              id="zoomLink"
-              name="zoomLink"
+              id="externalLink"
+              name="externalLink"
               label="Zoom Link"
               color="success"
               variant="outlined"
-              value={formik.values.zoomLink}
+              value={formik.values.externalLink}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.zoomLink && Boolean(formik.errors.zoomLink)}
-              helperText={formik.touched.zoomLink && formik.errors.zoomLink}
+              error={
+                formik.touched.externalLink &&
+                Boolean(formik.errors.externalLink)
+              }
+              helperText={
+                formik.touched.externalLink && formik.errors.externalLink
+              }
               fullWidth
             />
           </div>
@@ -115,16 +171,17 @@ const CreateEvent: React.FC = () => {
           {/* Time of the Event */}
           <div className="flex flex-col gap-2">
             <TextField
-              id="time"
-              name="time"
+              id="date"
+              name="date"
               label="Time"
               variant="outlined"
               color="success"
-              value={formik.values.time}
+              value={formik.values.date}
+              onClick={() => setOpenCalendar(true)} // Open calendar modal on click
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.time && Boolean(formik.errors.time)}
-              helperText={formik.touched.time && formik.errors.time}
+              error={formik.touched.date && Boolean(formik.errors.date)}
+              helperText={formik.touched.date && formik.errors.date}
               fullWidth
             />
           </div>
@@ -189,20 +246,16 @@ const CreateEvent: React.FC = () => {
           {/* Organized By */}
           <div className="flex flex-col gap-2">
             <TextField
-              id="organizedBy"
-              name="organizedBy"
-              label="Organized By"
+              id="price"
+              name="price"
+              label="Price"
               color="success"
               variant="outlined"
-              value={formik.values.organizedBy}
+              value={formik.values.price}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={
-                formik.touched.organizedBy && Boolean(formik.errors.organizedBy)
-              }
-              helperText={
-                formik.touched.organizedBy && formik.errors.organizedBy
-              }
+              error={formik.touched.price && Boolean(formik.errors.price)}
+              helperText={formik.touched.price && formik.errors.price}
               fullWidth
             />
           </div>
@@ -214,6 +267,11 @@ const CreateEvent: React.FC = () => {
           </div>
         </form>
       </div>
+      <CalendarModal
+        open={openCalendar}
+        onClose={() => setOpenCalendar(false)}
+        onSelect={handleDateSelection}
+      />
     </div>
   );
 };

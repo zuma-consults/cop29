@@ -24,7 +24,6 @@ export const request = async (config: AxiosRequestConfig<any>) => {
     }
 
     if (access) {
-      console.log("access", access);
       config.headers = {
         ...config.headers,
         "poc-admin-token": access,

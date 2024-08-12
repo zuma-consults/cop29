@@ -1,25 +1,24 @@
 import { useQuery, useMutation, QueryClient } from "react-query";
-import { Cookies } from "react-cookie";
-import { getAllEvents } from "../services/event";
+import { createEvent, getAllEvents } from "../services/event";
+import { toast } from "react-toastify";
 
 const queryClient = new QueryClient();
-const cookies = new Cookies();
 
-// export const useLogin = () => {
-//   return useMutation(login, {
-//     onSuccess: (result) => {
-//       if (result?.status) {
-//         const accessToken = result?.data;
-//         cookies.set("accessToken", accessToken, { path: "/" });
-//         queryClient.invalidateQueries("profile");
-//       }
-//     },
-//     onError: (error: any) => {
-//       toast.error(error?.message);
-//       queryClient.invalidateQueries("profile");
-//     },
-//   });
-// };
+export const useCreateEvent = () => {
+  return useMutation(createEvent, {
+    onSuccess: (result) => {
+      if (result?.status) {
+        queryClient.invalidateQueries("events");
+        toast.success("Event created successfully");
+      }
+      queryClient.invalidateQueries("AllEvents");
+    },
+    onError: (error: any) => {
+      toast.error(error?.message);
+      queryClient.invalidateQueries("AllEvents");
+    },
+  });
+};
 
 // export const useGetProfile = () => {
 //   return useQuery("profile", getAllEvents, {
@@ -31,13 +30,21 @@ const cookies = new Cookies();
 // };
 
 export const useGetAllEvents = (queryParams: Record<string, any>) => {
-  return useQuery(
-    ["AllEvents", queryParams],
-    () => getAllEvents(queryParams),
-    {}
-  );
+  return useQuery(["AllEvents", queryParams], () => getAllEvents(queryParams), {
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+    cacheTime: 30 * 60 * 1000,
+    retry: 1,
+  });
 };
 
 export const useGetCalender = () => {
-  return useQuery(["events-calender"], () => getAllEvents());
+  return useQuery(["events-calendar"], getAllEvents, {
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+    cacheTime: 30 * 60 * 1000,
+    retry: 1,
+  });
 };

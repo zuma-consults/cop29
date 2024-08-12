@@ -32,6 +32,11 @@ export const useLogout = () => {
 
 export const useGetProfile = () => {
   return useQuery("profile", getProfile, {
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+    cacheTime: 30 * 60 * 1000,
+    retry: 1,
     onSuccess: (result) => {
       const adminProfile = result?.data;
       cookies.set("profile", adminProfile);
@@ -40,5 +45,11 @@ export const useGetProfile = () => {
 };
 
 export const useGetAllProfile = () => {
-  return useQuery("Allprofile", getAllProfile, {});
+  return useQuery("Allprofile", getAllProfile, {
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+    cacheTime: 30 * 60 * 1000,
+    retry: 1,
+  });
 };

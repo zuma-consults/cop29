@@ -4,7 +4,7 @@ import { Button, TextField, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Loader from "../../components/ui/Loader";
 import { useNavigate } from "react-router-dom";
-import { useGetProfile, useLogin } from "../../hooks/useAuth";
+import {  useLogin } from "../../hooks/useAuth";
 
 const Login: React.FC = () => {
   const {
