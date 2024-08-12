@@ -5,6 +5,8 @@ import { NavItem } from "./item";
 import UserAccount from "./user-account";
 import { ImMenu } from "react-icons/im";
 import { green } from "@mui/material/colors";
+import { useGetProfile } from "../../hooks/useAuth";
+import { useMemo } from "react";
 
 const Nav: React.FC<{
   large: boolean;
@@ -14,6 +16,10 @@ const Nav: React.FC<{
 }> = ({ large, small, closeLargeNav, closeSmallNav }) => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const { data } = useGetProfile();
+
+  const userProfile = useMemo(() => data?.data, [data]);
 
   return (
     <Box
@@ -143,9 +149,8 @@ const Nav: React.FC<{
               </Box>
             ))}
             <UserAccount
-              image="https://avatars.githubusercontent.com/u/68823331?v=4"
-              name="Abraham Christopher"
-              role={"Admin"}
+              name={userProfile?.name}
+              role={userProfile?.role?.name}
             />
           </Box>
         </Box>

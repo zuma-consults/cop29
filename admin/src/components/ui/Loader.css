@@ -1,0 +1,25 @@
+/* Loader.css */
+.loader-container {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(225, 235, 225, 0.5); /* Greenish background */
+    z-index: 9999;
+  }
+  
+  .loader-image {
+    width: 80px;
+    height: 80px;
+    animation: blink 1.5s infinite;
+  }
+  
+  @keyframes blink {
+    0%, 100% {
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 1;
+    }
+  }

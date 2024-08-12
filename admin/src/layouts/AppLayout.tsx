@@ -1,11 +1,19 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import "react-alice-carousel/lib/alice-carousel.css";
 import Layout from "./Layout";
+import { Cookies } from "react-cookie";
 
 function AppLayout() {
+  const cookies = new Cookies();
+  const access = cookies.get("accessToken");
+  const location = useLocation();
   return (
     <Layout>
-      <Outlet />
+      {access ? (
+        <Outlet />
+      ) : (
+        <Navigate to="/login" state={{ from: location }} replace />
+      )}
     </Layout>
   );
 }

@@ -5,10 +5,11 @@ import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import AlertDialog from "../../Reusable-Dialog";
-import { ImageFrame40 } from "../../image-frames";
+import { Cookies } from "react-cookie";
 
-const UserAccount: React.FC<{ image: string; name: string; role: any }> = ({
-  image,
+const cookies = new Cookies();
+
+const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
   name,
   role,
 }) => {
@@ -23,7 +24,10 @@ const UserAccount: React.FC<{ image: string; name: string; role: any }> = ({
   };
 
   const handleLogout = () => {
-    localStorage.clear();
+    cookies.remove("accessToken");
+    cookies.remove("profile");
+    setOpenDialog(false);
+    window.location.href = "/login";
   };
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -51,9 +55,9 @@ const UserAccount: React.FC<{ image: string; name: string; role: any }> = ({
         flexWrap: { xs: "wrap", sm: "no-wrap" },
       }}
     >
-      <Box sx={{ marginRight: "12px" }}>
+      {/* <Box sx={{ marginRight: "12px" }}>
         <ImageFrame40 image={image} />
-      </Box>
+      </Box> */}
       <Box sx={{ flexGrow: 1, mr: "20px" }}>
         <Box>
           {role ? (

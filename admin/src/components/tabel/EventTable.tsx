@@ -7,179 +7,92 @@ import {
   CardMedia,
   Chip,
   Modal,
-  TextField,
   Typography,
 } from "@mui/material";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
+import { useGetAllEvents } from "../../hooks/useEvent";
+import ColumnFilter from "../columnFilter";
+import { formatDate, formatDuration } from "../../utils/helper";
+import Loader from "../ui/Loader";
 
 interface TableRow {
   id: number;
-  imageUrl: string;
+  image: string;
   status: string;
   title: string;
-  time: string;
+  date: any;
   price: string;
-  category: string;
+  tags: string;
   invoice?: string;
+  location: any;
+  description: string;
+  start: string;
+  end: string;
 }
-
-const EventDatas = [
-  {
-    id: 1,
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Pending",
-    title: "Kaduna Young Entrepreneurship Summit 2024",
-    time: "Sat, October 17 • 6:00 PM GMT+1",
-    price: "Free",
-    category: "Kaduna",
-  },
-  {
-    id: 2,
-    imageUrl:
-      "https://images.pexels.com/photos/3100960/pexels-photo-3100960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
-    title: "Tech Conference 2024",
-    time: "Mon, November 20 • 10:00 AM GMT+1",
-    price: "$10",
-    category: "Tech",
-  },
-  {
-    id: 3,
-    imageUrl:
-      "https://images.pexels.com/photos/210682/pexels-photo-210682.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Pending",
-    title: "Music Festival 2024",
-    time: "Fri, December 5 • 8:00 PM GMT+1",
-    price: "$50",
-    category: "Music",
-    invoice:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-  {
-    id: 4,
-    imageUrl:
-      "https://images.pexels.com/photos/167964/pexels-photo-167964.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
-    title: "Art Exhibition 2024",
-    time: "Sun, October 22 • 2:00 PM GMT+1",
-    price: "Free",
-    category: "Art",
-  },
-  {
-    id: 6,
-    imageUrl:
-      "https://images.pexels.com/photos/212286/pexels-photo-212286.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Pending",
-    title: "Startup Pitch Competition 2024",
-    time: "Tue, November 11 • 3:00 PM GMT+1",
-    price: "$15",
-    category: "Startup",
-    invoice:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-  {
-    id: 7,
-    imageUrl:
-      "https://images.pexels.com/photos/1629225/pexels-photo-1629225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
-    title: "Cooking Masterclass 2024",
-    time: "Wed, December 12 • 11:00 AM GMT+1",
-    price: "$30",
-    category: "Cooking",
-  },
-  {
-    id: 8,
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
-    title: "Photography Workshop 2024",
-    time: "Thu, January 25 • 9:00 AM GMT+1",
-    price: "$25",
-    category: "Photography",
-    invoice:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-  {
-    id: 9,
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Pending",
-    title: "Business Networking Event 2024",
-    time: "Fri, February 14 • 5:00 PM GMT+1",
-    price: "Free",
-    category: "Business",
-    invoice:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-  // Additional data
-  {
-    id: 10,
-    imageUrl:
-      "https://images.pexels.com/photos/1742720/pexels-photo-1742720.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
-    title: "Web Development Bootcamp 2024",
-    time: "Mon, March 1 • 10:00 AM GMT+1",
-    price: "$200",
-    category: "Web Development",
-  },
-  {
-    id: 11,
-    imageUrl:
-      "https://images.pexels.com/photos/2933350/pexels-photo-2933350.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Approved",
-    title: "AI Innovations Summit 2024",
-    time: "Wed, April 10 • 1:00 PM GMT+1",
-    price: "$50",
-    category: "AI",
-  },
-  {
-    id: 12,
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Pending",
-    title: "Digital Marketing Workshop 2024",
-    time: "Sat, May 15 • 9:00 AM GMT+1",
-    price: "$75",
-    category: "Digital Marketing",
-  },
-];
 
 const EventTable: React.FC = () => {
   const [_, setPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleDownloadCSV = () => {
-    saveAsCSV({ data: filteredData, filename: "COP29 Events List" });
-  };
+  const [filters, setFilters] = useState({
+    search: "",
+    price: "",
+    location: "",
+    invoiceStatus: "",
+  });
 
-  const handlePageChange = (page: number) => {
-    setPage(page);
-  };
-
-  const handleAccept = () => {
-    console.log("Accepted");
-    // Handle accept logic here
-    setSelectedEvent(null);
-  };
-
-  const handleReject = () => {
-    console.log("Rejected");
-    // Handle reject logic here
-    setSelectedEvent(null);
-  };
-
-  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const filteredData = EventDatas.filter((event) =>
-    event.title.toLowerCase().includes(searchQuery.toLowerCase())
+  const memoizedFilters = useMemo(
+    () => ({
+      search: filters.search,
+      price: filters.price,
+      location: filters.location,
+      invoiceStatus: filters.invoiceStatus,
+    }),
+    [filters.search, filters.price, filters.location, filters.invoiceStatus]
   );
+
+  const { data, isFetching, refetch } = useGetAllEvents(memoizedFilters);
+
+  const handleFilterChange = useCallback((key: string, value: string) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [key]: value,
+    }));
+  }, []);
+
+  const handleResetFilter = useCallback((key: string) => {
+    setFilters((prevFilters: any) => {
+      const { [key]: removedFilter, ...rest } = prevFilters;
+      return rest;
+    });
+  }, []);
+
+  useEffect(() => {
+    refetch();
+  }, [memoizedFilters]);
+
+  const extratedDat = useMemo(() => data?.data, [data]);
+
+  const handleDownloadCSV = useCallback(() => {
+    saveAsCSV({ data: extratedDat?.events, filename: "COP29 Events List" });
+  }, [extratedDat?.events]);
+
+  const handlePageChange = useCallback((page: number) => {
+    setPage(page);
+  }, []);
+
+  const handleAccept = useCallback(() => {
+    console.log("Accepted");
+    setSelectedEvent(null);
+  }, []);
+
+  const handleReject = useCallback(() => {
+    console.log("Rejected");
+    setSelectedEvent(null);
+  }, []);
 
   const customStyles = {
     headCells: {
@@ -193,23 +106,52 @@ const EventTable: React.FC = () => {
 
   const columns: TableColumn<TableRow>[] = [
     {
-      name: "Title",
+      name: (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span>Title</span>
+          <ColumnFilter
+            columnKey="search"
+            onFilterChange={handleFilterChange}
+            onResetFilter={handleResetFilter}
+          />
+        </div>
+      ),
       selector: (row: { title: any }) => row.title,
+    },
+    {
+      name: "Date",
+      selector: (row: { date: string }) => formatDate(row.date),
       sortable: true,
     },
     {
-      name: "Time",
-      selector: (row: { time: any }) => row.time,
-      sortable: true,
+      name: (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span>Price</span>
+          <ColumnFilter
+            columnKey="price"
+            onResetFilter={handleResetFilter}
+            onFilterChange={handleFilterChange}
+          />
+        </div>
+      ),
+      selector: (row: { price: any }) => `₦${row.price}`,
     },
     {
-      name: "Price",
-      selector: (row: { price: any }) => row.price,
-      sortable: true,
+      name: (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <span>Location</span>
+          <ColumnFilter
+            columnKey="location"
+            onResetFilter={handleResetFilter}
+            onFilterChange={handleFilterChange}
+          />
+        </div>
+      ),
+      selector: (row: { location: any }) => row.location,
     },
     {
       name: "Category",
-      selector: (row: { category: any }) => row.category,
+      selector: (row: { tags: any }) => row.tags,
       sortable: true,
     },
     {
@@ -271,150 +213,156 @@ const EventTable: React.FC = () => {
   ];
 
   return (
-    <div className="rounded-[.5rem] px-2 bg-white shadow">
-      <div className="flex items-center md:flex-row flex-col justify-between px-5 py-2">
-        <Button
-          sx={{
-            backgroundColor: "green",
-            color: "white",
-            width: "fit-content",
-            paddingY: "8px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            fontSize: "13px",
-            gap: "8px",
-            "&:hover": {
-              backgroundColor: "#e8f5e9",
-              color: "black",
-            },
-          }}
-          onClick={handleDownloadCSV}
-        >
-          Export to Excel
-          <GoDownload size={20} />
-        </Button>
-        <TextField
-          label="Search"
-          variant="outlined"
-          color="success"
-          margin="normal"
-          hiddenLabel
-          value={searchQuery}
-          onChange={handleSearch}
+    <>
+      {isFetching && <Loader />}
+      <div className="rounded-[.5rem] px-2 bg-white shadow">
+        <div className="flex items-center md:flex-row flex-col justify-start py-2">
+          <Button
+            sx={{
+              backgroundColor: "green",
+              color: "white",
+              width: "fit-content",
+              paddingY: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              fontSize: "13px",
+              gap: "8px",
+              "&:hover": {
+                backgroundColor: "#e8f5e9",
+                color: "black",
+              },
+            }}
+            onClick={handleDownloadCSV}
+          >
+            Export to Excel
+            <GoDownload size={20} />
+          </Button>
+        </div>
+        <DataTable
+          highlightOnHover={true}
+          responsive={true}
+          customStyles={customStyles}
+          columns={columns}
+          data={extratedDat?.events}
+          pagination
+          fixedHeader
+          fixedHeaderScrollHeight="500px"
+          onChangePage={handlePageChange}
         />
-      </div>
-      <DataTable
-        highlightOnHover={true}
-        responsive={true}
-        customStyles={customStyles}
-        columns={columns}
-        data={filteredData}
-        pagination
-        fixedHeader
-        fixedHeaderScrollHeight="500px"
-        onChangePage={handlePageChange}
-      />
 
-      <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>
-        <Box
-          sx={{
-            position: "absolute" as "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 800,
-            my: 10,
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-            maxHeight: "90vh",
-            overflowY: "auto",
-            margin: "auto",
-            outline: "none",
-            borderRadius: "8px",
-          }}
-        >
-          {selectedEvent && (
-            <Card>
-              <CardMedia
-                component="img"
-                height={"200px"}
-                width={"800px"}
-                image={selectedEvent.imageUrl}
-                alt={selectedEvent.title}
-              />
-              <CardContent className="flex flex-col gap-3">
-                <Typography variant="h5" component="div">
-                  {selectedEvent.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {selectedEvent.time}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {selectedEvent.price}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {selectedEvent.category}
-                </Typography>
-                <div className="mb-4">
-                  <Chip
-                    label={selectedEvent.status}
-                    color={
-                      selectedEvent.status === "Approved" ? "success" : "error"
-                    }
-                  />
-                </div>
+        <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>
+          <Box
+            sx={{
+              position: "absolute" as "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 800,
+              my: 10,
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: 4,
+              maxHeight: "90vh",
+              overflowY: "auto",
+              margin: "auto",
+              outline: "none",
+              borderRadius: "8px",
+            }}
+          >
+            {selectedEvent && (
+              <Card>
+                <CardMedia
+                  component="img"
+                  sx={{
+                    width: "800px",
+                    height: "300px", // Set consistent height, adjust as needed
+                    objectFit: "cover", // Ensures the image covers the area without distortion
+                  }}
+                  image={selectedEvent?.image}
+                  alt={selectedEvent?.title}
+                />
+                <CardContent className="flex flex-col gap-3">
+                  <Typography variant="h5" component="div">
+                    {selectedEvent.title}
+                  </Typography>
+                  <Typography component="span">
+                    {selectedEvent.description}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {formatDate(selectedEvent?.date)}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {`₦ ${selectedEvent.price}`}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {selectedEvent?.location}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Duration:
+                    {formatDuration(selectedEvent?.start, selectedEvent?.end)}
+                  </Typography>
+                  <div className="mb-4">
+                    <Chip
+                      label={selectedEvent.status}
+                      color={
+                        selectedEvent.status === "Approved"
+                          ? "success"
+                          : "error"
+                      }
+                    />
+                  </div>
 
-                {selectedEvent?.status === "Pending" && (
-                  <Box className="flex flex-col gap-2">
-                    {selectedEvent.invoice ? (
-                      <>
-                        <Typography variant="h6">Invoice</Typography>
-                        <CardMedia
-                          title="Invoice"
-                          component="img"
-                          height="150"
-                          image={selectedEvent.invoice}
-                          alt="Invoice"
-                        />
-                      </>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                          /* Function to generate invoice */
-                        }}
-                      >
-                        Click to Generate Invoice
-                      </Button>
-                    )}
-                    <Box className="flex justify-between mt-4">
-                      <Button
-                        variant="contained"
-                        color="success"
-                        onClick={handleAccept}
-                      >
-                        Accept
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={handleReject}
-                      >
-                        Reject
-                      </Button>
+                  {selectedEvent?.status === "processing" && (
+                    <Box className="flex flex-col gap-2">
+                      {selectedEvent.invoice ? (
+                        <>
+                          <Typography variant="h6">Invoice</Typography>
+                          <CardMedia
+                            title="Invoice"
+                            component="img"
+                            height="150"
+                            image={selectedEvent.invoice}
+                            alt="Invoice"
+                          />
+                        </>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            /* Function to generate invoice */
+                          }}
+                        >
+                          Click to Generate Invoice
+                        </Button>
+                      )}
+                      <Box className="flex justify-between mt-4">
+                        <Button
+                          variant="contained"
+                          color="success"
+                          onClick={handleAccept}
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          onClick={handleReject}
+                        >
+                          Reject
+                        </Button>
+                      </Box>
                     </Box>
-                  </Box>
-                )}
-              </CardContent>
-            </Card>
-          )}
-        </Box>
-      </Modal>
-    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+          </Box>
+        </Modal>
+      </div>
+    </>
   );
 };
 
