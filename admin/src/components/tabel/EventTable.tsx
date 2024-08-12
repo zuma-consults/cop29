@@ -134,7 +134,7 @@ const EventTable: React.FC = () => {
           />
         </div>
       ),
-      selector: (row: { price: any }) => row.price,
+      selector: (row: { price: any }) => `₦${row.price}`,
     },
     {
       name: (
@@ -294,13 +294,13 @@ const EventTable: React.FC = () => {
                     {formatDate(selectedEvent?.date)}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {selectedEvent.price}
+                    {`₦ ${selectedEvent.price}`}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {selectedEvent?.location}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Duration:{" "}
+                    Duration:
                     {formatDuration(selectedEvent?.start, selectedEvent?.end)}
                   </Typography>
                   <div className="mb-4">

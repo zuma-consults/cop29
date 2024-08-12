@@ -7,11 +7,13 @@ import { useCreateEvent } from "../../hooks/useEvent";
 import CalendarModal from "../CalendarModal";
 import Loader from "../ui/Loader";
 
-const CreateEvent: React.FC = () => {
+const CreateEvent: React.FC<{
+  setOpen: (value: boolean) => void;
+  refetchAllEvents: () => void;
+}> = ({ setOpen, refetchAllEvents }) => {
   const [selectedStart, setSelectedStart] = useState<Date | null>(null);
   const [selectedEnd, setSelectedEnd] = useState<Date | null>(null);
-  const { mutate, isLoading } = useCreateEvent();
-
+  const { mutate, isLoading } = useCreateEvent({ setOpen, refetchAllEvents });
   const [openCalendar, setOpenCalendar] = useState(false);
 
   const handleDateSelection = (start: Date, end: Date) => {
@@ -59,13 +61,13 @@ const CreateEvent: React.FC = () => {
       formData.append("date", values.date);
       formData.append("location", values.location);
       formData.append("description", values.description);
-      // Convert comma-separated string to array and then to JSON string
-      const tagsArray = values.tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter((tag) => tag.length > 0); // Remove any empty tags
-      formData.append("tags", JSON.stringify(tagsArray)); // Convert array to JSON string
-
+      formData.append(
+        "tags",
+        values.tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .join(",")
+      );
       formData.append("price", values.price);
       formData.append("start", selectedStart?.toISOString() || "");
       formData.append("end", selectedEnd?.toISOString() || "");

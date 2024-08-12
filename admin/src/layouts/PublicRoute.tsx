@@ -1,19 +1,17 @@
 import React from "react";
-import { Cookies } from "react-cookie";
 import { Navigate, Outlet } from "react-router-dom";
+import { Cookies } from "react-cookie";
 
 const cookies = new Cookies();
 
 const PublicRoute: React.FC = () => {
-  const token = cookies.get("accessToken");
-  const profile = cookies.get("profile");
+  const access = cookies.get("accessToken");
 
-  // If the user is authenticated, redirect them away from the login page
-  // if (token && profile) {
-  //   return <Navigate to="/" replace />;
-  // }
+  // If the user is authenticated, redirect them to the home page (or any other page)
+  if (access) {
+    return <Navigate to="/" replace />;
+  }
 
-  // If not authenticated, allow access to the login page
   return <Outlet />;
 };
 

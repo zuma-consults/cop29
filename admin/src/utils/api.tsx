@@ -1,5 +1,5 @@
+import { Alert } from "@mui/material";
 import axios, { AxiosRequestConfig } from "axios";
-import { toast } from "react-toastify";
 import { Cookies } from "react-cookie";
 
 const client = axios.create({
@@ -45,26 +45,26 @@ export const request = async (config: AxiosRequestConfig<any>) => {
 
         // Show the error toast
         if (status === 401 || status === 403) {
-          toast.error(
-            `Client Error: ${status} - ${
-              data?.error || "You are not authorised to do this"
-            }`
-          );
+          <Alert severity="error">{`Client Error: ${status} - ${
+            data?.error || "You are not authorised to do this"
+          }`}</Alert>;
 
           // Redirect to the login route for authentication
           navigateToLogin();
         } else if (status && status >= 400 && status < 500) {
-          toast.error(
-            `Client Error: ${status} - ${data?.error || "Error, try Again"}`
-          );
+          <Alert severity="error">{`Client Error: ${status} - ${
+            data?.error || "Error, try Again"
+          }`}</Alert>;
         } else if (status && status >= 500) {
-          toast.error(
-            `Server Error: ${status} - ${data?.error || "Error, try Again"}`
-          );
+          <Alert severity="error">{`Server Error: ${status} - ${
+            data?.error || "Error, try Again"
+          }`}</Alert>;
         }
       }
     } else {
-      toast.error("An Error Occurred: Please try again later");
+      <Alert severity="error">
+        {"An Error Occurred: Please try again later"}
+      </Alert>;
     }
 
     throw error;

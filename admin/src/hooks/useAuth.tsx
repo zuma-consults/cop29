@@ -1,7 +1,13 @@
 import { useQuery, useMutation, QueryClient } from "react-query";
 import { Cookies } from "react-cookie";
-import { getAllProfile, getProfile, login, logout } from "../services/auth";
-import { toast } from "react-toastify";
+import {
+  getAllProfile,
+  getAllRoles,
+  getProfile,
+  login,
+  logout,
+} from "../services/auth";
+import { Alert } from "@mui/material";
 
 const queryClient = new QueryClient();
 const cookies = new Cookies();
@@ -16,7 +22,7 @@ export const useLogin = () => {
       }
     },
     onError: (error: any) => {
-      toast.error(error?.message);
+      <Alert severity="error">Error Logging In</Alert>;
       queryClient.invalidateQueries("profile");
     },
   });
@@ -46,6 +52,16 @@ export const useGetProfile = () => {
 
 export const useGetAllProfile = () => {
   return useQuery("Allprofile", getAllProfile, {
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+    cacheTime: 30 * 60 * 1000,
+    retry: 1,
+  });
+};
+
+export const useGetAllRoles = () => {
+  return useQuery("Allroles", getAllRoles, {
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchInterval: false,

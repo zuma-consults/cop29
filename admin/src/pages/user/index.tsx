@@ -13,11 +13,16 @@ import { UserSummaryCardData } from "../../utils/datas/summary-card";
 import { SummaryCard } from "../../components/custom";
 import { IoCreateSharp } from "react-icons/io5";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useGetAllRoles } from "../../hooks/useAuth";
+import Loader from "../../components/ui/Loader";
 
 interface UserFormInputs {
-  name: string;
-  role: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  password: string;
+  phone: string;
+  role: string;
 }
 
 const User: React.FC = () => {
@@ -29,18 +34,27 @@ const User: React.FC = () => {
     reset,
   } = useForm<UserFormInputs>();
 
-  
+  const { data: roleData, isFetching } = useGetAllRoles();
 
   const onSubmit: SubmitHandler<UserFormInputs> = (data) => {
-    console.log(data);
-    // Here you would typically handle the form submission, such as sending data to an API
+    const userPayload = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+      phone: data.phone,
+      role: data.role,
+    };
+
+    console.log(userPayload);
+    // Send `userPayload` to the API
     setOpen(false);
     reset();
   };
 
   return (
     <div>
-      
+      {isFetching && <Loader />}
       <div className="w-[100%] h-[100%] relative overflow-x-hidden">
         <Box sx={{ marginTop: "10px" }}>
           <Grid container spacing={3}>
@@ -116,17 +130,43 @@ const User: React.FC = () => {
               borderRadius: "8px",
             }}
           >
-            <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
-              Create a New User
-            </Typography>
+            <h1 className="text-green-700 font-bold text-[26px] text-center md:text-left">
+              Create new admin
+            </h1>
             <TextField
-              label="Name"
+              label="First Name"
               variant="outlined"
               fullWidth
               margin="normal"
-              {...register("name", { required: "Name is required" })}
-              error={!!errors.name}
-              helperText={errors.name?.message}
+              {...register("firstName", { required: "First Name is required" })}
+              error={!!errors.firstName}
+              helperText={errors.firstName?.message}
+            />
+
+            <TextField
+              label="Last Name"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              {...register("lastName", { required: "Last Name is required" })}
+              error={!!errors.lastName}
+              helperText={errors.lastName?.message}
+            />
+            <TextField
+              label="Password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+              })}
+              error={!!errors.password}
+              helperText={errors.password?.message}
             />
             <TextField
               select
@@ -138,11 +178,11 @@ const User: React.FC = () => {
               error={!!errors.role}
               helperText={errors.role?.message}
             >
-              <MenuItem value="Admin">Admin</MenuItem>
-              <MenuItem value="Admin">User</MenuItem>
-              <MenuItem value="Finance">Finance</MenuItem>
-              <MenuItem value="Super Admin">Super Admin</MenuItem>
-              <MenuItem value="COP Desk Officer">COP Desk Officer</MenuItem>
+              {roleData?.data?.map((role: any) => (
+                <MenuItem key={role?.id} value={role?.id}>
+                  {role.name}
+                </MenuItem>
+              ))}
             </TextField>
             <TextField
               label="Email"
@@ -158,6 +198,37 @@ const User: React.FC = () => {
               })}
               error={!!errors.email}
               helperText={errors.email?.message}
+            />
+            <TextField
+              label="Phone"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              {...register("phone", {
+                required: "Phone number is required",
+                pattern: {
+                  value: /^\d{11}$/,
+                  message: "Enter a valid phone number",
+                },
+              })}
+              error={!!errors.phone}
+              helperText={errors.phone?.message}
+            />
+            <TextField
+              label="Password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+              })}
+              error={!!errors.password}
+              helperText={errors.password?.message}
             />
             <Box mt={3} display="flex" justifyContent="space-between">
               <Button variant="contained" color="success" type="submit">

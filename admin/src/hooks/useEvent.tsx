@@ -1,22 +1,27 @@
 import { useQuery, useMutation, QueryClient } from "react-query";
 import { createEvent, getAllEvents } from "../services/event";
-import { toast } from "react-toastify";
 import { useMemo } from "react";
+import { Alert } from "@mui/material";
 
 const queryClient = new QueryClient();
 
-export const useCreateEvent = () => {
+export const useCreateEvent = ({
+  setOpen,
+  refetchAllEvents,
+}: {
+  setOpen: (value: boolean) => void;
+  refetchAllEvents: () => void;
+}) => {
   return useMutation(createEvent, {
     onSuccess: (result) => {
       if (result?.status) {
-        queryClient.invalidateQueries("events");
-        toast.success("Event created successfully");
+        setOpen(false); // Close the modal
+        refetchAllEvents(); // Manually refetch the events
+        <Alert severity="success">Event Created Successfully</Alert>;
       }
-      queryClient.invalidateQueries("AllEvents");
     },
     onError: (error: any) => {
-      toast.error(error?.message);
-      queryClient.invalidateQueries("AllEvents");
+      <Alert severity="error">Error Creating Event</Alert>;
     },
   });
 };
@@ -30,11 +35,10 @@ export const useCreateEvent = () => {
 //   });
 // };
 
-export const useGetAllEvents = (queryParams: Record<string, any>) => {
+export const useGetAllEvents = (queryParams?: Record<string, any>) => {
   const memoizedQueryParams = useMemo(() => {
-    // Only pass queryParams if it has values that are not empty strings
     return Object.fromEntries(
-      Object.entries(queryParams).filter(([_, value]) => value !== "")
+      Object.entries(queryParams || {}).filter(([_, value]) => value !== "")
     );
   }, [queryParams]);
 
