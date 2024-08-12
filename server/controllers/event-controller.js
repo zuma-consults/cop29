@@ -110,6 +110,7 @@ module.exports = {
     console.log("here");
     upload(req, res, async (err) => {
       if (err) {
+        console.log(err, "errorsssss");
         return errorHandler(res, err.code, 400);
       } else {
         try {
