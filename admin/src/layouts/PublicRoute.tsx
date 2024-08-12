@@ -6,11 +6,12 @@ const cookies = new Cookies();
 
 const PublicRoute: React.FC = () => {
   const token = cookies.get("accessToken");
+  const profile = cookies.get("profile");
 
   // If the user is authenticated, redirect them away from the login page
-  if (token) {
-    return <Navigate to="/" replace />;
-  }
+  // if (token && profile) {
+  //   return <Navigate to="/" replace />;
+  // }
 
   // If not authenticated, allow access to the login page
   return <Outlet />;

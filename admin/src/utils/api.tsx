@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { toast } from "react-toastify";
 import { Cookies } from "react-cookie";
 
@@ -15,7 +15,7 @@ const navigateToLogin = () => {
 // State to track shown errors
 const shownErrors = new Set();
 
-export const request = async (config: any) => {
+export const request = async (config: AxiosRequestConfig<any>) => {
   try {
     const cookies = new Cookies();
     let access = "";
@@ -24,9 +24,10 @@ export const request = async (config: any) => {
     }
 
     if (access) {
+      console.log("access", access);
       config.headers = {
         ...config.headers,
-        medopt: access ? access : "",
+        "poc-admin-token": access,
       };
     }
 
@@ -47,23 +48,19 @@ export const request = async (config: any) => {
         if (status === 401 || status === 403) {
           toast.error(
             `Client Error: ${status} - ${
-              (data as { message?: string })?.message || "Error, try Again"
+              data?.error || "You are not authorised to do this"
             }`
           );
 
           // Redirect to the login route for authentication
           navigateToLogin();
-        } else if (status ? status >= 400 && status < 500 : false) {
+        } else if (status && status >= 400 && status < 500) {
           toast.error(
-            `Client Error: ${status} - ${
-              (data as { message?: string })?.message || "Error, try Again"
-            }`
+            `Client Error: ${status} - ${data?.error || "Error, try Again"}`
           );
-        } else if (status ? status >= 500 : false) {
+        } else if (status && status >= 500) {
           toast.error(
-            `Server Error: ${status} - ${
-              (data as { message?: string })?.message || "Error, try Again"
-            }`
+            `Server Error: ${status} - ${data?.error || "Error, try Again"}`
           );
         }
       }

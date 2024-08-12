@@ -16,19 +16,6 @@ import PrivateRoute from "./layouts/PrivateRoute";
 import PublicRoute from "./layouts/PublicRoute";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) {
-    return <Loader />;
-  }
-
   return (
     <Routes>
       <Route element={<PublicRoute />}>

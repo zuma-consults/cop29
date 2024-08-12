@@ -13,6 +13,8 @@ import { UserSummaryCardData } from "../../utils/datas/summary-card";
 import { SummaryCard } from "../../components/custom";
 import { IoCreateSharp } from "react-icons/io5";
 import { useForm, SubmitHandler } from "react-hook-form";
+import Loader from "../../components/ui/Loader";
+import { useGetAllProfile } from "../../hooks/useAuth";
 
 interface UserFormInputs {
   name: string;
@@ -29,6 +31,8 @@ const User: React.FC = () => {
     reset,
   } = useForm<UserFormInputs>();
 
+  const { isFetching, data } = useGetAllProfile();
+
   const onSubmit: SubmitHandler<UserFormInputs> = (data) => {
     console.log(data);
     // Here you would typically handle the form submission, such as sending data to an API
@@ -38,6 +42,11 @@ const User: React.FC = () => {
 
   return (
     <div>
+      {isFetching ? (
+        <div className="fixed inset-0 bg-co-primary  flex items-center justify-center z-[9999999999999]">
+          <Loader />
+        </div>
+      ) : null}
       <div className="w-[100%] h-[100%] relative overflow-x-hidden">
         <Box sx={{ marginTop: "10px" }}>
           <Grid container spacing={3}>
@@ -92,7 +101,7 @@ const User: React.FC = () => {
           </div>
         </div>
         <div>
-          <UserTable />
+          <UserTable data={data} />
         </div>
 
         <Modal open={open} onClose={() => setOpen(false)}>

@@ -6,8 +6,9 @@ const cookies = new Cookies();
 
 const PrivateRoute: React.FC = () => {
   const token = cookies.get("accessToken");
+  const profile = cookies.get("profile");
 
-  if (!token) {
+  if (!token || !profile) {
     return <Navigate to="/login" replace />;
   }
 

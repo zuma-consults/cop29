@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { Button, TextField, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Loader from "../../components/ui/Loader";
-import { useLogin } from "../../hook/reactQuery/useUser";
 import { useNavigate } from "react-router-dom";
+import { useGetProfile, useLogin } from "../../hooks/useAuth";
 
 const Login: React.FC = () => {
   const {
@@ -20,7 +20,7 @@ const Login: React.FC = () => {
   const { mutate, isLoading, data } = useLogin();
 
   if (data && data?.status) {
-    navigate("/dashboard");
+    navigate("/");
   }
 
   const handleLogin = (data: any) => {

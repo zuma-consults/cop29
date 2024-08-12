@@ -11,40 +11,15 @@ interface TableRow {
   email: string;
 }
 
-const EventDatas = [
-  {
-    id: 1,
-    role: "Admin",
-    name: "James Bond",
-    email: "musa@gmail.come",
-  },
-  {
-    id: 2,
-    role: "User",
-    name: "Chris Brown",
-    email: "chirs@gmial.com",
-  },
-  {
-    id: 3,
-    role: "User",
-    name: "Chris Brown",
-    email: "faith@gmail.com",
-  },
-  {
-    id: 4,
-    role: "COP desk officer",
-    name: "Chris Brown",
-    email: "brown@gmail.com",
-  },
-];
-
-const UserTable: React.FC = () => {
+const UserTable = (data: any) => {
+  console.log("data", data?.data?.data?.admins);
+  const extratedData = data?.data?.data?.admins;
   const [_, setPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleDownloadCSV = () => {
-    saveAsCSV({ data: filteredData, filename: "Admins/users List" });
+    saveAsCSV({ data: extratedData, filename: "Admins/users List" });
   };
 
   const handlePageChange = (page: number) => {
@@ -67,10 +42,6 @@ const UserTable: React.FC = () => {
       setSelectedEvent(null);
     }
   };
-
-  const filteredData = EventDatas.filter((event) =>
-    event.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   const customStyles = {
     headCells: {
@@ -175,7 +146,7 @@ const UserTable: React.FC = () => {
         responsive={true}
         customStyles={customStyles}
         columns={columns}
-        data={filteredData}
+        data={extratedData}
         pagination
         fixedHeader
         fixedHeaderScrollHeight="500px"
