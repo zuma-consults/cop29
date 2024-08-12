@@ -166,6 +166,7 @@ module.exports = {
           // Send success response
           return successHandler(res, "Event Successfully Added.", newEvent);
         } catch (error) {
+          console.log(error);
           return errorHandler(res, error.message, error.statusCode || 500);
         }
       }
