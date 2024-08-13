@@ -23,9 +23,16 @@ const Links: React.FC<LinksProps> = ({
       title: "Create Event",
       path: "/create-event",
     },
+    {
+      title: "FAQs",
+      path: "/faq",
+    },
+    {
+      title: "Your Profile",
+      path: "/profile",
+    },
   ];
 
-  // Helper function to determine if a link is active
   const isActive = (path: string) => location.pathname === path;
 
   return (

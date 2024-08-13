@@ -16,3 +16,12 @@ body {
 .alice-carousel__wrapper .alice-carousel__next-btn {
   display: none !important;
 }
+
+.react-player {
+  background: #000;
+  height: 100% !important;
+  width: 100% !important;
+  border: 5px solid #6bee99;
+  border-radius: 20px !important;
+  overflow: hidden;
+}

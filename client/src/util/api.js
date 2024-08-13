@@ -1,14 +1,15 @@
-import axios from "axios";
 import { toast } from "react-toastify";
+import axios from "axios";
 import { Cookies } from "react-cookie";
 
 const client = axios.create({
-  baseURL: "https://pinnacle-gejv.onrender.com/v1/",
+  baseURL: "https://cop29.onrender.com/api/v1/",
 });
 
 // Function to handle navigation
 const navigateToLogin = () => {
-  // You can replace this with your actual logic for navigation
+  const cookie = new Cookies();
+  cookie.remove("accessToken");
   window.location.href = "/login";
 };
 
@@ -20,13 +21,13 @@ export const request = async (config) => {
     const cookies = new Cookies();
     let access = "";
     if (typeof window !== "undefined") {
-      access = cookies.get("scriipoAccess");
+      access = cookies.get("accessToken");
     }
 
     if (access) {
       config.headers = {
         ...config.headers,
-        authorization: access ? `Bearer ${access}` : "",
+        "poc-admin-token": access,
       };
     }
 
@@ -45,22 +46,14 @@ export const request = async (config) => {
 
         // Show the error toast
         if (status === 401 || status === 403) {
-          toast.error(
-            `Client Error: ${status} - ${
-              data?.error || "You are not authorised to do this"
-            }`
-          );
+          toast.error(`Client Error: ${status} - ${data?.error || "You are not authorised to do this"}`);
 
           // Redirect to the login route for authentication
           navigateToLogin();
         } else if (status && status >= 400 && status < 500) {
-          toast.error(
-            `Client Error: ${status} - ${data?.error || "Error, try Again"}`
-          );
+          toast.error(`Client Error: ${status} - ${data?.error || "Error, try Again"}`);
         } else if (status && status >= 500) {
-          toast.error(
-            `Server Error: ${status} - ${data?.error || "Error, try Again"}`
-          );
+          toast.error(`Server Error: ${status} - ${data?.error || "Error, try Again"}`);
         }
       }
     } else {
