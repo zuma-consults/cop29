@@ -24,7 +24,6 @@ interface TableRow {
   status: string;
   title: string;
   date: any;
-  price: string;
   tags: string;
   invoice?: string;
   location: any;
@@ -123,19 +122,7 @@ const EventTable: React.FC = () => {
       selector: (row: { date: string }) => formatDate(row.date),
       sortable: true,
     },
-    {
-      name: (
-        <Box style={{ display: "flex", alignItems: "center" }}>
-          <Typography>Price</Typography>
-          <ColumnFilter
-            columnKey="price"
-            onResetFilter={handleResetFilter}
-            onFilterChange={handleFilterChange}
-          />
-        </Box>
-      ),
-      selector: (row: { price: any }) => `₦${row.price}`,
-    },
+
     {
       name: (
         <Box style={{ display: "flex", alignItems: "center" }}>
@@ -297,13 +284,7 @@ const EventTable: React.FC = () => {
                   <Typography variant="body2" color="text.secondary">
                     {formatDate(selectedEvent?.date)}
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    className="capitalize"
-                  >
-                    {`₦ ${selectedEvent.price}`}
-                  </Typography>
+
                   <Typography
                     variant="body2"
                     color="text.secondary"

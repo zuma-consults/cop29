@@ -37,7 +37,7 @@ export const registerAdmin = (data: any) => {
 
 export const logout = () => {
   const config = {
-    method: "get",
+    method: "post",
     url: "logout/staff",
   };
 

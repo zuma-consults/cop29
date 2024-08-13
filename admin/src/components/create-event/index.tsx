@@ -23,20 +23,19 @@ const CreateEvent: React.FC<{
       "date",
       `${start.toISOString()} - ${end.toISOString()}`
     );
-    const date = start.toISOString().split("T")[0]; // Extracts "YYYY-MM-DD"
+    const date = start.toISOString().split("T")[0];
     formik.setFieldValue("date", date);
   };
 
   const formik = useFormik({
     initialValues: {
-      imageUrl: null, // Initialize as null for file input
+      imageUrl: null,
       title: "",
       externalLink: "",
       date: "",
       location: "",
       description: "",
       tags: "",
-      price: "",
     },
     validationSchema: Yup.object({
       imageUrl: Yup.mixed().required("Image is required"),
@@ -48,7 +47,6 @@ const CreateEvent: React.FC<{
       location: Yup.string().required("Location is required"),
       description: Yup.string().required("Event description is required"),
       tags: Yup.string().required("Tags are required"),
-      price: Yup.string().required("Price is required"),
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
@@ -68,7 +66,6 @@ const CreateEvent: React.FC<{
           .map((tag) => tag.trim())
           .join(",")
       );
-      formData.append("price", values.price);
       formData.append("start", selectedStart?.toISOString() || "");
       formData.append("end", selectedEnd?.toISOString() || "");
 
@@ -88,7 +85,7 @@ const CreateEvent: React.FC<{
             Create an Event
           </h1>
           <div
-            className="p-6 rounded-lg w-full flex flex-col items-center justify-center gap-3 mt-2 bg-green-50"
+            className="p-6 rounded-lg w-full flex flex-col cursor-pointer items-center justify-center gap-3 mt-2 bg-green-50"
             onClick={() => document.getElementById("imageUrl")?.click()}
           >
             <h2 className="text-gray-600 font-bold text-center">
@@ -118,7 +115,7 @@ const CreateEvent: React.FC<{
 
             {/* Image Preview */}
             {formik.values.imageUrl && (
-              <div className="mt-4 text-center">
+              <div className="mt-1 flex flex-col justify-center items-center">
                 <img
                   src={URL.createObjectURL(formik.values.imageUrl)}
                   alt="Selected Image"
@@ -241,7 +238,7 @@ const CreateEvent: React.FC<{
             </div>
 
             {/* Tags */}
-            <div className="flex flex-col gap-2">
+            <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
               <TextField
                 id="tags"
                 name="tags"
@@ -253,23 +250,6 @@ const CreateEvent: React.FC<{
                 onBlur={formik.handleBlur}
                 error={formik.touched.tags && Boolean(formik.errors.tags)}
                 helperText={formik.touched.tags && formik.errors.tags}
-                fullWidth
-              />
-            </div>
-
-            {/* Organized By */}
-            <div className="flex flex-col gap-2">
-              <TextField
-                id="price"
-                name="price"
-                label="Price"
-                color="success"
-                variant="outlined"
-                value={formik.values.price}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.price && Boolean(formik.errors.price)}
-                helperText={formik.touched.price && formik.errors.price}
                 fullWidth
               />
             </div>

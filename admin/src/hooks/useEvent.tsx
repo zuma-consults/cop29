@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "react-query";
 import { createEvent, getAllEvents } from "../services/event";
 import { useMemo } from "react";
-import { Alert } from "@mui/material";
+import { toast } from "react-toastify";
 
 export const useCreateEvent = ({
   setOpen,
@@ -13,22 +13,21 @@ export const useCreateEvent = ({
   return useMutation(createEvent, {
     onSuccess: (result) => {
       if (result?.status) {
+        toast.success("Event Created Successfully");
         setOpen(false);
         refetchAllEvents();
-        <Alert severity="success">Event Created Successfully</Alert>;
       }
     },
-    onError: (error: any) => {
-      <Alert severity="error">Error Creating Event</Alert>;
+    onError: (_error) => {
+      toast.error("Event Creation failed. Please try again.");
     },
   });
 };
 
-
 export const useGetAllEvents = (queryParams?: Record<string, any>) => {
   const memoizedQueryParams = useMemo(() => {
     return Object.fromEntries(
-      Object.entries(queryParams || {}).filter(([_, value]) => value !== "")
+      Object?.entries(queryParams || {})?.filter(([_, value]) => value !== "")
     );
   }, [queryParams]);
   return useQuery(

@@ -5,11 +5,8 @@ import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import AlertDialog from "../../Reusable-Dialog";
-import { Cookies } from "react-cookie";
 import { useLogout } from "../../../hooks/useAuth";
 import Loader from "../../ui/Loader";
-
-const cookies = new Cookies();
 
 const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
   name,
@@ -27,12 +24,9 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
     setOpenDialog(false);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setOpenDialog(false);
-    logout();
-    cookies.remove("accessToken");
-    cookies.remove("profile");
-    window.location.replace("/login");
+    await logout();
   };
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
