@@ -9,6 +9,8 @@ const client = axios.create({
 // Function to handle navigation
 const navigateToLogin = () => {
   // You can replace this with your actual logic for navigation
+  const cookie = new Cookies();
+  cookie.remove("accessToken");
   window.location.href = "/login";
 };
 
