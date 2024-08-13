@@ -9,6 +9,7 @@ import {
   registerAdmin,
 } from "../services/auth";
 import { Alert } from "@mui/material";
+import { toast } from "react-toastify";
 
 const queryClient = new QueryClient();
 const cookies = new Cookies();
@@ -16,15 +17,18 @@ const cookies = new Cookies();
 export const useLogin = () => {
   return useMutation(login, {
     onSuccess: (result) => {
+      console.log("result", result);
+
       if (result?.status) {
-        <Alert severity="success">Logged In Successfully</Alert>;
+        toast.success("Login Successful");
         const accessToken = result?.data;
         cookies.set("accessToken", accessToken, { path: "/" });
         queryClient.invalidateQueries("profile");
       }
     },
     onError: (error: any) => {
-      <Alert severity="error">Error Logging In</Alert>;
+      const errorMessage = error?.response?.data?.message || "Error occurred";
+      toast.error(errorMessage);
       queryClient.invalidateQueries("profile");
     },
   });
@@ -59,8 +63,6 @@ export const useAddAmin = ({
     },
   });
 };
-
-
 
 export const useGetProfile = () => {
   return useQuery("profile", getProfile, {

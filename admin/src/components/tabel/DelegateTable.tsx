@@ -6,76 +6,80 @@ import {
   CardMedia,
   Chip,
   Modal,
-  TextField,
   Typography,
 } from "@mui/material";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
+import { useGetAllDelegates } from "../../hooks/useDelegate";
+import Loader from "../ui/Loader";
 
 interface TableRow {
   id: number;
-  imageUrl: string;
   status: string;
   name: string;
-  date: string;
   email: string;
+  userType: string;
+  phone: string;
 }
-
-const EventDatas = [
-  {
-    id: 1,
-    status: "Approved",
-    name: "James Bond",
-    date: "Sat, October 17 ",
-    email: "chris@gmail.com",
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-  {
-    id: 2,
-    status: "Pending",
-    name: "Chris Brown",
-    date: "Mon, November 20 ",
-    email: "musa@gmail.com",
-    imageUrl:
-      "https://images.pexels.com/photos/3100960/pexels-photo-3100960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-];
 
 const DelegateTable: React.FC = () => {
   const [_, setPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleDownloadCSV = () => {
-    saveAsCSV({ data: filteredData, filename: "COP29 Delegates List" });
-  };
+  const [filters, setFilters] = useState({
+    userType: "",
+  });
 
-  const handlePageChange = (page: number) => {
-    setPage(page);
-  };
-
-  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const handleAccept = () => {
-    console.log("Accepted");
-    // Handle accept logic here
-    setSelectedEvent(null);
-  };
-
-  const handleReject = () => {
-    console.log("Rejected");
-    // Handle reject logic here
-    setSelectedEvent(null);
-  };
-
-  const filteredData = EventDatas.filter((event) =>
-    event.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const memoizedFilters = useMemo(
+    () => ({
+      userType: filters.userType,
+    }),
+    [filters.userType]
   );
+
+  const { data, isFetching, refetch } = useGetAllDelegates(memoizedFilters);
+
+  const handleFilterChange = useCallback((key: string, value: string) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [key]: value,
+    }));
+  }, []);
+
+  const handleResetFilter = useCallback((key: string) => {
+    setFilters((prevFilters: any) => {
+      const { [key]: removedFilter, ...rest } = prevFilters;
+      return rest;
+    });
+  }, []);
+
+  useEffect(() => {
+    refetch();
+  }, [memoizedFilters]);
+
+  const extratedData = useMemo(() => data?.data, [data]);
+
+  console.log("Delegates", extratedData);
+
+  const handleDownloadCSV = useCallback(() => {
+    saveAsCSV({ data: extratedData?.users, filename: "Delegates List" });
+  }, [extratedData?.events]);
+
+  const handlePageChange = useCallback((page: number) => {
+    setPage(page);
+  }, []);
+
+  const handleAccept = useCallback(() => {
+    console.log("Accepted");
+    setSelectedEvent(null);
+  }, []);
+
+  const handleReject = useCallback(() => {
+    console.log("Rejected");
+    setSelectedEvent(null);
+  }, []);
 
   const customStyles = {
     headCells: {
@@ -94,13 +98,18 @@ const DelegateTable: React.FC = () => {
       sortable: true,
     },
     {
-      name: "Date",
-      selector: (row: { date: any }) => row.date,
+      name: "Email",
+      selector: (row: { email: any }) => row.email,
       sortable: true,
     },
     {
-      name: "Email",
-      selector: (row: { email: any }) => row.email,
+      name: "User Type",
+      selector: (row: { userType: any }) => row.userType,
+      sortable: true,
+    },
+    {
+      name: "Phone",
+      selector: (row: { phone: any }) => row.phone,
       sortable: true,
     },
 
@@ -118,7 +127,7 @@ const DelegateTable: React.FC = () => {
           | undefined;
       }) => (
         <div className="text-left capitalize flex items-center">
-          {row.status === "Approved" ? (
+          {row.status == "approved" ? (
             <Chip label={row?.status} color="success" />
           ) : (
             <Chip label={row?.status} color="warning" />
@@ -163,120 +172,111 @@ const DelegateTable: React.FC = () => {
   ];
 
   return (
-    <div className="rounded-[.5rem] px-2 bg-white shadow">
-      <div className="flex items-center md:flex-row flex-col justify-between px-5 py-2">
-        <Button
-          sx={{
-            backgroundColor: "green",
-            color: "white",
-            width: "fit-content",
-            paddingY: "8px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            fontSize: "13px",
-            gap: "8px",
-            "&:hover": {
-              backgroundColor: "#e8f5e9",
-              color: "black",
-            },
-          }}
-          onClick={handleDownloadCSV}
-        >
-          Export to Excel
-          <GoDownload size={20} />
-        </Button>
-        <TextField
-          label="Search"
-          variant="outlined"
-          color="success"
-          margin="normal"
-          hiddenLabel
-          value={searchQuery}
-          onChange={handleSearch}
+    <>
+      {isFetching && <Loader />}
+      <div className="rounded-[.5rem] px-2 bg-white shadow">
+        <div className="flex items-center md:flex-row flex-col justify-between py-2">
+          <Button
+            sx={{
+              backgroundColor: "green",
+              color: "white",
+              width: "fit-content",
+              paddingY: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              fontSize: "13px",
+              gap: "8px",
+              "&:hover": {
+                backgroundColor: "#e8f5e9",
+                color: "black",
+              },
+            }}
+            onClick={handleDownloadCSV}
+          >
+            Export to Excel
+            <GoDownload size={20} />
+          </Button>
+        </div>
+        <DataTable
+          highlightOnHover={true}
+          responsive={true}
+          customStyles={customStyles}
+          columns={columns}
+          data={extratedData?.users}
+          pagination
+          fixedHeader
+          fixedHeaderScrollHeight="500px"
+          onChangePage={handlePageChange}
         />
-      </div>
-      <DataTable
-        highlightOnHover={true}
-        responsive={true}
-        customStyles={customStyles}
-        columns={columns}
-        data={filteredData}
-        pagination
-        fixedHeader
-        fixedHeaderScrollHeight="500px"
-        onChangePage={handlePageChange}
-      />
 
-      <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>
-        <Box
-          sx={{
-            position: "absolute" as "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 800,
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            maxHeight: "90vh",
-            overflowY: "auto",
-            p: 4,
-            outline: "none",
-            borderRadius: "8px",
-          }}
-        >
-          {selectedEvent && (
-            <Card>
-              <CardMedia
-                component="img"
-                height="200"
-                image={selectedEvent.imageUrl}
-                alt={selectedEvent.name}
-              />
-              <CardContent className="flex flex-col gap-3">
-                <Typography variant="h5" component="div">
-                  {selectedEvent.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {selectedEvent.date}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {selectedEvent.email}
-                </Typography>
+        <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>
+          <Box
+            sx={{
+              position: "absolute" as "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 800,
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              maxHeight: "90vh",
+              overflowY: "auto",
+              p: 4,
+              outline: "none",
+              borderRadius: "8px",
+            }}
+          >
+            {selectedEvent && (
+              <Card>
+                <CardContent className="flex flex-col justify-center items-center gap-3">
+                  <Typography variant="h5" component="div">
+                    {selectedEvent.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {selectedEvent.phone}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {selectedEvent.email}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {selectedEvent.userType}
+                  </Typography>
 
-                <div className="mb-4">
-                  {selectedEvent.status === "Approved" ? (
-                    <Chip label={selectedEvent.status} color="success" />
-                  ) : (
-                    <Chip label={selectedEvent.status} color="error" />
+                  <div className="mb-4">
+                    {selectedEvent.status == "approved" ? (
+                      <Chip label={selectedEvent.status} color="success" />
+                    ) : (
+                      <Chip label={selectedEvent.status} color="error" />
+                    )}
+                  </div>
+
+                  {selectedEvent.status === "Pending" && (
+                    <Box className="flex justify-between">
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={handleAccept}
+                      >
+                        Accept
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={handleReject}
+                      >
+                        Reject
+                      </Button>
+                    </Box>
                   )}
-                </div>
-
-                {selectedEvent.status === "Pending" && (
-                  <Box className="flex justify-between">
-                    <Button
-                      variant="contained"
-                      color="success"
-                      onClick={handleAccept}
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      onClick={handleReject}
-                    >
-                      Reject
-                    </Button>
-                  </Box>
-                )}
-              </CardContent>
-            </Card>
-          )}
-        </Box>
-      </Modal>
-    </div>
+                </CardContent>
+              </Card>
+            )}
+          </Box>
+        </Modal>
+      </div>
+    </>
   );
 };
 

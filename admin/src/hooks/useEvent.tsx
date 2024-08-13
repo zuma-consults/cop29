@@ -1,9 +1,7 @@
-import { useQuery, useMutation, QueryClient } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { createEvent, getAllEvents } from "../services/event";
 import { useMemo } from "react";
 import { Alert } from "@mui/material";
-
-const queryClient = new QueryClient();
 
 export const useCreateEvent = ({
   setOpen,
@@ -26,14 +24,6 @@ export const useCreateEvent = ({
   });
 };
 
-// export const useGetProfile = () => {
-//   return useQuery("profile", getAllEvents, {
-//     onSuccess: (result) => {
-//       const adminProfile = result?.data;
-//       cookies.set("profile", adminProfile);
-//     },
-//   });
-// };
 
 export const useGetAllEvents = (queryParams?: Record<string, any>) => {
   const memoizedQueryParams = useMemo(() => {
