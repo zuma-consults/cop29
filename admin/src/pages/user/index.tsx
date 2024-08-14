@@ -36,18 +36,22 @@ const User: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { data: roleData, isFetching } = useGetAllRoles();
   const { refetch: refetchAllProfile } = useGetAllProfile();
-
-  const { mutate, isLoading } = useAddAmin({ refetchAllProfile });
-
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm<UserFormInputs>();
+
+  const { mutate, isLoading } = useAddAmin({
+    refetchAllProfile,
+    setOpen,
+    reset,
+  });
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const onSubmit: SubmitHandler<UserFormInputs> = (data) => {
     const userPayload = {
@@ -60,13 +64,11 @@ const User: React.FC = () => {
     };
 
     mutate(userPayload);
-    setOpen(false);
-    reset();
   };
 
   return (
     <div>
-     {isFetching || isLoading ? <Loader /> : null}
+      {isFetching || isLoading ? <Loader /> : null}
       <div className="w-[100%] h-[100%] relative overflow-x-hidden">
         <Box sx={{ marginTop: "10px" }}>
           <Grid container spacing={3}>
