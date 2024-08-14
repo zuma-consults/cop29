@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const userSchema = mongoose.Schema(
   {
@@ -17,7 +16,7 @@ const userSchema = mongoose.Schema(
     },
     phone: {
       type: String,
-      default: "+234",
+      default: "",
     },
     category: {
       type: String,
@@ -42,10 +41,6 @@ const userSchema = mongoose.Schema(
       type: String,
       enum: ["CSO", "MDA", "NGO"],
     },
-    countId: {
-      type: Number,
-      unique: true,
-    },
   },
   {
     toJSON: {
@@ -59,8 +54,6 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-
-userSchema.plugin(AutoIncrement, { inc_field: "countId" });
 
 const User = mongoose.model("Users", userSchema);
 

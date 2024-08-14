@@ -131,7 +131,6 @@ module.exports = {
               400
             );
           }
-
           // Handle image uploads
           let image = "";
           if (files) {
@@ -182,9 +181,8 @@ module.exports = {
       ? new Date(req.query.startDate)
       : null;
     const endDate = req.query.endDate ? new Date(req.query.endDate) : null;
-
     try {
-      let cacheKey = `allEvents-${searchTerm}-${price}-${location}-${status}-${startDate}-${endDate}`;
+      let cacheKey = `allEvents-${searchTerm}-${price}-${location}-${status}-${startDate}-${endDate}-${page}`;
       let query = {};
 
       // Add search term filtering
@@ -223,7 +221,7 @@ module.exports = {
 
       let events;
       if (myCache.has(cacheKey)) {
-        events = myCache.get(cacheKey);
+        events = myCache.get(cacheKey).events;
       } else {
         events = await Event.find(query)
           .sort({ createdAt: -1 })
