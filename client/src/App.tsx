@@ -10,6 +10,9 @@ import Loader from "./components/ui/Loader";
 import AppLayout from "./layouts/AppLayout";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Profile from "./pages/profile";
+import FAQ from "./pages/faq";
+import './App.css'
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -38,6 +41,8 @@ function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/create-event" element={<CreateEvent />} />
         <Route path="/event/:id" element={<EventDetails />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/faq" element={<FAQ />} />
         {/* <Route path="*" element={<NotFound />} /> */}
       </Route>
     </Routes>

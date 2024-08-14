@@ -4,6 +4,7 @@ const Admin = require("../models/admin");
 const { generateTokens } = require("../utils/generateToken");
 const bcrypt = require("bcrypt");
 const UserToken = require("../models/token");
+const Role = require("../models/role");
 
 module.exports = {
   createAdmin: async (req, res) => {
@@ -75,7 +76,7 @@ module.exports = {
       const admins = await Admin.find()
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
-        .limit(parseInt(limit));
+        .limit(parseInt(limit)).populate("role", "name");
 
       const totalAdmins = await Admin.countDocuments();
 
@@ -107,7 +108,7 @@ module.exports = {
   getAdminByToken: async (req, res) => {
     try {
       let id = req.admin;
-      let admin = await Admin.findOne({ _id: id });
+      let admin = await Admin.findOne({ _id: id }).populate("role", "name");
       if (!admin) return errorHandler(res, "No Admin found", 404);
       return successHandler(res, "Admin Found", admin);
     } catch (error) {
@@ -211,6 +212,17 @@ module.exports = {
         return successHandler(res, "Logged Out Successfully");
       }
       return successHandler(res, "Logged Out Successfully");
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode);
+    }
+  },
+  getAllRoles: async (req, res) => {
+    try {
+      const roles = await Role.find().sort({ name: 1 });
+
+      const message = `All Roles Found`;
+
+      return successHandler(res, message, roles);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
     }

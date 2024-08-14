@@ -26,9 +26,6 @@ const eventSchema = mongoose.Schema(
       type: String,
       default: "Free",
     },
-    date: {
-      type: String,
-    },
     description: {
       type: String,
     },
@@ -88,6 +85,7 @@ const eventSchema = mongoose.Schema(
     },
     countId: {
       type: Number,
+      default: 1,
       unique: true,
     },
   },
@@ -104,6 +102,7 @@ const eventSchema = mongoose.Schema(
   }
 );
 
+// Apply the AutoIncrement plugin to the schema
 eventSchema.plugin(AutoIncrement, { inc_field: "countId" });
 
 const Event = mongoose.model("Events", eventSchema);

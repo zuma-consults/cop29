@@ -13,7 +13,7 @@ const { auth } = require("../../middlewares/middleware");
 let routes = (app) => {
   app.post("/register", createUser);
   app.get("/users", getAllUsers);
-  app.get("/users/:id", getUserById);
+  app.get("/user/:id", getUserById);
   app.get("/token", auth, getUserByToken);
   app.put("/user/:id", updateUserById);
   app.put("/password/user/", changeUserPasswordById);

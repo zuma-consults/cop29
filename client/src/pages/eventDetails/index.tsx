@@ -5,88 +5,8 @@ import { IoTimerOutline } from "react-icons/io5";
 import AliceCarousel from "react-alice-carousel";
 import Pills from "../../components/ui/Pills";
 import Card from "../../components/ui/Card";
+import VideoPlayer from "../../components/ui/VideoPlayer";
 
-const eventData = [
-  {
-    id: 0,
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Just added",
-    title: "Kaduna Young Entrepreneurship Summit 2024",
-    time: "Sat, October 17 • 6:00 PM GMT+1",
-    price: "Free",
-  },
-  {
-    id: 1,
-    imageUrl:
-      "https://images.pexels.com/photos/3100960/pexels-photo-3100960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Coming Soon",
-    title: "Tech Conference 2024",
-    time: "Mon, November 20 • 10:00 AM GMT+1",
-    price: "$10",
-  },
-  {
-    id: 2,
-    imageUrl:
-      "https://images.pexels.com/photos/210682/pexels-photo-210682.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "New Event",
-    title: "Music Festival 2024",
-    time: "Fri, December 5 • 8:00 PM GMT+1",
-    price: "$50",
-  },
-  {
-    id: 3,
-    imageUrl:
-      "https://images.pexels.com/photos/167964/pexels-photo-167964.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Just added",
-    title: "Art Exhibition 2024",
-    time: "Sun, October 22 • 2:00 PM GMT+1",
-    price: "Free",
-  },
-  {
-    id: 4,
-    imageUrl:
-      "https://images.pexels.com/photos/212286/pexels-photo-212286.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "New Event",
-    title: "Startup Pitch Competition 2024",
-    time: "Tue, November 11 • 3:00 PM GMT+1",
-    price: "$15",
-  },
-  {
-    id: 5,
-    imageUrl:
-      "https://images.pexels.com/photos/1629225/pexels-photo-1629225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Coming Soon",
-    title: "Cooking Masterclass 2024",
-    time: "Wed, December 12 • 11:00 AM GMT+1",
-    price: "$30",
-  },
-  {
-    id: 6,
-    imageUrl:
-      "https://images.pexels.com/photos/3100960/pexels-photo-3100960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Just added",
-    title: "Photography Workshop 2024",
-    time: "Thu, January 25 • 9:00 AM GMT+1",
-    price: "$25",
-  },
-  {
-    id: 7,
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "New Event",
-    title: "Business Networking Event 2024",
-    time: "Fri, February 14 • 5:00 PM GMT+1",
-    price: "Free",
-  },
-];
-const responsive = {
-  0: { items: 1 },
-  300: { items: 2 },
-  450: { items: 2 },
-  800: { items: 3 },
-  1024: { items: 3 },
-};
 
 const EventDetails: React.FC = () => {
   const location = useLocation();
@@ -194,33 +114,8 @@ const EventDetails: React.FC = () => {
         </div>
       </div>
       <div className="flex flex-col gap-5 pt-8 sm:pt-10 md:pt-12">
-        <span className="text-[20px] sm:text-[24px] md:text-[26px] font-bold ">Other Related Events</span>
-        <AliceCarousel
-          mouseTracking
-          responsive={responsive}
-          controlsStrategy="responsive"
-          autoPlay={true}
-          autoPlayInterval={2000}
-          infinite={true}
-          keyboardNavigation={true}
-          disableButtonsControls
-        >
-          {eventData.map((event, index) => (
-            <div
-              key={index}
-              className="px-1 sm:px-2 hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
-            >
-              <Card
-                imageUrl={event.imageUrl}
-                status={event.status}
-                title={event.title}
-                time={event.time}
-                price={event.price}
-                id={event?.id}
-              />
-            </div>
-          ))}
-        </AliceCarousel>
+        <span className="text-[20px] sm:text-[24px] md:text-[26px] font-bold ">Event Excepts</span>
+        <VideoPlayer src='https://www.youtube.com/watch?v=UFfzpvVnoM8'/>
       </div>
     </div>
   );

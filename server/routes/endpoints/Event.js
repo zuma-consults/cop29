@@ -11,7 +11,7 @@ const {
 const { auth, authAdmin } = require("../../middlewares/middleware");
 let routes = (app) => {
   app.post("/event", auth, createEventByOrganization);
-  app.post("/event/admin", auth, createEventByAdmin);
+  app.post("/event/admin", authAdmin, createEventByAdmin);
   app.get("/events", getAllEvents);
   app.get("/3events", getLatest3Events);
   app.get("/event/:id", getEventById);
