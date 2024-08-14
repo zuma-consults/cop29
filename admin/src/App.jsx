@@ -8,6 +8,7 @@ import ScrollToTop from "./layouts/ScrollToTop";
 import Delegate from "./pages/delegate";
 import Organization from "./pages/organization";
 import Calender from "./pages/calender";
+import PaCalender from "./pages/paCalender";
 import Event from "./pages/sideEvent";
 import Invoice from "./pages/invoice";
 import User from "./pages/user";
@@ -124,6 +125,20 @@ function App() {
                 exit="exit"
               >
                 <Announcement />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/pacalender"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                key={location.pathname}
+                animate="animate"
+                exit="exit"
+              >
+                <PaCalender />
               </motion.div>
             }
           />

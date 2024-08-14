@@ -1,5 +1,5 @@
 import { Box, Button, MenuItem, Modal, TextField } from "@mui/material";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
@@ -67,24 +67,26 @@ const UserTable: React.FC = () => {
         fontSize: "14px",
       },
     },
+    cells: {
+      style: {
+        textTransform: "capitalize" as "capitalize",
+      },
+    },
   };
 
   const columns: TableColumn<TableRow>[] = [
     {
       name: "Name",
-      selector: (row: { name: any }) => row.name,
-      sortable: true,
+      selector: (row: { name: any }) => row.name ?? "N/A",
     },
 
     {
       name: "Email",
-      selector: (row: { email: any }) => row.email,
-      sortable: true,
+      selector: (row: { email: any }) => row.email ?? "N/A",
     },
     {
       name: "Role",
-      selector: (row) => row.role.name,
-      sortable: true,
+      selector: (row) => row.role.name ?? "N/A",
     },
 
     {

@@ -69,10 +69,6 @@ const EventTable: React.FC = () => {
     });
   }, []);
 
-  useEffect(() => {
-    refetch();
-  }, [memoizedFilters]);
-
   const extratedData = useMemo(() => data?.data, [data]);
 
   const handleDownloadCSV = useCallback(() => {
@@ -93,12 +89,21 @@ const EventTable: React.FC = () => {
     setSelectedEvent(null);
   }, []);
 
+  useEffect(() => {
+    refetch();
+  }, [memoizedFilters]);
+
   const customStyles = {
     headCells: {
       style: {
         backgroundColor: "#ffff",
         fontWeight: "bold",
         fontSize: "14px",
+      },
+    },
+    cells: {
+      style: {
+        textTransform: "capitalize" as "capitalize",
       },
     },
   };
@@ -115,12 +120,11 @@ const EventTable: React.FC = () => {
           />
         </Box>
       ),
-      selector: (row: { title: any }) => row.title,
+      selector: (row: { title: any }) => row.title ?? "N/A",
     },
     {
       name: "Date",
-      selector: (row: { date: string }) => formatDate(row.date),
-      sortable: true,
+      selector: (row: { date: string }) => formatDate(row.date) ?? "N/A",
     },
 
     {
@@ -134,16 +138,15 @@ const EventTable: React.FC = () => {
           />
         </Box>
       ),
-      selector: (row: { location: any }) => row.location,
+      selector: (row: { location: any }) => row.location ?? "N/A",
     },
     {
       name: "Category",
-      selector: (row: { tags: any }) => row.tags,
-      sortable: true,
+      selector: (row: { tags: any }) => row.tags ?? "N/A",
     },
     {
       name: "Status",
-      selector: (row: { status: any }) => row.status,
+      selector: (row: { status: any }) => row.status ?? "N/A",
       cell: (row: {
         status:
           | string
@@ -162,7 +165,6 @@ const EventTable: React.FC = () => {
           )}
         </div>
       ),
-      sortable: true,
     },
     {
       name: "Action",
@@ -264,8 +266,8 @@ const EventTable: React.FC = () => {
                   component="img"
                   sx={{
                     width: "800px",
-                    height: "300px", // Set consistent height, adjust as needed
-                    objectFit: "cover", // Ensures the image covers the area without distortion
+                    height: "300px",
+                    objectFit: "cover",
                   }}
                   image={selectedEvent?.image}
                   alt={selectedEvent?.title}
@@ -276,12 +278,15 @@ const EventTable: React.FC = () => {
                     component="div"
                     className="capitalize"
                   >
+                    <strong>Title: </strong>
                     {selectedEvent.title}
                   </Typography>
                   <Typography component="span" className="capitalize">
+                    <strong>Description: </strong>
                     {selectedEvent.description}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
+                    <strong>Date: </strong>
                     {formatDate(selectedEvent?.date)}
                   </Typography>
 
@@ -290,13 +295,16 @@ const EventTable: React.FC = () => {
                     color="text.secondary"
                     className="capitalize"
                   >
+                    <strong>Location: </strong>
                     {selectedEvent?.location}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Duration:
+                    <strong>Duration: </strong>
                     {formatDuration(selectedEvent?.start, selectedEvent?.end)}
                   </Typography>
                   <div className="mb-4">
+                    <strong>Status: </strong>
+
                     <Chip
                       className="capitalize"
                       label={selectedEvent.status}

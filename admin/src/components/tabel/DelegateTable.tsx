@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardMedia,
   Chip,
   Modal,
   Typography,
@@ -14,6 +13,7 @@ import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
 import { useGetAllDelegates } from "../../hooks/useDelegate";
 import Loader from "../ui/Loader";
+import ColumnFilter from "../columnFilter";
 
 interface TableRow {
   id: number;
@@ -29,7 +29,7 @@ const DelegateTable: React.FC = () => {
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
 
   const [filters, setFilters] = useState({
-    userType: "",
+    userType: "delegate",
   });
 
   const memoizedFilters = useMemo(
@@ -55,13 +55,7 @@ const DelegateTable: React.FC = () => {
     });
   }, []);
 
-  useEffect(() => {
-    refetch();
-  }, [memoizedFilters]);
-
   const extratedData = useMemo(() => data?.data, [data]);
-
-  console.log("Delegates", extratedData);
 
   const handleDownloadCSV = useCallback(() => {
     saveAsCSV({ data: extratedData?.users, filename: "Delegates List" });
@@ -81,6 +75,10 @@ const DelegateTable: React.FC = () => {
     setSelectedEvent(null);
   }, []);
 
+  useEffect(() => {
+    refetch();
+  }, [memoizedFilters]);
+
   const customStyles = {
     headCells: {
       style: {
@@ -89,33 +87,44 @@ const DelegateTable: React.FC = () => {
         fontSize: "14px",
       },
     },
+    cells: {
+      style: {
+        textTransform: "capitalize" as "capitalize",
+      },
+    },
   };
 
   const columns: TableColumn<TableRow>[] = [
     {
       name: "Name",
-      selector: (row: { name: any }) => row.name,
-      sortable: true,
+
+      selector: (row: { name: any }) => row.name ?? "N/A",
     },
     {
       name: "Email",
-      selector: (row: { email: any }) => row.email,
-      sortable: true,
+      selector: (row: { email: any }) => row.email ?? "N/A",
     },
     {
-      name: "User Type",
-      selector: (row: { userType: any }) => row.userType,
-      sortable: true,
+      name: (
+        <Box style={{ display: "flex", alignItems: "center" }}>
+          <Typography className="capitalize">Type</Typography>
+          <ColumnFilter
+            columnKey="userType"
+            onFilterChange={handleFilterChange}
+            onResetFilter={handleResetFilter}
+          />
+        </Box>
+      ),
+      selector: (row: { userType: any }) => row.userType ?? "N/A",
     },
     {
       name: "Phone",
-      selector: (row: { phone: any }) => row.phone,
-      sortable: true,
+      selector: (row: { phone: any }) => row.phone ?? "N/A",
     },
 
     {
       name: "Status",
-      selector: (row: { status: any }) => row.status,
+      selector: (row: { status: any }) => row.status ?? "N/A",
       cell: (row: {
         status:
           | string
@@ -134,7 +143,6 @@ const DelegateTable: React.FC = () => {
           )}
         </div>
       ),
-      sortable: true,
     },
     {
       name: "Action",

@@ -65,18 +65,18 @@ const MyCalendar: React.FC = () => {
             textAlign={"center"}
             sx={{ color: "#908E8F" }}
           >
-            Event Schedule
+            Calendar
           </Typography>
         </Box>
 
         <Calendar
-        
           localizer={localizer}
           events={parsedEvents}
           defaultView={Views.MONTH}
           defaultDate={defaultDate}
           startAccessor="start"
           endAccessor="end"
+          
           style={{ height: "90vh", marginTop: "1rem" }}
           eventPropGetter={eventStyleGetter}
           dayPropGetter={dayPropGetter}
