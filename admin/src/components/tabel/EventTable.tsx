@@ -24,7 +24,6 @@ interface TableRow {
   status: string;
   title: string;
   date: any;
-  price: string;
   tags: string;
   invoice?: string;
   location: any;
@@ -70,15 +69,11 @@ const EventTable: React.FC = () => {
     });
   }, []);
 
-  useEffect(() => {
-    refetch();
-  }, [memoizedFilters]);
-
-  const extratedDat = useMemo(() => data?.data, [data]);
+  const extratedData = useMemo(() => data?.data, [data]);
 
   const handleDownloadCSV = useCallback(() => {
-    saveAsCSV({ data: extratedDat?.events, filename: "COP29 Events List" });
-  }, [extratedDat?.events]);
+    saveAsCSV({ data: extratedData?.events, filename: "COP29 Events List" });
+  }, [extratedData?.events]);
 
   const handlePageChange = useCallback((page: number) => {
     setPage(page);
@@ -94,6 +89,10 @@ const EventTable: React.FC = () => {
     setSelectedEvent(null);
   }, []);
 
+  useEffect(() => {
+    refetch();
+  }, [memoizedFilters]);
+
   const customStyles = {
     headCells: {
       style: {
@@ -102,61 +101,52 @@ const EventTable: React.FC = () => {
         fontSize: "14px",
       },
     },
+    cells: {
+      style: {
+        textTransform: "capitalize" as "capitalize",
+      },
+    },
   };
 
   const columns: TableColumn<TableRow>[] = [
     {
       name: (
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <span>Title</span>
+        <Box style={{ display: "flex", alignItems: "center" }}>
+          <Typography className="capitalize">Title</Typography>
           <ColumnFilter
             columnKey="search"
             onFilterChange={handleFilterChange}
             onResetFilter={handleResetFilter}
           />
-        </div>
+        </Box>
       ),
-      selector: (row: { title: any }) => row.title,
+      selector: (row: { title: any }) => row.title ?? "N/A",
     },
     {
       name: "Date",
-      selector: (row: { date: string }) => formatDate(row.date),
-      sortable: true,
+      selector: (row: { date: string }) => formatDate(row.date) ?? "N/A",
     },
+
     {
       name: (
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <span>Price</span>
-          <ColumnFilter
-            columnKey="price"
-            onResetFilter={handleResetFilter}
-            onFilterChange={handleFilterChange}
-          />
-        </div>
-      ),
-      selector: (row: { price: any }) => `₦${row.price}`,
-    },
-    {
-      name: (
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <span>Location</span>
+        <Box style={{ display: "flex", alignItems: "center" }}>
+          <Typography>Location</Typography>
           <ColumnFilter
             columnKey="location"
             onResetFilter={handleResetFilter}
             onFilterChange={handleFilterChange}
           />
-        </div>
+        </Box>
       ),
-      selector: (row: { location: any }) => row.location,
+      selector: (row: { location: any }) => row.location ?? "N/A",
     },
     {
       name: "Category",
-      selector: (row: { tags: any }) => row.tags,
-      sortable: true,
+      selector: (row: { tags: any }) => row.tags ?? "N/A",
     },
     {
       name: "Status",
-      selector: (row: { status: any }) => row.status,
+      selector: (row: { status: any }) => row.status ?? "N/A",
       cell: (row: {
         status:
           | string
@@ -168,14 +158,13 @@ const EventTable: React.FC = () => {
           | undefined;
       }) => (
         <div className="text-left capitalize flex items-center">
-          {row.status === "Approved" ? (
+          {row.status == "approved" ? (
             <Chip label={row?.status} color="success" />
           ) : (
             <Chip label={row?.status} color="warning" />
           )}
         </div>
       ),
-      sortable: true,
     },
     {
       name: "Action",
@@ -245,7 +234,7 @@ const EventTable: React.FC = () => {
           responsive={true}
           customStyles={customStyles}
           columns={columns}
-          data={extratedDat?.events}
+          data={extratedData?.events}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="500px"
@@ -277,39 +266,50 @@ const EventTable: React.FC = () => {
                   component="img"
                   sx={{
                     width: "800px",
-                    height: "300px", // Set consistent height, adjust as needed
-                    objectFit: "cover", // Ensures the image covers the area without distortion
+                    height: "300px",
+                    objectFit: "cover",
                   }}
                   image={selectedEvent?.image}
                   alt={selectedEvent?.title}
                 />
                 <CardContent className="flex flex-col gap-3">
-                  <Typography variant="h5" component="div">
+                  <Typography
+                    variant="h5"
+                    component="div"
+                    className="capitalize"
+                  >
+                    <strong>Title: </strong>
                     {selectedEvent.title}
                   </Typography>
-                  <Typography component="span">
+                  <Typography component="span" className="capitalize">
+                    <strong>Description: </strong>
                     {selectedEvent.description}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
+                    <strong>Date: </strong>
                     {formatDate(selectedEvent?.date)}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {`₦ ${selectedEvent.price}`}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
+
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    className="capitalize"
+                  >
+                    <strong>Location: </strong>
                     {selectedEvent?.location}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Duration:
+                    <strong>Duration: </strong>
                     {formatDuration(selectedEvent?.start, selectedEvent?.end)}
                   </Typography>
                   <div className="mb-4">
+                    <strong>Status: </strong>
+
                     <Chip
+                      className="capitalize"
                       label={selectedEvent.status}
                       color={
-                        selectedEvent.status === "Approved"
-                          ? "success"
-                          : "error"
+                        selectedEvent.status == "approved" ? "success" : "error"
                       }
                     />
                   </div>
@@ -318,7 +318,9 @@ const EventTable: React.FC = () => {
                     <Box className="flex flex-col gap-2">
                       {selectedEvent.invoice ? (
                         <>
-                          <Typography variant="h6">Invoice</Typography>
+                          <Typography variant="h6" className="capitalize">
+                            Invoice
+                          </Typography>
                           <CardMedia
                             title="Invoice"
                             component="img"

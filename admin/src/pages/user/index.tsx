@@ -4,17 +4,23 @@ import {
   Box,
   Button,
   Grid,
+  IconButton,
+  InputAdornment,
   MenuItem,
   Modal,
   TextField,
-  Typography,
 } from "@mui/material";
 import { UserSummaryCardData } from "../../utils/datas/summary-card";
 import { SummaryCard } from "../../components/custom";
 import { IoCreateSharp } from "react-icons/io5";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useGetAllRoles } from "../../hooks/useAuth";
+import {
+  useAddAmin,
+  useGetAllProfile,
+  useGetAllRoles,
+} from "../../hooks/useAuth";
 import Loader from "../../components/ui/Loader";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface UserFormInputs {
   firstName: string;
@@ -27,14 +33,21 @@ interface UserFormInputs {
 
 const User: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const { data: roleData, isFetching } = useGetAllRoles();
+  const { refetch: refetchAllProfile } = useGetAllProfile();
+
+  const { mutate, isLoading } = useAddAmin({ refetchAllProfile });
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm<UserFormInputs>();
-
-  const { data: roleData, isFetching } = useGetAllRoles();
 
   const onSubmit: SubmitHandler<UserFormInputs> = (data) => {
     const userPayload = {
@@ -46,15 +59,14 @@ const User: React.FC = () => {
       role: data.role,
     };
 
-    console.log(userPayload);
-    // Send `userPayload` to the API
+    mutate(userPayload);
     setOpen(false);
     reset();
   };
 
   return (
     <div>
-      {isFetching && <Loader />}
+     {isFetching || isLoading ? <Loader /> : null}
       <div className="w-[100%] h-[100%] relative overflow-x-hidden">
         <Box sx={{ marginTop: "10px" }}>
           <Grid container spacing={3}>
@@ -152,22 +164,7 @@ const User: React.FC = () => {
               error={!!errors.lastName}
               helperText={errors.lastName?.message}
             />
-            <TextField
-              label="Password"
-              type="password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
-              })}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-            />
+
             <TextField
               select
               label="Role"
@@ -216,10 +213,11 @@ const User: React.FC = () => {
             />
             <TextField
               label="Password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               variant="outlined"
               fullWidth
               margin="normal"
+              // Add your register and validation logic here
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -229,6 +227,21 @@ const User: React.FC = () => {
               })}
               error={!!errors.password}
               helperText={errors.password?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      edge="end"
+                      onClick={handleClickShowPassword}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <Box mt={3} display="flex" justifyContent="space-between">
               <Button variant="contained" color="success" type="submit">

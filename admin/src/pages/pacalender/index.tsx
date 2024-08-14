@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
-import { Calendar, Views, momentLocalizer } from "react-big-calendar";
+import { Views, momentLocalizer, Calendar } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { Box, Typography } from "@mui/material";
 import { useGetCalender } from "../../hooks/useEvent";
-import { Alert } from "@mui/material";
-import Loader from "../ui/Loader";
+import Loader from "../../components/ui/Loader";
 
 const localizer = momentLocalizer(moment);
 
@@ -32,11 +32,7 @@ const dayPropGetter = (date: Date) => {
   return {};
 };
 
-interface MyCalendarProps {
-  onSelectSlot: (slot: { start: Date; end: Date }) => void;
-}
-
-const MyCalendar: React.FC<MyCalendarProps> = ({ onSelectSlot }) => {
+const MyCalendar: React.FC = () => {
   const defaultDate = useMemo(() => new Date(), []);
   const { data, isFetching } = useGetCalender();
 
@@ -51,31 +47,39 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ onSelectSlot }) => {
     }));
   }, [data]);
 
-  const handleSelectEvent = (event: any) => {
-    console.log("Selected Event:", event);
-    <Alert severity="info">Selected Event: {event.title}</Alert>;
-    <Alert severity="info">This is an info Alert.</Alert>;
-  };
-
-  const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
-    onSelectSlot({ start, end });
-  };
-
   return (
     <>
       {isFetching && <Loader />}
-      <div style={{ height: 400 }}>
+      <div className="w-[100%] h-[100%] relative overflow-x-hidden">
+        <Box
+          sx={{
+            backgroundColor: "white",
+            borderRadius: "10px",
+            padding: "15px",
+            border: "1px solid #E4E4E7",
+            mt: "1rem",
+          }}
+        >
+          <Typography
+            variant="h6"
+            textAlign={"center"}
+            sx={{ color: "#908E8F" }}
+          >
+            Calendar
+          </Typography>
+        </Box>
+
         <Calendar
-          selectable
           localizer={localizer}
           events={parsedEvents}
-          defaultDate={defaultDate}
           defaultView={Views.MONTH}
-          views={["month", "week", "day"]}
+          defaultDate={defaultDate}
+          startAccessor="start"
+          endAccessor="end"
+          
+          style={{ height: "90vh", marginTop: "1rem" }}
           eventPropGetter={eventStyleGetter}
           dayPropGetter={dayPropGetter}
-          onSelectEvent={handleSelectEvent}
-          onSelectSlot={handleSelectSlot}
         />
       </div>
     </>
