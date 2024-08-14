@@ -7,7 +7,7 @@ const Loader: React.FC = () => {
       className="fixed inset-0 flex items-center justify-center"
       style={{
         backgroundColor: "rgba(255, 255, 255, 0.5)",
-        zIndex: 999999999999999999999999999999999,
+        zIndex: 99999999999999,
       }}
     >
       <DotLoader color="green" size={40} />
