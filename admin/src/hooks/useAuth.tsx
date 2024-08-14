@@ -53,12 +53,18 @@ export const useLogout = () => {
 
 export const useAddAmin = ({
   refetchAllProfile,
+  setOpen,
+  reset,
 }: {
   refetchAllProfile: () => void;
+  setOpen: (value: boolean) => void;
+  reset: () => void;
 }) => {
   return useMutation(registerAdmin, {
     onSuccess: (result) => {
       if (result?.status) {
+        reset();
+        setOpen(false);
         refetchAllProfile();
         toast.success("Admin Added Successfully");
         queryClient.invalidateQueries("profile");
