@@ -2,6 +2,7 @@ import Pagination from "../../components/ui/Pagination";
 import Card from "../../components/ui/Card";
 import { useGetEvents } from "../../components/custom-hooks/useEvents";
 import Loader from "../../components/ui/Loader";
+import { formatDate1 } from "../../util/formattedDate";
 
 function Events() {
 const {data, isLoading} = useGetEvents()

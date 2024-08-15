@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaMapMarkerAlt, FaCalendarAlt, FaCalendarDay } from "react-icons/fa";
 import { MdEventAvailable } from "react-icons/md";
+import { formatDate1 } from "../../util/formattedDate";
+
 
 interface Event {
   image: string;
@@ -11,6 +13,7 @@ interface Event {
   end: string;
   location: string;
   id: string | number;
+  countId:number;
 }
 
 interface CardProps {
@@ -26,12 +29,12 @@ const Card: React.FC<CardProps> = ({ event }) => {
     start = "TBD",
     end = "TBD",
     location = "Unknown Location",
-    id = "0"
+    countId = 0
   } = event || {};
 
   return (
     <Link
-      to={`/event/${id}`}
+      to={`/event/${countId}`}
       data-aos="zoom-in-right"
       state={{ ...event }}
       className="w-[400px] cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
@@ -55,11 +58,11 @@ const Card: React.FC<CardProps> = ({ event }) => {
         <div className="flex flex-col gap-2">
           <div className="flex items-center text-gray-600">
             <FaCalendarAlt className="mr-2 text-gray-500" />
-            <span className="text-sm font-medium">{start}</span>
+            <span className="text-sm font-medium">{formatDate1(start)}</span>
           </div>
           <div className="flex items-center text-gray-600">
             <FaCalendarDay className="mr-2 text-gray-500" />
-            <span className="text-sm font-medium">{end}</span>
+            <span className="text-sm font-medium">{formatDate1(end)}</span>
           </div>
           <div className="flex items-center text-gray-600">
             <FaMapMarkerAlt className="mr-2 text-gray-500" />

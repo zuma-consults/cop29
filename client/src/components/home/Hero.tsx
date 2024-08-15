@@ -27,19 +27,19 @@ const Hero: React.FC = () => {
           <div className="flex items-center">
           <Link
             to="/events"
-            className="text-center w-full md:w-40 rounded py-3 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
+            className="text-center w-full md:w-[35%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
             data-aos="fade-up" data-aos-duration="1000"
           >
             <FaCalendarAlt className="text-2xl mr-2" />
-            Find Events
+            Do you want to attend an event
           </Link>
           <Link
             to="/create-event"
-            className="text-center w-full md:w-[150px] rounded py-3 mx-2 flex justify-center items-center text-green-800 bg-white hover:bg-green-100 transition"
+            className="text-center w-full md:w-[35%] rounded py-4 mx-2 flex justify-center items-center text-green-800 bg-white hover:bg-green-100 transition"
             data-aos="fade-up" data-aos-duration="1000"
           >
             <FaPlus className="text-2xl mr-2" />
-            Create an Event
+            Do you want to create an event
           </Link>
           </div>
 
