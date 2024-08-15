@@ -2,7 +2,7 @@ import { CgOrganisation } from "react-icons/cg";
 import { IoIosPeople } from "react-icons/io";
 import { MdEvent } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
-import { FaCalendarAlt} from "react-icons/fa";
+import { FaCalendarAlt } from "react-icons/fa";
 import { GrAnnounce } from "react-icons/gr";
 
 export const navConfig = [
@@ -22,11 +22,6 @@ export const navConfig = [
     path: "/organization",
   },
 
-  {
-    title: "Users",
-    icon: <RiAdminFill size={24} />,
-    path: "/user",
-  },
   // {
   //   title: "Invoices",
   //   icon: <FaFileInvoiceDollar size={24} />,
@@ -36,6 +31,16 @@ export const navConfig = [
     title: "Calendar",
     icon: <FaCalendarAlt size={24} />,
     path: "/calender",
+  },
+  {
+    title: "Users",
+    icon: <RiAdminFill size={24} />,
+    path: "/user",
+  },
+  {
+    title: "PA Calender",
+    icon: <FaCalendarAlt size={24} />,
+    path: "/pacalender",
   },
   {
     title: "Announcements",

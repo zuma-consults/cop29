@@ -1,76 +1,98 @@
 import { Cookies } from "react-cookie";
 import { request } from "../utils/api";
-import { Alert } from "@mui/material";
 
 const cookies = new Cookies();
 
-export const login = async (data: any) => {
-  try {
-    const config = {
-      method: "post",
-      url: "login/staff",
-      data,
-    };
-    const responseData = await request(config);
-    const accessToken = responseData?.token;
-    <Alert severity="success">Login Successful</Alert>;
-    cookies.set("accessToken", accessToken, { path: "/" });
-    return responseData;
-  } catch (error) {
-    console.log(error);
-  }
+export const login = (data: any) => {
+  const config = {
+    method: "post",
+    url: "login/staff",
+    data,
+  };
+
+  return request(config)
+    .then((responseData) => {
+      return responseData;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
-export const logout = async () => {
-  try {
-    const config = {
-      method: "get",
-      url: "authentication/admin/logout",
-    };
-    const responseData = await request(config);
-    return responseData;
-  } catch (error) {
-    console.log(error);
-  }
+export const registerAdmin = (data: any) => {
+  const config = {
+    method: "post",
+    url: "staff",
+    data,
+  };
+
+  return request(config)
+    .then((responseData) => {
+      return responseData;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
-export const getProfile = async () => {
-  try {
-    const config = {
-      method: "get",
-      url: "token/staff",
-    };
-    const responseData = await request(config);
-    const adminProfile = responseData?.data;
-    cookies.set("profile", adminProfile);
-    return responseData;
-  } catch (error) {
-    console.log(error);
-  }
+export const logout = () => {
+  const config = {
+    method: "post",
+    url: "logout/staff",
+  };
+
+  return request(config)
+    .then((responseData) => {
+      return responseData;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
-export const getAllProfile = async () => {
-  try {
-    const config = {
-      method: "get",
-      url: "staff",
-    };
-    const responseData = await request(config);
-    return responseData;
-  } catch (error) {
-    console.log(error);
-  }
+export const getProfile = () => {
+  const config = {
+    method: "get",
+    url: "token/staff",
+  };
+
+  return request(config)
+    .then((responseData) => {
+      const adminProfile = responseData?.data;
+      cookies.set("profile", adminProfile);
+      return responseData;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
-export const getAllRoles = async () => {
-  try {
-    const config = {
-      method: "get",
-      url: "roles",
-    };
-    const responseData = await request(config);
-    return responseData;
-  } catch (error) {
-    console.log(error);
-  }
+export const getAllProfile = () => {
+  const config = {
+    method: "get",
+    url: "staff",
+  };
+
+  return request(config)
+    .then((responseData) => {
+      return responseData;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const getAllRoles = () => {
+  const config = {
+    method: "get",
+    url: "roles",
+  };
+
+  return request(config)
+    .then((responseData) => {
+      return responseData;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
