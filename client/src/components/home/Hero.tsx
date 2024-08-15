@@ -1,4 +1,5 @@
 import React from "react";
+import { FaCalendarAlt, FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Hero: React.FC = () => {
@@ -11,7 +12,7 @@ const Hero: React.FC = () => {
       data-aos="zoom-in-right"
     >
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-co-primary opacity-80"></div>
+      <div className="absolute inset-0 bg-co-primary opacity-90"></div>
 
       <div className="relative flex flex-col md:flex-row justify-between md:pl-20 items-center z-10 p-5 md:p-8" data-aos="fade-up" data-aos-duration="1000">
         <div className="text-gray-900 flex flex-col gap-6 md:gap-8 justify-center flex-1 text-center md:text-left" data-aos="fade-right" data-aos-duration="1000">
@@ -23,13 +24,25 @@ const Hero: React.FC = () => {
             Enjoy Low Fees, High Liquidity, and Expert Support Every Step of the
             Way.
           </p>
+          <div className="flex items-center">
           <Link
             to="/events"
-            className="text-center w-full md:w-40 rounded py-3 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
+            className="text-center w-full md:w-[35%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
             data-aos="fade-up" data-aos-duration="1000"
           >
-            Find Events
+            <FaCalendarAlt className="text-2xl mr-2" />
+            Do you want to attend an event
           </Link>
+          <Link
+            to="/create-event"
+            className="text-center w-full md:w-[35%] rounded py-4 mx-2 flex justify-center items-center text-green-800 bg-white hover:bg-green-100 transition"
+            data-aos="fade-up" data-aos-duration="1000"
+          >
+            <FaPlus className="text-2xl mr-2" />
+            Do you want to create an event
+          </Link>
+          </div>
+
         </div>
         <div className="hidden md:flex flex-1 justify-center">
           <img

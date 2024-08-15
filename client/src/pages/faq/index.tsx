@@ -1,28 +1,45 @@
 import Accordion from "../../components/ui/Accordion";
 
 const items = [
-  { title: "Accordion Item 1", content: "Content for item 1." },
-  { title: "Accordion Item 2", content: "Content for item 2." },
-  { title: "Accordion Item 3", content: "Content for item 3." },
-  { title: "Accordion Item 4", content: "Content for item 4." },
-  { title: "Accordion Item 5", content: "Content for item 5." },
-  { title: "Accordion Item 6", content: "Content for item 6." },
+  { 
+    title: "How do I book a ticket for an event?", 
+    content: "Booking a ticket is easy! Just navigate to the event page, select your preferred date and time, and click on 'Book Now.' Follow the prompts to enter your details and payment information, and you'll receive a confirmation email with your ticket details." 
+  },
+  { 
+    title: "Can I create my own event on Cop29?", 
+    content: "Absolutely! To create your own event, go to the 'Create Event' section, fill in the event details, set the date and time, and customize the registration options. Once you submit, your event will be live and accessible to other users." 
+  },
+  { 
+    title: "What if I need to cancel or change my booking?", 
+    content: "If you need to cancel or change your booking, please visit the 'My Bookings' section of your profile. Here you can select the event and choose to modify or cancel your reservation. Note that cancellation policies may vary depending on the event." 
+  },
+  { 
+    title: "How can I contact the event organizer?", 
+    content: "You can contact the event organizer directly through the event page. Look for the 'Contact Organizer' button or section, and you'll find options to send a message or get in touch through other provided contact methods." 
+  },
+  { 
+    title: "What payment methods do you accept?", 
+    content: "We accept various payment methods including credit/debit cards, PayPal, and other popular payment gateways. You can select your preferred payment option during the booking process." 
+  },
+  { 
+    title: "How do I know if an event is sold out?", 
+    content: "The event page will display real-time availability. If tickets are sold out, you'll see a notification indicating that no more tickets are available. You can also sign up for notifications to be alerted if additional tickets become available." 
+  },
 ];
 
 function FAQ() {
   return (
     <div className="pb-5 md:pb-2 flex items-center justify-center flex-col px-5 md:px-10 relative mb-5">
-      <div className="absolute top-10 right-0 w-40 h-40 md:w-52 md:h-52 lg:w-80 lg:h-60 bg-gradient-to-r from-green-400 via-green-600 to-green-700 opacity-70 rounded-full mix-blend-multiply filter blur-xl md:blur-2xl animate-blob animation-delay-4000 z-0"></div>
-
+      {/* Background Image */}
       <div
         style={{
-          backgroundImage: `url("https://images.pexels.com/photos/209154/pexels-photo-209154.jpeg")`,
+          backgroundImage: `url("/images/globe.jpg")`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-        className="rounded-lg w-full md:w-full flex justify-center items-center md:items-start py-10 mt-10 md:mt-20 relative z-10"
+        className="rounded-lg w-full md:w-full flex justify-center items-center md:items-start py-10 mt-10 md:mt-20 relative"
       >
-        <div className="text-center md:text-left px-4 md:px-0">
+        <div className="text-center p-10 md:text-left px-4 md:px-0">
           <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold">
             Frequently Asked Questions
           </h1>
@@ -39,14 +56,14 @@ function FAQ() {
         </h2>
         <div className="border-2 md:border-4 border-green-700 rounded flex flex-col md:flex-row p-4 md:p-5 gap-4 items-center">
           <img
-            src="https://royalminesproperty.com/static/media/caller.ea5c26aca0e26a69b8e4.avif"
+            src="/images/contact.avif"
             alt="Contact Us"
             className="w-full md:w-1/2 h-auto object-cover rounded-lg"
           />
           <div className="w-full md:w-1/2 flex flex-col p-4">
             <h2 className="text-xl md:text-2xl font-bold mt-1">Connect With Us</h2>
             <p className="text-sm md:text-base mt-1">
-              Reach out to our dedicated office desk during our business hours, from 9am to 5pm WAT, for personalized assistance and expert guidance on all your inquiries.
+              Reach out to our dedicated team during business hours (9am to 5pm WAT) for personalized assistance and expert guidance. We’re here to help with any inquiries or issues you may have.
             </p>
             <div className="w-full mt-4">
               <button className="bg-green-800 p-2 md:p-3 rounded text-white w-full md:w-auto">

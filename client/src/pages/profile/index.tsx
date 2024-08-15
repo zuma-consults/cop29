@@ -1,5 +1,12 @@
 import React from "react";
 import DataTable from "react-data-table-component";
+import {
+  useGetProfile,
+  useLogout,
+} from "../../components/custom-hooks/useAuth";
+import Loader from "../../components/ui/Loader";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // Define interfaces for your data
 interface Event {
@@ -13,17 +20,6 @@ interface Event {
   description: string;
   location: string;
   tags: string[];
-}
-
-interface ExpandedRowData {
-  description: string;
-  location: string;
-  tags: string[];
-  externalLink: string;
-}
-
-interface ProfileProps {
-  data: Event[];
 }
 
 // Define your columns
@@ -76,31 +72,46 @@ const data: Event[] = [
 // Define the expanded component
 const ExpandedComponent: React.FC<{ data: Event }> = ({ data }) => (
   <div className="p-4 bg-gray-100">
-    <p><strong>Description:</strong> {data.description}</p>
-    <p><strong>Location:</strong> {data.location}</p>
-    <p><strong>Tags:</strong> {data.tags.join(", ")}</p>
-    <p><strong>External Link:</strong> <a href={data.externalLink} target="_blank" rel="noopener noreferrer" className="text-blue-600">{data.externalLink}</a></p>
+    <p>
+      <strong>Description:</strong> {data.description}
+    </p>
+    <p>
+      <strong>Location:</strong> {data.location}
+    </p>
+    <p>
+      <strong>Tags:</strong> {data.tags.join(", ")}
+    </p>
+    <p>
+      <strong>External Link:</strong>{" "}
+      <a
+        href={data.externalLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600"
+      >
+        {data.externalLink}
+      </a>
+    </p>
   </div>
 );
 
 const Profile: React.FC = () => {
-  // Hardcoded user data
-  const user = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "123-456-7890",
-    usertype: "Premium Member",
-    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    profilePicture: "https://via.placeholder.com/150",
-    activities: [
-      "Completed project X",
-      "Started a new course on React",
-      "Attended the company annual meetup",
-      "Published an article on tech trends",
-      "Volunteered for community service",
-    ],
-  };
+  const navigate = useNavigate();
+  const { data: user, isLoading } = useGetProfile();
+  const { mutate: logout, isLoading: logoutloading } = useLogout();
 
+  if (isLoading || logoutloading) {
+    return <Loader />;
+  }
+  if (!user) {
+    toast.warn("You have to be logged in to view your profile");
+    navigate("/login");
+  }
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
   return (
     <div className="pb-[5%] md:pb-[2%] flex items-center justify-center flex-col gap-10 px-5 md:px-20 relative">
       <div
@@ -109,27 +120,41 @@ const Profile: React.FC = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-        className="rounded-lg w-[100%] md:w-full flex justify-center items-center md:items-start py-10 mt-10 relative z-10"
+        className="rounded-lg w-[100%] md:w-full flex justify-center items-center md:items-start py-20 mt-10 relative z-10"
       >
         <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold">
-          Welcome {user.name}!
+          Welcome {user?.data?.name}!
         </h1>
       </div>
 
-      <div className="w-full bg-green-50 shadow rounded-lg p-6">
-        <div className="">
-          <div>
-            <h2 className="text-xl md:text-2xl font-bold text-gray-800">{user.name}</h2>
-            <p className="text-sm md:text-base text-gray-600 mt-2">{user.email}</p>
-            <p className="text-sm md:text-base text-gray-600 mt-2">{user.phone}</p>
-            <p className="text-sm md:text-base text-gray-600 mt-2">{user.usertype}</p>
-          </div>
+      <div className="w-full flex items-start justify-between bg-green-50 shadow rounded-lg p-6">
+        <div>
+          <h2 className="text-xl md:text-2xl font-bold text-gray-800 capitalize">
+            {user?.data?.name}
+          </h2>
+          <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
+            {user?.data?.email}
+          </p>
+          <p className="text-sm md:text-base text-gray-600 mt-2">
+            {user?.data?.phone}
+          </p>
+          <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
+            {user?.data?.userType}
+          </p>
         </div>
+        <button
+          className="bg-green-800 text-white p-4 rounded hover:bg-green-700"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
       </div>
 
       {/* Activities Section */}
       <div className="w-full bg-gray-100 rounded-lg p-6">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">Events</h2>
+        <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
+          Events
+        </h2>
         <DataTable
           columns={columns}
           data={data}
