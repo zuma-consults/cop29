@@ -42,7 +42,7 @@ const CreateEvent: React.FC<{
       title: Yup.string().required("Event title is required"),
       externalLink: Yup.string()
         .url("Invalid URL")
-        .required("Zoom link is required"),
+        .required("Meeting link is required"),
       date: Yup.string().required("Time of the event is required"),
       location: Yup.string().required("Location is required"),
       description: Yup.string().required("Event description is required"),
@@ -68,7 +68,7 @@ const CreateEvent: React.FC<{
       );
       formData.append("start", selectedStart?.toISOString() || "");
       formData.append("end", selectedEnd?.toISOString() || "");
-
+      formData.append("status", "approved");
       mutate(formData);
     },
   });
@@ -79,7 +79,7 @@ const CreateEvent: React.FC<{
       <div className="flex items-center justify-center p-4 md:p-0">
         <div
           className="w-full max-w-4xl bg-white p-5 rounded-lg shadow-lg"
-          data-aos="zoom-in-right"
+          data-aos="Meeting-in-right"
         >
           <h1 className="text-green-700 font-bold text-[26px] text-center md:text-left">
             Create an Event
@@ -154,12 +154,12 @@ const CreateEvent: React.FC<{
               />
             </div>
 
-            {/* Zoom Link */}
+            {/* Meeting Link */}
             <div className="flex flex-col gap-2">
               <TextField
                 id="externalLink"
                 name="externalLink"
-                label="Zoom Link"
+                label="Meeting Link"
                 color="success"
                 variant="outlined"
                 value={formik.values.externalLink}

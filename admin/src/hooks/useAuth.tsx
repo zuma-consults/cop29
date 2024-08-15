@@ -4,7 +4,6 @@ import {
   getAllProfile,
   getAllRoles,
   getProfile,
-  login,
   logout,
   registerAdmin,
 } from "../services/auth";
@@ -14,41 +13,31 @@ import { useNavigate } from "react-router-dom";
 const queryClient = new QueryClient();
 const cookies = new Cookies();
 
-export const useLogin = () => {
-  return useMutation(login, {
-    onSuccess: (result) => {
-      if (result?.status) {
-        toast.success("Login Successful");
-        const accessToken = result?.data;
-        cookies.set("accessToken", accessToken, { path: "/" });
-        queryClient.invalidateQueries("profile");
-      }
-    },
-    onError: (error: any) => {
-      const errorMessage = error?.response?.data?.message || "Error occurred";
-      toast.error(errorMessage);
-      queryClient.invalidateQueries("profile");
-    },
-  });
-};
-
 export const useLogout = () => {
   const navigate = useNavigate();
 
   return useMutation(logout, {
     onSuccess: (result) => {
       if (result?.status) {
-        cookies.remove("accessToken");
-        cookies.remove("profile");
         queryClient.invalidateQueries("profile");
-        toast.success("Logout Successful");
-        navigate("/login");
       }
+      handleLogoutCleanup();
     },
     onError: (_error) => {
-      toast.error("Logout failed. Please try again.");
+      handleLogoutCleanup();
     },
   });
+
+  function handleLogoutCleanup() {
+    cookies.remove("accessToken");
+    cookies.remove("profile");
+    toast.success("Logout Successful");
+    navigate("/login", { replace: true }); // This prevents adding the login route to the history stack
+    window.history.pushState("", "", "/login"); // This adds an additional layer to block the back button
+    window.addEventListener("popstate", () => {
+      navigate("/login", { replace: true });
+    });
+  }
 };
 
 export const useAddAmin = ({

@@ -1,8 +1,8 @@
-import { Box, Button, Grid, Modal } from "@mui/material";
+import { Box, Button, Modal } from "@mui/material";
 import React, { useState } from "react";
-import { SummaryCard } from "../../components/custom";
+// import { SummaryCard } from "../../components/custom";
 import EventTable from "../../components/tabel/EventTable";
-import { EventSummaryCardData } from "../../utils/datas/summary-card";
+// import { EventSummaryCardData } from "../../utils/datas/summary-card";
 import { IoCreateSharp } from "react-icons/io5";
 import CreateEvent from "../../components/create-event";
 import { useGetAllEvents } from "../../hooks/useEvent";
@@ -16,7 +16,7 @@ const Event: React.FC = () => {
     <>
       {isFetching && <Loader />}
       <div className="w-[100%] h-[100%] relative overflow-x-hidden">
-        <Box sx={{ marginTop: "10px" }}>
+        {/* <Box sx={{ marginTop: "10px" }}>
           <Grid container spacing={3}>
             {EventSummaryCardData?.map((card, index) => (
               <Grid item key={index} xs={12} sm={6} md={4}>
@@ -28,7 +28,7 @@ const Event: React.FC = () => {
               </Grid>
             ))}
           </Grid>
-        </Box>
+        </Box> */}
         <div className="flex flex-col gap-2 px-5 md:px-0  sm:mt-[2.5rem] mt-1">
           <div className="flex align-center md:flex-row flex-col sm:gap-10 w-auto justify-between">
             <span className="text-sm  font-extrabold text-[#2E7D31]">

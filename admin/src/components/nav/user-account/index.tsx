@@ -1,9 +1,7 @@
 import { Box, Skeleton, Typography } from "@mui/material";
-import { MoreVert } from "@mui/icons-material";
 import React from "react";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import AlertDialog from "../../Reusable-Dialog";
 import { useLogout } from "../../../hooks/useAuth";
 import Loader from "../../ui/Loader";
@@ -26,15 +24,12 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
 
   const handleLogout = async () => {
     setOpenDialog(false);
-    await logout();
+    logout();
   };
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -56,9 +51,6 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
           flexWrap: { xs: "wrap", sm: "no-wrap" },
         }}
       >
-        {/* <Box sx={{ marginRight: "12px" }}>
-        <ImageFrame40 image={image} />
-      </Box> */}
         <Box sx={{ flexGrow: 1, mr: "20px" }}>
           <Box>
             {role ? (
@@ -105,6 +97,9 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
               />
             )}
           </Box>
+          <Button onClick={handleClickOpen} color="success">
+            Logout
+          </Button>
         </Box>
         <Box
           sx={{
@@ -113,9 +108,6 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
             top: { md: 0 },
           }}
         >
-          <Button aria-describedby={id} onClick={handleClick} color="success">
-            <MoreVert color="success" />
-          </Button>
           <Popover
             id={id}
             open={open}
@@ -130,42 +122,13 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
               horizontal: "left",
             }}
             sx={{ zIndex: 10000 }}
-          >
-            <Box sx={{ p: 2 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  cursor: "pointer",
-                }}
-                onClick={handleClickOpen}
-              >
-                <LogoutRoundedIcon
-                  sx={{ marginRight: "10px", transform: "scaleX(-1)" }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: "16px",
-                    fontWeight: 600,
-                    color: "black",
-                    mb: { xs: "5px", sm: "0px" },
-                    wordBreak: "break-all",
-                    textTransform: "capitalize",
-                  }}
-                >
-                  Logout
-                </Typography>
-              </Box>
-            </Box>
-          </Popover>
+          ></Popover>
           <AlertDialog
             open={openDialog}
             onClose={handleClickClose}
             onAgree={handleLogout}
             title={"Logout"}
-            content={
-              "We don't want to see you go, please check on us soon. Are you still willing to checkout?"
-            }
+            content={" Are you sure?"}
             disagreeText={"Cancel"}
             agreeText={"Yes, continue"}
           />

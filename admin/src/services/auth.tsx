@@ -1,22 +1,18 @@
 import { Cookies } from "react-cookie";
 import { request } from "../utils/api";
+import axios from "axios";
 
 const cookies = new Cookies();
 
-export const login = (data: any) => {
+export const login = async (data: any) => {
   const config = {
     method: "post",
-    url: "login/staff",
+    url: "https://cop29.onrender.com/api/v1/login/staff",
     data,
   };
 
-  return request(config)
-    .then((responseData) => {
-      return responseData;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  const response = await axios(config);
+  return response.data;
 };
 
 export const registerAdmin = (data: any) => {

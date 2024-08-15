@@ -3,15 +3,14 @@ import UserTable from "../../components/tabel/UserTable";
 import {
   Box,
   Button,
-  Grid,
   IconButton,
   InputAdornment,
   MenuItem,
   Modal,
   TextField,
 } from "@mui/material";
-import { UserSummaryCardData } from "../../utils/datas/summary-card";
-import { SummaryCard } from "../../components/custom";
+// import { UserSummaryCardData } from "../../utils/datas/summary-card";
+// import { SummaryCard } from "../../components/custom";
 import { IoCreateSharp } from "react-icons/io5";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -70,7 +69,7 @@ const User: React.FC = () => {
     <div>
       {isFetching || isLoading ? <Loader /> : null}
       <div className="w-[100%] h-[100%] relative overflow-x-hidden">
-        <Box sx={{ marginTop: "10px" }}>
+        {/* <Box sx={{ marginTop: "10px" }}>
           <Grid container spacing={3}>
             {UserSummaryCardData?.map((card, index) => (
               <Grid item key={index} xs={12} sm={6} md={6}>
@@ -82,7 +81,7 @@ const User: React.FC = () => {
               </Grid>
             ))}
           </Grid>
-        </Box>
+        </Box> */}
         <div className="flex flex-col gap-2 px-4 md:px-0 sm:mt-[2.5rem] mt-1">
           <div className="flex align-center md:flex-row flex-col sm:gap-10 w-auto justify-between">
             <span className="text-sm font-extrabold text-[#2E7D31]">
