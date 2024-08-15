@@ -6,7 +6,7 @@ interface VideoPlayerProps {
 
 export default function VideoPlayer({ src }: VideoPlayerProps) {
     return (
-        <div className='h-[50vh] w-full'>
+        <div className='h-[70vh] w-full'>
             <ReactPlayer
                 url={src}
                 className="react-player"

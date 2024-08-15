@@ -1,83 +1,9 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import AliceCarousel from "react-alice-carousel";
 import Card from "../ui/Card";
+import { useGetEvents } from "../custom-hooks/useEvents";
+import Loader from "../ui/Loader";
 
-const eventData = [
-  {
-    id: 0,
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Just added",
-    title: "Kaduna Young Entrepreneurship Summit 2024",
-    time: "Sat, October 17 • 6:00 PM GMT+1",
-    price: "Free",
-  },
-  {
-    id: 1,
-    imageUrl:
-      "https://images.pexels.com/photos/3100960/pexels-photo-3100960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Coming Soon",
-    title: "Tech Conference 2024",
-    time: "Mon, November 20 • 10:00 AM GMT+1",
-    price: "$10",
-  },
-  {
-    id: 2,
-    imageUrl:
-      "https://images.pexels.com/photos/210682/pexels-photo-210682.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "New Event",
-    title: "Music Festival 2024",
-    time: "Fri, December 5 • 8:00 PM GMT+1",
-    price: "$50",
-  },
-  {
-    id: 3,
-    imageUrl:
-      "https://images.pexels.com/photos/167964/pexels-photo-167964.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Just added",
-    title: "Art Exhibition 2024",
-    time: "Sun, October 22 • 2:00 PM GMT+1",
-    price: "Free",
-  },
-  {
-    id: 4,
-    imageUrl:
-      "https://images.pexels.com/photos/212286/pexels-photo-212286.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "New Event",
-    title: "Startup Pitch Competition 2024",
-    time: "Tue, November 11 • 3:00 PM GMT+1",
-    price: "$15",
-  },
-  {
-    id: 5,
-    imageUrl:
-      "https://images.pexels.com/photos/1629225/pexels-photo-1629225.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Coming Soon",
-    title: "Cooking Masterclass 2024",
-    time: "Wed, December 12 • 11:00 AM GMT+1",
-    price: "$30",
-  },
-  {
-    id: 6,
-    imageUrl:
-      "https://images.pexels.com/photos/3100960/pexels-photo-3100960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "Just added",
-    title: "Photography Workshop 2024",
-    time: "Thu, January 25 • 9:00 AM GMT+1",
-    price: "$25",
-  },
-  {
-    id: 7,
-    imageUrl:
-      "https://images.pexels.com/photos/3611092/pexels-photo-3611092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    status: "New Event",
-    title: "Business Networking Event 2024",
-    time: "Fri, February 14 • 5:00 PM GMT+1",
-    price: "Free",
-  },
-];
 const responsive = {
   0: { items: 1 },
   300: { items: 2 },
@@ -87,22 +13,16 @@ const responsive = {
 };
 
 const LatestEvents: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const { data, isLoading } = useGetEvents();
+  const eventData = data?.data?.events;
+  console.log(data, "data");
 
-  const handleNext = () => {
-    if (currentIndex < eventData.length - 3) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  };
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
-    <section className="relative flex flex-col p-10 w-full h-[100vh]">
+    <section className="relative flex flex-col p-10 w-full h-[80vh]">
       <div className="flex justify-between items-center">
         <p className="text-[32px] text-gray-800">Latest Events</p>
         <Link
@@ -122,19 +42,12 @@ const LatestEvents: React.FC = () => {
         keyboardNavigation={true}
         disableButtonsControls
       >
-        {eventData.map((event, index) => (
+        {eventData.map((event: any) => (
           <div
-            key={index}
+            key={event.id}
             className="px-2 hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
           >
-            <Card
-              imageUrl={event.imageUrl}
-              status={event.status}
-              title={event.title}
-              time={event.time}
-              price={event.price}
-              id={event.id}
-            />
+            <Card key={event.id} event={event} />
           </div>
         ))}
       </AliceCarousel>

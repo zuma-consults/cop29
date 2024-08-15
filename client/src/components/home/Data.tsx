@@ -48,19 +48,19 @@ const Data: React.FC = () => {
       </div>
       <div className="flex flex-col md:flex-row h-auto md:h-[60%] w-full">
         <div className="flex flex-col text-green-800 border-r-[1px] border-b-[1px] border-t-[1px] p-3 border-green-200 items-center justify-center w-full md:w-1/3 text-[50px] md:text-[80px] font-bold mb-8 md:mb-0" data-aos="fade-up" data-aos-duration="1000">
-          <div ref={orgsRef}>0</div>
+          <div ref={orgsRef} className="text-[50px]">0</div>
           <span className="text-[16px] md:text-[20px] font-semibold">
             Participating Organisations
           </span>
         </div>
         <div className="flex flex-col text-green-800 border-r-[1px] border-b-[1px] border-t-[1px] p-3 border-green-200 items-center justify-center w-full md:w-1/3 text-[50px] md:text-[80px] font-bold mb-8 md:mb-0" data-aos="fade-up" data-aos-duration="1000">
-          <div ref={govsRef}>0</div>
+          <div ref={govsRef} className="text-[50px]">0</div>
           <span className="text-[16px] md:text-[20px] font-semibold">
             National Governments
           </span>
         </div>
         <div className="flex flex-col text-green-800 border-r-[1px] border-b-[1px] border-t-[1px] p-3 border-green-200 items-center justify-center w-full md:w-1/3 text-[50px] md:text-[80px] font-bold" data-aos="fade-up" data-aos-duration="1000">
-          <div ref={sessionsRef}>0</div>
+          <div ref={sessionsRef} className="text-[50px]">0</div>
           <span className="text-[16px] md:text-[20px] font-semibold">Testing Sessions</span>
         </div>
       </div>

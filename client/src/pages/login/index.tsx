@@ -1,55 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import { useLogin } from "../../components/custom-hooks/useAuth"; // Assume you have a useLogin hook
+import { useNavigate } from "react-router-dom";
+
+const validationSchema = Yup.object({
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(8, "Password must be at least 8 characters")
+    .required("Password is required"),
+  rememberMe: Yup.boolean(),
+});
 
 const Login: React.FC = () => {
-  const [agreed, setAgreed] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleCheckboxChange = (event: {
-    target: { checked: boolean | ((prevState: boolean) => boolean) };
-  }) => {
-    setAgreed(event.target.checked);
-  };
-
-  const handlePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState);
-  };
-
-  const handleLogin = () => {
-    setIsLoading(true);
-    // Perform your login logic here
-    setIsLoading(false);
-  };
-
-  const handleForgotPassword = () => {
-    // Redirect or perform forgot password logic here
-  };
-
-  const handleEmailChange = (e: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
-    setPassword(e.target.value);
-  };
+  const { mutate: login, isLoading } = useLogin();
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-green-800">
       <div className="flex-1 flex items-center justify-center">
-        <div className="bg-white w-full md:w-[480px] p-5 m-10 md:m-0 grid gap-3 rounded-lg" data-aos="zoom-in-right">
+        <div
+          className="bg-white w-full md:w-[480px] p-5 m-10 md:m-0 grid gap-3 rounded-lg"
+          data-aos="zoom-in-right"
+        >
           <div className="w-full h-max flex flex-col items-center justify-center gap-1">
             <img
               src="/images/coat.png"
               alt="Description of image"
               width={100}
-              height={10}
+              height={100}
               className="rounded-lg cursor-pointer"
               onClick={() => window.location.replace("/")}
             />
@@ -64,70 +46,102 @@ const Login: React.FC = () => {
               Sign up
             </button>
           </p>
-          <input
-            type="email"
-            placeholder="Email Address*"
-            className="border-[0.8px] border-gray-400 px-[10px] py-3 mb-2 text-[12px]"
-            value={email}
-            onChange={handleEmailChange}
-          />
-          <div className="relative flex items-center">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password*"
-              className="border-[0.8px] border-gray-400 px-[10px] py-3 mb-2 text-[12px] w-full pr-10"
-              value={password}
-              onChange={handlePasswordChange}
-            />
-            <div
-              className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
-              onClick={handlePasswordVisibility}
-            >
-              {showPassword ? (
-                <FaRegEye size={20} />
-              ) : (
-                <FaRegEyeSlash size={20} />
-              )}
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-2">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="terms"
-                className="form-checkbox text-green-500 h-4 w-4"
-                checked={agreed}
-                onChange={handleCheckboxChange}
-              />
-              <label
-                htmlFor="terms"
-                className="ml-2 text-gray-600 text-[12px] font-medium"
-              >
-                Remember me
-              </label>
-            </div>
-            <button
-              onClick={handleForgotPassword}
-              className="text-green-500 text-[12px] font-medium"
-            >
-              Forgot Password?
-            </button>
-          </div>
-          <button
-            type="submit"
-            onClick={handleLogin}
-            className={`mt-3 px-4 py-3 rounded font-semibold ${agreed
-              ? "bg-green-700 text-white"
-              : "bg-green-700 text-white cursor-not-allowed"
-              }`}
-            disabled={!email || !password}
+
+          <Formik
+            initialValues={{
+              email: "",
+              password: "",
+              rememberMe: false,
+              showPassword: false,
+            }}
+            validationSchema={validationSchema}
+            onSubmit={(
+              { showPassword, rememberMe, ...values },
+              { resetForm }
+            ) => {
+              login(values, {
+                onSuccess: () => {
+                  navigate("/profile");
+                },
+              });
+              navigate("/profile");
+              resetForm();
+            }}
           >
-            Log In
-          </button>
+            {({ values, setFieldValue, isSubmitting }) => (
+              <Form className="grid gap-5">
+                <div className="grid gap-1">
+                  <Field
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Email Address*"
+                    className="border-[0.8px] border-gray-400 px-[10px] py-3 text-[12px]"
+                  />
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    className="text-red-500 text-xs"
+                  />
+                </div>
+
+                <div className="relative flex items-center">
+                  <Field
+                    type={values.showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    placeholder="Password*"
+                    className="border-[0.8px] border-gray-400 px-[10px] py-3 text-[12px] w-full pr-10"
+                  />
+                  <div
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                    onClick={() =>
+                      setFieldValue("showPassword", !values.showPassword)
+                    }
+                  >
+                    {values.showPassword ? (
+                      <FaRegEye size={20} />
+                    ) : (
+                      <FaRegEyeSlash size={20} />
+                    )}
+                  </div>
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="text-red-500 text-xs"
+                  />
+                </div>
+
+                <div className="flex items-center mb-4">
+                  <Field
+                    type="checkbox"
+                    id="rememberMe"
+                    name="rememberMe"
+                    className="mr-2"
+                  />
+                  <label
+                    htmlFor="rememberMe"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Remember me
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  className="bg-green-600 text-white py-2 px-4 rounded-lg"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Logging in..." : "Log In"}
+                </button>
+              </Form>
+            )}
+          </Formik>
         </div>
       </div>
 
-      <div className="hidden md:flex flex-1 bg-green-200">
+      <div className="hidden md:flex flex-1 bg-green-200 relative">
+      <div className="absolute inset-0 bg-co-primary opacity-50"></div>
         <img
           src="/images/globe.jpg"
           alt="Image description"
@@ -137,6 +151,7 @@ const Login: React.FC = () => {
 
       {/* Mobile Background Image */}
       <div className="hidden md:flex-1 md:relative">
+      <div className="absolute inset-0 bg-co-primary opacity-50"></div>
         <img
           src="/images/globe.jpg"
           alt="Image description"
