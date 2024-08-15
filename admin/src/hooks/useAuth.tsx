@@ -4,7 +4,6 @@ import {
   getAllProfile,
   getAllRoles,
   getProfile,
-  login,
   logout,
   registerAdmin,
 } from "../services/auth";
@@ -33,7 +32,11 @@ export const useLogout = () => {
     cookies.remove("accessToken");
     cookies.remove("profile");
     toast.success("Logout Successful");
-    navigate("/login");
+    navigate("/login", { replace: true }); // This prevents adding the login route to the history stack
+    window.history.pushState("", "", "/login"); // This adds an additional layer to block the back button
+    window.addEventListener("popstate", () => {
+      navigate("/login", { replace: true });
+    });
   }
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, TextField, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -30,7 +30,7 @@ const Login: React.FC = () => {
         toast.success("Login Successful");
         const accessToken = result?.data;
         cookies.set("accessToken", accessToken, { path: "/" });
-        navigate("/");
+        navigate("/", { replace: true });
       }
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || "Error occurred";
@@ -72,7 +72,13 @@ const Login: React.FC = () => {
               variant="outlined"
               fullWidth
               margin="normal"
-              {...register("email", { required: "Email is required" })}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                  message: "Enter a valid email address",
+                },
+              })}
               error={!!errors.email}
               helperText={
                 errors.email ? (errors.email.message as string) : undefined
@@ -84,7 +90,13 @@ const Login: React.FC = () => {
               variant="outlined"
               fullWidth
               margin="normal"
-              {...register("password", { required: "Password is required" })}
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must have at least 8 characters",
+                },
+              })}
               error={!!errors.password}
               helperText={
                 errors.password
