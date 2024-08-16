@@ -53,11 +53,14 @@ export const request = async (config: AxiosRequestConfig): Promise<any> => {
 
         // Show the error toast with user-friendly messages
         if (status === 401 || status === 403) {
-          toast.error("It seems you're not authorized to perform this action. Please log in and try again.");
+          return
+          // toast.error("It seems you're not authorized to perform this action. Please log in and try again.");
           // navigateToLogin();
-        } else if (status && status >= 400 && status < 500) {
+        } 
+        if (status && status >= 400 && status < 500) {
           toast.error("There was an issue with your request. Please check the information and try again.");
-        } else if (status && status >= 500) {
+        } 
+         if (status && status >= 500) {
           toast.error("Oops! Something went wrong on our end. Please try again later.");
         }
       }

@@ -1,6 +1,7 @@
 import React from "react";
 import { FaCalendarAlt, FaPlus, FaInfoCircle, FaQuestionCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 
 const Hero: React.FC = () => {
   return (
@@ -41,14 +42,14 @@ const Hero: React.FC = () => {
               <FaPlus className="text-2xl mr-2" />
               Create an Event
             </Link>
-            <Link
-              to="/info"
+            <HashLink
+              to="/faq#how-it-works"
               className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-blue-800 hover:bg-blue-200 bg-blue-100 transition"
               data-aos="fade-up" data-aos-duration="1000"
             >
               <FaInfoCircle className="text-2xl mr-2" />
               How it Works
-            </Link>
+            </HashLink>
             <Link
               to="/faq"
               className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-orange-800 hover:bg-orange-200  bg-orange-100 transition"

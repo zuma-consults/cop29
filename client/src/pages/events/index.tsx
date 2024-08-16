@@ -66,11 +66,11 @@ if(isLoading){
         ))}
       </div>
       {/* Pagination */}
-      <Pagination
+      {/* <Pagination
         currentPage={1}
         totalPages={12}
         onPageChange={()=>{}}
-      />
+      /> */}
     </section>
   );
 }
