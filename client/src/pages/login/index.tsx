@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { useLogin } from "../../components/custom-hooks/useAuth"; // Assume you have a useLogin hook
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/ui/Loader";
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -18,6 +19,10 @@ const validationSchema = Yup.object({
 const Login: React.FC = () => {
   const { mutate: login, isLoading } = useLogin();
   const navigate = useNavigate();
+
+   if(isLoading){
+    return <Loader/>
+   }
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-green-800">
@@ -64,11 +69,10 @@ const Login: React.FC = () => {
                   navigate("/");
                 },
               });
-              navigate("/");
               resetForm();
             }}
           >
-            {({ values, setFieldValue, isSubmitting }) => (
+            {({ values, setFieldValue }) => (
               <Form className="grid gap-5">
                 <div className="grid gap-1">
                   <Field

@@ -137,6 +137,21 @@ export const faqs = [
   },
 ];
 
+export const links = [
+  {
+    title: "Find Events",
+    path: "/events",
+  },
+  {
+    title: "Create Event",
+    path: "/create-event",
+  },
+  {
+    title: "FAQs",
+    path: "/faq",
+  },
+];
+
 export const howItWorks = [
   {
     imageSrc: "/images/contact.avif",

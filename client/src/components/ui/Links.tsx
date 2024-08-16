@@ -17,7 +17,7 @@ const Links: React.FC<LinksProps> = ({
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { data: user, isLoading } = useGetProfile();
+  const { data: user, isLoading, refetch } = useGetProfile();
   const { mutate: logout, isLoading: logoutloading } = useLogout();
 
   if (isLoading || logoutloading) {
@@ -37,21 +37,19 @@ const Links: React.FC<LinksProps> = ({
       title: "FAQs",
       path: "/faq",
     },
-    ...(user
-      ? [
-          {
-            title: "Your Profile",
-            path: "/profile",
-          },
-        ]
-      : []),
   ];
-
+  if(user) { links.push({
+    title: "Your Profile",
+    path: "/profile",
+  })
+  refetch()
+}
   const isActive = (path: string) => location.pathname === path;
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate("/login");
+    refetch()
     toast.warn('You are logged out. Login to perform more tasks')
   };
 
