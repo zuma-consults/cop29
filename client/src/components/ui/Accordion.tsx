@@ -28,7 +28,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         className="w-full py-3 px-4 text-left focus:outline-none flex justify-between items-center"
         onClick={() => setActiveIndex(isActive ? null : index)}
       >
-        <span className="font-semibold text-gray-800">{title}</span>
+        <span className="font-semibold text-gray-800 text-[20px]">{title}</span>
         <svg
           className={`w-5 h-5 transform transition-transform duration-300 ${isActive ? "rotate-180" : ""}`}
           xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         </svg>
       </button>
       {isActive && (
-        <div className="p-4 text-gray-600" data-aos="fade-right">
+        <div className="p-10 text-gray-600 bg-green-100 text-[16px]" data-aos="fade-right">
           {content}
         </div>
       )}

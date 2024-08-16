@@ -50,7 +50,6 @@ const Links: React.FC<LinksProps> = ({
     logout();
     navigate("/login");
     refetch()
-    toast.warn('You are logged out. Login to perform more tasks')
   };
 
   return (
