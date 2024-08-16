@@ -2,9 +2,21 @@ import React, { useState } from "react";
 import Links from "./Links";
 import { IoClose, IoMenu } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { useGetProfile, useLogout } from "../custom-hooks/useAuth";
+import Loader from "./Loader";
+import { toast } from "react-toastify";
 
 const Navbar: React.FC = () => {
   const [toggle, setToggle] = useState<boolean>(false);
+  const { data: user, isLoading } = useGetProfile();
+  const { mutate: logout, isLoading: logoutloading } = useLogout();
+  if (isLoading || logoutloading) {
+    return <Loader />;
+  }
+  // if (!user) {
+  //   toast.warn("You have to be logged in to view your profile");
+  //   navigate("/login");
+  // }
   return (
     <nav className="w-full flex items-center justify-between md:p-4 bg-white shadow-sm h-[70px]">
       <div className="flex items-center justify-between w-full">

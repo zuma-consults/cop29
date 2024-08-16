@@ -12,7 +12,7 @@ const validationSchema = Yup.object({
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
-  rememberMe: Yup.boolean(),
+  // rememberMe: Yup.boolean(),
 });
 
 const Login: React.FC = () => {
@@ -61,10 +61,10 @@ const Login: React.FC = () => {
             ) => {
               login(values, {
                 onSuccess: () => {
-                  navigate("/profile");
+                  navigate("/");
                 },
               });
-              navigate("/profile");
+              navigate("/");
               resetForm();
             }}
           >
@@ -105,13 +105,13 @@ const Login: React.FC = () => {
                       <FaRegEyeSlash size={20} />
                     )}
                   </div>
-                  <ErrorMessage
+                </div>
+                <ErrorMessage
                     name="password"
                     component="div"
                     className="text-red-500 text-xs"
                   />
-                </div>
-
+{/* 
                 <div className="flex items-center mb-4">
                   <Field
                     type="checkbox"
@@ -125,7 +125,7 @@ const Login: React.FC = () => {
                   >
                     Remember me
                   </label>
-                </div>
+                </div> */}
 
                 <button
                   type="submit"

@@ -2,29 +2,65 @@ import Accordion from "../../components/ui/Accordion";
 
 const items = [
   { 
-    title: "How do I book a ticket for an event?", 
-    content: "Booking a ticket is easy! Just navigate to the event page, select your preferred date and time, and click on 'Book Now.' Follow the prompts to enter your details and payment information, and you'll receive a confirmation email with your ticket details." 
+    title: "Where is COP29 holding, and what is the venue’s location?", 
+    content: "COP29 will be held in Baku, Azerbaijan, at the Baku Stadium." 
   },
   { 
-    title: "Can I create my own event on Cop29?", 
-    content: "Absolutely! To create your own event, go to the 'Create Event' section, fill in the event details, set the date and time, and customize the registration options. Once you submit, your event will be live and accessible to other users." 
+    title: "What are the dates for COP29?", 
+    content: "COP29 will take place from Monday, 11 November to Friday, 22 November 2024." 
   },
   { 
-    title: "What if I need to cancel or change my booking?", 
-    content: "If you need to cancel or change your booking, please visit the 'My Bookings' section of your profile. Here you can select the event and choose to modify or cancel your reservation. Note that cancellation policies may vary depending on the event." 
+    title: "Is the COP29 Presidency making any arrangements for delegates' accommodation?", 
+    content: "Yes, the official accommodation booking portal for COP29 participants offers a range of accommodation options. For detailed information, please visit: https://cop29-accommodation.bnetwork.com/" 
   },
   { 
-    title: "How can I contact the event organizer?", 
-    content: "You can contact the event organizer directly through the event page. Look for the 'Contact Organizer' button or section, and you'll find options to send a message or get in touch through other provided contact methods." 
+    title: "What are the pre-session documents for negotiations?", 
+    content: "Pre-session and in-session documents are available on the COP 29, CMP 19, CMA 6, SBSTA 61, and SBI 61 session web pages on the UNFCCC website." 
   },
   { 
-    title: "What payment methods do you accept?", 
-    content: "We accept various payment methods including credit/debit cards, PayPal, and other popular payment gateways. You can select your preferred payment option during the booking process." 
+    title: "Is it possible to get details on securing a visa for COP29?", 
+    content: "Yes, all foreign participants must have a passport valid for at least six months and will require a visa. The Azerbaijan Government has authorized a free-of-charge ‘COP 29 Special Visa’ for registered participants. Apply through the link in your UNFCCC registration confirmation email. The visa is valid until 30 November 2024." 
   },
   { 
-    title: "How do I know if an event is sold out?", 
-    content: "The event page will display real-time availability. If tickets are sold out, you'll see a notification indicating that no more tickets are available. You can also sign up for notifications to be alerted if additional tickets become available." 
+    title: "I want to be part of Nigeria’s delegation; what are the criteria?", 
+    content: "Please visit the NCCC website for details on the criteria: www.nccc.gov.ng" 
   },
+  { 
+    title: "Is Nigeria planning to have a pavilion at COP29?", 
+    content: "Yes, Nigeria has secured a pavilion at COP29." 
+  },
+  { 
+    title: "What is the cost per slot for a side event at Nigeria’s pavilion?", 
+    content: "For details on the cost per slot, please visit the NCCC website: www.nccc.gov.ng and then the NCCC booking portal: https://climateportal.org.ng/" 
+  },
+  { 
+    title: "What are the application procedures for a side event?", 
+    content: "Please visit the NCCC booking portal: https://climateportal.org.ng/" 
+  },
+  { 
+    title: "Will there be access to live streaming for side events at the Nigeria Pavilion?", 
+    content: "Yes, live streaming is available on request, with a separate cost." 
+  },
+  { 
+    title: "Are there any preparatory workshops for delegates?", 
+    content: "Yes, a preparatory workshop will be organized, and details will be communicated to all stakeholders once the date is fixed." 
+  },
+  { 
+    title: "What are the transportation arrangements at COP29?", 
+    content: "Transportation services will be free of charge to all participants." 
+  },
+  { 
+    title: "What is the likely weather condition in Azerbaijan during COP29?", 
+    content: "The average daytime temperature will range from 12-15°C, with cooler evenings dropping to around 8-10°C." 
+  },
+  { 
+    title: "What should I do in case of a medical emergency?", 
+    content: "A nursing room is available in the registration area. Directions can be found on the wayfinding signage and map displayed within the venue." 
+  },
+  { 
+    title: "Do I need medical insurance to attend COP29?", 
+    content: "Participants are strongly advised to obtain comprehensive international medical insurance for the duration of their stay. The United Nations and the UNFCCC secretariat disclaim all responsibility for medical, accident, and travel insurance." 
+  }
 ];
 
 function FAQ() {

@@ -2,7 +2,6 @@ import React from "react";
 import DataTable from "react-data-table-component";
 import {
   useGetProfile,
-  useLogout,
 } from "../../components/custom-hooks/useAuth";
 import Loader from "../../components/ui/Loader";
 import { useNavigate } from "react-router-dom";
@@ -98,9 +97,8 @@ const ExpandedComponent: React.FC<{ data: Event }> = ({ data }) => (
 const Profile: React.FC = () => {
   const navigate = useNavigate();
   const { data: user, isLoading } = useGetProfile();
-  const { mutate: logout, isLoading: logoutloading } = useLogout();
 
-  if (isLoading || logoutloading) {
+  if (isLoading) {
     return <Loader />;
   }
   if (!user) {
@@ -108,21 +106,19 @@ const Profile: React.FC = () => {
     navigate("/login");
   }
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+
   return (
     <div className="pb-[5%] md:pb-[2%] flex items-center justify-center flex-col gap-10 px-5 md:px-20 relative">
       <div
         style={{
-          backgroundImage: `url("https://images.pexels.com/photos/209154/pexels-photo-209154.jpeg")`,
+          backgroundImage: `url("/images/globe.jpg")`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-        className="rounded-lg w-[100%] md:w-full flex justify-center items-center md:items-start py-20 mt-10 relative z-10"
+        className="rounded-lg w-[100%] md:w-full flex justify-center items-center md:items-start py-20 mt-10 relative"
       >
-        <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold">
+        <div className="absolute inset-0 bg-co-primary opacity-50 rounded-lg"></div>
+        <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold opacity-90">
           Welcome {user?.data?.name}!
         </h1>
       </div>
@@ -142,12 +138,12 @@ const Profile: React.FC = () => {
             {user?.data?.userType}
           </p>
         </div>
-        <button
+        {/* <button
           className="bg-green-800 text-white p-4 rounded hover:bg-green-700"
           onClick={handleLogout}
         >
           Logout
-        </button>
+        </button> */}
       </div>
 
       {/* Activities Section */}

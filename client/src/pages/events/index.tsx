@@ -2,7 +2,6 @@ import Pagination from "../../components/ui/Pagination";
 import Card from "../../components/ui/Card";
 import { useGetEvents } from "../../components/custom-hooks/useEvents";
 import Loader from "../../components/ui/Loader";
-import { formatDate1 } from "../../util/formattedDate";
 
 function Events() {
 const {data, isLoading} = useGetEvents()
@@ -28,10 +27,10 @@ if(isLoading){
         }}
         className="rounded-lg w-[100%] md:w-full flex justify-center items-center md:items-start py-10 mt-20 relative z-10"
       >
-        <div className="absolute inset-0 bg-co-primary opacity-80 rounded-lg"></div>
+     <div className="absolute inset-0 bg-co-primary opacity-50 rounded-lg"></div>
         <div>
-          <h1 className="text-white text-[36px] sm:text-[48px] md:text-[64px] lg:text-[88px] font-extrabold">
-            Latest Event
+        <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold opacity-90">
+            Latest Events
           </h1>
         </div>
       </div>

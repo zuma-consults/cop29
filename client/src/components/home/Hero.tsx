@@ -1,5 +1,5 @@
 import React from "react";
-import { FaCalendarAlt, FaPlus } from "react-icons/fa";
+import { FaCalendarAlt, FaPlus, FaInfoCircle, FaQuestionCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Hero: React.FC = () => {
@@ -24,25 +24,40 @@ const Hero: React.FC = () => {
             Enjoy Low Fees, High Liquidity, and Expert Support Every Step of the
             Way.
           </p>
-          <div className="flex items-center">
-          <Link
-            to="/events"
-            className="text-center w-full md:w-[35%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
-            data-aos="fade-up" data-aos-duration="1000"
-          >
-            <FaCalendarAlt className="text-2xl mr-2" />
-            Do you want to attend an event
-          </Link>
-          <Link
-            to="/create-event"
-            className="text-center w-full md:w-[35%] rounded py-4 mx-2 flex justify-center items-center text-green-800 bg-white hover:bg-green-100 transition"
-            data-aos="fade-up" data-aos-duration="1000"
-          >
-            <FaPlus className="text-2xl mr-2" />
-            Do you want to create an event
-          </Link>
+          <div className="flex flex-wrap justify-center md:justify-start items-center gap-4">
+            <Link
+              to="/events"
+              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
+              data-aos="fade-up" data-aos-duration="1000"
+            >
+              <FaCalendarAlt className="text-2xl mr-2" />
+              Attend an Event
+            </Link>
+            <Link
+              to="/create-event"
+              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-green-800 bg-white hover:bg-green-100 transition"
+              data-aos="fade-up" data-aos-duration="1000"
+            >
+              <FaPlus className="text-2xl mr-2" />
+              Create an Event
+            </Link>
+            <Link
+              to="/info"
+              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-blue-800 hover:bg-blue-200 bg-blue-100 transition"
+              data-aos="fade-up" data-aos-duration="1000"
+            >
+              <FaInfoCircle className="text-2xl mr-2" />
+              How it Works
+            </Link>
+            <Link
+              to="/faq"
+              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-orange-800 hover:bg-orange-200  bg-orange-100 transition"
+              data-aos="fade-up" data-aos-duration="1000"
+            >
+              <FaQuestionCircle className="text-2xl mr-2" />
+              Frequently asked Questions
+            </Link>
           </div>
-
         </div>
         <div className="hidden md:flex flex-1 justify-center">
           <img

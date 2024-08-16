@@ -19,11 +19,7 @@ const validationSchema = Yup.object({
     .required("User type is required"),
   category: Yup.string(),
   state: Yup.string(),
-  organizationType: Yup.string(),
-  agreed: Yup.boolean().oneOf(
-    [true],
-    "You must agree to the terms and conditions"
-  ),
+  organizationType: Yup.string()
 });
 
 const Signup: React.FC = () => {
@@ -64,11 +60,10 @@ const Signup: React.FC = () => {
               state: "",
               organizationType: "",
               userType: "delegate",
-              agreed: false,
               showPassword: false,
             }}
             validationSchema={validationSchema}
-            onSubmit={({showPassword, agreed, ...values}, {resetForm}) => {
+            onSubmit={({showPassword, ...values}, {resetForm}) => {
               const { state, organizationType, category, ...others } = values;
               const newValue = values.userType === "delegate" ? others : values;
               register(newValue);
@@ -81,9 +76,9 @@ const Signup: React.FC = () => {
                 <div className="mb-2">
                   <label
                     htmlFor="userType"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Select User Type
+                    Are you a delegate or an Organisation?
                   </label>
                   <Field
                     as="select"
@@ -166,12 +161,12 @@ const Signup: React.FC = () => {
                       <FaRegEyeSlash size={20} />
                     )}
                   </div>
-                  <ErrorMessage
+                </div>
+                <ErrorMessage
                     name="password"
                     component="div"
                     className="text-red-500 text-xs"
                   />
-                </div>
 
                 {/* Organization Specific Fields */}
                 {values.userType === "organization" && (
@@ -259,25 +254,6 @@ const Signup: React.FC = () => {
                   </>
                 )}
 
-                <div className="mb-2 flex items-center">
-                  <Field
-                    type="checkbox"
-                    id="agreed"
-                    name="agreed"
-                    className="mr-2"
-                  />
-                  <label
-                    htmlFor="agreed"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    I agree to the terms and conditions
-                  </label>
-                  <ErrorMessage
-                    name="agreed"
-                    component="div"
-                    className="text-red-500 text-xs"
-                  />
-                </div>
                 <button
                   type="submit"
                   className="bg-green-600 text-white py-2 px-4 rounded-lg"
