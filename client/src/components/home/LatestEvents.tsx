@@ -51,46 +51,6 @@ const LatestEvents: React.FC = () => {
           </div>
         ))}
       </AliceCarousel>
-
-      {/* <div className="flex bg-red-600">
-        {eventData.map((event, index) => (
-          <div key={index} className="min-w-[33.33%] px-2">
-            <Card
-              imageUrl={event.imageUrl}
-              status={event.status}
-              title={event.title}
-              time={event.time}
-              price={event.price}
-              id={event.id}
-            />
-          </div>
-        ))}
-      </div> */}
-      {/* <div className="flex justify-end mr-10">
-        <div className="flex gap-5 items-start justify-center w-max h-max text-green-800">
-          <button onClick={handlePrev} disabled={currentIndex === 0}>
-            <BsArrowLeft
-              size={38}
-              className={
-                currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
-              }
-            />
-          </button>
-          <button
-            onClick={handleNext}
-            disabled={currentIndex >= eventData.length - 3}
-          >
-            <BsArrowRight
-              size={38}
-              className={
-                currentIndex >= eventData.length - 3
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }
-            />
-          </button>
-        </div>
-      </div> */}
     </section>
   );
 };

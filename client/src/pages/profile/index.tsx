@@ -1,102 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { useGetProfile } from "../../components/custom-hooks/useAuth";
 import Loader from "../../components/ui/Loader";
 import { Link } from "react-router-dom";
-
-interface Event {
-  id: number;
-  title: string;
-  date: string;
-  start: string;
-  end: string;
-  externalLink: string;
-  price: string;
-  description: string;
-  location: string;
-  tags: string[];
+import AddDelegateModal from "./add-delegate-modal";
+interface Delegate {
+  name: string;
+  email: string;
+  passport: string;
+  delegatedBy: string;
+  copApproved: boolean;
+  _id: string;
 }
 
-// Define your columns
-const columns = [
-  {
-    name: "Title",
-    selector: (row: Event) => row.title,
-    sortable: true,
-  },
-  {
-    name: "Date",
-    selector: (row: Event) => new Date(row.date).toLocaleDateString(),
-    sortable: true,
-  },
-  {
-    name: "Start Time",
-    selector: (row: Event) => new Date(row.start).toLocaleTimeString(),
-    sortable: true,
-  },
-  {
-    name: "End Time",
-    selector: (row: Event) => new Date(row.end).toLocaleTimeString(),
-    sortable: true,
-  },
-  {
-    name: "Price",
-    selector: (row: Event) => row.price,
-    sortable: true,
-  },
-];
 
-const data: Event[] = [
+const delegateColumns = [
   {
-    id: 1,
-    title: "Social Climate Kaduna",
-    date: "2024-08-12",
-    start: "2024-08-12T10:00:00.000Z",
-    end: "2024-08-12T10:45:00.000Z",
-    externalLink: "https://zoom.com",
-    price: "Free",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s...",
-    location: "Kaduna",
-    tags: ["climate", "dark", "gun"],
+    name: "Name",
+    selector: (row: Delegate) => row.name,
+    sortable: true,
   },
-];
-
-const ExpandedComponent: React.FC<{ data: Event }> = ({ data }) => (
-  <div className="p-4 bg-gray-100">
-    <p>
-      <strong>Description:</strong> {data.description}
-    </p>
-    <p>
-      <strong>Location:</strong> {data.location}
-    </p>
-    <p>
-      <strong>Tags:</strong> {data.tags.join(", ")}
-    </p>
-    <p>
-      <strong>External Link:</strong>{" "}
-      <a
-        href={data.externalLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600"
+  {
+    name: "Email",
+    selector: (row: Delegate) => row.email,
+    sortable: true,
+  },
+  {
+    name: "Delegated By",
+    selector: (row: Delegate) => row.delegatedBy,
+    sortable: true,
+  },
+  {
+    name: "COP Status",
+    cell: (row: Delegate) => (
+      <span
+        className={`inline-block px-3 py-1 text-white rounded-full ${
+          row.copApproved ? "bg-green-500" : "bg-yellow-500"
+        }`}
       >
-        {data.externalLink}
-      </a>
-    </p>
-  </div>
-);
+        {row.copApproved ? "Approved" : "Pending"}
+      </span>
+    ),
+    sortable: true,
+  },
+];
+
 
 const Profile: React.FC = () => {
-  const { data: user, isLoading } = useGetProfile();
+  const [isModalOpen, setModalOpen] = useState(false);
+  const { data: user, isLoading, refetch } = useGetProfile();
 
   if (isLoading) {
     return <Loader />;
   }
 
+  const organizationData = user?.data;
+
   return (
     <div className="pb-[5%] md:pb-[2%] flex items-center justify-center flex-col gap-10 px-5 md:px-20 relative">
-      {!user ? (
+      {!organizationData ? (
         <div className="text-center py-[50px] border-2 border-orange-600 w-full my-20 bg-orange-100">
           <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
             You need to log in to view your activities.
@@ -131,50 +93,54 @@ const Profile: React.FC = () => {
           >
             <div className="absolute inset-0 bg-co-primary opacity-50 rounded-lg"></div>
             <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold opacity-90">
-              Welcome {user?.data?.name}!
+              Welcome {organizationData.name}!
             </h1>
           </div>
 
           <div className="w-full flex items-start justify-between bg-green-50 shadow rounded-lg p-6">
             <div>
               <h2 className="text-xl md:text-2xl font-bold text-gray-800 capitalize">
-                {user?.data?.name}
+                {organizationData.name}
               </h2>
               <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
-                {user?.data?.email}
+                {organizationData.email}
               </p>
               <p className="text-sm md:text-base text-gray-600 mt-2">
-                {user?.data?.phone}
+                {organizationData.phone}
               </p>
               <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
-                {user?.data?.userType}
+                {organizationData.userType}
+              </p>
+              <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
+                {organizationData.organizationType}
               </p>
             </div>
-            {/* Uncomment if you want to add a logout button */}
-            {/* <button
-              className="bg-green-800 text-white p-4 rounded hover:bg-green-700"
-              onClick={handleLogout}
-            >
-              Logout
-            </button> */}
+            {organizationData.userType === "organization" && (
+              <button
+                onClick={() => setModalOpen(true)}
+                className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+              >
+                Add Organization Delegates
+              </button>
+            )}
           </div>
 
-          {/* Activities Section */}
-          <div className="w-full bg-gray-100 rounded-lg p-6">
+          <div className="w-full bg-gray-100 rounded-lg p-6 mt-4">
             <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
-              Events
+              Delegates
             </h2>
             <DataTable
-              columns={columns}
-              data={data}
-              expandableRows
-              expandableRowsComponent={ExpandedComponent}
+              columns={delegateColumns}
+              data={organizationData.delegates || []}
               pagination
               highlightOnHover
               pointerOnHover
               responsive
             />
           </div>
+
+          {/* Custom Modal Component */}
+          <AddDelegateModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} refetch={refetch} id={user?.data?.id} />
         </>
       )}
     </div>

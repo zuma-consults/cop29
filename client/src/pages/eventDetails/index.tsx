@@ -7,6 +7,8 @@ import { formatDate1 } from "../../util/formattedDate";
 
 const EventDetails: React.FC = () => {
   const location = useLocation();
+
+  console.log(location);
   const event = location.state as {
     image: string;
     status: string;
@@ -16,6 +18,7 @@ const EventDetails: React.FC = () => {
     location: string;
     price: string;
     tags: string[];
+    organizer: string;
     description: string;
   };
 
@@ -33,6 +36,7 @@ const EventDetails: React.FC = () => {
     price,
     tags,
     description,
+    organizer,
   } = event;
   const tagArr = tags[0].split(",");
   return (
@@ -49,7 +53,7 @@ const EventDetails: React.FC = () => {
       <div className="relative border-b-[1px] border-green-200 pb-6 sm:pb-8 md:pb-10">
         <div className="mt-6 sm:mt-8 md:mt-10 grid gap-4 sm:gap-6 md:gap-8">
           <div>
-            <div className="w-max py-[3px] sm:py-[5px] h-max bg-green-300 rounded font-semibold px-2 text-[10px] sm:text-[12px] flex items-center justify-center mb-3 sm:mb-5">
+            <div className="w-max py-[3px] sm:py-[5px] h-max bg-green-300 rounded font-semibold px-2 capitalize text-[10px] sm:text-[12px] flex items-center justify-center mb-3 sm:mb-5">
               {status}
             </div>
             <div className="text-gray-900 text-[24px] sm:text-[32px] md:text-[40px] w-full md:w-[50%] font-bold">
@@ -62,7 +66,7 @@ const EventDetails: React.FC = () => {
               {`From ${formatDate1(start)} to ${formatDate1(end)}`}
             </p>
           </div>
-          <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-1 sm:gap-3">
+          {/* <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-1 sm:gap-3">
             Location
             <div className="flex items-start gap-2 sm:gap-3">
               <ImLocation />
@@ -70,13 +74,13 @@ const EventDetails: React.FC = () => {
                 {eventLocation}
               </span>
             </div>
-          </div>
-          <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-1 sm:gap-3">
+          </div> */}
+          {/* <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-1 sm:gap-3">
             Price
             <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
               {price}
             </p>
-          </div>
+          </div> */}
           <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
             About this Event
             <div className="w-full text-[12px] sm:text-[14px] text-gray-600 font-normal">
@@ -94,11 +98,11 @@ const EventDetails: React.FC = () => {
           <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
             Organized by
             <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
-              Okike Consult Entertainment
+              {organizer}
             </p>
           </div>
         </div>
-        <div className="md:absolute md:top-0 md:right-0 w-full md:w-[40%] bg-green-300 rounded-lg p-5 mt-5">
+        {/* <div className="md:absolute md:top-0 md:right-0 w-full md:w-[40%] bg-green-300 rounded-lg p-5 mt-5">
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="flex items-center justify-between w-full">
               <span className="text-[16px] sm:text-[18px] font-bold">
@@ -120,7 +124,7 @@ const EventDetails: React.FC = () => {
               Reserve a Spot
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="flex flex-col gap-5 pt-8 sm:pt-10 md:pt-12">
         <span className="text-[20px] sm:text-[24px] md:text-[26px] font-bold">

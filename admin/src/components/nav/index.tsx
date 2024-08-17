@@ -1,10 +1,9 @@
-import { Box, Typography } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Box} from "@mui/material";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { navConfig } from "./config";
 import { NavItem } from "./item";
 import UserAccount from "./user-account";
 import { ImMenu } from "react-icons/im";
-import { green } from "@mui/material/colors";
 import { useGetProfile } from "../../hooks/useAuth";
 import { useMemo } from "react";
 
@@ -104,10 +103,30 @@ const Nav: React.FC<{
             ...(small && { paddingRight: "15px" }),
           }}
         >
-          <img src="/images/coat.png" className="h-8" alt=" Logo" />
-          <Typography variant="h6" color={green[800]}>
-            COP29 Nigeria
-          </Typography>
+          <Link to="/" className="flex gap-2 items-center">
+            <img
+              src="/images/logo.svg"
+              alt="Logo"
+              className="rounded-lg"
+              width={50}
+              height={10}
+            />
+            <div className="flex gap-1 items-center">
+              <div className="flex items-center">
+                <span className="text-green-800 text-[30px] font-bold">C</span>
+                <img
+                  src="/images/flagicon.svg"
+                  alt="Icon"
+                  className="inline-block"
+                  width={33}
+                  height={20}
+                />
+                <span className="text-green-800 text-[30px] font-bold">
+                  P29
+                </span>
+              </div>
+            </div>
+          </Link>
           <Box
             {...(large && { onClick: closeLargeNav })}
             {...(small && { onClick: closeSmallNav })}
@@ -143,7 +162,12 @@ const Nav: React.FC<{
                     key={item.title}
                     icon={item.icon}
                     title={item.title}
-                    isActive={location.pathname === item.path}
+                    isActive={
+                      item.path === "/"
+                        ? location.pathname === "/" ||
+                          location.pathname.startsWith("/event")
+                        : location.pathname.startsWith(item.path)
+                    }
                   />
                 </Box>
               </Box>

@@ -19,7 +19,27 @@ export const register = async (data: any) => {
     return responseData;
   } catch (error: any) {
     console.error(error);
-    return undefined
+    toast.error(`${error?.response?.data?.message || error?.message}`)
+    return
+  }
+};
+
+export const orgRegister = async (data: any) => {
+  try {
+    const config = {
+      method: "post",
+      url: "org/register",
+      data,
+    };
+    const responseData = await request(config);
+    if (responseData) {
+      toast.success("User Registered!");
+    }
+    return responseData;
+  } catch (error: any) {
+    console.error(error);
+    toast.error(`${error?.response?.data?.message || error?.message}`)
+    return
   }
 };
 
@@ -38,9 +58,10 @@ export const login = async (data: any) => {
       toast.success('you are now logged in')
     }
     return responseData;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return undefined;
+    toast.error(`${error?.response?.data?.message || error?.message}`)
+    return;
   }
 };
 

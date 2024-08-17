@@ -13,6 +13,7 @@ import Event from "./pages/sideEvent";
 import Invoice from "./pages/invoice";
 import User from "./pages/user";
 import Announcement from "./pages/announcement";
+import EventDetails from "./pages/eventDetails";
 
 const pageVariants = {
   initial: { opacity: 0.5, translateY: -10 },
@@ -139,6 +140,20 @@ function App() {
                 exit="exit"
               >
                 <PaCalender />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/event/:id"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                key={location.pathname}
+                animate="animate"
+                exit="exit"
+              >
+                <EventDetails />
               </motion.div>
             }
           />
