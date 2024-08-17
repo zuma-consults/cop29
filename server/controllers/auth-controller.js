@@ -4,11 +4,12 @@ const User = require("../models/users");
 const { generateTokens } = require("../utils/generateToken");
 const bcrypt = require("bcrypt");
 const UserToken = require("../models/token");
+const { upload, uploadToCloudinary } = require("../utils/upload");
 
 module.exports = {
-  createUser: async (req, res) => {
+  createUsersss: async (req, res) => {
     try {
-      const { name, password, email, userType } = req.body;
+      const { name, password, email, userType, delegates } = req.body;
       if (!name || !password || !email || !userType) {
         return errorHandler(
           res,
@@ -20,7 +21,7 @@ module.exports = {
       const findUser = await User.findOne({ email });
 
       if (findUser) {
-        return errorHandler(res, "The user already has an account", 409);
+        return errorHandler(res, "An account already exists.", 409);
       }
 
       if (!validatePassword(password)) {
@@ -30,7 +31,9 @@ module.exports = {
           400
         );
       }
+
       const passwordHash = await bcrypt.hash(password, 12);
+
       const newUser = new User({
         name,
         userType,
@@ -38,11 +41,249 @@ module.exports = {
         ...req.body,
         password: passwordHash,
       });
+
       await newUser.save();
       return successHandler(res, "Account has been created!", newUser);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
     }
+  },
+  createUser: async (req, res) => {
+    upload(req, res, async (err) => {
+      if (err) {
+        return errorHandler(res, err.code, 400);
+      } else {
+        try {
+          const { body, files } = req;
+          const { name, password, email, userType } = req.body;
+          if (!name || !password || !email || !userType) {
+            return errorHandler(
+              res,
+              "Please fill in all fields, one or more fields are empty!",
+              400
+            );
+          }
+
+          const findUser = await User.findOne({ email });
+
+          if (findUser) {
+            return errorHandler(res, "An account already exists.", 409);
+          }
+
+          if (!validatePassword(password)) {
+            return errorHandler(
+              res,
+              "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+              400
+            );
+          }
+
+          const passwordHash = await bcrypt.hash(password, 12);
+
+          let _delegates = [];
+
+          if (files) {
+            for (const file of files) {
+              const localFilePath = file.path;
+              const localFileName = file.filename;
+
+              const result = await uploadToCloudinary(
+                localFilePath,
+                localFileName,
+                "COP29"
+              );
+              _delegates.push({
+                passport: result.url,
+                name,
+                delegatedBy: "Self",
+                email,
+              });
+            }
+          }
+          // Update body with delegates
+          body.delegates = _delegates.length > 0 ? _delegates : null;
+
+          if (body.delegates === null)
+            return errorHandler(
+              res,
+              "File upload failed. Please try again.",
+              500
+            );
+          const newUser = new User({
+            name,
+            userType,
+            email,
+            image: _delegates[0].passport,
+            ...req.body,
+            password: passwordHash,
+            delegates: _delegates,
+          });
+
+          await newUser.save();
+          // Send success response
+
+          return successHandler(
+            res,
+            "Account has been created and COP29 application submitted! Your application is being reviewed.",
+            newUser
+          );
+        } catch (error) {
+          return errorHandler(res, error.message, error.statusCode || 500);
+        }
+      }
+    });
+  },
+  createOrganisationAsUser: async (req, res) => {
+    upload(req, res, async (err) => {
+      if (err) {
+        return errorHandler(res, err.code, 400);
+      } else {
+        try {
+          const { body, files } = req;
+          const { name, password, email, userType } = req.body;
+          if (!name || !password || !email || !userType) {
+            return errorHandler(
+              res,
+              "Please fill in all fields, one or more fields are empty!",
+              400
+            );
+          }
+
+          const findUser = await User.findOne({ email });
+
+          if (findUser) {
+            return errorHandler(res, "An account already exists.", 409);
+          }
+
+          if (!validatePassword(password)) {
+            return errorHandler(
+              res,
+              "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+              400
+            );
+          }
+
+          const passwordHash = await bcrypt.hash(password, 12);
+
+          if (files && files.length > 0) {
+            const pdfFiles = files.filter((file) => file.fieldname === "files");
+            if (pdfFiles.length > 0) {
+              for (const file of pdfFiles) {
+                const localFilePath = file.path;
+                const localFileName = file.filename;
+
+                const result = await uploadToCloudinary(
+                  localFilePath,
+                  localFileName,
+                  "COP29"
+                );
+                body.letterProof = result.url;
+              }
+            }
+
+            // Process orgImage (Logo)
+            const imageFiles = files.filter(
+              (file) => file.fieldname === "orgImage"
+            );
+            if (imageFiles.length > 0) {
+              for (const file of imageFiles) {
+                const localFilePath = file.path;
+                const localFileName = file.filename;
+
+                const result = await uploadToCloudinary(
+                  localFilePath,
+                  localFileName,
+                  "COP29"
+                );
+                body.image = result.url;
+              }
+            }
+          }
+
+          const newUser = new User({
+            name,
+            userType,
+            email,
+            ...req.body,
+            password: passwordHash,
+          });
+
+          await newUser.save();
+          // Send success response
+
+          return successHandler(res, "You can now add your delgates.", newUser);
+        } catch (error) {
+          return errorHandler(res, error.message, error.statusCode || 500);
+        }
+      }
+    });
+  },
+  addDelegatesToOrganisation: async (req, res) => {
+    upload(req, res, async (err) => {
+      if (err) {
+        return errorHandler(res, err.code, 400);
+      }
+
+      try {
+        const { body, files } = req;
+        const { name, email } = body;
+        const { id } = req.params;
+
+        // Validate required fields
+        if (!name || !email) {
+          return errorHandler(
+            res,
+            "Please fill in all fields, one or more fields are empty!",
+            400
+          );
+        }
+
+        // Find the organization by ID
+        const findUser = await User.findById(id);
+        if (!findUser) {
+          return errorHandler(
+            res,
+            "No account found for this organization.",
+            409
+          );
+        }
+
+        let passport = "";
+
+        // Process uploaded files
+        if (files && files.length > 0) {
+          const pdfFiles = files.filter((file) => file.fieldname === "files");
+          if (pdfFiles.length > 0) {
+            for (const file of pdfFiles) {
+              const localFilePath = file.path;
+              const localFileName = file.filename;
+
+              const result = await uploadToCloudinary(
+                localFilePath,
+                localFileName,
+                "COP29"
+              );
+              passport = result.url;
+            }
+          }
+        }
+
+        // Add delegate to the organization's delegates array
+        const delegate = {
+          name,
+          email,
+          delegatedBy: findUser.name,
+          passport,
+        };
+
+        findUser.delegates.push(delegate);
+        await findUser.save();
+
+        return successHandler(res, "Delegate successfully added", findUser);
+      } catch (error) {
+        return errorHandler(res, error.message, error.statusCode || 500);
+      }
+    });
   },
   login: async (req, res) => {
     try {

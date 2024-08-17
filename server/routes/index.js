@@ -4,5 +4,6 @@ const app = express.Router();
 require("./endpoints/Auth")(app);
 require("./endpoints/Admin-Auth")(app);
 require("./endpoints/Event")(app);
+require("./endpoints/Slots")(app);
 
 module.exports = app;

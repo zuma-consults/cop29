@@ -16,7 +16,6 @@ const userSchema = mongoose.Schema(
     },
     phone: {
       type: String,
-      default: "",
     },
     category: {
       type: String,
@@ -39,7 +38,36 @@ const userSchema = mongoose.Schema(
     },
     organizationType: {
       type: String,
-      enum: ["CSO", "MDA", "NGO"],
+      enum: ["CSO", "MDA", "NGO", "States"],
+    },
+    delegates: {
+      type: [
+        {
+          name: {
+            type: String,
+            required: true,
+          },
+          email: {
+            type: String,
+            // required: true,
+          },
+          passport: {
+            type: String,
+            required: true,
+          },
+          delegatedBy: {
+            type: String,
+            required: true,
+          },
+          copApproved: {
+            type: Boolean,
+            default: false,
+          },
+        },
+      ],
+    },
+    letterProof: {
+      type: String,
     },
   },
   {
@@ -55,6 +83,6 @@ const userSchema = mongoose.Schema(
   }
 );
 
-const User = mongoose.model("Users", userSchema);
+const User = mongoose.model("Userss", userSchema);
 
 module.exports = User;
