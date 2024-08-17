@@ -13,38 +13,86 @@ const timeSlots = [
   { timeSpan: "3:00pm to 3:45pm" },
   { timeSpan: "4:00pm to 4:45pm" },
   { timeSpan: "5:00pm to 5:45pm" },
-  { timeSpan: "6:00pm to 6:45pm" },
+  // { timeSpan: "6:00pm to 6:45pm" },
 ];
+
+const generateSlots = () => {
+  const slots = [];
+  const startDate = new Date("2024-11-11");
+  const endDate = new Date("2024-11-22");
+
+  for (
+    let date = startDate;
+    date <= endDate;
+    date.setDate(date.getDate() + 1)
+  ) {
+    timeSlots.forEach((slot) => {
+      const [startHour, startMinute, startPeriod] = slot.timeSpan
+        .split(" to ")[0]
+        .match(/(\d+):(\d+)(am|pm)/i)
+        .slice(1);
+      const [endHour, endMinute, endPeriod] = slot.timeSpan
+        .split(" to ")[1]
+        .match(/(\d+):(\d+)(am|pm)/i)
+        .slice(1);
+
+      const start = new Date(date);
+      const end = new Date(date);
+
+      start.setHours(
+        startPeriod.toLowerCase() === "pm" && parseInt(startHour) !== 12
+          ? parseInt(startHour) + 12
+          : parseInt(startHour),
+        parseInt(startMinute)
+      );
+      end.setHours(
+        endPeriod.toLowerCase() === "pm" && parseInt(endHour) !== 12
+          ? parseInt(endHour) + 12
+          : parseInt(endHour),
+        parseInt(endMinute)
+      );
+
+      slots.push({
+        date: new Date(start),
+        timeSpan: slot.timeSpan,
+        start: start.toISOString(),
+        end: end.toISOString(),
+      });
+    });
+  }
+
+  return slots;
+};
 
 const connectDb = async () => {
   try {
-    mongoose.connect(process.env.DB_URL);
+    await mongoose.connect(process.env.DB_URL);
     console.log("MongoDB connected.");
 
     const [existingRoles, existingSlots] = await Promise.all([
       Role.find({ name: { $in: roles.map((role) => role.name) } }),
-      Slot.find({ timeSpan: { $in: timeSlots.map((slot) => slot.timeSpan) } }),
+      Slot.find(),
     ]);
-
+    
     const missingRoles = roles.filter(
       (role) =>
         !existingRoles.some((existingRole) => existingRole.name === role.name)
     );
 
-    const missingSlots = timeSlots.filter(
-      (slot) =>
-        !existingSlots.some(
-          (existingSlot) => existingSlot.timeSpan === slot.timeSpan
-        )
-    );
-
-    const isProduction = process.env.NODE_ENV === "production";
-    const logConnectionStatus = () =>
-      console.log(
-        `${
-          isProduction ? "Production" : "Development"
-        } DB Connection Successful!`
+    const slotsToInsert = generateSlots();
+    const missingSlots = slotsToInsert.filter((slot) => {
+      const existingSlot = existingSlots.find(
+        (existingSlot) =>
+          existingSlot.date && // Check if existingSlot.date exists
+          existingSlot.date.toISOString() === slot.date.toISOString() &&
+          existingSlot.timeSpan === slot.timeSpan
       );
+
+      if (!existingSlot) {
+        console.log(`Missing Slot: ${slot.title}`);
+      }
+      return !existingSlot;
+    });
 
     if (missingRoles.length > 0) {
       await Role.deleteMany({});
@@ -53,10 +101,14 @@ const connectDb = async () => {
 
     if (missingSlots.length > 0) {
       await Slot.deleteMany({});
-      await Slot.insertMany(timeSlots);
+      await Slot.insertMany(slotsToInsert);
     }
 
-    logConnectionStatus();
+    console.log(
+      `${
+        process.env.NODE_ENV === "production" ? "Production" : "Development"
+      } DB Connection Successful!`
+    );
 
     mongoose.connection.on("open", () => console.log("Mongo Running"));
     mongoose.connection.on("error", (err) =>
