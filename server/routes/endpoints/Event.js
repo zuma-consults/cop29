@@ -9,6 +9,7 @@ const {
   addCommentToEventById,
   approveOrRejectEventById,
   sendEventInvoiceById,
+  getAllInvoices,
 } = require("../../controllers/event-controller");
 const { auth, authAdmin } = require("../../middlewares/middleware");
 let routes = (app) => {
@@ -22,6 +23,7 @@ let routes = (app) => {
   app.put("/status/event/:id", authAdmin, approveOrRejectEventById);
   app.post("/invoice/event/:id", authAdmin, sendEventInvoiceById);
   app.delete("/event/:id", authAdmin, deleteEventById);
+  app.get("/invoices", authAdmin, getAllInvoices);
 };
 
 module.exports = routes;

@@ -487,4 +487,61 @@ module.exports = {
       return errorHandler(res, error.message, error.statusCode || 500);
     }
   },
+  getAllInvoices: async (req, res) => {
+    const page = parseInt(req.query.page, 10) || 1;
+    const paid = req.query.paid || "";
+    const startDate = req.query.startDate ? new Date(req.query.startDate) : null;
+    const endDate = req.query.endDate ? new Date(req.query.endDate) : null;
+  
+    try {
+      // Construct the cache key
+      let cacheKey = `allInvoices-${paid}-${startDate}-${endDate}-${page}`;
+      let query = {};
+  
+  
+      // Add paid status filtering
+      if (paid) {
+        query.paid = { $eq: paid === "true" };
+      }
+  
+      // Add date range filtering
+      if (startDate && endDate) {
+        query.createdAt = { $gte: startDate, $lte: endDate };
+      } else if (startDate) {
+        query.createdAt = { $gte: startDate };
+      } else if (endDate) {
+        query.createdAt = { $lte: endDate };
+      }
+  
+      let invoices;
+      if (myCache.has(cacheKey)) {
+        invoices = myCache.get(cacheKey).invoices;
+      } else {
+        invoices = await Invoice.find(query)
+          .populate("eventId")
+          .populate("generatedBy")
+          .sort({ createdAt: -1 })
+          .skip((page - 1) * PAGE_SIZE)
+          .limit(PAGE_SIZE);
+  
+        const totalItems = await Invoice.countDocuments(query);
+        myCache.set(cacheKey, { invoices, totalItems }, 10);
+      }
+  
+      const totalItems = myCache.get(cacheKey).totalItems;
+      const totalPages = Math.ceil(totalItems / PAGE_SIZE);
+  
+      const response = {
+        currentPage: page,
+        totalPages,
+        itemsPerPage: PAGE_SIZE,
+        totalItems,
+        invoices: invoices,
+      };
+      return successHandler(res, "Invoices Found", response);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode || 500);
+    }
+  },
+  
 };

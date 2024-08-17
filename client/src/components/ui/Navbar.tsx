@@ -11,17 +11,24 @@ const Navbar: React.FC = () => {
       <div className="flex items-center justify-between w-full">
         <Link to="/" className="flex gap-2 items-center">
           <img
-            src="/images/coat.png"
+            src="/images/logo.svg"
             alt="Logo"
             className="rounded-lg"
             width={50}
             height={10}
           />
           <div className="flex gap-1 items-center">
-            <h1 className="text-green-800 text-[24px] font-bold">COP29</h1>
-            <h1 className="text-green-800 text-[24px] font-bold hidden md:flex">
-              Nigeria
-            </h1>
+            <div className="flex items-center">
+              <span className="text-green-800 text-[30px] font-bold">C</span>
+              <img
+                src="/images/flagicon.svg"
+                alt="Icon"
+                className="inline-block"
+                width={33}
+                height={20}
+              />
+              <span className="text-green-800 text-[30px] font-bold">P29</span>
+            </div>
           </div>
         </Link>
 
