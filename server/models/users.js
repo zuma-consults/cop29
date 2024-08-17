@@ -50,6 +50,10 @@ const userSchema = mongoose.Schema(
             type: String,
             // required: true,
           },
+          designation: {
+            type: String,
+            // required: true,
+          },
           passport: {
             type: String,
             required: true,
@@ -67,6 +71,10 @@ const userSchema = mongoose.Schema(
     },
     letterProof: {
       type: String,
+    },
+    terms: {
+      type: Boolean,
+      default: true,
     },
   },
   {
