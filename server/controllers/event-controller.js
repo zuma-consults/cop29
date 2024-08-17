@@ -12,146 +12,180 @@ module.exports = {
   createEventByOrganization: async (req, res) => {
     upload(req, res, async (err) => {
       if (err) {
-        return errorHandler(res, err.code, 400);
-      } else {
-        try {
-          const { body, files } = req;
-          let { title, date, slotId } = body;
-          const organizerId = req.user;
-          // Check if required fields are provided
-          if (!title || !date) {
-            return errorHandler(
-              res,
-              "Some fields are still blank. Could you please provide the missing details?",
-              400
-            );
-          }
-
-          let organizer = await User.findOne({ _id: organizerId });
-          let _slot = await Slot.findOne({ _id: slotId });
-
-          // If slotId is present, get start and end times from the slot
-          if (_slot.status !== "open") {
-            return errorHandler(
-              res,
-              "Slot is not open. Please select a different slot",
-              409
-            );
-          }
-
-          let start = _slot.start;
-          let end = _slot.end;
-
-          // Handle image uploads
-          let image = "";
-          if (files) {
-            for (const file of files) {
-              const localFilePath = file.path;
-              const localFileName = file.filename;
-
-              const uploadResult = await uploadToCloudinary(
-                localFilePath,
-                localFileName,
-                "COP29 Events"
-              );
-              image = uploadResult.url;
-            }
-          }
-
-          // Update body with image URL and the resolved start and end times
-          body.image = image;
-          body.start = start;
-          body.end = end;
-
-          // Create new Event entry
-          const newEvent = new Event({
-            title,
-            date,
-            organizerId,
-            organizer,
-            ...body,
-          });
-
-          // Save newEvent
-          await newEvent.save();
-
-          let slot = await Slot.findByIdAndUpdate(
-            slotId,
-            { bookingStatus: "pending", bookingBy: organizerId, title },
-            {
-              new: true,
-            }
+        return errorHandler(res, err.message || "File upload error", 400);
+      }
+  
+      try {
+        const { body, files } = req;
+        const { title, slotId } = body;
+        const organizerId = req.user;
+  
+        // Check if required fields are provided
+        if (!title || !slotId) {
+          return errorHandler(
+            res,
+            "Some fields are still blank. Could you please provide the missing details?",
+            400
           );
-
-          // Send success response
-          return successHandler(res, "Event Successfully Added.", newEvent);
-        } catch (error) {
-          return errorHandler(res, error.message, error.statusCode || 500);
         }
+  
+        const organizer = await User.findById(organizerId);
+        if (!organizer || organizer.userType !== "organization") {
+          return errorHandler(
+            res,
+            "Only organizations can create an Event.",
+            403
+          );
+        }
+  
+        // Check if the organization already has 2 events
+        const eventCount = await Event.countDocuments({ organizerId });
+        if (eventCount >= 2) {
+          return errorHandler(
+            res,
+            "An organization can only have a maximum of 2 slots.",
+            403
+          );
+        }
+  
+        const slot = await Slot.findById(slotId);
+        if (!slot) {
+          return errorHandler(res, "Slot not found.", 404);
+        }
+  
+        // Check if the slot is open
+        if (slot.bookingStatus !== "open") {
+          return errorHandler(
+            res,
+            "Slot is not open. Please select a different slot.",
+            409
+          );
+        }
+  
+        const { start, end } = slot;
+  
+        // Handle image uploads
+        let image = "";
+        if (files && files.length > 0) {
+          const file = files[0];
+          const uploadResult = await uploadToCloudinary(
+            file.path,
+            file.filename,
+            "COP29 Events"
+          );
+          image = uploadResult.url;
+        }
+  
+        // Create new Event entry
+        const newEvent = new Event({
+          title,
+          organizerId,
+          organizer: organizer.name,
+          start,
+          end,
+          image,
+          slotId,
+          ...body, // Spread remaining fields from the body, excluding the slotId
+        });
+  
+        // Save newEvent
+        await newEvent.save();
+  
+        // Update slot with booking details
+        slot.bookingStatus = "pending";
+        slot.bookingBy = organizerId;
+        slot.title = title;
+        await slot.save();
+  
+        // Send success response
+        return successHandler(res, "Event Successfully Added.", newEvent);
+      } catch (error) {
+        return errorHandler(res, error.message, error.statusCode || 500);
       }
     });
   },
   createEventByAdmin: async (req, res) => {
     upload(req, res, async (err) => {
       if (err) {
-        return errorHandler(res, err.code, 400);
-      } else {
-        try {
-          const { body, files } = req;
-          let { title, date, start, end } = body;
-          // Check if required fields are provided
-          if (!title || !date || !start || !end) {
-            return errorHandler(
-              res,
-              "Some fields are still blank. Could you please provide the missing details?",
-              400
-            );
-          }
+        return errorHandler(res, err.message || "File upload error", 400);
+      }
 
-          const existingEvent = await Event.findOne({ start, end, date });
-          if (existingEvent) {
-            return errorHandler(
-              res,
-              "An event exists with for the same time slot and date.",
-              400
-            );
-          }
-          // Handle image uploads
-          let image = "";
-          if (files) {
-            for (const file of files) {
-              const localFilePath = file.path;
-              const localFileName = file.filename;
+      try {
+        const { body, files } = req;
+        const { title, slotId } = body;
+        const organizerId = req.user;
 
-              const uploadResult = await uploadToCloudinary(
-                localFilePath,
-                localFileName,
-                "COP29 Events"
-              );
-              image = uploadResult.url;
-            }
-          }
-
-          // Update body with image URL and the resolved start and end times
-          body.image = image;
-          body.start = start;
-          body.end = end;
-
-          // Create new Event entry
-          const newEvent = new Event({
-            title,
-            date,
-            ...body,
-          });
-
-          // Save newEvent
-          await newEvent.save();
-
-          // Send success response
-          return successHandler(res, "Event Successfully Added.", newEvent);
-        } catch (error) {
-          return errorHandler(res, error.message, error.statusCode || 500);
+        // Check if required fields are provided
+        if (!title || !slotId) {
+          return errorHandler(
+            res,
+            "Some fields are still blank. Could you please provide the missing details?",
+            400
+          );
         }
+
+        const organizer = await User.findById(organizerId);
+        if (!organizer || organizer.userType !== "organization") {
+          return errorHandler(
+            res,
+            "Only organizations can create an Event.",
+            403
+          );
+        }
+
+        const slot = await Slot.findById(slotId);
+        if (!slot) {
+          return errorHandler(res, "Slot not found.", 404);
+        }
+
+        // Check if the slot is open
+        if (slot.bookingStatus !== "open") {
+          return errorHandler(
+            res,
+            "Slot is not open. Please select a different slot.",
+            409
+          );
+        }
+
+        const { start, end } = slot;
+
+        // Handle image uploads
+        let image = "";
+        if (files && files.length > 0) {
+          const file = files[0];
+          const uploadResult = await uploadToCloudinary(
+            file.path,
+            file.filename,
+            "COP29 Events"
+          );
+          image = uploadResult.url;
+        }
+
+        // Create new Event entry
+        const newEvent = new Event({
+          title,
+          organizerId,
+          organizer: organizer.name,
+          start,
+          end,
+          image,
+          slotId,
+          ...body, // Spread remaining fields from the body, excluding the slotId
+        });
+
+        // Save newEvent
+        await newEvent.save();
+
+        // Update slot with booking details
+        slot.bookingStatus = "pending";
+        slot.bookingBy = organizerId;
+        slot.title = title;
+        await slot.save();
+
+        // Send success response
+        return successHandler(res, "Event Successfully Added.", newEvent);
+      } catch (error) {
+        return errorHandler(res, error.message, error.statusCode || 500);
       }
     });
   },
