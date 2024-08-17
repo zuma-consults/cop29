@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import "react-alice-carousel/lib/alice-carousel.css";
 import Navbar from "../components/ui/Navbar";
-import NewsLetter from "../components/ui/newsLetter";
+// import NewsLetter from "../components/ui/newsLetter";
 import Footer from "../components/ui/Footer";
 
 function AppLayout() {
@@ -11,7 +11,7 @@ function AppLayout() {
       <div>
         <Outlet />
       </div>
-      <NewsLetter />
+      {/* <NewsLetter /> */}
       <Footer />
     </div>
   );
