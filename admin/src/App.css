@@ -11,6 +11,7 @@ body {
 }
 * {
   font-size: 12px;
+  font-family: "Poppins", sans-serif; 
 }
 .alice-carousel__wrapper .alice-carousel__prev-btn,
 .alice-carousel__wrapper .alice-carousel__next-btn {
