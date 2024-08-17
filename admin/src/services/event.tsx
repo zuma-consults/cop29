@@ -59,12 +59,26 @@ export const getAllEvents = async (params?: Record<string, any>) => {
   }
 };
 
-export const getAllCalender = async (params: Record<string, any>) => {
+export const getAllCalender = async () => {
   try {
     const config = {
       method: "get",
       url: "events",
     };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllTimeSlots = async () => {
+  try {
+    const config = {
+      method: "get",
+      url: "slots",
+    };
+
     const responseData = await request(config);
     return responseData;
   } catch (error) {
