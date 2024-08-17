@@ -1,3 +1,6 @@
+import { CgOrganisation } from "react-icons/cg";
+import { IoCreateOutline, IoPersonSharp,  } from "react-icons/io5";
+
 export const states = [
   "Abia",
   "Adamawa",
@@ -154,31 +157,37 @@ export const links = [
 
 export const howItWorks = [
   {
-    imageSrc: "/images/contact.avif",
-    imageAlt: "Event Management",
-    title: "Attend Events",
+    icons: [IoPersonSharp],
+    title: "Register as a Delegate",
     description:
-      "Browse through a variety of events and reserve a spot for the ones you are interested in attending.",
-    buttonText: "Attend an Event",
-    link: "/events",
+      "Provide your Name, Email Address, and Phone Number. All fields are required.",
+    confirmation: "Confirm your email address.",
+    desHeader: "Ensure all information matches your official photo ID, which you will present at the registration desk.",
+    buttonText: "Register",
+    link: "/signup",
+    login: "Upload your delegate credentials and await approval.",
   },
   {
-    imageSrc: "/images/globe.jpg",
-    imageAlt: "Create Event",
+    icons: [IoCreateOutline],
     title: "Create an Event",
     description:
-      "As an organization, you can create and manage events for participants to join.",
+      "Provide the Event Name, Email Address, and Phone Number. All fields are required.",
+    confirmation: "Confirm your email address.",
+    desHeader: "Ensure all information matches your official photo ID, which you will present at the registration desk.",
     buttonText: "Create an Event",
     link: "/create-event",
+    login: "Select a date and time slot for your event. Await approval and invoice. Make the payment and upload proof of payment.",
   },
   {
-    imageSrc: "/images/globe1.jpg",
-    imageAlt: "Event Updates",
-    title: "Get Event Updates",
+    icons: [CgOrganisation],
+    title: "Register as an Organization",
     description:
-      "Stay informed about the latest events by managing your profile and subscribing to updates.",
-    buttonText: "Get Updates",
-    link: "/profile",
+      "Provide your Organization's Name, Email Address, Phone Number, and a Letter of Approval from your Organization.",
+    confirmation: "Confirm your email address.",
+    desHeader: "Ensure all information matches your official photo ID, which you will present at the registration desk.",
+    buttonText: "Register",
+    link: "/signup",
+    login: "Upload your organization's credentials and await approval.",
   },
 ];
 

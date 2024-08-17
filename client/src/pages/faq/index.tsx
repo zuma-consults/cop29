@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Accordion from "../../components/ui/Accordion";
 import { faqs, howItWorks } from "../../util/data";
 
+
 function FAQ() {
   return (
     <div className="pb-5 md:pb-2 flex items-center justify-center flex-col px-5 md:px-10 relative mb-5">
@@ -31,18 +32,56 @@ function FAQ() {
         {howItWorks.map((item, index) => (
           <div
             key={index}
-            className="border md:border-2 bg-green-100 border-green-700 rounded flex flex-col md:flex-row p-4 md:p-5 gap-4 items-center"
+            className="border md:border-2 bg-green-100 border-green-700 rounded flex flex-col md:flex-row p-4 md:p-5 gap-4 items-start"
           >
-            <img
-              src={item.imageSrc}
-              alt={item.imageAlt}
-              className="w-full md:w-1/2 h-[200px] object-cover rounded-lg"
-            />
-            <div className="w-full md:w-1/2 flex flex-col p-4">
+            <div className="flex space-x-3 pt-4">
+              {item.icons.map((Icon, i) => (
+                <Icon key={i} size={35} color="green" />
+              ))}
+            </div>
+            <div className="w-full md:w-2/3 flex flex-col p-4">
               <h2 className="text-xl md:text-2xl font-bold mt-1">{item.title}</h2>
-              <p className="text-sm md:text-base mt-1">
-                {item.description}
-              </p>
+              <p className="text-sm md:text-base mt-1">{item.desHeader}</p>
+              
+              <div>
+                <h3 className="text-xl md:text-lg text-gray-600 font-bold mt-1">
+                  1 Registration
+                </h3>
+                <ul className="text-sm md:text-base mt-1 list-disc pl-5">
+                  {item.description.split('. ').map((line, i) => (
+                    line.trim() !== "" && <li key={i}>{line}</li>
+                  ))}
+                </ul>
+              </div>
+
+              {item.confirmation && (
+                <div>
+                  <h3 className="text-xl md:text-lg text-gray-600 font-bold mt-1">
+                    2 Confirmation
+                  </h3>
+                  <ul className="text-sm md:text-base mt-1 list-disc pl-5">
+                    {item.confirmation.split('. ').map((line, i) => (
+                      line.trim() !== "" && <li key={i}>{line}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+               {item.login && (
+                <div>
+                  <h3 className="text-xl md:text-lg text-gray-600 font-bold mt-1">
+                    2 Login
+                  </h3>
+                  <ul className="text-sm md:text-base mt-1 list-disc pl-5">
+                    {item.login.split('. ').map((line, i) => (
+                      line.trim() !== "" && <li key={i}>{line}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <p className="text-sm md:text-base mt-1">{item.desHeader}</p>
+
               <div className="w-full mt-4">
                 <Link to={item.link} className="bg-green-800 p-2 md:p-3 rounded text-white w-full md:w-auto">
                   {item.buttonText}
