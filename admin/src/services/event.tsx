@@ -59,7 +59,7 @@ export const getAllEvents = async (params?: Record<string, any>) => {
   }
 };
 
-export const getAllCalender = async (params: Record<string, any>) => {
+export const getAllCalender = async () => {
   try {
     const config = {
       method: "get",
