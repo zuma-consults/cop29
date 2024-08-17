@@ -89,6 +89,7 @@ const ExpandedComponent: React.FC<{ data: Event }> = ({ data }) => (
 
 const Profile: React.FC = () => {
   const { data: user, isLoading } = useGetProfile();
+  console.log(user, 'user')
 
   if (isLoading) {
     return <Loader />;
