@@ -14,12 +14,12 @@ module.exports = {
       if (err) {
         return errorHandler(res, err.message || "File upload error", 400);
       }
-  
+
       try {
         const { body, files } = req;
         const { title, slotId } = body;
         const organizerId = req.user;
-  
+
         // Check if required fields are provided
         if (!title || !slotId) {
           return errorHandler(
@@ -28,7 +28,7 @@ module.exports = {
             400
           );
         }
-  
+
         const organizer = await User.findById(organizerId);
         if (!organizer || organizer.userType !== "organization") {
           return errorHandler(
@@ -37,7 +37,7 @@ module.exports = {
             403
           );
         }
-  
+
         // Check if the organization already has 2 events
         const eventCount = await Event.countDocuments({ organizerId });
         if (eventCount >= 2) {
@@ -47,12 +47,12 @@ module.exports = {
             403
           );
         }
-  
+
         const slot = await Slot.findById(slotId);
         if (!slot) {
           return errorHandler(res, "Slot not found.", 404);
         }
-  
+
         // Check if the slot is open
         if (slot.bookingStatus !== "open") {
           return errorHandler(
@@ -61,9 +61,9 @@ module.exports = {
             409
           );
         }
-  
+
         const { start, end } = slot;
-  
+
         // Handle image uploads
         let image = "";
         if (files && files.length > 0) {
@@ -75,7 +75,7 @@ module.exports = {
           );
           image = uploadResult.url;
         }
-  
+
         // Create new Event entry
         const newEvent = new Event({
           title,
@@ -87,16 +87,16 @@ module.exports = {
           slotId,
           ...body, // Spread remaining fields from the body, excluding the slotId
         });
-  
+
         // Save newEvent
         await newEvent.save();
-  
+
         // Update slot with booking details
         slot.bookingStatus = "pending";
         slot.bookingBy = organizerId;
         slot.title = title;
         await slot.save();
-  
+
         // Send success response
         return successHandler(res, "Event Successfully Added.", newEvent);
       } catch (error) {
@@ -165,7 +165,7 @@ module.exports = {
         const newEvent = new Event({
           title,
           organizerId,
-          organizer: organizer.name,
+          organizer: `${organizer.name}  ${organizer.state}`,
           start,
           end,
           image,
