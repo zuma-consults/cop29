@@ -6,6 +6,8 @@ const PAGE_SIZE = 12;
 const { upload, uploadToCloudinary } = require("../utils/upload");
 const NodeCache = require("node-cache");
 const User = require("../models/users");
+const sendEmail = require("../utils/sendMail");
+const Invoice = require("../models/invoice");
 const myCache = new NodeCache();
 
 module.exports = {
@@ -98,7 +100,11 @@ module.exports = {
         await slot.save();
 
         // Send success response
-        return successHandler(res, "Event Successfully Added.", newEvent);
+        return successHandler(
+          res,
+          "Application for Side Event Successfully Submitted. An invoice would be sent to your mail.",
+          newEvent
+        );
       } catch (error) {
         return errorHandler(res, error.message, error.statusCode || 500);
       }
@@ -112,8 +118,7 @@ module.exports = {
 
       try {
         const { body, files } = req;
-        const { title, slotId } = body;
-        const organizerId = req.user;
+        const { title, slotId, organizerId } = body;
 
         // Check if required fields are provided
         if (!title || !slotId) {
@@ -344,7 +349,7 @@ module.exports = {
   },
   addCommentToEventById: async (req, res) => {
     try {
-      let by = req.user;
+      let by = req.admin;
       const id = req.params.id;
       const { comment } = req.body;
 
@@ -389,15 +394,79 @@ module.exports = {
       return errorHandler(res, error.message, error.statusCode);
     }
   },
-};
+  approveOrRejectEventById: async (req, res) => {
+    try {
+      let by = req.admin;
+      const id = req.params.id;
+      const { status } = req.body;
 
-const getStartAndEndTime = (timeSpan) => {
-  const slot = timeSlots.find((slot) => slot.timeSpan === timeSpan);
+      if (!status) {
+        return errorHandler(res, "Please select a valid status.", 400);
+      }
 
-  if (!slot) {
-    return null;
-  }
+      // Find the event first to check its current status
+      const event = await Event.findById(id);
+      if (!event) {
+        return errorHandler(res, "No Event found with the ID", 404);
+      }
 
-  const [start, end] = slot.timeSpan.split(" to ").map((time) => time.trim());
-  return { start, end };
+      // Ensure the event is in "processing" state before updating
+      if (event.status !== "processing") {
+        return errorHandler(
+          res,
+          `Event status is not in processing state. Event has be ${event.status}.`,
+          400
+        );
+      }
+
+      // Update the event status
+      const updatedEvent = await Event.findOneAndUpdate(
+        { _id: id },
+        {
+          status,
+          statusChangedBy: by,
+        },
+        { new: true }
+      );
+
+      // Update the slot based on the event status
+      if (status === "approved" || status === "declined") {
+        const slotUpdate =
+          status === "approved"
+            ? { bookingStatus: "booked" }
+            : { bookingStatus: "open" };
+
+        const slot = await Slot.findByIdAndUpdate(
+          updatedEvent.slotId,
+          slotUpdate,
+          { new: true }
+        );
+
+        if (!slot) {
+          return errorHandler(res, "No Slot found with the ID", 404);
+        }
+      }
+
+      return successHandler(res, `Event ${status}.`, updatedEvent);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode || 500);
+    }
+  },
+  sendEventInvoiceById: async (req, res) => {
+    try {
+      let id = req.params.id;
+      let generatedBy = req.admin;
+      let event = await Event.findOne({ countId: id }).populate("organizerId");
+      if (!event) return errorHandler(res, "No Event found with the ID", 404);
+      // await Invoice.create({
+      //   amount: event.invoiceAmount,
+      //   eventId: event._id,
+      //   generatedBy,
+      // });
+      // sendEmail(event.organizerId.email, url, "Click to Reset your Password");
+      return successHandler(res, "Event Found", event);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode);
+    }
+  },
 };

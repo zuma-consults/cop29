@@ -92,10 +92,14 @@ const eventSchema = mongoose.Schema(
     summaryFile: {
       type: String,
     },
-    reportStatus: {
+    summaryStatus: {
       type: String,
       enum: ["Not Received", "Received"],
       default: "Not Received",
+    },
+    statusChangedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Staff",
     },
   },
   {
