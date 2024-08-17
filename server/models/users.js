@@ -38,7 +38,6 @@ const userSchema = mongoose.Schema(
     },
     organizationType: {
       type: String,
-      enum: ["CSO", "MDA", "NGO", "States"],
     },
     delegates: {
       type: [
