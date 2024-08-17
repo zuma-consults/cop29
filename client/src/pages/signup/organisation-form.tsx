@@ -9,18 +9,17 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 interface FormValues {
-    userType: string;
-    name: string;
-    email: string;
-    phone: string;
-    password: string;
-    category: string;
-    state: string;
-    organizationType: string;
-    terms: boolean;
-    showPassword: boolean;
-  }
-  
+  userType: string;
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  category: string;
+  state: string;
+  organizationType: string;
+  terms: boolean;
+  showPassword: boolean;
+}
 
 const organizationValidationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
@@ -71,13 +70,13 @@ const OrganizationForm: React.FC = () => {
       onSubmit={(values, { resetForm }) => {
         const formData = new FormData();
         (Object.keys(values) as (keyof FormValues)[]).forEach((key) => {
-            const value = values[key];
-            if (typeof value === 'boolean') {
-              formData.append(key, value.toString());
-            } else if (value !== "" && key !== "terms") {
-              formData.append(key, value);
-            }
-          });
+          const value = values[key];
+          if (typeof value === "boolean") {
+            formData.append(key, value.toString());
+          } else if (value !== "" && key !== "terms") {
+            formData.append(key, value);
+          }
+        });
 
         if (files) formData.append("files", files);
         if (orgImage) formData.append("orgImage", orgImage);
@@ -89,14 +88,13 @@ const OrganizationForm: React.FC = () => {
           resetForm();
           setFiles(null);
           setOrgImage(null);
-          // navigate("/login");
         }
       }}
     >
       {({ values, setFieldValue }) => (
         <Form className="p-2 shadow bg-green-50 mt-5">
           <h1 className="text-2xl font-semibold mb-6 text-center text-green-800">
-           Create An Organisation Account
+            Create An Organisation Account
           </h1>
           {/* Organization Fields */}
           <div className="mb-4">
@@ -283,7 +281,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="files"
               className="block text-gray-700 font-semibold mb-2"
             >
-                 Upload Approval Document (pdf file)
+              Upload Approval Document (pdf file)
             </label>
             <input
               type="file"

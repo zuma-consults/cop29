@@ -64,10 +64,10 @@ const Card: React.FC<CardProps> = ({ event }) => {
             <FaCalendarDay className="mr-2 text-gray-500" />
             <span className="text-sm font-medium">{formatDate1(end)}</span>
           </div>
-          <div className="flex items-center text-gray-600">
+          {/* <div className="flex items-center text-gray-600">
             <FaMapMarkerAlt className="mr-2 text-gray-500" />
             <span className="text-sm font-medium">{location}</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </Link>

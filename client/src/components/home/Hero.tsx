@@ -40,7 +40,7 @@ const Hero: React.FC = () => {
               data-aos="fade-up" data-aos-duration="1000"
             >
               <FaPlus className="text-2xl mr-2" />
-              Create an Event
+              Create a side Event
             </Link>
             <HashLink
               to="/faq#how-it-works"
