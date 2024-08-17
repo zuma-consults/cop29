@@ -227,7 +227,7 @@ const OrganisationTable: React.FC = () => {
           data={extratedData?.users}
           pagination
           fixedHeader
-          fixedHeaderScrollHeight="500px"
+          fixedHeaderScrollHeight="600px"
           onChangePage={handlePageChange}
         />
 
