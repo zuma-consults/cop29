@@ -56,7 +56,7 @@ const CopTable: React.FC = () => {
   }, []);
 
   const handleDownloadCSV = () => {
-    saveAsCSV({ data, filename: "User_List" });
+    saveAsCSV({ data, filename: "COP 29 List" });
   };
 
   const handlePageChange = (page: number) => {

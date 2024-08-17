@@ -48,7 +48,7 @@ const Login: React.FC = () => {
           <div className="bg-white w-full h-max md:w-[480px] p-5 grid gap-3 rounded-lg">
             <div className="w-full h-max flex flex-col items-center justify-center gap-1">
               <img
-                src="/images/coat.png"
+                src="/images/logo.svg"
                 alt="Description of image"
                 width={100}
                 height={10}
@@ -116,8 +116,8 @@ const Login: React.FC = () => {
                 ),
               }}
             />
-            <Button disabled>
-              <a href="/#">Forgot Password?</a>
+            <Button>
+              <a href="/forgot-password">Forgot Password?</a>
             </Button>
             <Button
               type="submit"

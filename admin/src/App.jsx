@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/login";
+import ForgetPassword from "./pages/forgetPassword";
 import { motion, AnimatePresence } from "framer-motion";
 import Signup from "./pages/signup";
 import AppLayout from "./layouts/AppLayout";
@@ -29,6 +30,7 @@ function App() {
       <Routes>
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgetPassword />} />
         </Route>
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<AppLayout />}>
