@@ -19,7 +19,8 @@ export const register = async (data: any) => {
     return responseData;
   } catch (error: any) {
     console.error(error);
-    return undefined
+    toast.error(`${error.response.data.message}`)
+    return
   }
 };
 
@@ -38,9 +39,10 @@ export const login = async (data: any) => {
       toast.success('you are now logged in')
     }
     return responseData;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return undefined;
+    toast.error(`${error.response.data.message}`)
+    return;
   }
 };
 

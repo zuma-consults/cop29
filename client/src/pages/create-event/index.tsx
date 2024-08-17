@@ -1,25 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useCreateEvent } from "../../components/custom-hooks/useEvents";
+import { MultiSelect } from "react-multi-select-component";
+import Loader from "../../components/ui/Loader";
 
 const CreateEvent: React.FC = () => {
+  const options = [
+    { label: "Grapes 🍇", value: "grapes" },
+    { label: "Mango 🥭", value: "mango" },
+    { label: "Strawberry 🍓", value: "strawberry", disabled: true },
+  ];
+
+  const { mutate, isLoading } = useCreateEvent();
+  const [selected, setSelected] = useState([]);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   const formik = useFormik({
     initialValues: {
-      imageUrl: "",
       title: "",
       zoomLink: "",
       time: "",
       location: "",
-      objective: '',
+      objective: "",
       description: "",
-      tags: "",
+      tags: "", // Tags should be an array, but here it's a string
       organizedBy: "",
     },
     validationSchema: Yup.object({
-      imageUrl: Yup.string().url("Invalid URL").required("Image URL is required"),
       title: Yup.string().required("Event title is required"),
-      zoomLink: Yup.string().url("Invalid URL").required("Zoom link is required"),
+      zoomLink: Yup.string()
+        .url("Invalid URL")
+        .required("Zoom link is required"),
       time: Yup.string().required("Time of the event is required"),
       location: Yup.string().required("Location is required"),
       description: Yup.string().required("Event description is required"),
@@ -29,42 +47,66 @@ const CreateEvent: React.FC = () => {
     }),
     onSubmit: async (values) => {
       try {
-        const response = await fetch("https://your-server-url.com/upload", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...values,
-            tags: values.tags.split(",").map(tag => tag.trim()),
-          }),
-        });
+        const formData = new FormData();
+        formData.append("title", values.title);
+        formData.append("zoomLink", values.zoomLink);
+        formData.append("time", values.time);
+        formData.append("location", values.location);
+        formData.append("objective", values.objective);
+        formData.append("description", values.description);
 
-        if (response.ok) {
-          alert("Event details uploaded successfully!");
-        } else {
-          alert("Failed to upload event details.");
+        // Convert selected tags to comma-separated string if necessary
+        formData.append("tags", selected.map(tag => tag).join(","));
+        formData.append("organizedBy", values.organizedBy);
+        
+        if (imageFile) {
+          formData.append("image", imageFile);
         }
+
+        await mutate(formData);
       } catch (error) {
         console.error("Error uploading event details:", error);
       }
     },
   });
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files?.[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
   return (
-    <div className="w-full md:h-[100vh] bg-co-primary flex items-center justify-center p-4 md:p-0" >
-      <div className="w-full max-w-4xl bg-white p-5 rounded-lg shadow-lg" data-aos="zoom-in-right">
-        <h1 className="text-green-700 font-bold text-[26px] text-center md:text-left">Create an Event</h1>
+    <div className="w-full md:h-[100vh] bg-co-primary flex items-center justify-center p-4 md:p-0">
+      <div
+        className="w-full max-w-4xl bg-white p-5 rounded-lg shadow-lg"
+        data-aos="zoom-in-right"
+      >
+        <h1 className="text-green-700 font-bold text-[26px] text-center md:text-left">
+          Create an Event
+        </h1>
         <div className="p-6 rounded-lg w-full flex flex-col items-center justify-center gap-3 mt-2 bg-green-50">
-          <h2 className="text-gray-600 font-bold text-center">Upload Event Header Image</h2>
-          <input
-            type="file"
-            accept="image/*"
-            style={{ display: 'none' }}
-          />
-          <MdOutlineCloudUpload className="text-[46px] text-green-700" />
-          <span className="text-gray-400">Drag & Drop or choose a file to upload</span>
-          <span className="text-gray-500">Supported formats: JPEG, PNG</span>
+          <h2 className="text-gray-600 font-bold text-center">
+            Upload Event Header Image
+          </h2>
+          <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-green-700 rounded-lg cursor-pointer">
+            <MdOutlineCloudUpload className="text-[46px] text-green-700" />
+            <span className="text-gray-400">
+              Drag & Drop or choose a file to upload
+            </span>
+            <span className="text-gray-500">Supported formats: JPEG, PNG</span>
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+          </label>
+          {imagePreview && (
+            <img src={imagePreview} alt="Preview" className="mt-4 h-32 w-full object-cover" />
+          )}
         </div>
         <form
           onSubmit={formik.handleSubmit}
@@ -107,14 +149,11 @@ const CreateEvent: React.FC = () => {
           {/* Time of the Event */}
           <div className="flex flex-col gap-2">
             <label htmlFor="time">Time</label>
-            <input
-              id="time"
-              name="time"
-              type="text"
-              value={formik.values.time}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              className="border border-gray-300 p-2 rounded"
+            <MultiSelect
+              options={options}
+              value={selected}
+              onChange={setSelected}
+              labelledBy="Select"
             />
             {formik.touched.time && formik.errors.time ? (
               <div className="text-red-500">{formik.errors.time}</div>
@@ -193,8 +232,9 @@ const CreateEvent: React.FC = () => {
             <button
               type="submit"
               className="bg-green-800 text-white p-2 rounded w-full"
+              disabled={isLoading}
             >
-              Submit Event
+              {isLoading ? "Submitting..." : "Submit Event"}
             </button>
           </div>
         </form>

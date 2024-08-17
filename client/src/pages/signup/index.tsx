@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { categories, organizationTypes, states } from "../../util/data";
 import { useRegister } from "../../components/custom-hooks/useAuth";
+import Loader from "../../components/ui/Loader";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
@@ -24,9 +25,15 @@ const validationSchema = Yup.object({
 
 const Signup: React.FC = () => {
   const { mutate: register, isLoading } = useRegister();
+  const [files, setLetterOfApproval] = useState<File | null>(null);
+  const [orgImage, setOrgImage] = useState<File | null>(null);
+
+  if (isLoading){
+    return <Loader/>
+  }
 
   return (
-    <div className="flex  w-full  h-screen bg-green-800">
+    <div className="flex w-full h-[130vh] bg-green-800">
       <div className="flex-1 flex items-center justify-center">
         <div className="bg-white w-full md:w-[480px] p-5 m-10 md:m-0 grid gap-5 rounded-lg">
           <div className="w-full h-max flex flex-col items-center justify-center gap-1">
@@ -63,14 +70,29 @@ const Signup: React.FC = () => {
               showPassword: false,
             }}
             validationSchema={validationSchema}
-            onSubmit={({showPassword, ...values}, {resetForm}) => {
-              const { state, organizationType, category, ...others } = values;
-              const newValue = values.userType === "delegate" ? others : values;
-              register(newValue);
-              resetForm()
+            onSubmit={(values, { resetForm }) => {
+              // Append file states to values
+              const formData = new FormData();
+              Object.keys(values).forEach((key) => {
+                if (values[key] !== "") {
+                  formData.append(key, values[key]);
+                }
+              });
+
+              if (files) {
+                formData.append("files", files);
+              }
+              if (orgImage) {
+                formData.append("orgImage", orgImage);
+              }
+
+              register(formData);
+              resetForm();
+              setLetterOfApproval(null);
+              setOrgImage(null);
             }}
           >
-            {({ values, setFieldValue, isSubmitting}) => (
+            {({ values, setFieldValue, isSubmitting }) => (
               <Form className="grid gap-5">
                 {/* User Type Selector */}
                 <div className="mb-2">
@@ -251,6 +273,45 @@ const Signup: React.FC = () => {
                         className="text-red-500 text-xs"
                       />
                     </div>
+
+                    {/* File Uploads */}
+                    <div className="mb-2">
+                      <label
+                        htmlFor="letterOfApproval"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Letter of Approval
+                      </label>
+                      <input
+                        type="file"
+                        id="letterOfApproval"
+                        onChange={(event) => {
+                          if (event.currentTarget.files) {
+                            setLetterOfApproval(event.currentTarget.files[0]);
+                          }
+                        }}
+                        className="border-[0.8px] border-gray-400 px-[10px] py-3 text-[12px] w-full"
+                      />
+                    </div>
+
+                    <div className="mb-2">
+                      <label
+                        htmlFor="orgImage"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Organization Image
+                      </label>
+                      <input
+                        type="file"
+                        id="orgImage"
+                        onChange={(event) => {
+                          if (event.currentTarget.files) {
+                            setOrgImage(event.currentTarget.files[0]);
+                          }
+                        }}
+                        className="border-[0.8px] border-gray-400 px-[10px] py-3 text-[12px] w-full"
+                      />
+                    </div>
                   </>
                 )}
 
@@ -267,8 +328,7 @@ const Signup: React.FC = () => {
         </div>
       </div>
       <div className="hidden md:flex flex-1 bg-green-200 relative">
-
-      <div className="absolute inset-0 bg-co-primary opacity-50"></div>
+        <div className="absolute inset-0 bg-co-primary opacity-50"></div>
         <img
           src="/images/globe.jpg"
           alt="Image description"

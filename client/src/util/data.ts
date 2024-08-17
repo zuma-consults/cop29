@@ -54,8 +54,8 @@ export const organizationTypes = [
   "MDA",
   "CSO",
   "NGO",
+  "State",
   "Private Sector",
-  "Government Agency",
   "International Organization",
 ];
 
