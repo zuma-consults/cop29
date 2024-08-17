@@ -223,7 +223,7 @@ const EventTable: React.FC = () => {
           data={extratedData?.events}
           pagination
           fixedHeader
-          fixedHeaderScrollHeight="500px"
+          fixedHeaderScrollHeight="600px"
           onChangePage={handlePageChange}
         />
       </div>

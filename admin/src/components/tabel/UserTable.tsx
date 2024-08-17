@@ -170,7 +170,7 @@ const UserTable: React.FC = () => {
           data={extratedData}
           pagination
           fixedHeader
-          fixedHeaderScrollHeight="500px"
+          fixedHeaderScrollHeight="600px"
           onChangePage={handlePageChange}
         />
 
