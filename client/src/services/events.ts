@@ -29,3 +29,17 @@ export const createEvent = async (data: any) => {
     console.log(error);
   }
 };
+
+export const getAllTimeSlots = async () => {
+  try {
+    const config = {
+      method: "get",
+      url: "slots",
+    };
+
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};

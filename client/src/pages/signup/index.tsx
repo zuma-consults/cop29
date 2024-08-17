@@ -20,7 +20,8 @@ const validationSchema = Yup.object({
     .required("User type is required"),
   category: Yup.string(),
   state: Yup.string(),
-  organizationType: Yup.string()
+  organizationType: Yup.string(),
+  terms: Yup.boolean().oneOf([true], "You must accept the terms and conditions").required(),
 });
 
 const Signup: React.FC = () => {
@@ -68,6 +69,7 @@ const Signup: React.FC = () => {
               organizationType: "",
               userType: "delegate",
               showPassword: false,
+              terms: false,
             }}
             validationSchema={validationSchema}
             onSubmit={(values, { resetForm }) => {
@@ -92,7 +94,7 @@ const Signup: React.FC = () => {
               setOrgImage(null);
             }}
           >
-            {({ values, setFieldValue, isSubmitting }) => (
+            {({ values, setFieldValue }) => (
               <Form className="grid gap-5">
                 {/* User Type Selector */}
                 <div className="mb-2">
@@ -314,6 +316,24 @@ const Signup: React.FC = () => {
                     </div>
                   </>
                 )}
+
+                 {/* Terms and Conditions Checkbox */}
+                 <div className="flex items-center">
+                  <Field
+                    type="checkbox"
+                    id="terms"
+                    name="terms"
+                    className="mr-2"
+                  />
+                  <label htmlFor="terms" className="text-sm text-gray-700">
+                    I agree to the terms and conditions
+                  </label>
+                </div>
+                <ErrorMessage
+                  name="terms"
+                  component="div"
+                  className="text-red-500 text-xs"
+                />
 
                 <button
                   type="submit"
