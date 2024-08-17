@@ -454,19 +454,37 @@ module.exports = {
   },
   sendEventInvoiceById: async (req, res) => {
     try {
-      let id = req.params.id;
-      let generatedBy = req.admin;
-      let event = await Event.findOne({ countId: id }).populate("organizerId");
+      const id = req.params.id;
+      const generatedBy = req.admin;
+
+      // Find the event by countId and populate the organizer details
+      const event = await Event.findOne({ countId: id }).populate(
+        "organizerId"
+      );
       if (!event) return errorHandler(res, "No Event found with the ID", 404);
-      // await Invoice.create({
-      //   amount: event.invoiceAmount,
-      //   eventId: event._id,
-      //   generatedBy,
-      // });
-      // sendEmail(event.organizerId.email, url, "Click to Reset your Password");
-      return successHandler(res, "Event Found", event);
+
+      // Check if an invoice for this eventId already exists
+      let invoice = await Invoice.findOne({ eventId: event._id });
+
+      // If the invoice doesn't exist, create a new one
+      if (!invoice) {
+        invoice = await Invoice.create({
+          amount: event.invoiceAmount,
+          eventId: event._id,
+          generatedBy,
+        });
+      }
+
+      // Send the invoice email regardless of whether a new invoice was created
+      sendEmail(
+        event.organizerId.email,
+        event.organizerId.name,
+        event.invoiceAmount
+      );
+
+      return successHandler(res, "Invoice sent successfully.", event);
     } catch (error) {
-      return errorHandler(res, error.message, error.statusCode);
+      return errorHandler(res, error.message, error.statusCode || 500);
     }
   },
 };
