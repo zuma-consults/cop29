@@ -44,6 +44,9 @@ const OrganizationForm: React.FC = () => {
   const [files, setFiles] = useState<File | null>(null);
   const [orgImage, setOrgImage] = useState<File | null>(null);
   const navigate = useNavigate();
+  const handleTerms = () => {
+    navigate("/termsAndConditions")
+  }
 
   if (isLoading) {
     return <Loader />;
@@ -336,7 +339,11 @@ const OrganizationForm: React.FC = () => {
               name="terms"
               className="mr-2 h-4 w-4 text-green-600 border-gray-300 rounded"
             />
-            <label htmlFor="terms" className="text-gray-700">
+               <label
+              htmlFor="terms"
+              className="block text-blue-500 font-semibold italic cursor-pointer"
+              onClick={handleTerms}
+            >
               I agree to the terms and conditions
             </label>
           </div>

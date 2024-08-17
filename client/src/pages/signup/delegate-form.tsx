@@ -34,6 +34,9 @@ const delegateValidationSchema = Yup.object({
 
 const DelegateForm: React.FC = () => {
   const navigate = useNavigate();
+  const handleTerms = () => {
+    navigate("/termsAndConditions")
+  }
   const { mutate: register, isLoading, isSuccess } = useRegister();
   const [file, setFile] = useState<File | null>(null);
 
@@ -235,7 +238,8 @@ const DelegateForm: React.FC = () => {
             />
             <label
               htmlFor="terms"
-              className="block text-gray-700 font-semibold mb-2"
+              className="block text-blue-500 font-semibold italic cursor-pointer"
+              onClick={handleTerms}
             >
               I agree to the terms and conditions
             </label>
