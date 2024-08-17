@@ -11,6 +11,7 @@ const CreateEvent: React.FC = () => {
       zoomLink: "",
       time: "",
       location: "",
+      objective: '',
       description: "",
       tags: "",
       organizedBy: "",
@@ -22,6 +23,7 @@ const CreateEvent: React.FC = () => {
       time: Yup.string().required("Time of the event is required"),
       location: Yup.string().required("Location is required"),
       description: Yup.string().required("Event description is required"),
+      objective: Yup.string().required("Event Objective is required"),
       tags: Yup.string().required("Tags are required"),
       organizedBy: Yup.string().required("Organizer is required"),
     }),
@@ -87,7 +89,7 @@ const CreateEvent: React.FC = () => {
 
           {/* Zoom Link */}
           <div className="flex flex-col gap-2">
-            <label htmlFor="zoomLink">Zoom Link</label>
+            <label htmlFor="zoomLink">Meeting Link</label>
             <input
               id="zoomLink"
               name="zoomLink"
@@ -162,6 +164,7 @@ const CreateEvent: React.FC = () => {
               value={formik.values.tags}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              placeholder="climate, energy"
               className="border border-gray-300 p-2 rounded"
             />
             {formik.touched.tags && formik.errors.tags ? (

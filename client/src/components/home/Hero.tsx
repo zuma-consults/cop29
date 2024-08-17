@@ -5,19 +5,13 @@ import { HashLink } from "react-router-hash-link";
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative flex items-center justify-center flex-col gap-10 md:gap-20 h-screen md:h-[92vh] w-full">
-      {/* Background Video */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover"
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
-        <source src="/images/nigerian-flag.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-
+    <section
+      className="relative flex items-center justify-center flex-col gap-10 md:gap-20 h-screen md:h-[92vh] w-full bg-cover bg-center"
+      style={{
+        backgroundImage: `url("/images/globe.jpg")`,
+      }}
+      data-aos="zoom-in-right"
+    >
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-co-primary opacity-90"></div>
 
@@ -38,7 +32,7 @@ const Hero: React.FC = () => {
               data-aos="fade-up" data-aos-duration="1000"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
-              Register for Cop29 batch
+              Attend an Event
             </Link>
             <Link
               to="/create-event"
@@ -46,7 +40,7 @@ const Hero: React.FC = () => {
               data-aos="fade-up" data-aos-duration="1000"
             >
               <FaPlus className="text-2xl mr-2" />
-              Register for side events
+              Create an Event
             </Link>
             <HashLink
               to="/faq#how-it-works"
@@ -54,7 +48,7 @@ const Hero: React.FC = () => {
               data-aos="fade-up" data-aos-duration="1000"
             >
               <FaInfoCircle className="text-2xl mr-2" />
-              Important Information
+              How it Works
             </HashLink>
             <Link
               to="/faq"
@@ -68,7 +62,7 @@ const Hero: React.FC = () => {
         </div>
         <div className="hidden md:flex flex-1 justify-center">
           <img
-            src="/images/logo.svg"
+            src="/images/dots.svg"
             alt="Logo"
             className="rounded-lg w-[80%] md:w-[60%] h-auto"
             data-aos="fade-left" data-aos-duration="1000"

@@ -124,7 +124,7 @@ const EventDetails: React.FC = () => {
       </div>
       <div className="flex flex-col gap-5 pt-8 sm:pt-10 md:pt-12">
         <span className="text-[20px] sm:text-[24px] md:text-[26px] font-bold">
-          Event Excerpts
+          Live Event Excerpts
         </span>
         <VideoPlayer src="https://www.youtube.com/watch?v=UFfzpvVnoM8" />
       </div>
