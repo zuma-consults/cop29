@@ -44,7 +44,7 @@ const OrganizationForm: React.FC = () => {
   const [orgImage, setOrgImage] = useState<File | null>(null);
   const navigate = useNavigate();
   const handleTerms = () => {
-    navigate("/termsAndConditions")
+    navigate("/terms-and-conditions")
   }
 
   if (isLoading) {
