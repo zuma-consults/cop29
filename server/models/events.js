@@ -9,31 +9,18 @@ const eventSchema = mongoose.Schema(
     },
     start: {
       type: String,
-      required: true,
     },
     end: {
       type: String,
-      required: true,
-    },
-    date: {
-      type: Date,
-      required: true,
     },
     externalLink: {
       type: String,
-    },
-    price: {
-      type: String,
-      default: "Free",
     },
     description: {
       type: String,
     },
     slotId: { type: mongoose.Schema.Types.ObjectId, ref: "Slots" },
     image: {
-      type: String,
-    },
-    location: {
       type: String,
     },
     invoiceUrl: {
@@ -87,6 +74,25 @@ const eventSchema = mongoose.Schema(
       type: Number,
       default: 1,
       unique: true,
+    },
+    objective: {
+      type: String,
+    },
+    reportFile: {
+      type: String,
+    },
+    reportStatus: {
+      type: String,
+      enum: ["Not Received", "Received"],
+      default: "Not Received",
+    },
+    summaryFile: {
+      type: String,
+    },
+    reportStatus: {
+      type: String,
+      enum: ["Not Received", "Received"],
+      default: "Not Received",
     },
   },
   {
