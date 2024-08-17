@@ -4,6 +4,7 @@ import { MdEvent } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
 import { FaCalendarAlt } from "react-icons/fa";
 import { GrAnnounce } from "react-icons/gr";
+import { TbSquareLetterC } from "react-icons/tb";
 
 export const navConfig = [
   {
@@ -41,6 +42,11 @@ export const navConfig = [
     title: "PA Calender",
     icon: <FaCalendarAlt size={24} />,
     path: "/pacalender",
+  },
+  {
+    title: "COP Applicants",
+    icon: <TbSquareLetterC size={24} />,
+    path: "/cop",
   },
   {
     title: "Announcements",
