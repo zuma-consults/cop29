@@ -96,3 +96,17 @@ export const generateInvoice = async (id: number) => {
     console.log(error);
   }
 };
+
+export const getAllApplicants = async (params?: Record<string, any>) => {
+  try {
+    const config = {
+      method: "get",
+      url: "applicants",
+      params,
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};

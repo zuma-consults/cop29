@@ -4,6 +4,7 @@ import {
   createEvent,
   declineEvent,
   generateInvoice,
+  getAllApplicants,
   getAllEvents,
   getAllTimeSlots,
 } from "../services/event";
@@ -107,4 +108,23 @@ export const useGenerateInvoice = () => {
       toast.error("Invoice Generation failed. Please try again.");
     },
   });
+};
+
+export const useGetAllCopApplicants = (queryParams?: Record<string, any>) => {
+  const memoizedQueryParams = useMemo(() => {
+    return Object.fromEntries(
+      Object?.entries(queryParams || {})?.filter(([_, value]) => value !== "")
+    );
+  }, [queryParams]);
+  return useQuery(
+    ["AllCopApplicants", memoizedQueryParams],
+    () => getAllApplicants(memoizedQueryParams),
+    {
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+      cacheTime: 30 * 60 * 1000,
+      retry: 1,
+    }
+  );
 };
