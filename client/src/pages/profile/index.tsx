@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { useGetProfile } from "../../components/custom-hooks/useAuth";
 import Loader from "../../components/ui/Loader";
 import { Link } from "react-router-dom";
-
+import AddDelegateModal from "./add-delegate-modal";
 interface Delegate {
   name: string;
   email: string;
@@ -13,22 +13,6 @@ interface Delegate {
   _id: string;
 }
 
-interface OrganizationData {
-  name: string;
-  email: string;
-  password: string;
-  phone: string;
-  category: string;
-  description: string;
-  state: string;
-  image: string;
-  status: string;
-  userType: string;
-  organizationType: string;
-  delegates: Delegate[];
-  createdAt: string;
-  id: string;
-}
 
 const delegateColumns = [
   {
@@ -61,16 +45,16 @@ const delegateColumns = [
   },
 ];
 
+
 const Profile: React.FC = () => {
-  const { data: user, isLoading } = useGetProfile();
-  console.log(user, 'user');
+  const [isModalOpen, setModalOpen] = useState(false);
+  const { data: user, isLoading, refetch } = useGetProfile();
 
   if (isLoading) {
     return <Loader />;
   }
 
-  // Check if user data is of type OrganizationData
-  const organizationData = user?.data as OrganizationData | undefined;
+  const organizationData = user?.data;
 
   return (
     <div className="pb-[5%] md:pb-[2%] flex items-center justify-center flex-col gap-10 px-5 md:px-20 relative">
@@ -132,17 +116,16 @@ const Profile: React.FC = () => {
               </p>
             </div>
             {organizationData.userType === "organization" && (
-              <Link
-                to="/add-delegates"
+              <button
+                onClick={() => setModalOpen(true)}
                 className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
               >
                 Add Organization Delegates
-              </Link>
+              </button>
             )}
           </div>
 
-          {/* Activities Section */}
-          <div className="w-full bg-gray-100 rounded-lg p-6">
+          <div className="w-full bg-gray-100 rounded-lg p-6 mt-4">
             <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
               Delegates
             </h2>
@@ -155,6 +138,9 @@ const Profile: React.FC = () => {
               responsive
             />
           </div>
+
+          {/* Custom Modal Component */}
+          <AddDelegateModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} refetch={refetch} id={user?.data?.id} />
         </>
       )}
     </div>
