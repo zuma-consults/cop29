@@ -295,18 +295,28 @@ const CreateEvent = () => {
       </div>
     </div>
   ) : (
-    <div className="text-center mt-10">
-      <h1 className="text-red-600 text-2xl font-bold">
-        Unauthorized Access
-      </h1>
-      <p className="text-gray-600 mt-4">
-        You do not have permission to create events. Please contact support if
-        you believe this is an error.
-      </p>
-      <Link to="/" className="text-blue-500 mt-4 inline-block">
-        Go to Home
+    <div className="text-center py-[50px] border-2 border-orange-600 my-20 bg-orange-100 mx-10">
+    <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
+      You need to be registered and logged in as an organization to create a side event.
+    </h1>
+    <p className="text-gray-600 mb-6">
+      Please log in or register as an organization to create a side event.
+    </p>
+    <div className="flex flex-col md:flex-row justify-center gap-4">
+      <Link
+        to="/login"
+        className="bg-co-primary text-white py-2 px-4 rounded hover:bg-green-800 transition"
+      >
+        Log In
+      </Link>
+      <Link
+        to="/signup"
+        className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+      >
+        Register
       </Link>
     </div>
+  </div>
   );
 };
 
