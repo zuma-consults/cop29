@@ -3,11 +3,11 @@ import { useLocation } from "react-router-dom";
 import { formatDate1 } from "../../utils/helper";
 import { Button, Chip } from "@mui/material";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
+import { useApproveEvent, useDeclineEvent } from "../../hooks/useEvent";
+import Loader from "../../components/ui/Loader";
 
 const EventDetails: React.FC = () => {
   const location = useLocation();
-
-  console.log(location);
   const event = location.state as {
     image: string;
     status: string;
@@ -19,20 +19,33 @@ const EventDetails: React.FC = () => {
     tags: string[];
     description: string;
     organizer: string;
+    id: number;
   };
 
   if (!event) {
     return <div>Event not found</div>;
   }
 
-  const { image, status, title, start, end, tags, description, organizer } =
+  const { image, status, title, start, end, tags, description, organizer, id } =
     event;
   const tagArr = tags[0].split(",");
+  const { mutate: mutateApproval, isLoading: loadingApproval } =
+    useApproveEvent();
+  const { mutate: mutateDecline, isLoading: loadingDecline } =
+    useDeclineEvent();
+
+  const handeEActionvent = async (type: string) => {
+    if (type === "approve") {
+      mutateApproval(id);
+    } else {
+      mutateDecline(id);
+    }
+  };
 
   console.log("events", event);
   return (
     <>
-      {/* go back */}
+      {loadingApproval && <Loader />}
 
       <div className="px-5 py-10 bg-gray-100">
         <div className="flex items-center justify-start mb-5">
@@ -124,19 +137,34 @@ const EventDetails: React.FC = () => {
             />
           </div>
           <div className="flex items-center justify-end gap-10">
-            <Button
-              variant="contained"
-              color="success"
-              className="absolute bottom-0 right-0"
-            >
-              Approve
-            </Button>
+            {status === "approved" ? (
+              <Button
+                variant="contained"
+                color="success"
+                className="absolute bottom-0 right-0"
+                onClick={() => handeEActionvent("approve")}
+                disabled={loadingApproval}
+              >
+                Approve
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="warning"
+                className="absolute bottom-0 right-0"
+              >
+                Make payment
+              </Button>
+            )}
+
             <Button
               variant="contained"
               color="error"
               className="absolute bottom-0 right-0"
+              onClick={() => handeEActionvent("decline")}
+              disabled={loadingDecline}
             >
-              Reject
+              Decline
             </Button>
           </div>
         </div>

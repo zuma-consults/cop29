@@ -27,9 +27,9 @@ const CreateEvent: React.FC<{
     []
   );
 
-  const { data: organisationData } = useOrganisation(memoizedFilters);
+  const { data: organisationData, isLoading: loadingOrganisation } = useOrganisation(memoizedFilters);
 
-  const { data: timslotsData } = useGetAllTimeSlots();
+  const { data: timslotsData, isLoading: loadingTimeSlots } = useGetAllTimeSlots();
   const extratedOrganisationData = organisationData?.data?.users || [];
   const extratedTimeSlots = timslotsData?.slots || [];
   const openSlots = extratedTimeSlots.filter(
@@ -84,7 +84,7 @@ const CreateEvent: React.FC<{
 
   return (
     <>
-      {isLoading && <Loader />}
+      {isLoading || loadingOrganisation || loadingTimeSlots && <Loader />}
       <div className="flex items-center justify-center p-4 md:p-0">
         <div
           className="w-full max-w-4xl bg-white p-5 rounded-lg shadow-lg"
