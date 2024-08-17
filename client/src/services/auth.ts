@@ -24,6 +24,25 @@ export const register = async (data: any) => {
   }
 };
 
+export const orgRegister = async (data: any) => {
+  try {
+    const config = {
+      method: "post",
+      url: "org/register",
+      data,
+    };
+    const responseData = await request(config);
+    if (responseData) {
+      toast.success("User Registered!");
+    }
+    return responseData;
+  } catch (error: any) {
+    console.error(error);
+    toast.error(`${error?.response?.data?.message}`)
+    return
+  }
+};
+
 // Login function
 export const login = async (data: any) => {
   try {
