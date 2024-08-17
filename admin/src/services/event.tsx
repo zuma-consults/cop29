@@ -82,3 +82,17 @@ export const declineEvent = async (id: number) => {
     console.log(error);
   }
 };
+
+export const generateInvoice = async (id: number) => {
+  try {
+    const config = {
+      method: "post",
+      url: `invoice/event/${id}`,
+      data: { status: "decline" },
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};

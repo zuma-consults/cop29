@@ -3,6 +3,7 @@ import {
   approveEvent,
   createEvent,
   declineEvent,
+  generateInvoice,
   getAllEvents,
   getAllTimeSlots,
 } from "../services/event";
@@ -91,6 +92,19 @@ export const useDeclineEvent = () => {
     },
     onError: () => {
       toast.error("Event Decline failed. Please try again.");
+    },
+  });
+};
+
+export const useGenerateInvoice = () => {
+  return useMutation(generateInvoice, {
+    onSuccess: (result) => {
+      if (result?.status) {
+        toast.success("Invoice Generated Successfully");
+      }
+    },
+    onError: () => {
+      toast.error("Invoice Generation failed. Please try again.");
     },
   });
 };
