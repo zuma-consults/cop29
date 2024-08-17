@@ -5,6 +5,7 @@ import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { categories, organizationTypes, states } from "../../util/data";
 import { useRegister } from "../../components/custom-hooks/useAuth";
 
+
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
   email: Yup.string()
@@ -19,7 +20,7 @@ const validationSchema = Yup.object({
     .required("User type is required"),
   category: Yup.string(),
   state: Yup.string(),
-  organizationType: Yup.string()
+  organizationType: Yup.string(),
 });
 
 const Signup: React.FC = () => {
@@ -28,6 +29,7 @@ const Signup: React.FC = () => {
   return (
     <div className="flex  w-full  h-screen bg-green-800">
       <div className="flex-1 flex items-center justify-center">
+      
         <div className="bg-white w-full md:w-[480px] p-5 m-10 md:m-0 grid gap-5 rounded-lg">
           <div className="w-full h-max flex flex-col items-center justify-center gap-1">
             <img
@@ -63,14 +65,14 @@ const Signup: React.FC = () => {
               showPassword: false,
             }}
             validationSchema={validationSchema}
-            onSubmit={({showPassword, ...values}, {resetForm}) => {
+            onSubmit={({ showPassword, ...values }, { resetForm }) => {
               const { state, organizationType, category, ...others } = values;
               const newValue = values.userType === "delegate" ? others : values;
               register(newValue);
-              resetForm()
+              resetForm();
             }}
           >
-            {({ values, setFieldValue, isSubmitting}) => (
+            {({ values, setFieldValue, isSubmitting }) => (
               <Form className="grid gap-5">
                 {/* User Type Selector */}
                 <div className="mb-2">
@@ -163,10 +165,10 @@ const Signup: React.FC = () => {
                   </div>
                 </div>
                 <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="text-red-500 text-xs"
-                  />
+                  name="password"
+                  component="div"
+                  className="text-red-500 text-xs"
+                />
 
                 {/* Organization Specific Fields */}
                 {values.userType === "organization" && (
@@ -267,8 +269,7 @@ const Signup: React.FC = () => {
         </div>
       </div>
       <div className="hidden md:flex flex-1 bg-green-200 relative">
-
-      <div className="absolute inset-0 bg-co-primary opacity-50"></div>
+        <div className="absolute inset-0 bg-co-primary opacity-50"></div>
         <img
           src="/images/globe.jpg"
           alt="Image description"

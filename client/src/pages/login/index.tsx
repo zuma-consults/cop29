@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash, FaRegEye,  } from "react-icons/fa";
 import { useLogin } from "../../components/custom-hooks/useAuth"; // Assume you have a useLogin hook
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/ui/Loader";
@@ -26,7 +26,8 @@ const Login: React.FC = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-green-800">
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center ">
+   
         <div
           className="bg-white w-full md:w-[480px] p-5 m-10 md:m-0 grid gap-3 rounded-lg"
           data-aos="zoom-in-right"

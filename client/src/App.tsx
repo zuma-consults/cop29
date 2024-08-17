@@ -9,17 +9,18 @@ import CreateEvent from "./pages/create-event";
 import Loader from "./components/ui/Loader";
 import AppLayout from "./layouts/AppLayout";
 import AOS from "aos";
+import TermsAndConditions from "./pages/disclaimer";
 import "aos/dist/aos.css";
 import Profile from "./pages/profile";
 import FAQ from "./pages/faq";
-import './App.css'
+import "./App.css";
 
 function App() {
   const [loading, setLoading] = useState(true);
   AOS.init({
     duration: 1200,
     offset: 100,
-    easing: 'ease-in-out',
+    easing: "ease-in-out",
   });
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -36,7 +37,9 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      
       <Route path="/" element={<AppLayout />}>
+       <Route path="/termsAndConditions" element={<TermsAndConditions />} />
         <Route path="/" element={<Home />} />
         <Route path="/events" element={<Events />} />
         <Route path="/create-event" element={<CreateEvent />} />
