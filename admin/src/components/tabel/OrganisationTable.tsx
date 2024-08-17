@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardContent,
+  CardMedia,
   Chip,
   Modal,
   Typography,
@@ -25,6 +26,7 @@ interface TableRow {
   status: string;
   userType: string;
   organizationType: string;
+  image: string;
 }
 
 const OrganisationTable: React.FC = () => {
@@ -130,14 +132,6 @@ const OrganisationTable: React.FC = () => {
       name: "Organization Type",
       selector: (row: { organizationType: any }) =>
         row.organizationType ?? "N/A",
-    },
-    {
-      name: "State",
-      selector: (row: { state: any }) => row.state ?? "N/A",
-    },
-    {
-      name: "Category",
-      selector: (row: { category: any }) => row.category ?? "N/A",
     },
 
     {
@@ -256,10 +250,36 @@ const OrganisationTable: React.FC = () => {
           >
             {selectedEvent && (
               <Card>
+                {/* Render the Organization Logo */}
+                <div className="flex justify-center items-center">
+                  <CardMedia
+                    component="img"
+                    height="200" // You can adjust this value as needed
+                    image={selectedEvent.image}
+                    alt={`${selectedEvent.name} Logo`}
+                    sx={{
+                      objectFit: "contain",
+                      marginBottom: "16px",
+                      // Optional: Set a maximum width to prevent stretching
+                      maxWidth: "20%",
+                    }}
+                  />
+                </div>
+
                 <CardContent className="flex flex-col justify-center items-center gap-5">
                   {/* Render Name */}
                   <Typography variant="body1" component="div">
                     <strong>Name: </strong> {selectedEvent.name}
+                  </Typography>
+
+                  {/* Render Email */}
+                  <Typography variant="body1" component="div">
+                    <strong>Email: </strong> {selectedEvent.email}
+                  </Typography>
+
+                  {/* Render Phone */}
+                  <Typography variant="body1" component="div">
+                    <strong>Phone: </strong> {selectedEvent.phone}
                   </Typography>
 
                   {/* Render State */}
@@ -276,6 +296,12 @@ const OrganisationTable: React.FC = () => {
                     <strong>Category: </strong> {selectedEvent.category}
                   </Typography>
 
+                  {/* Render Organization Type */}
+                  <Typography variant="body1" component="div">
+                    <strong>Organization Type: </strong>{" "}
+                    {selectedEvent.organizationType}
+                  </Typography>
+
                   {/* Render Status */}
                   <Typography variant="body1" component="div">
                     <strong>Status: </strong>
@@ -290,6 +316,7 @@ const OrganisationTable: React.FC = () => {
                     )}
                   </Typography>
 
+                  {/* Action Buttons for Pending Status */}
                   {selectedEvent.status === "Pending" && (
                     <Box className="flex justify-between gap-5 mt-4">
                       <Button
