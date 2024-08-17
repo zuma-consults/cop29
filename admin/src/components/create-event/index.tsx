@@ -1,41 +1,51 @@
-import React, { useState } from "react";
+import React, { useMemo} from "react";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { TextField, Button } from "@mui/material";
-import { useCreateEvent } from "../../hooks/useEvent";
-import CalendarModal from "../CalendarModal";
+import {
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import { useCreateEvent, useGetAllTimeSlots } from "../../hooks/useEvent";
 import Loader from "../ui/Loader";
+import { useOrganisation } from "../../hooks/useOrganisation";
 
 const CreateEvent: React.FC<{
   setOpen: (value: boolean) => void;
   refetchAllEvents: () => void;
 }> = ({ setOpen, refetchAllEvents }) => {
-  const [selectedStart, setSelectedStart] = useState<Date | null>(null);
-  const [selectedEnd, setSelectedEnd] = useState<Date | null>(null);
   const { mutate, isLoading } = useCreateEvent({ setOpen, refetchAllEvents });
-  const [openCalendar, setOpenCalendar] = useState(false);
 
-  const handleDateSelection = (start: Date, end: Date) => {
-    setSelectedStart(start);
-    setSelectedEnd(end);
-    formik.setFieldValue(
-      "date",
-      `${start.toISOString()} - ${end.toISOString()}`
-    );
-    const date = start.toISOString().split("T")[0];
-    formik.setFieldValue("date", date);
-  };
+  const memoizedFilters = useMemo(
+    () => ({
+      userType: "organization",
+    }),
+    []
+  );
+
+  const { data: organisationData } = useOrganisation(memoizedFilters);
+
+  const { data: timslotsData } = useGetAllTimeSlots();
+  const extratedOrganisationData = organisationData?.data?.users || [];
+  const extratedTimeSlots = timslotsData?.slots || [];
+  const openSlots = extratedTimeSlots.filter(
+    (slot: { bookingStatus: any }) => slot.bookingStatus
+  );
 
   const formik = useFormik({
     initialValues: {
       imageUrl: null,
       title: "",
       externalLink: "",
-      date: "",
-      location: "",
       description: "",
+      objective: "",
       tags: "",
+      timeSlot: "",
+      organization: "",
     },
     validationSchema: Yup.object({
       imageUrl: Yup.mixed().required("Image is required"),
@@ -43,22 +53,23 @@ const CreateEvent: React.FC<{
       externalLink: Yup.string()
         .url("Invalid URL")
         .required("Meeting link is required"),
-      date: Yup.string().required("Time of the event is required"),
-      location: Yup.string().required("Location is required"),
       description: Yup.string().required("Event description is required"),
       tags: Yup.string().required("Tags are required"),
+      objective: Yup.string().required("Event objective is required"),
+      timeSlot: Yup.string().required("Time slot is required"),
+      organization: Yup.string().required("Organization name is required"),
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
       if (values.imageUrl !== null) {
-        console.log("Image:", values.imageUrl);
         formData.append("image", values.imageUrl);
       }
       formData.append("title", values.title);
       formData.append("externalLink", values.externalLink);
-      formData.append("date", values.date);
-      formData.append("location", values.location);
       formData.append("description", values.description);
+      formData.append("objective", values.objective);
+      formData.append("slotId", values.timeSlot);
+      formData.append("organizerId", values.organization);
       formData.append(
         "tags",
         values.tags
@@ -66,8 +77,6 @@ const CreateEvent: React.FC<{
           .map((tag) => tag.trim())
           .join(",")
       );
-      formData.append("start", selectedStart?.toISOString() || "");
-      formData.append("end", selectedEnd?.toISOString() || "");
       formData.append("status", "approved");
       mutate(formData);
     },
@@ -108,9 +117,7 @@ const CreateEvent: React.FC<{
               style={{ display: "none" }}
             />
             <MdOutlineCloudUpload className="text-[46px] text-green-700" />
-            <span className="text-gray-400">
-              Drag & Drop or choose a file to upload
-            </span>
+
             <span className="text-gray-500">Supported formats: JPEG, PNG</span>
 
             {/* Image Preview */}
@@ -175,42 +182,75 @@ const CreateEvent: React.FC<{
                 fullWidth
               />
             </div>
-
-            {/* Time of the Event */}
+            {/* time slot */}
             <div className="flex flex-col gap-2">
-              <TextField
-                id="date"
-                name="date"
-                label="Time"
-                variant="outlined"
-                color="success"
-                value={formik.values.date}
-                onClick={() => setOpenCalendar(true)} // Open calendar modal on click
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.date && Boolean(formik.errors.date)}
-                helperText={formik.touched.date && formik.errors.date}
-                fullWidth
-              />
+              <FormControl variant="outlined" color="success" fullWidth>
+                <InputLabel id="timeSlot-label">Time Slot</InputLabel>
+                <Select
+                  labelId="timeSlot-label"
+                  id="timeSlot"
+                  name="timeSlot"
+                  value={formik.values.timeSlot}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.timeSlot && Boolean(formik.errors.timeSlot)
+                  }
+                  label="Time Slot"
+                >
+                  {openSlots?.map(
+                    (slot: {
+                      id: string;
+                      timeSpan: any;
+                      date: string | number | Date;
+                    }) => (
+                      <MenuItem key={slot.id} value={slot.id}>
+                        {`${slot.timeSpan} - ${new Date(
+                          slot.date
+                        ).toLocaleDateString()}`}
+                      </MenuItem>
+                    )
+                  )}
+                </Select>
+                {formik.touched.timeSlot && formik.errors.timeSlot && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.timeSlot}
+                  </div>
+                )}
+              </FormControl>
             </div>
 
-            {/* Location */}
+            {/* organization name */}
             <div className="flex flex-col gap-2">
-              <TextField
-                id="location"
-                name="location"
-                label="Location"
-                variant="outlined"
-                color="success"
-                value={formik.values.location}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.location && Boolean(formik.errors.location)
-                }
-                helperText={formik.touched.location && formik.errors.location}
-                fullWidth
-              />
+              <FormControl variant="outlined" color="success" fullWidth>
+                <InputLabel id="organization-label">Organization</InputLabel>
+                <Select
+                  labelId="organization-label"
+                  id="organization"
+                  name="organization"
+                  value={formik.values.organization}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.organization &&
+                    Boolean(formik.errors.organization)
+                  }
+                  label="Organization"
+                >
+                  {extratedOrganisationData?.map(
+                    (org: { id: string; name: string }) => (
+                      <MenuItem key={org.id} value={org.id}>
+                        {org.name}
+                      </MenuItem>
+                    )
+                  )}
+                </Select>
+                {formik.touched.organization && formik.errors.organization && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.organization}
+                  </div>
+                )}
+              </FormControl>
             </div>
 
             {/* Event Description */}
@@ -237,7 +277,28 @@ const CreateEvent: React.FC<{
               />
             </div>
 
-            {/* Tags */}
+            {/* event objective */}
+            <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
+              <TextField
+                id="objective"
+                name="objective"
+                label="Event Objective"
+                variant="outlined"
+                color="success"
+                value={formik.values.objective}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.objective && Boolean(formik.errors.objective)
+                }
+                helperText={formik.touched.objective && formik.errors.objective}
+                multiline
+                rows={4}
+                fullWidth
+              />
+            </div>
+
+            {/* tags */}
             <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
               <TextField
                 id="tags"
@@ -266,11 +327,6 @@ const CreateEvent: React.FC<{
             </div>
           </form>
         </div>
-        <CalendarModal
-          open={openCalendar}
-          onClose={() => setOpenCalendar(false)}
-          onSelect={handleDateSelection}
-        />
       </div>
     </>
   );
