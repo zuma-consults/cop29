@@ -26,6 +26,9 @@ const eventSchema = mongoose.Schema(
     invoiceUrl: {
       type: String,
     },
+    invoiceAmount: {
+      type: String,
+    },
     invoiceStatus: {
       type: String,
       enum: [
