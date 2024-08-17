@@ -1,45 +1,12 @@
-import React, { useState } from "react";
-import { Button } from "@mui/material";
+import React from "react";
 // import { UserSummaryCardData } from "../../utils/datas/summary-card";
 // import { SummaryCard } from "../../components/custom";
-import { IoCreateSharp } from "react-icons/io5";
-import { useForm, SubmitHandler } from "react-hook-form";
-import {
-  useAddAmin,
-  useGetAllProfile,
-  useGetAllRoles,
-} from "../../hooks/useAuth";
-import Loader from "../../components/ui/Loader";
+
 import CopTable from "../../components/tabel/CopTable";
 
-interface UserFormInputs {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  phone: string;
-  role: string;
-}
-
 const Cop: React.FC = () => {
-  const [open, setOpen] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const { data: roleData, isFetching } = useGetAllRoles();
-  const { refetch: refetchAllProfile } = useGetAllProfile();
-  const {
-    formState: { errors },
-    reset,
-  } = useForm<UserFormInputs>();
-
-  const { mutate, isLoading } = useAddAmin({
-    refetchAllProfile,
-    setOpen,
-    reset,
-  });
-
   return (
     <div>
-      {isFetching || isLoading ? <Loader /> : null}
       <div className="w-[100%] h-[100%] relative overflow-x-hidden">
         {/* <Box sx={{ marginTop: "10px" }}>
           <Grid container spacing={3}>
