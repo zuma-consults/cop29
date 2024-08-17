@@ -26,7 +26,6 @@ interface TableRow {
   date: any;
   tags: string;
   invoice?: string;
-  location: any;
   description: string;
   start: string;
   end: string;
@@ -36,21 +35,19 @@ const EventTable: React.FC = () => {
   const [_, setPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
 
+  console.log("xxxx", selectedEvent);
+
   const [filters, setFilters] = useState({
     search: "",
-    price: "",
-    location: "",
-    invoiceStatus: "",
+    tags: "",
   });
 
   const memoizedFilters = useMemo(
     () => ({
       search: filters.search,
-      price: filters.price,
-      location: filters.location,
-      invoiceStatus: filters.invoiceStatus,
+      tag: filters.tags,
     }),
-    [filters.search, filters.price, filters.location, filters.invoiceStatus]
+    [filters.search, filters.tags]
   );
 
   const { data, isFetching, refetch } = useGetAllEvents(memoizedFilters);
@@ -120,55 +117,47 @@ const EventTable: React.FC = () => {
           />
         </Box>
       ),
-      selector: (row: { title: any }) => row.title ?? "N/A",
+      selector: (row) => row.title ?? "N/A",
     },
     {
       name: "Date",
-      selector: (row: { date: string }) => formatDate(row.date) ?? "N/A",
-    },
-
-    {
-      name: (
-        <Box style={{ display: "flex", alignItems: "center" }}>
-          <Typography>Location</Typography>
-          <ColumnFilter
-            columnKey="location"
-            onResetFilter={handleResetFilter}
-            onFilterChange={handleFilterChange}
-          />
-        </Box>
+      selector: (row) => row.start, // Assuming `start` contains the date
+      format: (row) => (
+        <Typography variant="body2" color="text.secondary">
+          {new Date(row.start).toLocaleDateString()}
+        </Typography>
       ),
-      selector: (row: { location: any }) => row.location ?? "N/A",
     },
     {
-      name: "Category",
-      selector: (row: { tags: any }) => row.tags ?? "N/A",
+      name: "Duration",
+      selector: (row) => row.start, // Need `start` to calculate duration
+      format: (row) => (
+        <Typography variant="body2" color="text.secondary">
+          {formatDuration(row.start, row.end)}
+        </Typography>
+      ),
+    },
+    {
+      name: "Tags",
+      selector: (row) =>
+        Array.isArray(row.tags) ? row.tags.join(", ") : "N/A",
     },
     {
       name: "Status",
-      selector: (row: { status: any }) => row.status ?? "N/A",
-      cell: (row: {
-        status:
-          | string
-          | number
-          | boolean
-          | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-          | Iterable<React.ReactNode>
-          | null
-          | undefined;
-      }) => (
+      selector: (row) => row.status ?? "N/A",
+      cell: (row) => (
         <div className="text-left capitalize flex items-center">
-          {row.status == "approved" ? (
-            <Chip label={row?.status} color="success" />
+          {row.status === "approved" ? (
+            <Chip label={row.status} color="success" />
           ) : (
-            <Chip label={row?.status} color="warning" />
+            <Chip label={row.status} color="warning" />
           )}
         </div>
       ),
     },
     {
       name: "Action",
-      cell: (row: React.SetStateAction<TableRow | null>) => (
+      cell: (row) => (
         <div className="flex justify-end cursor-pointer">
           <Button
             sx={{
@@ -287,17 +276,9 @@ const EventTable: React.FC = () => {
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     <strong>Date: </strong>
-                    {formatDate(selectedEvent?.date)}
+                    {new Date(selectedEvent?.start).toLocaleDateString()}
                   </Typography>
 
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    className="capitalize"
-                  >
-                    <strong>Location: </strong>
-                    {selectedEvent?.location}
-                  </Typography>
                   <Typography variant="body2" color="text.secondary">
                     <strong>Duration: </strong>
                     {formatDuration(selectedEvent?.start, selectedEvent?.end)}
