@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash, FaRegEye, FaArrowLeft,  } from "react-icons/fa";
 import { useLogin } from "../../components/custom-hooks/useAuth"; // Assume you have a useLogin hook
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/ui/Loader";
@@ -19,6 +19,9 @@ const validationSchema = Yup.object({
 const Login: React.FC = () => {
   const { mutate: login, isLoading } = useLogin();
   const navigate = useNavigate();
+  const handleBack = ()=> {
+    navigate("/")
+  }
 
    if(isLoading){
     return <Loader/>
@@ -26,7 +29,16 @@ const Login: React.FC = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-green-800">
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center ">
+      <button
+        className="absolute top-10 left-10 flex gap-4 text-white items-center text-[14px] z-50  px-4 py-2 rounded"
+        style={{ backdropFilter: "blur(5px)" }}
+        onClick={handleBack}
+      >
+        <FaArrowLeft size={22} />
+        Go Home
+      </button>
+   
         <div
           className="bg-white w-full md:w-[480px] p-5 m-10 md:m-0 grid gap-3 rounded-lg"
           data-aos="zoom-in-right"

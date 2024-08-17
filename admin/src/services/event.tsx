@@ -1,7 +1,4 @@
-import { Cookies } from "react-cookie";
 import { request } from "../utils/api";
-
-const cookies = new Cookies();
 
 export const createEvent = async (data: any) => {
   try {
@@ -11,34 +8,6 @@ export const createEvent = async (data: any) => {
       data,
     };
     const responseData = await request(config);
-    return responseData;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const logout = async () => {
-  try {
-    const config = {
-      method: "get",
-      url: "authentication/admin/logout",
-    };
-    const responseData = await request(config);
-    return responseData;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getProfile = async () => {
-  try {
-    const config = {
-      method: "get",
-      url: "token/staff",
-    };
-    const responseData = await request(config);
-    const adminProfile = responseData?.data;
-    cookies.set("profile", adminProfile);
     return responseData;
   } catch (error) {
     console.log(error);
@@ -79,6 +48,34 @@ export const getAllTimeSlots = async () => {
       url: "slots",
     };
 
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const approveEvent = async (id: number) => {
+  try {
+    const config = {
+      method: "put",
+      url: `status/event/${id}`,
+      data: { status: "approved" },
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const declineEvent = async (id: number) => {
+  try {
+    const config = {
+      method: "put",
+      url: `status/event/${id}`,
+      data: { status: "decline" },
+    };
     const responseData = await request(config);
     return responseData;
   } catch (error) {

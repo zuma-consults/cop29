@@ -1,25 +1,18 @@
 "use client";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Chip,
-  Modal,
-  Typography,
-} from "@mui/material";
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { Box, Button, Chip, Typography } from "@mui/material";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
 import { useGetAllEvents } from "../../hooks/useEvent";
 import ColumnFilter from "../columnFilter";
-import { formatDate, formatDuration } from "../../utils/helper";
+import { formatDuration } from "../../utils/helper";
 import Loader from "../ui/Loader";
+import { Link } from "react-router-dom";
 
 interface TableRow {
   id: number;
+  countId: number;
   image: string;
   status: string;
   title: string;
@@ -33,9 +26,6 @@ interface TableRow {
 
 const EventTable: React.FC = () => {
   const [_, setPage] = useState(1);
-  const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
-
-  console.log("xxxx", selectedEvent);
 
   const [filters, setFilters] = useState({
     search: "",
@@ -76,16 +66,6 @@ const EventTable: React.FC = () => {
     setPage(page);
   }, []);
 
-  const handleAccept = useCallback(() => {
-    console.log("Accepted");
-    setSelectedEvent(null);
-  }, []);
-
-  const handleReject = useCallback(() => {
-    console.log("Rejected");
-    setSelectedEvent(null);
-  }, []);
-
   useEffect(() => {
     refetch();
   }, [memoizedFilters]);
@@ -121,7 +101,7 @@ const EventTable: React.FC = () => {
     },
     {
       name: "Date",
-      selector: (row) => row.start, // Assuming `start` contains the date
+      selector: (row) => row.start,
       format: (row) => (
         <Typography variant="body2" color="text.secondary">
           {new Date(row.start).toLocaleDateString()}
@@ -130,7 +110,7 @@ const EventTable: React.FC = () => {
     },
     {
       name: "Duration",
-      selector: (row) => row.start, // Need `start` to calculate duration
+      selector: (row) => row.start,
       format: (row) => (
         <Typography variant="body2" color="text.secondary">
           {formatDuration(row.start, row.end)}
@@ -148,9 +128,21 @@ const EventTable: React.FC = () => {
       cell: (row) => (
         <div className="text-left capitalize flex items-center">
           {row.status === "approved" ? (
-            <Chip label={row.status} color="success" />
+            <Chip
+              label={row.status}
+              color="success"
+              sx={{
+                textTransform: "capitalize",
+              }}
+            />
           ) : (
-            <Chip label={row.status} color="warning" />
+            <Chip
+              label={row.status}
+              color="warning"
+              sx={{
+                textTransform: "capitalize",
+              }}
+            />
           )}
         </div>
       ),
@@ -159,28 +151,33 @@ const EventTable: React.FC = () => {
       name: "Action",
       cell: (row) => (
         <div className="flex justify-end cursor-pointer">
-          <Button
-            sx={{
-              backgroundColor: "green",
-              color: "white",
-              width: "150px",
-              paddingY: "8px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              textAlign: "center",
-              fontSize: "13px",
-              gap: "8px",
-              "&:hover": {
-                backgroundColor: "#e8f5e9",
-                color: "black",
-              },
-            }}
-            onClick={() => setSelectedEvent(row)}
+          <Link
+            to={`/event/${row.countId}`}
+            state={{ ...row }}
+            className="w-[150px] cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
           >
-            View event
-            <GoArrowRight size={19} />
-          </Button>
+            <Button
+              sx={{
+                backgroundColor: "green",
+                color: "white",
+                width: "100%",
+                paddingY: "8px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+                fontSize: "13px",
+                gap: "8px",
+                "&:hover": {
+                  backgroundColor: "#e8f5e9",
+                  color: "black",
+                },
+              }}
+            >
+              View event
+              <GoArrowRight size={19} />
+            </Button>
+          </Link>
         </div>
       ),
       ignoreRowClick: true,
@@ -229,121 +226,6 @@ const EventTable: React.FC = () => {
           fixedHeaderScrollHeight="500px"
           onChangePage={handlePageChange}
         />
-
-        <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>
-          <Box
-            sx={{
-              position: "absolute" as "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: 800,
-              my: 10,
-              bgcolor: "background.paper",
-              boxShadow: 24,
-              p: 4,
-              maxHeight: "90vh",
-              overflowY: "auto",
-              margin: "auto",
-              outline: "none",
-              borderRadius: "8px",
-            }}
-          >
-            {selectedEvent && (
-              <Card>
-                <CardMedia
-                  component="img"
-                  sx={{
-                    width: "800px",
-                    height: "300px",
-                    objectFit: "cover",
-                  }}
-                  image={selectedEvent?.image}
-                  alt={selectedEvent?.title}
-                />
-                <CardContent className="flex flex-col gap-3">
-                  <Typography
-                    variant="h5"
-                    component="div"
-                    className="capitalize"
-                  >
-                    <strong>Title: </strong>
-                    {selectedEvent.title}
-                  </Typography>
-                  <Typography component="span" className="capitalize">
-                    <strong>Description: </strong>
-                    {selectedEvent.description}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    <strong>Date: </strong>
-                    {new Date(selectedEvent?.start).toLocaleDateString()}
-                  </Typography>
-
-                  <Typography variant="body2" color="text.secondary">
-                    <strong>Duration: </strong>
-                    {formatDuration(selectedEvent?.start, selectedEvent?.end)}
-                  </Typography>
-                  <div className="mb-4">
-                    <strong>Status: </strong>
-
-                    <Chip
-                      className="capitalize"
-                      label={selectedEvent.status}
-                      color={
-                        selectedEvent.status == "approved" ? "success" : "error"
-                      }
-                    />
-                  </div>
-
-                  {selectedEvent?.status === "processing" && (
-                    <Box className="flex flex-col gap-2">
-                      {selectedEvent.invoice ? (
-                        <>
-                          <Typography variant="h6" className="capitalize">
-                            Invoice
-                          </Typography>
-                          <CardMedia
-                            title="Invoice"
-                            component="img"
-                            height="150"
-                            image={selectedEvent.invoice}
-                            alt="Invoice"
-                          />
-                        </>
-                      ) : (
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => {
-                            /* Function to generate invoice */
-                          }}
-                        >
-                          Click to Generate Invoice
-                        </Button>
-                      )}
-                      <Box className="flex justify-between mt-4">
-                        <Button
-                          variant="contained"
-                          color="success"
-                          onClick={handleAccept}
-                        >
-                          Accept
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="error"
-                          onClick={handleReject}
-                        >
-                          Reject
-                        </Button>
-                      </Box>
-                    </Box>
-                  )}
-                </CardContent>
-              </Card>
-            )}
-          </Box>
-        </Modal>
       </div>
     </>
   );

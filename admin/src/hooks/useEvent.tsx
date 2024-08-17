@@ -1,5 +1,11 @@
 import { useQuery, useMutation } from "react-query";
-import { createEvent, getAllEvents, getAllTimeSlots } from "../services/event";
+import {
+  approveEvent,
+  createEvent,
+  declineEvent,
+  getAllEvents,
+  getAllTimeSlots,
+} from "../services/event";
 import { useMemo } from "react";
 import { toast } from "react-toastify";
 
@@ -60,5 +66,31 @@ export const useGetAllTimeSlots = () => {
     refetchInterval: false,
     cacheTime: 30 * 60 * 1000,
     retry: 1,
+  });
+};
+
+export const useApproveEvent = () => {
+  return useMutation(approveEvent, {
+    onSuccess: (result) => {
+      if (result?.status) {
+        toast.success("Event Approved Successfully");
+      }
+    },
+    onError: () => {
+      toast.error("Event Approval failed. Please try again.");
+    },
+  });
+};
+
+export const useDeclineEvent = () => {
+  return useMutation(declineEvent, {
+    onSuccess: (result) => {
+      if (result?.status) {
+        toast.success("Event Declined Successfully");
+      }
+    },
+    onError: () => {
+      toast.error("Event Decline failed. Please try again.");
+    },
   });
 };
