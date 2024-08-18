@@ -10,47 +10,6 @@ const Admin = require("../models/admin");
 const { CLIENT_URL, ADMIN_CLIENT_URL } = process.env;
 
 module.exports = {
-  createUsersss: async (req, res) => {
-    try {
-      const { name, password, email, userType, delegates } = req.body;
-      if (!name || !password || !email || !userType) {
-        return errorHandler(
-          res,
-          "Please fill in all fields, one or more fields are empty!",
-          400
-        );
-      }
-
-      const findUser = await User.findOne({ email });
-
-      if (findUser) {
-        return errorHandler(res, "An account already exists.", 409);
-      }
-
-      if (!validatePassword(password)) {
-        return errorHandler(
-          res,
-          "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
-          400
-        );
-      }
-
-      const passwordHash = await bcrypt.hash(password, 12);
-
-      const newUser = new User({
-        name,
-        userType,
-        email,
-        ...req.body,
-        password: passwordHash,
-      });
-
-      await newUser.save();
-      return successHandler(res, "Account has been created!", newUser);
-    } catch (error) {
-      return errorHandler(res, error.message, error.statusCode);
-    }
-  },
   createUser: async (req, res) => {
     upload(req, res, async (err) => {
       if (err) {
