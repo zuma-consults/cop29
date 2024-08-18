@@ -1,70 +1,83 @@
-import React, { useEffect } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { toast } from 'react-toastify';
-import { useAddDelegate } from '../../components/custom-hooks/useOrg';
-import Loader from '../../components/ui/Loader';
+import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useAddDelegate } from "../../components/custom-hooks/useOrg";
+import Loader from "../../components/ui/Loader";
 
 interface AddDelegateModalProps {
   isOpen: boolean;
   onClose: () => void;
   refetch: any;
-  id: string
+  id: string;
 }
 
-const AddDelegateModal: React.FC<AddDelegateModalProps> = ({ isOpen, onClose, refetch, id }) => {
-    const {isLoading, mutate, isSuccess} = useAddDelegate()
+const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
+  isOpen,
+  onClose,
+  refetch,
+  id,
+}) => {
+  const [file, setFile] = useState<File | null>(null);
+  const { mutate, isLoading } = useAddDelegate();
 
-    useEffect(() => {
-        if (isSuccess) {
-          toast.success("Successfully created side event", {
-            toastId: "createEventSuccessss",
-          });
-        }
-      }, [isSuccess]);
-      
   const formik = useFormik({
     initialValues: {
-      name: '',
-      email: '',
-      file: null as File | null,
+      name: "",
+      email: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().required('Name is required'),
-      email: Yup.string().email('Invalid email address').required('Email is required'),
-      file: Yup.mixed().required('PDF file is required'),
+      name: Yup.string().required("Name is required"),
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Email is required"),
     }),
     onSubmit: async (values, { resetForm }) => {
       const formData = new FormData();
-      formData.append('name', values.name);
-      formData.append('email', values.email);
-      formData.append('file', values.file as File);
+      formData.append("name", values.name);
+      formData.append("email", values.email);
+
+      if (file) {
+        formData.append("files", file);
+      }
 
       try {
-       mutate({ id: id, data: formData })
-        refetch()
+        await mutate({ id: id, data: formData });
+        refetch();
         resetForm();
+        setFile(null);
         onClose();
       } catch (error) {
-        toast.error('Failed to add delegate');
+        // Handle the error
       }
     },
   });
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setFile(event.target.files[0]);
+    }
+  };
+
   if (!isOpen) return null;
 
-  if(isLoading){
-    return <Loader/>
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
+        {isLoading && <Loader/>}
       <div className="fixed inset-0 bg-black opacity-50" onClick={onClose} />
-      <div className="bg-white rounded-lg shadow-lg p-6 z-10 max-w-md w-full">
+      <div className="bg-white rounded-lg shadow-lg p-10 z-10 w-[50%] w-full">
         <h2 className="text-xl font-bold">Add Delegate</h2>
-        <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4 mt-4">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="flex flex-col gap-4 mt-4"
+        >
           <div>
-            <label htmlFor="name" className="block text-gray-700 font-semibold">Name</label>
+            <label htmlFor="name" className="block text-gray-700 font-semibold">
+              Name
+            </label>
             <input
               id="name"
               name="name"
@@ -80,7 +93,12 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({ isOpen, onClose, re
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-gray-700 font-semibold">Email</label>
+            <label
+              htmlFor="email"
+              className="block text-gray-700 font-semibold"
+            >
+              Email
+            </label>
             <input
               id="email"
               name="email"
@@ -96,28 +114,39 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({ isOpen, onClose, re
           </div>
 
           <div>
-            <label htmlFor="file" className="block text-gray-700 font-semibold">Upload PDF</label>
+            <label htmlFor="file" className="block text-gray-700 font-semibold">
+              Upload Delegate Passport
+            </label>
             <input
               id="file"
               name="file"
               type="file"
-              accept=".pdf"
-              onChange={(event) => {
-                if (event.target.files) {
-                  formik.setFieldValue('file', event.target.files[0]);
-                }
-              }}
-              onBlur={formik.handleBlur}
+              accept=".png, .jpg"
+              onChange={handleFileChange}
               className="border rounded p-2 w-full"
             />
-            {formik.touched.file && formik.errors.file && (
-              <div className="text-red-500 text-sm">{formik.errors.file}</div>
+            {file && (
+              <div className="text-green-500 text-sm">
+                File ready for upload
+              </div>
             )}
           </div>
 
-          <div className="flex  justify-end gap-4 mt-4">
-          <button type="button" onClick={onClose} className="bg-gray-600 text-white px-4 py-2 rounded">Cancel</button>
-            <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">Add Delegate</button>
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="bg-gray-600 text-white px-4 py-2 rounded"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="bg-green-600 text-white px-4 py-2 rounded"
+              disabled={isLoading}
+            >
+              {isLoading ? "Submitting..." : "Add Delegate"}
+            </button>
           </div>
         </form>
       </div>

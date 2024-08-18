@@ -4,7 +4,6 @@ import { Cookies } from "react-cookie";
 
 const cookies = new Cookies();
 
-// Register function
 export const register = async (data: any) => {
   try {
     const config = {
