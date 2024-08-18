@@ -592,6 +592,40 @@ module.exports = {
       return errorHandler(res, err.message, 500);
     }
   },
+  resendActivationLink: async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return errorHandler(res, "Please provide an email address", 400);
+      }
+      const user = await User.findOne({ email });
+      if (!user) {
+        return errorHandler(res, "This account does not exist.", 404);
+      }
+
+      if (user.verifiedEmail === true) {
+        return errorHandler(
+          res,
+          "This account has been verified. Login to proceed.",
+          403
+        );
+      }
+      const access_token = await createAccessToken({ id: user._id });
+      const url = `${CLIENT_URL}/verify/${access_token}`;
+      sendVerifyEmail(
+        email,
+        url,
+        "Click to complete your application",
+        user.name
+      );
+      return successHandler(
+        res,
+        "Please check your inbox and spam to complete your application."
+      );
+    } catch (err) {
+      return errorHandler(res, err.message, 500);
+    }
+  },
 };
 
 function validatePassword(password) {
