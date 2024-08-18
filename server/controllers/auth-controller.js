@@ -489,6 +489,34 @@ module.exports = {
       return errorHandler(res, error.message, error.statusCode || 500);
     }
   },
+  updateCopApproval: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      // Find the user that contains the delegate with the specified _id
+      const user = await User.findOne({ "delegates._id": id });
+
+      if (!user) {
+        return errorHandler(res, "Delegate not found", 404);
+      }
+
+      // // Find the specific delegate and update their copApproved status
+      const delegate = user.delegates.id(id);
+      if (!delegate) {
+        return errorHandler(res, "Delegate not found", 404);
+      }
+      if (delegate.copApproved === true) {
+        return successHandler(res, "Application approved.", delegate);
+      }
+
+      delegate.copApproved = true;
+      await user.save();
+
+      return successHandler(res, "Application approved.", delegate);
+    } catch (error) {
+      return errorHandler(res, "Error Occurred", error.statusCode || 500);
+    }
+  },
   forgotPassword: async (req, res) => {
     try {
       const { email } = req.body;
