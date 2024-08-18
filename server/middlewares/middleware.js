@@ -115,7 +115,7 @@ const verifyPasswordToken = async (req, res, next) => {
   } catch (err) {
     return errorHandler(
       res,
-      "This link to reset your password has expired. Please request a new one to continue.",
+      "This link has expired. Please request a new one to continue.",
       403
     );
   }
