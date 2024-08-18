@@ -40,7 +40,7 @@ let routes = (app) => {
   app.post("/forgot-password", forgotPassword);
   app.post("/admin-forgot-password", forgotPasswordAdmin);
   app.post("/reset-password", verifyPasswordToken, resetPassword);
-  app.post("/verify", verifyPasswordToken, verifyEmail);
+  app.put("/verify", verifyPasswordToken, verifyEmail);
   app.post("/resend", resendActivationLink);
   app.post(
     "/admin-reset-password",
