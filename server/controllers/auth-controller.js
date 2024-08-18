@@ -532,9 +532,8 @@ module.exports = {
         return errorHandler(res, "This email does not exist.", 404);
       }
       const access_token = await createAccessToken({ id: user._id });
-      console.log(access_token);
       const url = `${ADMIN_CLIENT_URL}/reset-password/${access_token}`;
-      // sendResetPassword(email, url, "Click to Reset your Password", user.name);
+      sendResetPassword(email, url, "Click to Reset your Password", user.name);
       return successHandler(
         res,
         "Please check your email to reset your password."
