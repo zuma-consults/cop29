@@ -76,6 +76,10 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    verifiedEmail: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     toJSON: {

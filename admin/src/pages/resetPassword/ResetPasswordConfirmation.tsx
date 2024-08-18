@@ -1,0 +1,31 @@
+import React from "react";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
+const ResetPasswordConfirmation: React.FC = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex h-screen bg-green-800 justify-center items-center">
+      <div className="bg-white w-full h-max md:w-[480px] p-5 grid gap-3 rounded-lg text-center">
+        <h2 className="text-[22px] font-semibold">Password Reset Successful</h2>
+        <p className="text-[16px]">
+          Your password has been reset successfully. You can now log in with
+          your new password.
+        </p>
+
+        <Button
+          type="button"
+          color="success"
+          variant="contained"
+          onClick={() => navigate("/login")}
+          className="mt-3 w-full font-semibold"
+        >
+          Back to Login
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default ResetPasswordConfirmation;

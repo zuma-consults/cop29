@@ -1,53 +1,16 @@
 const { successHandler } = require("../utils/core");
 const { errorHandler } = require("../utils/errorHandler");
 const User = require("../models/users");
-const { generateTokens } = require("../utils/generateToken");
+const { generateTokens, createAccessToken } = require("../utils/generateToken");
 const bcrypt = require("bcrypt");
 const UserToken = require("../models/token");
 const { upload, uploadToCloudinary } = require("../utils/upload");
+const sendResetPassword = require("../utils/sendResetPassword");
+const Admin = require("../models/admin");
+const sendVerifyEmail = require("../utils/sendConfirmEmail");
+const { CLIENT_URL, ADMIN_CLIENT_URL } = process.env;
 
 module.exports = {
-  createUsersss: async (req, res) => {
-    try {
-      const { name, password, email, userType, delegates } = req.body;
-      if (!name || !password || !email || !userType) {
-        return errorHandler(
-          res,
-          "Please fill in all fields, one or more fields are empty!",
-          400
-        );
-      }
-
-      const findUser = await User.findOne({ email });
-
-      if (findUser) {
-        return errorHandler(res, "An account already exists.", 409);
-      }
-
-      if (!validatePassword(password)) {
-        return errorHandler(
-          res,
-          "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
-          400
-        );
-      }
-
-      const passwordHash = await bcrypt.hash(password, 12);
-
-      const newUser = new User({
-        name,
-        userType,
-        email,
-        ...req.body,
-        password: passwordHash,
-      });
-
-      await newUser.save();
-      return successHandler(res, "Account has been created!", newUser);
-    } catch (error) {
-      return errorHandler(res, error.message, error.statusCode);
-    }
-  },
   createUser: async (req, res) => {
     upload(req, res, async (err) => {
       if (err) {
@@ -122,10 +85,17 @@ module.exports = {
 
           await newUser.save();
           // Send success response
-
+          const access_token = await createAccessToken({ id: newUser._id });
+          const url = `${CLIENT_URL}/verify/${access_token}`;
+          sendVerifyEmail(
+            email,
+            url,
+            "Click to complete your application",
+            name
+          );
           return successHandler(
             res,
-            "Account has been created and COP29 application submitted! Your application is being reviewed.",
+            "Your account has been created. Please check your email to verify your email address and complete your application for COP 29.",
             newUser
           );
         } catch (error) {
@@ -212,7 +182,20 @@ module.exports = {
           await newUser.save();
           // Send success response
 
-          return successHandler(res, "You can now add your delgates.", newUser);
+          const access_token = await createAccessToken({ id: newUser._id });
+          const url = `${CLIENT_URL}/verify/${access_token}`;
+          sendVerifyEmail(
+            email,
+            url,
+            "Click to complete your application",
+            name
+          );
+
+          return successHandler(
+            res,
+            "Your account has been created. Please check your email to verify your email address and complete your application for COP 29 by adding your delegates.",
+            newUser
+          );
         } catch (error) {
           return errorHandler(res, error.message, error.statusCode || 500);
         }
@@ -300,6 +283,9 @@ module.exports = {
           "Account not active. Please contact admin",
           403
         );
+      }
+      if (user.verifiedEmail === false) {
+        return errorHandler(res, "Please verify your email.", 403);
       }
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
@@ -503,14 +489,146 @@ module.exports = {
       return errorHandler(res, error.message, error.statusCode || 500);
     }
   },
+  forgotPassword: async (req, res) => {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+      if (!user) {
+        return errorHandler(res, "This email does not exist.", 404);
+      }
+      const access_token = await createAccessToken({ id: user._id });
+      const url = `${CLIENT_URL}/reset-password/${access_token}`;
+      sendResetPassword(email, url, "Click to Reset your Password", user.name);
+      return successHandler(
+        res,
+        "Please check your email to reset your password."
+      );
+    } catch (err) {
+      return errorHandler(res, err.message, 500);
+    }
+  },
+  forgotPasswordAdmin: async (req, res) => {
+    try {
+      const { email } = req.body;
+      const user = await Admin.findOne({ email });
+      if (!user) {
+        return errorHandler(res, "This email does not exist.", 404);
+      }
+      const access_token = await createAccessToken({ id: user._id });
+      const url = `${ADMIN_CLIENT_URL}/reset-password/${access_token}`;
+      sendResetPassword(email, url, "Click to Reset your Password", user.name);
+      return successHandler(
+        res,
+        "Please check your email to reset your password."
+      );
+    } catch (err) {
+      return errorHandler(res, err.message, 500);
+    }
+  },
+  resetPassword: async (req, res) => {
+    try {
+      const { password } = req.body;
+
+      // Check if the password meets the required criteria using the `validatePassword` function
+      if (!validatePassword(password)) {
+        return errorHandler(
+          res,
+          "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+          400
+        );
+      }
+
+      // Hash the new password before saving it to the database
+      const passwordHash = await bcrypt.hash(password, 12);
+
+      // Find the user by their ID and update their password in the database
+      await User.updateOne(
+        { _id: req.user },
+        { $set: { password: passwordHash } }
+      );
+
+      return successHandler(res, "Password changed successfully");
+    } catch (err) {
+      // Handle any errors that may occur during the password reset process
+      return errorHandler(res, err.message, 500);
+    }
+  },
+  resetAdminPassword: async (req, res) => {
+    try {
+      const { password } = req.body;
+
+      // Check if the password meets the required criteria using the `validatePassword` function
+      if (!validatePassword(password)) {
+        return errorHandler(
+          res,
+          "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+          400
+        );
+      }
+
+      // Hash the new password before saving it to the database
+      const passwordHash = await bcrypt.hash(password, 12);
+
+      // Find the user by their ID and update their password in the database
+      await Admin.updateOne(
+        { _id: req.admin },
+        { $set: { password: passwordHash } }
+      );
+
+      return successHandler(res, "Password changed successfully");
+    } catch (err) {
+      // Handle any errors that may occur during the password reset process
+      return errorHandler(res, err.message, 500);
+    }
+  },
+  verifyEmail: async (req, res) => {
+    try {
+      // Find the user by their ID and update their verifiedEmail in the database
+      await User.updateOne({ _id: req.user }, { verifiedEmail: true });
+
+      return successHandler(res, "Email Verified.");
+    } catch (err) {
+      // Handle any errors that may occur during the verify Email process
+      return errorHandler(res, err.message, 500);
+    }
+  },
+  resendActivationLink: async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return errorHandler(res, "Please provide an email address", 400);
+      }
+      const user = await User.findOne({ email });
+      if (!user) {
+        return errorHandler(res, "This account does not exist.", 404);
+      }
+
+      if (user.verifiedEmail === true) {
+        return errorHandler(
+          res,
+          "This account has been verified. Login to proceed.",
+          403
+        );
+      }
+      const access_token = await createAccessToken({ id: user._id });
+      const url = `${CLIENT_URL}/verify/${access_token}`;
+      sendVerifyEmail(
+        email,
+        url,
+        "Click to complete your application",
+        user.name
+      );
+      return successHandler(
+        res,
+        "Please check your inbox and spam to complete your application."
+      );
+    } catch (err) {
+      return errorHandler(res, err.message, 500);
+    }
+  },
 };
 
 function validatePassword(password) {
   const re = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$/;
   return re.test(password);
-}
-function validateEmail(email) {
-  // Regular expression for validating an Email
-  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return re.test(email);
 }

@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, TextField, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Loader from "../../components/ui/Loader";
-import { useNavigate } from "react-router-dom";
-import { login } from "../../services/auth";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
-import { Cookies } from "react-cookie";
+import { resetPassword } from "../../services/auth";
 
-const cookies = new Cookies();
-const Login: React.FC = () => {
+const ResetPassword: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -21,16 +20,31 @@ const Login: React.FC = () => {
   const showPassword = watch("showPassword", false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [, setCookie] = useCookies(["accessToken"]);
+  const { id } = useParams();
 
-  const handleLogin = async (loginData: any) => {
+  useEffect(() => {
+    if (id) {
+      setCookie("accessToken", id);
+    }
+  }, [id, setCookie]);
+
+  const handleResetPassword = async (resetData: any) => {
+    if (!id) {
+      toast.error("Invalid reset link");
+      return;
+    }
+    const { newPassword, confirmPassword } = resetData;
+    const payload = {
+      password: newPassword,
+      confirmPassword: confirmPassword,
+    };
     setIsLoading(true);
     try {
-      const result = await login(loginData);
+      const result = await resetPassword(payload);
       if (result?.status) {
-        toast.success("Login Successful");
-        const accessToken = result?.data;
-        cookies.set("accessToken", accessToken, { path: "/" });
-        navigate("/", { replace: true });
+        toast.success("Password reset successful");
+        navigate("/reset-password/success", { replace: true });
       }
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || "Error occurred";
@@ -72,43 +86,31 @@ const Login: React.FC = () => {
                 </div>
               </div>
             </div>
-            <p className="text-[22px] font-semibold">Log into your account</p>
+            <p className="text-[22px] font-semibold">Reset Your Password</p>
 
             <TextField
-              type="email"
-              label="Email Address*"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                  message: "Enter a valid email address",
-                },
-              })}
-              error={!!errors.email}
-              helperText={
-                errors.email ? (errors.email.message as string) : undefined
-              }
-            />
-            <TextField
               type={showPassword ? "text" : "password"}
-              label="Password*"
+              label="New Password*"
               variant="outlined"
               fullWidth
               margin="normal"
-              {...register("password", {
-                required: "Password is required",
+              {...register("newPassword", {
+                required: "New password is required",
                 minLength: {
                   value: 8,
                   message: "Password must have at least 8 characters",
                 },
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/,
+                  message:
+                    "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+                },
               })}
-              error={!!errors.password}
+              error={!!errors.newPassword}
               helperText={
-                errors.password
-                  ? (errors.password.message as string)
+                errors.newPassword
+                  ? (errors.newPassword.message as string)
                   : undefined
               }
               InputProps={{
@@ -124,24 +126,34 @@ const Login: React.FC = () => {
                 ),
               }}
             />
-            <Button
-              color="primary"
-              onClick={() => navigate("/forgot-password")}
-              className="mt-2 w-full"
-            >
-              Forgot Password?
-            </Button>
+
+            <TextField
+              type={showPassword ? "text" : "password"}
+              label="Confirm Password*"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              {...register("confirmPassword", {
+                required: "Please confirm your password",
+                validate: (value) =>
+                  value === watch("newPassword") || "Passwords do not match",
+              })}
+              error={!!errors.confirmPassword}
+              helperText={
+                errors.confirmPassword
+                  ? (errors.confirmPassword.message as string)
+                  : undefined
+              }
+            />
 
             <Button
               type="submit"
               color="success"
               variant="contained"
-              onClick={handleSubmit(handleLogin)}
-              className={`mt-3 w-full font-semibold ${
-                watch("agreed") ? "" : "cursor-not-allowed"
-              }`}
+              onClick={handleSubmit(handleResetPassword)}
+              className={`mt-3 w-full font-semibold`}
             >
-              Log In
+              Reset Password
             </Button>
           </div>
         </div>
@@ -158,4 +170,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

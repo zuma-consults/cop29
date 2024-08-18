@@ -53,4 +53,10 @@ async function generateClientTokens(client) {
   }
 }
 
-module.exports = { generateTokens, generateClientTokens };
+async function createAccessToken(payload) {
+  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "15m",
+  });
+}
+
+module.exports = { generateTokens, generateClientTokens, createAccessToken };

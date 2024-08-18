@@ -11,8 +11,19 @@ const {
   createOrganisationAsUser,
   addDelegatesToOrganisation,
   getAllCopApplicants,
+  forgotPassword,
+  forgotPasswordAdmin,
+  resetPassword,
+  resetAdminPassword,
+  verifyEmail,
+  resendActivationLink,
 } = require("../../controllers/auth-controller");
-const { auth, authAdmin } = require("../../middlewares/middleware");
+const {
+  auth,
+  authAdmin,
+  adminVerifyPasswordToken,
+  verifyPasswordToken,
+} = require("../../middlewares/middleware");
 let routes = (app) => {
   app.post("/register", createUser);
   app.post("/org/register", createOrganisationAsUser);
@@ -26,6 +37,16 @@ let routes = (app) => {
   app.post("/login", login);
   app.post("/logout", auth, logout);
   app.get("/applicants", authAdmin, getAllCopApplicants);
+  app.post("/forgot-password", forgotPassword);
+  app.post("/admin-forgot-password", forgotPasswordAdmin);
+  app.post("/reset-password", verifyPasswordToken, resetPassword);
+  app.put("/verify", verifyPasswordToken, verifyEmail);
+  app.post("/resend", resendActivationLink);
+  app.post(
+    "/admin-reset-password",
+    adminVerifyPasswordToken,
+    resetAdminPassword
+  );
 };
 
 module.exports = routes;
