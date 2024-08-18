@@ -605,8 +605,3 @@ function validatePassword(password) {
   const re = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$/;
   return re.test(password);
 }
-function validateEmail(email) {
-  // Regular expression for validating an Email
-  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return re.test(email);
-}
