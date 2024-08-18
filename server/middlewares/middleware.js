@@ -80,15 +80,6 @@ const adminVerifyPasswordToken = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    const adminToken = await Admin.findOne({ _id: decoded.id });
-
-    if (!adminToken) {
-      return errorHandler(
-        res,
-        "Access Denied: Invalid or expired token. Please login again",
-        403
-      );
-    }
 
     const admin = await Admin.findOne({ _id: decoded.id });
 
@@ -112,15 +103,6 @@ const verifyPasswordToken = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    const userToken = await User.findOne({ _id: decoded.id });
-
-    if (!userToken) {
-      return errorHandler(
-        res,
-        "Access Denied: Invalid or expired token. Please login again",
-        403
-      );
-    }
 
     const user = await User.findOne({ _id: decoded.id });
 
