@@ -7,6 +7,7 @@ const UserToken = require("../models/token");
 const { upload, uploadToCloudinary } = require("../utils/upload");
 const sendResetPassword = require("../utils/sendResetPassword");
 const Admin = require("../models/admin");
+const sendVerifyEmail = require("../utils/sendConfirmEmail");
 const { CLIENT_URL, ADMIN_CLIENT_URL } = process.env;
 
 module.exports = {
@@ -84,10 +85,17 @@ module.exports = {
 
           await newUser.save();
           // Send success response
-
+          const access_token = await createAccessToken({ id: newUser._id });
+          const url = `${CLIENT_URL}/verify/${access_token}`;
+          sendVerifyEmail(
+            email,
+            url,
+            "Click to complete your application",
+            name
+          );
           return successHandler(
             res,
-            "Account has been created and COP29 application submitted! Your application is being reviewed.",
+            "Your account has been created. Please check your email to verify your email address and complete your application for COP 29.",
             newUser
           );
         } catch (error) {
@@ -174,7 +182,20 @@ module.exports = {
           await newUser.save();
           // Send success response
 
-          return successHandler(res, "You can now add your delgates.", newUser);
+          const access_token = await createAccessToken({ id: newUser._id });
+          const url = `${CLIENT_URL}/verify/${access_token}`;
+          sendVerifyEmail(
+            email,
+            url,
+            "Click to complete your application",
+            name
+          );
+
+          return successHandler(
+            res,
+            "Your account has been created. Please check your email to verify your email address and complete your application for COP 29 by adding your delegates.",
+            newUser
+          );
         } catch (error) {
           return errorHandler(res, error.message, error.statusCode || 500);
         }
@@ -262,6 +283,9 @@ module.exports = {
           "Account not active. Please contact admin",
           403
         );
+      }
+      if (user.verifiedEmail === false) {
+        return errorHandler(res, "Please verify your email.", 403);
       }
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
@@ -554,6 +578,17 @@ module.exports = {
       return successHandler(res, "Password changed successfully");
     } catch (err) {
       // Handle any errors that may occur during the password reset process
+      return errorHandler(res, err.message, 500);
+    }
+  },
+  verifyEmail: async (req, res) => {
+    try {
+      // Find the user by their ID and update their verifiedEmail in the database
+      await User.updateOne({ _id: req.user }, { verifiedEmail: true });
+
+      return successHandler(res, "Email Verified.");
+    } catch (err) {
+      // Handle any errors that may occur during the verify Email process
       return errorHandler(res, err.message, 500);
     }
   },
