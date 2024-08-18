@@ -1,36 +1,37 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button, TextField, InputAdornment } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Button, TextField } from "@mui/material";
 import Loader from "../../components/ui/Loader";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../services/auth";
 import { toast } from "react-toastify";
-import { Cookies } from "react-cookie";
+import { forgotPassword } from "../../services/auth";
 
-const cookies = new Cookies();
-const Login: React.FC = () => {
+// Define an interface for the form data
+interface ForgotPasswordFormData {
+  email: string;
+}
+
+const ForgotPassword: React.FC = () => {
   const {
     register,
     handleSubmit,
-    watch,
-    setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm<ForgotPasswordFormData>();
 
-  const showPassword = watch("showPassword", false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (loginData: any) => {
+  const handleForgotPassword = async (data: ForgotPasswordFormData) => {
+    // Update the parameter type
     setIsLoading(true);
     try {
-      const result = await login(loginData);
+      const payload = {
+        email: data.email,
+      };
+      const result = await forgotPassword(payload);
       if (result?.status) {
-        toast.success("Login Successful");
-        const accessToken = result?.data;
-        cookies.set("accessToken", accessToken, { path: "/" });
-        navigate("/", { replace: true });
+        toast.success("Password reset link sent to your email.");
+        navigate("/forgot-password/success", { replace: true });
       }
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || "Error occurred";
@@ -72,8 +73,10 @@ const Login: React.FC = () => {
                 </div>
               </div>
             </div>
-            <p className="text-[22px] font-semibold">Log into your account</p>
-
+            <p className="text-[22px] font-semibold">Forgot Password</p>
+            <p className="text-[14px] font-medium text-gray-600">
+              Enter your email to receive a password reset link.
+            </p>
             <TextField
               type="email"
               label="Email Address*"
@@ -92,56 +95,21 @@ const Login: React.FC = () => {
                 errors.email ? (errors.email.message as string) : undefined
               }
             />
-            <TextField
-              type={showPassword ? "text" : "password"}
-              label="Password*"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must have at least 8 characters",
-                },
-              })}
-              error={!!errors.password}
-              helperText={
-                errors.password
-                  ? (errors.password.message as string)
-                  : undefined
-              }
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Button
-                      onClick={() => setValue("showPassword", !showPassword)}
-                      size="small"
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </Button>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Button
-              color="primary"
-              onClick={() => navigate("/forgot-password")}
-              className="mt-2 w-full"
-            >
-              Forgot Password?
-            </Button>
-
             <Button
               type="submit"
               color="success"
               variant="contained"
-              onClick={handleSubmit(handleLogin)}
-              className={`mt-3 w-full font-semibold ${
-                watch("agreed") ? "" : "cursor-not-allowed"
-              }`}
+              onClick={handleSubmit(handleForgotPassword)}
+              className="mt-3 w-full font-semibold"
             >
-              Log In
+              Send Reset Link
+            </Button>
+            <Button
+              color="primary"
+              onClick={() => navigate("/login")}
+              className="mt-2 w-full"
+            >
+              Back to Login
             </Button>
           </div>
         </div>
@@ -158,4 +126,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;
