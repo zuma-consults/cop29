@@ -25,20 +25,22 @@ function ForgotPassword() {
     },
   });
 
-  if(isLoading){
-    return <Loader/>
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (
     <div className="flex h-screen">
-              <button
-          className="absolute top-10 left-10 flex gap-4 text-white items-center text-[14px] z-50  px-4 py-2 rounded"
-          style={{ backdropFilter: "blur(5px)" }}
-          onClick={()=>{navigate("/");}}
-        >
-          <FaArrowLeft size={22} />
-          Go Home
-        </button>
+      <button
+        className="absolute top-10 left-10 flex gap-4 text-white items-center text-[14px] z-50  px-4 py-2 rounded"
+        style={{ backdropFilter: "blur(5px)" }}
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        <FaArrowLeft size={22} />
+        Go Home
+      </button>
       {/* Left Section */}
       <div className="flex-1 flex flex-col justify-center items-center bg-green-800 text-white p-8">
         <div className="space-y-8 w-full max-w-md">
@@ -47,7 +49,7 @@ function ForgotPassword() {
           <form onSubmit={formik.handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-lg mb-2">
-               Your Email
+                Your Email
               </label>
               <input
                 id="email"
@@ -59,7 +61,8 @@ function ForgotPassword() {
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
               />
-              {formik.touched.email && formik.errors.email ? (
+              {formik.touched.email &&
+              typeof formik.errors.email === "string" ? (
                 <div className="text-red-500 text-sm mt-2">
                   {formik.errors.email}
                 </div>
