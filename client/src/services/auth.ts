@@ -18,8 +18,8 @@ export const register = async (data: any) => {
     return responseData;
   } catch (error: any) {
     console.error(error);
-    toast.error(`${error?.response?.data?.message || error?.message}`)
-    return
+    toast.error(`${error?.response?.data?.message || error?.message}`);
+    return error
   }
 };
 
@@ -37,8 +37,8 @@ export const orgRegister = async (data: any) => {
     return responseData;
   } catch (error: any) {
     console.error(error);
-    toast.error(`${error?.response?.data?.message || error?.message}`)
-    return
+    toast.error(`${error?.response?.data?.message || error?.message}`);
+    return error
   }
 };
 
@@ -54,12 +54,12 @@ export const login = async (data: any) => {
     const accessToken = responseData?.data;
     if (accessToken) {
       cookies.set("accessToken", accessToken, { path: "/" });
-      toast.success('you are now logged in')
+      toast.success("you are now logged in");
     }
     return responseData;
   } catch (error: any) {
     console.error(error);
-    toast.error(`${error?.response?.data?.message || error?.message}`)
+    toast.error(`${error?.response?.data?.message || error?.message}`);
     return;
   }
 };
@@ -101,4 +101,78 @@ export const getProfile = async () => {
     console.error(error);
     return undefined;
   }
+};
+
+export const activate = async () => {
+  try {
+    const options = {
+      method: "PUT",
+      url: "/verify",
+    };
+    const response = await request(options);
+    return response;
+  } catch (error: any) {
+    console.error(error);
+    toast.error(`${error?.response?.data?.message || error?.message}`);
+    return error
+  }
+};
+
+export const forgot = async (data: { email: string }) => {
+  try {
+    const options = {
+      method: "POST",
+      url: "/forgot-password",
+      data,
+    };
+  
+   const response = await request(options);
+   if (response) {
+    toast.success("Check your email and proceed to reset your password");
+  }
+  return response;
+  } catch (error: any) {
+    console.error(error);
+    toast.error(`${error?.response?.data?.message || error?.message}`);
+    return;
+  }
+};
+
+export const resendActivation = async (data: { email: string }) => {
+  try {
+    const options = {
+      method: "POST",
+      url: "/resend",
+      data,
+    };
+  
+   const response = await request(options);
+   if (response) {
+    toast.success("Check your email and proceed to verify account");
+  }
+  return response;
+  } catch (error: any) {
+    console.error(error);
+    toast.error(`${error?.response?.data?.message || error?.message}`);
+    throw new Error(`Network response was not ok. Status: ${error.response?.status}`);
+  }
+};
+
+export const reset = async (data: { password: string }) => {
+  try {
+    const options = {
+      method: "POST",
+      url: "/reset-password",
+      data,
+    };
+    const response = await request(options);
+    if (response) {
+      toast.success("Password has been reset!");
+    }
+    return response;
+  } catch (error: any) {
+    console.error(error);
+    toast.error(`${error?.response?.data?.message || error?.message}`);
+  }
+  
 };

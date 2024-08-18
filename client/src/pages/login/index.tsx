@@ -1,10 +1,11 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { FaRegEyeSlash, FaRegEye, FaArrowLeft,  } from "react-icons/fa";
+import { FaRegEyeSlash, FaRegEye, FaArrowLeft } from "react-icons/fa";
 import { useLogin } from "../../components/custom-hooks/useAuth"; // Assume you have a useLogin hook
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/ui/Loader";
+import { Link } from "react-router-dom";
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -19,26 +20,23 @@ const validationSchema = Yup.object({
 const Login: React.FC = () => {
   const { mutate: login, isLoading } = useLogin();
   const navigate = useNavigate();
-  const handleBack = ()=> {
-    navigate("/")
-  }
 
-   if(isLoading){
-    return <Loader/>
-   }
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-green-800">
       <div className="flex-1 flex items-center justify-center ">
-      <button
-        className="absolute top-10 left-10 flex gap-4 text-white items-center text-[14px] z-50  px-4 py-2 rounded"
-        style={{ backdropFilter: "blur(5px)" }}
-        onClick={handleBack}
-      >
-        <FaArrowLeft size={22} />
-        Go Home
-      </button>
-   
+        <button
+          className="absolute top-10 left-10 flex gap-4 text-white items-center text-[14px] z-50  px-4 py-2 rounded"
+          style={{ backdropFilter: "blur(5px)" }}
+          onClick={()=>{navigate("/");}}
+        >
+          <FaArrowLeft size={22} />
+          Go Home
+        </button>
+
         <div
           className="bg-white w-full md:w-[480px] p-5 m-10 md:m-0 grid gap-3 rounded-lg"
           data-aos="zoom-in-right"
@@ -123,25 +121,17 @@ const Login: React.FC = () => {
                   </div>
                 </div>
                 <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="text-red-500 text-xs"
-                  />
-{/* 
-                <div className="flex items-center mb-4">
-                  <Field
-                    type="checkbox"
-                    id="rememberMe"
-                    name="rememberMe"
-                    className="mr-2"
-                  />
-                  <label
-                    htmlFor="rememberMe"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Remember me
-                  </label>
-                </div> */}
+                  name="password"
+                  component="div"
+                  className="text-red-500 text-xs"
+                />
+
+                <Link
+                  className="flex items-center mb-4 text-sm font-medium text-green-700 underline"
+                  to={"/forgot-password"}
+                >
+                  Forgot Password
+                </Link>
 
                 <button
                   type="submit"
@@ -157,7 +147,7 @@ const Login: React.FC = () => {
       </div>
 
       <div className="hidden md:flex flex-1 bg-green-200 relative">
-      <div className="absolute inset-0 bg-co-primary opacity-50"></div>
+        <div className="absolute inset-0 bg-co-primary opacity-50"></div>
         <img
           src="/images/globe.jpg"
           alt="Image description"
@@ -167,7 +157,7 @@ const Login: React.FC = () => {
 
       {/* Mobile Background Image */}
       <div className="hidden md:flex-1 md:relative">
-      <div className="absolute inset-0 bg-co-primary opacity-50"></div>
+        <div className="absolute inset-0 bg-co-primary opacity-50"></div>
         <img
           src="/images/globe.jpg"
           alt="Image description"
