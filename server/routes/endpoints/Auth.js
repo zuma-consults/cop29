@@ -15,6 +15,7 @@ const {
   forgotPasswordAdmin,
   resetPassword,
   resetAdminPassword,
+  verifyEmail,
 } = require("../../controllers/auth-controller");
 const {
   auth,
@@ -38,6 +39,7 @@ let routes = (app) => {
   app.post("/forgot-password", forgotPassword);
   app.post("/admin-forgot-password", forgotPasswordAdmin);
   app.post("/reset-password", verifyPasswordToken, resetPassword);
+  app.post("/verify", verifyPasswordToken, verifyEmail);
   app.post(
     "/admin-reset-password",
     adminVerifyPasswordToken,
