@@ -103,6 +103,38 @@ const adminVerifyPasswordToken = async (req, res, next) => {
   }
 };
 
+const verifyPasswordToken = async (req, res, next) => {
+  try {
+    const token = req.header("poc-admin-token");
+
+    if (!token) {
+      return errorHandler(res, "Access Denied: No token provided.", 403);
+    }
+
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const adminToken = await Admin.findOne({ _id: decoded.id });
+
+    if (!adminToken) {
+      return errorHandler(
+        res,
+        "Access Denied: Invalid or expired token. Please login again",
+        403
+      );
+    }
+
+    const admin = await Admin.findOne({ _id: decoded.id });
+
+    if (!admin) {
+      return errorHandler(res, "Access Denied: Admin not found.", 404);
+    }
+
+    req.admin = admin._id;
+    next();
+  } catch (err) {
+    return errorHandler(res, "Access Denied: Invalid Token.", 403);
+  }
+};
+
 const logRequestDuration = async (req, res, next) => {
   const start = Date.now();
 
@@ -122,4 +154,5 @@ module.exports = {
   authAdmin,
   logRequestDuration,
   adminVerifyPasswordToken,
+  verifyPasswordToken,
 };

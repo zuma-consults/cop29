@@ -20,6 +20,7 @@ const {
   auth,
   authAdmin,
   adminVerifyPasswordToken,
+  verifyPasswordToken,
 } = require("../../middlewares/middleware");
 let routes = (app) => {
   app.post("/register", createUser);
@@ -36,7 +37,7 @@ let routes = (app) => {
   app.get("/applicants", authAdmin, getAllCopApplicants);
   app.post("/forgot-password", forgotPassword);
   app.post("/admin-forgot-password", forgotPasswordAdmin);
-  app.post("/reset-password", auth, resetPassword);
+  app.post("/reset-password", verifyPasswordToken, resetPassword);
   app.post(
     "/admin-reset-password",
     adminVerifyPasswordToken,
