@@ -144,7 +144,7 @@ const Nav: React.FC<{
           <Box
             sx={{
               paddingLeft: "5px",
-              paddingTop: "50px",
+              paddingTop: "30px",
               position: "relative",
               height: "80%",
             }}
