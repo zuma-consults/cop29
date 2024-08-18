@@ -37,11 +37,11 @@ const Links: React.FC<LinksProps> = ({
       path: "/faq",
     },
   ];
+
   if(user) { links.push({
     title: "Your Profile",
     path: "/profile",
   })
-  refetch()
 }
   const isActive = (path: string) => location.pathname === path;
 
@@ -59,7 +59,7 @@ const Links: React.FC<LinksProps> = ({
             <Link
               to={link.path}
               key={index}
-              className={`px-3 py-2 rounded-full text-[16px] text-green-800 font-normal ${isActive(link.path) ? "bg-green-100" : "hover:bg-gray-100"
+              className={`px-3 py-2 rounded-full text-green-800 font-normal ${isActive(link.path) ? "bg-green-100" : "hover:bg-gray-100"
                 }`}
             >
               {link.title}
