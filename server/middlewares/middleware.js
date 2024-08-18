@@ -97,13 +97,11 @@ const adminVerifyPasswordToken = async (req, res, next) => {
 const verifyPasswordToken = async (req, res, next) => {
   try {
     const token = req.header("poc-client-token");
-
     if (!token) {
       return errorHandler(res, "Access Denied: No token provided.", 403);
     }
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
     const user = await User.findOne({ _id: decoded.id });
 
     if (!user) {
