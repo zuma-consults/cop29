@@ -24,7 +24,7 @@ const LatestEvents: React.FC = () => {
   return (
     <section className="relative flex flex-col p-10 w-full h-[80vh]">
       <div className="flex justify-between items-center">
-        <p className="text-[32px] text-gray-800">Latest Events</p>
+        <p className="text-[32px] text-gray-800">Side Events</p>
         <Link
           to="/events"
           className="bg-green-200 w-max h-max py-2 px-3 rounded"

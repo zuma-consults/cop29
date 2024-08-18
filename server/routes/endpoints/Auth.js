@@ -9,9 +9,10 @@ const {
   logout,
   changeUserPasswordById,
   createOrganisationAsUser,
-  addDelegatesToOrganisation
+  addDelegatesToOrganisation,
+  getAllCopApplicants,
 } = require("../../controllers/auth-controller");
-const { auth } = require("../../middlewares/middleware");
+const { auth, authAdmin } = require("../../middlewares/middleware");
 let routes = (app) => {
   app.post("/register", createUser);
   app.post("/org/register", createOrganisationAsUser);
@@ -24,6 +25,7 @@ let routes = (app) => {
   app.delete("/user/:id", deleteUserById);
   app.post("/login", login);
   app.post("/logout", auth, logout);
+  app.get("/applicants", authAdmin, getAllCopApplicants);
 };
 
 module.exports = routes;

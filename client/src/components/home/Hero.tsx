@@ -1,5 +1,10 @@
 import React from "react";
-import { FaCalendarAlt, FaPlus, FaInfoCircle, FaQuestionCircle } from "react-icons/fa";
+import {
+  FaCalendarAlt,
+  FaPlus,
+  FaInfoCircle,
+  FaQuestionCircle,
+} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 
@@ -15,8 +20,16 @@ const Hero: React.FC = () => {
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-co-primary opacity-90"></div>
 
-      <div className="relative flex flex-col md:flex-row justify-between md:pl-20 items-center z-10 p-5 md:p-8" data-aos="fade-up" data-aos-duration="1000">
-        <div className="text-gray-900 flex flex-col gap-6 md:gap-8 justify-center flex-1 text-center md:text-left" data-aos="fade-right" data-aos-duration="1000">
+      <div
+        className="relative flex flex-col md:flex-row justify-between md:pl-20 items-center z-10 p-5 md:p-8"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+      >
+        <div
+          className="text-gray-900 flex flex-col gap-6 md:gap-8 justify-center flex-1 text-center md:text-left"
+          data-aos="fade-right"
+          data-aos-duration="1000"
+        >
           <h1 className="text-[20px] md:text-[60px] text-white font-bold leading-tight">
             Nigeria @ Cop29
           </h1>
@@ -27,25 +40,28 @@ const Hero: React.FC = () => {
           </p>
           <div className="flex flex-wrap justify-center md:justify-start items-center gap-4">
             <Link
-              to="/events"
+              to="/signup"
               className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
-              data-aos="fade-up" data-aos-duration="1000"
+              data-aos="fade-up"
+              data-aos-duration="1000"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
-              Attend an Event
+              Register as a Delegate?
             </Link>
             <Link
               to="/create-event"
               className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-green-800 bg-white hover:bg-green-100 transition"
-              data-aos="fade-up" data-aos-duration="1000"
+              data-aos="fade-up"
+              data-aos-duration="1000"
             >
               <FaPlus className="text-2xl mr-2" />
-              Create a side Event
+              Create a side Event?
             </Link>
             <HashLink
               to="/faq#how-it-works"
               className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-blue-800 hover:bg-blue-200 bg-blue-100 transition"
-              data-aos="fade-up" data-aos-duration="1000"
+              data-aos="fade-up"
+              data-aos-duration="1000"
             >
               <FaInfoCircle className="text-2xl mr-2" />
               How it Works
@@ -53,7 +69,8 @@ const Hero: React.FC = () => {
             <Link
               to="/faq"
               className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-orange-800 hover:bg-orange-200  bg-orange-100 transition"
-              data-aos="fade-up" data-aos-duration="1000"
+              data-aos="fade-up"
+              data-aos-duration="1000"
             >
               <FaQuestionCircle className="text-2xl mr-2" />
               Frequently asked Questions
@@ -65,7 +82,8 @@ const Hero: React.FC = () => {
             src="/images/dots.svg"
             alt="Logo"
             className="rounded-lg w-[80%] md:w-[60%] h-auto"
-            data-aos="fade-left" data-aos-duration="1000"
+            data-aos="fade-left"
+            data-aos-duration="1000"
           />
         </div>
       </div>

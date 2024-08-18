@@ -1,52 +1,52 @@
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
   Card,
   CardContent,
+  CardMedia,
   Chip,
   Modal,
   Typography,
 } from "@mui/material";
-import React, { useState, useMemo, useCallback, useEffect } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
-import { useGetAllDelegates } from "../../hooks/useDelegate";
 import Loader from "../ui/Loader";
+import { useGetAllCopApplicants } from "../../hooks/useEvent";
 import ColumnFilter from "../columnFilter";
 
 interface TableRow {
-  id: number;
-  status: string;
+  _id: string;
   name: string;
   email: string;
-  userType: string;
-  phone: string;
+  passport: string;
+  delegatedBy: string;
+  copApproved: boolean;
 }
 
-const DelegateTable: React.FC = () => {
-  const [_, setPage] = useState(1);
+const CopTable: React.FC = () => {
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
 
+  const [_, setPage] = useState(1);
+
   const [filters, setFilters] = useState({
-    userType: "delegate",
+    copApproved: false,
   });
 
-  const memoizedFilters = useMemo(
-    () => ({
-      userType: filters.userType,
-    }),
-    [filters.userType]
+  const memoizedFilters = useMemo(() => filters, [filters]);
+
+  const { data, isFetching, refetch } = useGetAllCopApplicants(memoizedFilters);
+
+  const handleFilterChange = useCallback(
+    (key: string, value: string | boolean) => {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        [key]: value,
+      }));
+    },
+    []
   );
-
-  const { data, isFetching, refetch } = useGetAllDelegates(memoizedFilters);
-
-  const handleFilterChange = useCallback((key: string, value: string) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [key]: value,
-    }));
-  }, []);
 
   const handleResetFilter = useCallback((key: string) => {
     setFilters((prevFilters: any) => {
@@ -55,29 +55,13 @@ const DelegateTable: React.FC = () => {
     });
   }, []);
 
-  const extratedData = useMemo(() => data?.data, [data]);
+  const handleDownloadCSV = () => {
+    saveAsCSV({ data, filename: "User_List" });
+  };
 
-  const handleDownloadCSV = useCallback(() => {
-    saveAsCSV({ data: extratedData?.users, filename: "Delegates List" });
-  }, [extratedData?.events]);
-
-  const handlePageChange = useCallback((page: number) => {
+  const handlePageChange = (page: number) => {
     setPage(page);
-  }, []);
-
-  const handleAccept = useCallback(() => {
-    console.log("Accepted");
-    setSelectedEvent(null);
-  }, []);
-
-  const handleReject = useCallback(() => {
-    console.log("Rejected");
-    setSelectedEvent(null);
-  }, []);
-
-  useEffect(() => {
-    refetch();
-  }, [memoizedFilters]);
+  };
 
   const customStyles = {
     headCells: {
@@ -94,59 +78,45 @@ const DelegateTable: React.FC = () => {
     },
   };
 
+  useEffect(() => {
+    refetch();
+  }, [memoizedFilters, refetch]);
+
   const columns: TableColumn<TableRow>[] = [
     {
       name: "Name",
-
-      selector: (row: { name: any }) => row.name ?? "N/A",
+      selector: (row) => row.name ?? "N/A",
     },
     {
       name: "Email",
-      selector: (row: { email: any }) => row.email ?? "N/A",
+      selector: (row) => row.email ?? "N/A",
+    },
+    {
+      name: "Delegated By",
+      selector: (row) => row.delegatedBy ?? "N/A",
     },
     {
       name: (
         <Box style={{ display: "flex", alignItems: "center" }}>
-          <Typography className="capitalize">Type</Typography>
+          <Typography className="capitalize">COP Approved</Typography>
           <ColumnFilter
-            columnKey="userType"
+            columnKey="search"
             onFilterChange={handleFilterChange}
             onResetFilter={handleResetFilter}
           />
         </Box>
       ),
-      selector: (row: { userType: any }) => row.userType ?? "N/A",
-    },
-    {
-      name: "Phone",
-      selector: (row: { phone: any }) => row.phone ?? "N/A",
+      cell: (row) =>
+        row.copApproved ? (
+          <Chip label="Approved" color="success" className="capitalize" />
+        ) : (
+          <Chip label="Pending" color="error" />
+        ),
     },
 
     {
-      name: "Status",
-      selector: (row: { status: any }) => row.status ?? "N/A",
-      cell: (row: {
-        status:
-          | string
-          | number
-          | boolean
-          | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-          | Iterable<React.ReactNode>
-          | null
-          | undefined;
-      }) => (
-        <div className="text-left capitalize flex items-center">
-          {row.status == "approved" ? (
-            <Chip label={row?.status} color="success" />
-          ) : (
-            <Chip label={row?.status} color="warning" />
-          )}
-        </div>
-      ),
-    },
-    {
       name: "Action",
-      cell: (row: React.SetStateAction<TableRow | null>) => (
+      cell: (row) => (
         <div className="flex justify-end cursor-pointer">
           <Button
             sx={{
@@ -212,7 +182,7 @@ const DelegateTable: React.FC = () => {
           responsive={true}
           customStyles={customStyles}
           columns={columns}
-          data={extratedData?.users}
+          data={data?.data}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
@@ -227,10 +197,10 @@ const DelegateTable: React.FC = () => {
               left: "50%",
               transform: "translate(-50%, -50%)",
               width: 800,
-              bgcolor: "background.paper",
-              boxShadow: 24,
               maxHeight: "90vh",
               overflowY: "auto",
+              bgcolor: "background.paper",
+              boxShadow: 24,
               p: 4,
               outline: "none",
               borderRadius: "8px",
@@ -238,46 +208,51 @@ const DelegateTable: React.FC = () => {
           >
             {selectedEvent && (
               <Card>
-                <CardContent className="flex flex-col justify-center items-center gap-3">
-                  <Typography variant="h5" component="div">
-                    {selectedEvent.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {selectedEvent.phone}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {selectedEvent.email}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {selectedEvent.userType}
+                {/* Render the Organization Logo */}
+                <div className="flex justify-center items-center">
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={selectedEvent.passport}
+                    alt={`${selectedEvent.name} Logo`}
+                    sx={{
+                      objectFit: "contain",
+                      marginBottom: "16px",
+                      maxWidth: "20%",
+                    }}
+                    loading="lazy"
+                  />
+                </div>
+
+                <CardContent className="flex flex-col justify-center items-center gap-5">
+                  {/* Render Name */}
+                  <Typography variant="body1" component="div">
+                    <strong>Name: </strong> {selectedEvent.name}
                   </Typography>
 
-                  <div className="mb-4">
-                    {selectedEvent.status == "approved" ? (
-                      <Chip label={selectedEvent.status} color="success" />
-                    ) : (
-                      <Chip label={selectedEvent.status} color="error" />
-                    )}
-                  </div>
+                  {/* Render Email */}
+                  <Typography variant="body1" component="div">
+                    <strong>Email: </strong> {selectedEvent.email}
+                  </Typography>
 
-                  {selectedEvent.status === "Pending" && (
-                    <Box className="flex justify-between">
-                      <Button
-                        variant="contained"
+                  {/* Render Organization Type */}
+                  <Typography variant="body1" component="div">
+                    <strong>Type: </strong> {selectedEvent.delegatedBy}
+                  </Typography>
+
+                  {/* Render Status */}
+                  <Typography variant="body1" component="div">
+                    <strong>Status: </strong>
+                    {selectedEvent.copApproved ? (
+                      <Chip
+                        label="Approved"
                         color="success"
-                        onClick={handleAccept}
-                      >
-                        Accept
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={handleReject}
-                      >
-                        Reject
-                      </Button>
-                    </Box>
-                  )}
+                        className="capitalize"
+                      />
+                    ) : (
+                      <Chip label="Pending" color="error" />
+                    )}
+                  </Typography>
                 </CardContent>
               </Card>
             )}
@@ -288,4 +263,4 @@ const DelegateTable: React.FC = () => {
   );
 };
 
-export default DelegateTable;
+export default CopTable;

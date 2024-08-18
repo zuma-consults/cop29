@@ -1,4 +1,4 @@
-import Pagination from "../../components/ui/Pagination";
+// import Pagination from "../../components/ui/Pagination";
 import Card from "../../components/ui/Card";
 import { useGetEvents } from "../../components/custom-hooks/useEvents";
 import Loader from "../../components/ui/Loader";
@@ -30,7 +30,7 @@ if(isLoading){
      <div className="absolute inset-0 bg-co-primary opacity-50 rounded-lg"></div>
         <div>
         <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold opacity-90">
-            Latest Events
+            Side Events
           </h1>
         </div>
       </div>

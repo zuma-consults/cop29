@@ -31,15 +31,8 @@ const eventSchema = mongoose.Schema(
     },
     invoiceStatus: {
       type: String,
-      enum: [
-        "draft", // Invoice is not yet sent
-        "proof-pending", // Awaiting proof of payment from the user
-        "proof-received", // Proof of payment received
-        "proof-confirmed", // Proof of payment confirmed
-        "approved", // Payment has been approved
-        "declined", // Payment has been declined
-      ],
-      default: "draft",
+      enum: ["Not Received", "Received"],
+      default: "Not Received",
     },
     status: {
       type: String,

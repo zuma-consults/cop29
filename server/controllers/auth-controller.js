@@ -55,7 +55,7 @@ module.exports = {
       } else {
         try {
           const { body, files } = req;
-          const { name, password, email, userType } = req.body;
+          const { name, password, email, userType, designation } = req.body;
           if (!name || !password || !email || !userType) {
             return errorHandler(
               res,
@@ -97,6 +97,7 @@ module.exports = {
                 name,
                 delegatedBy: "Self",
                 email,
+                designation,
               });
             }
           }
@@ -226,7 +227,7 @@ module.exports = {
 
       try {
         const { body, files } = req;
-        const { name, email } = body;
+        const { name, email, designation } = body;
         const { id } = req.params;
 
         // Validate required fields
@@ -274,6 +275,7 @@ module.exports = {
           email,
           delegatedBy: findUser.name,
           passport,
+          designation,
         };
 
         findUser.delegates.push(delegate);
@@ -457,6 +459,48 @@ module.exports = {
       return successHandler(res, "Logged Out Successfully");
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
+    }
+  },
+  getAllCopApplicants: async (req, res) => {
+    try {
+      const { copApproved } = req.query;
+
+      // Create a query object for filtering based on copApproved
+      const query = {};
+
+      // If copApproved is provided in the query parameters, add it to the query object
+      if (copApproved !== undefined) {
+        query["delegates.copApproved"] = copApproved === "true";
+      }
+
+      // Find all users sorted by creation date
+      const users = await User.find(query).sort({ createdAt: -1 });
+
+      // Extract delegates from each user and combine them into one array
+      const delegates = users.reduce((acc, user) => {
+        if (user.delegates && user.delegates.length > 0) {
+          acc.push(
+            ...user.delegates.filter(
+              (delegate) => delegate.copApproved === (copApproved === "true")
+            )
+          );
+        }
+        return acc;
+      }, []);
+
+      // Set the message based on the copApproved filter
+      let message;
+      if (copApproved === "true") {
+        message = "Approved COP 29 Applicants";
+      } else if (copApproved === "false") {
+        message = "Pending COP 29 Applicants";
+      } else {
+        message = "All COP 29 Applicants";
+      }
+
+      return successHandler(res, message, delegates);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode || 500);
     }
   },
 };

@@ -1,3 +1,4 @@
+/* src/index.css or src/App.css */
 body {
   background-color: white;
   font-size: 12px;
@@ -8,11 +9,14 @@ body {
   height: 100%;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  font-family: "Montserrat", sans-serif; 
 }
+
 * {
   font-size: 12px;
-  font-family: "Poppins", sans-serif; 
+  font-family: "Montserrat", sans-serif;
 }
+
 .alice-carousel__wrapper .alice-carousel__prev-btn,
 .alice-carousel__wrapper .alice-carousel__next-btn {
   display: none !important;

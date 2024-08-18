@@ -35,7 +35,7 @@ const delegateValidationSchema = Yup.object({
 const DelegateForm: React.FC = () => {
   const navigate = useNavigate();
   const handleTerms = () => {
-    navigate("/termsAndConditions")
+    navigate("/terms-and-conditions")
   }
   const { mutate: register, isLoading, isSuccess } = useRegister();
   const [file, setFile] = useState<File | null>(null);

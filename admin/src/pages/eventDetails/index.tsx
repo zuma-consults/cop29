@@ -3,7 +3,11 @@ import { useLocation } from "react-router-dom";
 import { formatDate1 } from "../../utils/helper";
 import { Button, Chip } from "@mui/material";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
-import { useApproveEvent, useDeclineEvent } from "../../hooks/useEvent";
+import {
+  useApproveEvent,
+  useDeclineEvent,
+  useGenerateInvoice,
+} from "../../hooks/useEvent";
 import Loader from "../../components/ui/Loader";
 
 const EventDetails: React.FC = () => {
@@ -20,32 +24,50 @@ const EventDetails: React.FC = () => {
     description: string;
     organizer: string;
     id: number;
+    countId: number;
+    invoiceStatus: string;
   };
 
   if (!event) {
     return <div>Event not found</div>;
   }
 
-  const { image, status, title, start, end, tags, description, organizer, id } =
-    event;
+  const {
+    image,
+    status,
+    title,
+    start,
+    end,
+    tags,
+    description,
+    organizer,
+    id,
+    countId,
+    invoiceStatus,
+  } = event;
   const tagArr = tags[0].split(",");
   const { mutate: mutateApproval, isLoading: loadingApproval } =
     useApproveEvent();
   const { mutate: mutateDecline, isLoading: loadingDecline } =
     useDeclineEvent();
+  const { mutate: mutateGenerateInvoice, isLoading: loadingGenerateInvoice } =
+    useGenerateInvoice();
 
-  const handeEActionvent = async (type: string) => {
+  const handelActionEvent = async (type: string) => {
     if (type === "approve") {
       mutateApproval(id);
-    } else {
+    } else if (type === "decline") {
       mutateDecline(id);
+    } else {
+      mutateGenerateInvoice(countId);
     }
   };
 
-  console.log("events", event);
   return (
     <>
-      {loadingApproval && <Loader />}
+      {loadingApproval ||
+        loadingDecline ||
+        (loadingGenerateInvoice && <Loader />)}
 
       <div className="px-5 py-10 bg-gray-100">
         <div className="flex items-center justify-start mb-5">
@@ -137,12 +159,12 @@ const EventDetails: React.FC = () => {
             />
           </div>
           <div className="flex items-center justify-end gap-10">
-            {status === "approved" ? (
+            {invoiceStatus === "Received" ? (
               <Button
                 variant="contained"
                 color="success"
                 className="absolute bottom-0 right-0"
-                onClick={() => handeEActionvent("approve")}
+                onClick={() => handelActionEvent("approve")}
                 disabled={loadingApproval}
               >
                 Approve
@@ -152,6 +174,7 @@ const EventDetails: React.FC = () => {
                 variant="contained"
                 color="warning"
                 className="absolute bottom-0 right-0"
+                onClick={() => handelActionEvent("generateInvoice")}
               >
                 Make payment
               </Button>
@@ -161,7 +184,7 @@ const EventDetails: React.FC = () => {
               variant="contained"
               color="error"
               className="absolute bottom-0 right-0"
-              onClick={() => handeEActionvent("decline")}
+              onClick={() => handelActionEvent("decline")}
               disabled={loadingDecline}
             >
               Decline

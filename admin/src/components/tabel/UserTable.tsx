@@ -29,12 +29,22 @@ interface TableRow {
 
 const UserTable: React.FC = () => {
   const { isFetching, data, refetch: refetchAllProfile } = useGetAllProfile();
+  const [_, setPage] = useState(1);
+  const [, setOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
+
+  const reset = () => {
+    setSelectedEvent(null);
+  };
+
   const { data: roleData } = useGetAllRoles();
-  const { mutate, isLoading } = useAddAmin({ refetchAllProfile });
+  const { mutate, isLoading } = useAddAmin({
+    refetchAllProfile,
+    setOpen,
+    reset,
+  });
 
   const extratedData = data?.data?.admins;
-  const [_, setPage] = useState(1);
-  const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
 
   const handleDownloadCSV = () => {
     saveAsCSV({ data: extratedData, filename: "Admins/users List" });
@@ -160,7 +170,7 @@ const UserTable: React.FC = () => {
           data={extratedData}
           pagination
           fixedHeader
-          fixedHeaderScrollHeight="500px"
+          fixedHeaderScrollHeight="600px"
           onChangePage={handlePageChange}
         />
 

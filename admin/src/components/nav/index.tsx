@@ -1,4 +1,4 @@
-import { Box} from "@mui/material";
+import { Box } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { navConfig } from "./config";
 import { NavItem } from "./item";
@@ -153,7 +153,7 @@ const Nav: React.FC<{
               <Box
                 key={item.title}
                 sx={{
-                  mb: { xs: "0px", md: "30px" },
+                  mb: { xs: "0px", md: "15px" },
                   mr: { xs: "0px", md: "20px" },
                 }}
               >

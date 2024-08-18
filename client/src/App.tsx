@@ -45,7 +45,7 @@ function App() {
       <Route path="/account-activation" element={<AccountActivation />} />
       
       <Route path="/" element={<AppLayout />}>
-       <Route path="/termsAndConditions" element={<TermsAndConditions />} />
+       <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/" element={<Home />} />
         <Route path="/events" element={<Events />} />
         <Route path="/create-event" element={<CreateEvent />} />

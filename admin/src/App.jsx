@@ -14,6 +14,7 @@ import Invoice from "./pages/invoice";
 import User from "./pages/user";
 import Announcement from "./pages/announcement";
 import EventDetails from "./pages/eventDetails";
+import Cop from "./pages/cop";
 
 const pageVariants = {
   initial: { opacity: 0.5, translateY: -10 },
@@ -154,6 +155,21 @@ function App() {
                 exit="exit"
               >
                 <EventDetails />
+              </motion.div>
+            }
+          />
+
+          <Route
+            path="/cop"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                key={location.pathname}
+                animate="animate"
+                exit="exit"
+              >
+                <Cop />
               </motion.div>
             }
           />
