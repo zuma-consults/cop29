@@ -105,7 +105,7 @@ const adminVerifyPasswordToken = async (req, res, next) => {
 
 const verifyPasswordToken = async (req, res, next) => {
   try {
-    const token = req.header("poc-admin-token");
+    const token = req.header("poc-client-token");
 
     if (!token) {
       return errorHandler(res, "Access Denied: No token provided.", 403);
