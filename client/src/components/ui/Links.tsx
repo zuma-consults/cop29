@@ -2,7 +2,6 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useGetProfile, useLogout } from "../custom-hooks/useAuth";
 import Loader from "./Loader";
-import { toast } from "react-toastify";
 
 interface LinksProps {
   direction?: "row" | "column" | "col";
