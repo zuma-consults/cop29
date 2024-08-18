@@ -1,13 +1,36 @@
 import { Cookies } from "react-cookie";
 import { request } from "../utils/api";
 import axios from "axios";
+import { BASE_URL } from "../utils/constant";
 
 const cookies = new Cookies();
 
 export const login = async (data: any) => {
   const config = {
     method: "post",
-    url: "https://cop29.onrender.com/api/v1/login/staff",
+    url: `${BASE_URL}/login/staff`, // Use BASE_URL here
+    data,
+  };
+
+  const response = await axios(config);
+  return response.data;
+};
+
+export const forgotPassword = async (data: any) => {
+  const config = {
+    method: "post",
+    url: `${BASE_URL}/admin-forgot-password`, // Use BASE_URL here
+    data,
+  };
+
+  const response = await axios(config);
+  return response.data;
+};
+
+export const resetPassword = async (data: any) => {
+  const config = {
+    method: "post",
+    url: `${BASE_URL}/admin-reset-password`, // Use BASE_URL here
     data,
   };
 
@@ -18,7 +41,7 @@ export const login = async (data: any) => {
 export const registerAdmin = (data: any) => {
   const config = {
     method: "post",
-    url: "staff",
+    url: `${BASE_URL}/staff`, // Use BASE_URL here
     data,
   };
 
@@ -34,7 +57,7 @@ export const registerAdmin = (data: any) => {
 export const logout = () => {
   const config = {
     method: "post",
-    url: "logout/staff",
+    url: `${BASE_URL}/logout/staff`, // Use BASE_URL here
   };
 
   return request(config)
@@ -49,7 +72,7 @@ export const logout = () => {
 export const getProfile = () => {
   const config = {
     method: "get",
-    url: "token/staff",
+    url: `${BASE_URL}/token/staff`, // Use BASE_URL here
   };
 
   return request(config)
@@ -66,7 +89,7 @@ export const getProfile = () => {
 export const getAllProfile = () => {
   const config = {
     method: "get",
-    url: "staff",
+    url: `${BASE_URL}/staff`, // Use BASE_URL here
   };
 
   return request(config)
@@ -81,7 +104,7 @@ export const getAllProfile = () => {
 export const getAllRoles = () => {
   const config = {
     method: "get",
-    url: "roles",
+    url: `${BASE_URL}/roles`, // Use BASE_URL here
   };
 
   return request(config)

@@ -1,10 +1,11 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { Cookies } from "react-cookie";
 import { toast } from "react-toastify";
+import { BASE_URL } from "./constant";
 
 const cookies = new Cookies();
 const client = axios.create({
-  baseURL: "https://cop29.onrender.com/api/v1/",
+  baseURL: `${BASE_URL}`,
 });
 
 // Function to handle navigation

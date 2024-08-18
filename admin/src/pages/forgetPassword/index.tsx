@@ -4,36 +4,42 @@ import { Button, TextField } from "@mui/material";
 import Loader from "../../components/ui/Loader";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { forgotPassword } from "../../services/auth";
+
+// Define an interface for the form data
+interface ForgotPasswordFormData {
+  email: string;
+}
 
 const ForgotPassword: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<ForgotPasswordFormData>();
 
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleForgotPassword = (data: any) => {
-    console.log("Forgot Password", data);
+  const handleForgotPassword = async (data: ForgotPasswordFormData) => {
+    // Update the parameter type
+    setIsLoading(true);
+    try {
+      const payload = {
+        email: data.email,
+      };
+      const result = await forgotPassword(payload);
+      if (result?.status) {
+        toast.success("Password reset link sent to your email.");
+        navigate("/forgot-password/success", { replace: true });
+      }
+    } catch (error: any) {
+      const errorMessage = error?.response?.data?.message || "Error occurred";
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-  // const handleForgotPassword = async (data: { email: string }) => {
-  //   setIsLoading(true);
-  //   try {
-  //     const result = await forgotPassword(data.email);
-  //     if (result?.status) {
-  //       toast.success("Password reset link sent to your email.");
-  //       navigate("/login", { replace: true });
-  //     }
-  //   } catch (error: any) {
-  //     const errorMessage = error?.response?.data?.message || "Error occurred";
-  //     toast.error(errorMessage);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   return (
     <>
@@ -42,14 +48,30 @@ const ForgotPassword: React.FC = () => {
         <div className="flex-1 flex items-center justify-center">
           <div className="bg-white w-full h-max md:w-[480px] p-5 grid gap-3 rounded-lg">
             <div className="w-full h-max flex flex-col items-center justify-center gap-1">
-              <img
-                src="/images/logo.svg"
-                alt="Logo"
-                width={100}
-                height={10}
-                className="rounded-lg cursor-pointer"
-                onClick={() => window.location.replace("/")}
-              />
+              <div className="flex gap-1 items-center">
+                <img
+                  src="/images/logo.svg"
+                  alt="Logo"
+                  className="rounded-lg"
+                  width={50}
+                  height={10}
+                />
+                <div className="flex items-center">
+                  <span className="text-green-800 text-[30px] font-bold">
+                    C
+                  </span>
+                  <img
+                    src="/images/flagicon.svg"
+                    alt="Icon"
+                    className="inline-block"
+                    width={33}
+                    height={20}
+                  />
+                  <span className="text-green-800 text-[30px] font-bold">
+                    P29
+                  </span>
+                </div>
+              </div>
             </div>
             <p className="text-[22px] font-semibold">Forgot Password</p>
             <p className="text-[14px] font-medium text-gray-600">
