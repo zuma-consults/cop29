@@ -55,22 +55,24 @@ const sendResetPassword = async (to, url, txt, name) => {
           padding: '50px',
           display: 'grid',
         }}>
-          <h5>Hi ${name},</h5>
+          <h3 style="color: #003300;">Hello ${name},</h3>
           <p style={{ color: '#666666', fontSize: '15px' }}>
             We received a request to reset your password for your Cop29 Nigeria
             account. If you made this request, please click the link below to
             reset your password:
           </p>
 
-          <a href=${url} style={{
-            display: 'inline-block',
-            padding: '10px 20px',
-            margin: '20px 0',
-            backgroundColor: '#28a745',
-            color: '#ffffff',
-            textDecoration: 'none',
-            borderRadius: '5px'
-          }}>
+          <a href=${url} 
+            style="
+              display: inline-block;
+              padding: 10px 20px;
+              margin: 20px 0;
+              background-color: #28a745;
+              color: #ffffff;
+              text-decoration: none;
+              border-radius: 5px;
+        "
+          >
             <strong>${txt}</strong>
           </a>
           <p style={{ color: '#666666', fontSize: '15px' }}>
