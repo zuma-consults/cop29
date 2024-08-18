@@ -452,7 +452,7 @@ module.exports = {
       const { copApproved } = req.query;
 
       // Create a query object for filtering based on copApproved
-      const query = {};
+      const query = { verifyEmail: true };
 
       // If copApproved is provided in the query parameters, add it to the query object
       if (copApproved !== undefined) {
