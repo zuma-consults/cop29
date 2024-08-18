@@ -1,10 +1,13 @@
 const { successHandler } = require("../utils/core");
 const { errorHandler } = require("../utils/errorHandler");
 const User = require("../models/users");
-const { generateTokens } = require("../utils/generateToken");
+const { generateTokens, createAccessToken } = require("../utils/generateToken");
 const bcrypt = require("bcrypt");
 const UserToken = require("../models/token");
 const { upload, uploadToCloudinary } = require("../utils/upload");
+const sendResetPassword = require("../utils/sendResetPassword");
+const Admin = require("../models/admin");
+const { CLIENT_URL, ADMIN_CLIENT_URL } = process.env;
 
 module.exports = {
   createUsersss: async (req, res) => {
@@ -501,6 +504,99 @@ module.exports = {
       return successHandler(res, message, delegates);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode || 500);
+    }
+  },
+  forgotPassword: async (req, res) => {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+      if (!user) {
+        return errorHandler(res, "This email does not exist.", 404);
+      }
+      const access_token = await createAccessToken({ id: user._id });
+      const url = `${CLIENT_URL}/reset-password/${access_token}`;
+      sendResetPassword(email, url, "Click to Reset your Password", user.name);
+      return successHandler(
+        res,
+        "Please check your email to reset your password."
+      );
+    } catch (err) {
+      return errorHandler(res, err.message, 500);
+    }
+  },
+  forgotPasswordAdmin: async (req, res) => {
+    try {
+      const { email } = req.body;
+      const user = await Admin.findOne({ email });
+      if (!user) {
+        return errorHandler(res, "This email does not exist.", 404);
+      }
+      const access_token = await createAccessToken({ id: user._id });
+      console.log(access_token);
+      const url = `${ADMIN_CLIENT_URL}/reset-password/${access_token}`;
+      // sendResetPassword(email, url, "Click to Reset your Password", user.name);
+      return successHandler(
+        res,
+        "Please check your email to reset your password."
+      );
+    } catch (err) {
+      return errorHandler(res, err.message, 500);
+    }
+  },
+  resetPassword: async (req, res) => {
+    try {
+      const { password } = req.body;
+
+      // Check if the password meets the required criteria using the `validatePassword` function
+      if (!validatePassword(password)) {
+        return errorHandler(
+          res,
+          "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+          400
+        );
+      }
+
+      // Hash the new password before saving it to the database
+      const passwordHash = await bcrypt.hash(password, 12);
+
+      // Find the user by their ID and update their password in the database
+      await User.updateOne(
+        { _id: req.user },
+        { $set: { password: passwordHash } }
+      );
+
+      return successHandler(res, "Password changed successfully");
+    } catch (err) {
+      // Handle any errors that may occur during the password reset process
+      return errorHandler(res, err.message, 500);
+    }
+  },
+  resetAdminPassword: async (req, res) => {
+    try {
+      const { password } = req.body;
+
+      // Check if the password meets the required criteria using the `validatePassword` function
+      if (!validatePassword(password)) {
+        return errorHandler(
+          res,
+          "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+          400
+        );
+      }
+
+      // Hash the new password before saving it to the database
+      const passwordHash = await bcrypt.hash(password, 12);
+
+      // Find the user by their ID and update their password in the database
+      await Admin.updateOne(
+        { _id: req.admin },
+        { $set: { password: passwordHash } }
+      );
+
+      return successHandler(res, "Password changed successfully");
+    } catch (err) {
+      // Handle any errors that may occur during the password reset process
+      return errorHandler(res, err.message, 500);
     }
   },
 };
