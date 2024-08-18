@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { ReactNode } from "react";
 
 export const NavItem: React.FC<{
-  icon: ReactNode; // Change icon type to ReactNode
+  icon: ReactNode; 
   title: string;
   isActive: boolean;
 }> = ({ icon, title, isActive }) => {
@@ -18,7 +18,7 @@ export const NavItem: React.FC<{
           color: "#FFFFFF",
           "&:hover": { color: "#FFFFFF" },
         }),
-        pt: "15px",
+        pt: "10px",
         pb: "10px",
         px: "10px",
         borderRadius: "10px",
