@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const CreateEvent = () => {
-  const { mutate, isLoading, isSuccess: createSuccess } = useCreateEvent();
+  const { mutate, isLoading, data } = useCreateEvent();
   const { data: user, isLoading: userLoading } = useGetProfile();
   const { data: timslotsData, isLoading: slotLoading } = useGetAllTimeSlots();
 
@@ -21,13 +21,11 @@ const CreateEvent = () => {
     (slot: { bookingStatus: any }) => slot.bookingStatus
   );
 
-  useEffect(() => {
-    if (createSuccess) {
-      toast.success("Successfully created side event", {
-        toastId: "createEventSuccess", // Unique ID to prevent multiple toasts
-      });
-    }
-  }, [createSuccess]);
+  if (data && data.status) {
+    toast.success("Successfully created side event", {
+      toastId: "createEventSuccess",
+    });
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -78,7 +76,7 @@ const CreateEvent = () => {
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: `url("/images/globe.jpg")`,
-          filter: 'brightness(0.4)' // Adjust brightness or use hue-rotate filter if needed
+          filter: "brightness(0.4)", // Adjust brightness or use hue-rotate filter if needed
         }}
       >
         <div className="absolute inset-0 bg-green-800 opacity-60"></div>
@@ -105,7 +103,10 @@ const CreateEvent = () => {
               accept="image/jpeg, image/png"
               onChange={(event) => {
                 if (event?.currentTarget?.files) {
-                  formik.setFieldValue("imageUrl", event.currentTarget.files[0]);
+                  formik.setFieldValue(
+                    "imageUrl",
+                    event.currentTarget.files[0]
+                  );
                 }
               }}
               onBlur={formik.handleBlur}
@@ -276,9 +277,7 @@ const CreateEvent = () => {
                 }`}
               />
               {formik.touched.tags && formik.errors.tags && (
-                <div className="text-red-500 text-sm">
-                  {formik.errors.tags}
-                </div>
+                <div className="text-red-500 text-sm">{formik.errors.tags}</div>
               )}
             </div>
             <div className="flex items-center justify-end mt-6 col-span-1 md:col-span-2">
@@ -296,27 +295,28 @@ const CreateEvent = () => {
     </div>
   ) : (
     <div className="text-center py-[50px] border-2 border-orange-600 my-20 bg-orange-100 mx-10">
-    <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
-      You need to be registered and logged in as an organization to create a side event.
-    </h1>
-    <p className="text-gray-600 mb-6">
-      Please log in or register as an organization to create a side event.
-    </p>
-    <div className="flex flex-col md:flex-row justify-center gap-4">
-      <Link
-        to="/login"
-        className="bg-co-primary text-white py-2 px-4 rounded hover:bg-green-800 transition"
-      >
-        Log In
-      </Link>
-      <Link
-        to="/signup"
-        className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
-      >
-        Register
-      </Link>
+      <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
+        You need to be registered and logged in as an organization to create a
+        side event.
+      </h1>
+      <p className="text-gray-600 mb-6">
+        Please log in or register as an organization to create a side event.
+      </p>
+      <div className="flex flex-col md:flex-row justify-center gap-4">
+        <Link
+          to="/login"
+          className="bg-co-primary text-white py-2 px-4 rounded hover:bg-green-800 transition"
+        >
+          Log In
+        </Link>
+        <Link
+          to="/signup"
+          className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+        >
+          Register
+        </Link>
+      </div>
     </div>
-  </div>
   );
 };
 

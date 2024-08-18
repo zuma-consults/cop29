@@ -18,11 +18,16 @@ const validationSchema = Yup.object({
 });
 
 const Login: React.FC = () => {
-  const { mutate: login, isLoading } = useLogin();
+  const { mutate: login, isLoading, data } = useLogin();
   const navigate = useNavigate();
+
+  console.log(data, "login data");
 
   if (isLoading) {
     return <Loader />;
+  }
+  if (data && data.status) {
+    navigate("/");
   }
 
   return (
@@ -31,7 +36,9 @@ const Login: React.FC = () => {
         <button
           className="absolute top-10 left-10 flex gap-4 text-white items-center text-[14px] z-50  px-4 py-2 rounded"
           style={{ backdropFilter: "blur(5px)" }}
-          onClick={()=>{navigate("/");}}
+          onClick={() => {
+            navigate("/");
+          }}
         >
           <FaArrowLeft size={22} />
           Go Home
@@ -74,11 +81,7 @@ const Login: React.FC = () => {
               { showPassword, rememberMe, ...values },
               { resetForm }
             ) => {
-              login(values, {
-                onSuccess: () => {
-                  navigate("/");
-                },
-              });
+              login(values);
               resetForm();
             }}
           >
