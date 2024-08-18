@@ -80,8 +80,7 @@ const adminVerifyPasswordToken = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    console.log(decoded);
-    const adminToken = await Admin.findOne({ userId: decoded.id });
+    const adminToken = await Admin.findOne({ _id: decoded.id });
 
     if (!adminToken) {
       return errorHandler(
