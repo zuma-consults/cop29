@@ -113,6 +113,7 @@ const verifyPasswordToken = async (req, res, next) => {
     req.user = user._id;
     next();
   } catch (err) {
+    console.error(err, "xxxxxxxx");
     return errorHandler(res, "Access Denied: Invalid Token.", 403);
   }
 };
