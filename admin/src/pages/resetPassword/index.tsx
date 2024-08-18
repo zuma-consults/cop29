@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, TextField, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Loader from "../../components/ui/Loader";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
+import { resetPassword } from "../../services/auth";
 
 const ResetPassword: React.FC = () => {
   const {
@@ -18,22 +20,39 @@ const ResetPassword: React.FC = () => {
   const showPassword = watch("showPassword", false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [, setCookie] = useCookies(["accessToken"]);
+  const { id } = useParams();
 
-//   const handleResetPassword = async (resetData: any) => {
-//     setIsLoading(true);
-//     try {
-//       const result = await resetPassword(resetData);
-//       if (result?.status) {
-//         toast.success("Password reset successful");
-//         navigate("/login", { replace: true });
-//       }
-//     } catch (error: any) {
-//       const errorMessage = error?.response?.data?.message || "Error occurred";
-//       toast.error(errorMessage);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
+  useEffect(() => {
+    if (id) {
+      setCookie("accessToken", id);
+    }
+  }, [id, setCookie]);
+
+  const handleResetPassword = async (resetData: any) => {
+    if (!id) {
+      toast.error("Invalid reset link");
+      return;
+    }
+    const { newPassword, confirmPassword } = resetData;
+    const payload = {
+      password: newPassword,
+      confirmPassword: confirmPassword,
+    };
+    setIsLoading(true);
+    try {
+      const result = await resetPassword(payload);
+      if (result?.status) {
+        toast.success("Password reset successful");
+        navigate("/reset-password/success", { replace: true });
+      }
+    } catch (error: any) {
+      const errorMessage = error?.response?.data?.message || "Error occurred";
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -81,6 +100,12 @@ const ResetPassword: React.FC = () => {
                   value: 8,
                   message: "Password must have at least 8 characters",
                 },
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/,
+                  message:
+                    "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+                },
               })}
               error={!!errors.newPassword}
               helperText={
@@ -125,7 +150,7 @@ const ResetPassword: React.FC = () => {
               type="submit"
               color="success"
               variant="contained"
-            //   onClick={handleSubmit(handleResetPassword)}
+              onClick={handleSubmit(handleResetPassword)}
               className={`mt-3 w-full font-semibold`}
             >
               Reset Password

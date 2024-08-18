@@ -30,12 +30,12 @@ export const forgotPassword = async (data: any) => {
 export const resetPassword = async (data: any) => {
   const config = {
     method: "post",
-    url: `${BASE_URL}/admin-reset-password`, // Use BASE_URL here
+    url: `${BASE_URL}/admin-reset-password`,
     data,
   };
 
-  const response = await axios(config);
-  return response.data;
+  const response = await request(config);
+  return response;
 };
 
 export const registerAdmin = (data: any) => {

@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./pages/login";
 import ForgetPassword from "./pages/forgetPassword";
 import ForgotPasswordConfirmation from "./pages/forgetPassword/ForgotPasswordConfirmation";
+import ResetPasswordConfirmation from "./pages/resetPassword/ResetPasswordConfirmation";
 import ResetPassword from "./pages/resetPassword";
 import { motion, AnimatePresence } from "framer-motion";
 import Signup from "./pages/signup";
@@ -37,7 +38,11 @@ function App() {
             path="/forgot-password/success"
             element={<ForgotPasswordConfirmation />}
           />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route
+            path="/reset-password/success"
+            element={<ResetPasswordConfirmation />}
+          />
+          <Route path="/reset-password/:id" element={<ResetPassword />} />
         </Route>
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<AppLayout />}>
