@@ -18,6 +18,11 @@ app.use(logRequestDuration);
 // Define API routes
 app.use("/api/v1", routes);
 
+app.use((req, res, next) => {
+  res.setHeader("X-Powered-By", "Okike-Consults");
+  next();
+});
+
 // Define a default route
 app.get("/", (req, res) => {
   res.send(
