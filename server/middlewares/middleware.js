@@ -90,7 +90,11 @@ const adminVerifyPasswordToken = async (req, res, next) => {
     req.admin = admin._id;
     next();
   } catch (err) {
-    return errorHandler(res, "Access Denied: Invalid Token.", 403);
+    return errorHandler(
+      res,
+      "This link has expired. Please request a new one to continue.",
+      403
+    );
   }
 };
 
