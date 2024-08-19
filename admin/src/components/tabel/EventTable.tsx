@@ -1,4 +1,3 @@
-"use client";
 import { Box, Button, Chip, Typography } from "@mui/material";
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
