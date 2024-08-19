@@ -216,7 +216,7 @@ const DelegateForm: React.FC = () => {
               htmlFor="files"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Upload Approval Document (PDF)*
+              Upload Passport (jpg, png)*
             </label>
             <input
               type="file"
