@@ -9,6 +9,7 @@ const cors = require("cors");
 const port = process.env.PORT || 7070;
 const { logRequestDuration } = require("./middlewares/middleware");
 
+app.disable('x-powered-by');
 // Middleware setup
 app.use(cors()); // Enable CORS for all routes
 app.use(express.urlencoded({ extended: true }));
@@ -17,11 +18,6 @@ app.use(logRequestDuration);
 
 // Define API routes
 app.use("/api/v1", routes);
-
-app.use((req, res, next) => {
-  res.setHeader("X-Powered-By", "Okike-Consults");
-  next();
-});
 
 // Define a default route
 app.get("/", (req, res) => {
