@@ -91,7 +91,7 @@ const sendVerifyEmail = async (to, url, txt, name) => {
       </p>
       <p style="color: whitesmoke; font-size: 11px; margin-top: 15px">
         <a
-          href="https://www.appname.com"
+          href="https://cop29.vercel.app/"
           style="color: whitesmoke; text-decoration: none"
           >Visit Website</a
         >

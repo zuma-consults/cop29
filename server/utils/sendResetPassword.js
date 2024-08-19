@@ -92,7 +92,7 @@ const sendResetPassword = async (to, url, txt, name) => {
           fontSize: '14px',
         }}>
           <p style={{ color: 'whitesmoke', fontSize: '11px', margin: '0' }}>
-            <a href="https://www.appname.com" style={{ color: 'whitesmoke', textDecoration: 'none' }}>Visit Website</a>
+            <a href="https://cop29.vercel.app/" style={{ color: 'whitesmoke', textDecoration: 'none' }}>Visit Website</a>
           </p>
           <p style={{ color: 'whitesmoke', fontSize: '11px', margin: '15px 0 0 0' }}>© 2024 Cop29 Nigeria</p>
         </div>
