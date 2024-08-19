@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/login";
 import ForgetPassword from "./pages/forgetPassword";
 import ForgotPasswordConfirmation from "./pages/forgetPassword/ForgotPasswordConfirmation";
@@ -187,6 +187,8 @@ function App() {
             }
           />
         </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AnimatePresence>
   );
