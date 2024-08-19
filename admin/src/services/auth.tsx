@@ -16,6 +16,16 @@ export const login = async (data: any) => {
   return response.data;
 };
 
+export const logout = async () => {
+  const config = {
+    method: "post",
+    url: `${BASE_URL}/logout/staff`, 
+  };
+
+  const response = await axios(config);
+  return response.data;
+};
+
 export const forgotPassword = async (data: any) => {
   const config = {
     method: "post",
@@ -43,21 +53,6 @@ export const registerAdmin = (data: any) => {
     method: "post",
     url: `${BASE_URL}/staff`, // Use BASE_URL here
     data,
-  };
-
-  return request(config)
-    .then((responseData) => {
-      return responseData;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
-export const logout = () => {
-  const config = {
-    method: "post",
-    url: `${BASE_URL}/logout/staff`, // Use BASE_URL here
   };
 
   return request(config)

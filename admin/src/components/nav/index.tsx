@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { navConfig } from "./config";
 import { NavItem } from "./item";
 import UserAccount from "./user-account";
@@ -103,7 +103,10 @@ const Nav: React.FC<{
             ...(small && { paddingRight: "15px" }),
           }}
         >
-          <Link to="/" className="flex gap-2 items-center">
+          <div
+            className="flex gap-2 items-center"
+            onClick={() => navigate("/events")}
+          >
             <img
               src="/images/logo.svg"
               alt="Logo"
@@ -111,7 +114,7 @@ const Nav: React.FC<{
               width={50}
               height={10}
             />
-            <div className="flex gap-1 items-center">
+            <div className="gap-1 items-center hidden md:block">
               <div className="flex items-center">
                 <span className="text-green-800 text-[30px] font-bold">C</span>
                 <img
@@ -126,7 +129,7 @@ const Nav: React.FC<{
                 </span>
               </div>
             </div>
-          </Link>
+          </div>
           <Box
             {...(large && { onClick: closeLargeNav })}
             {...(small && { onClick: closeSmallNav })}

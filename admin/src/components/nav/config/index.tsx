@@ -3,7 +3,7 @@ import { IoIosPeople } from "react-icons/io";
 import { MdEvent } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
 import { FaCalendarAlt } from "react-icons/fa";
-import { GrAnnounce } from "react-icons/gr";
+// import { GrAnnounce } from "react-icons/gr";
 import { TbSquareLetterC } from "react-icons/tb";
 
 export const navConfig = [

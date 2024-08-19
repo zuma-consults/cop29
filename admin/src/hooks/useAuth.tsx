@@ -4,41 +4,12 @@ import {
   getAllProfile,
   getAllRoles,
   getProfile,
-  logout,
   registerAdmin,
 } from "../services/auth";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 const queryClient = new QueryClient();
 const cookies = new Cookies();
-
-export const useLogout = () => {
-  const navigate = useNavigate();
-
-  return useMutation(logout, {
-    onSuccess: (result) => {
-      if (result?.status) {
-        queryClient.invalidateQueries("profile");
-      }
-      handleLogoutCleanup();
-    },
-    onError: (_error) => {
-      handleLogoutCleanup();
-    },
-  });
-
-  function handleLogoutCleanup() {
-    cookies.remove("accessToken");
-    cookies.remove("profile");
-    toast.success("Logout Successful");
-    navigate("/login", { replace: true }); // This prevents adding the login route to the history stack
-    window.history.pushState("", "", "/login"); // This adds an additional layer to block the back button
-    window.addEventListener("popstate", () => {
-      navigate("/login", { replace: true });
-    });
-  }
-};
 
 export const useAddAmin = ({
   refetchAllProfile,

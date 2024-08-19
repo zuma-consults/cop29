@@ -1,11 +1,10 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/login";
 import ForgetPassword from "./pages/forgetPassword";
 import ForgotPasswordConfirmation from "./pages/forgetPassword/ForgotPasswordConfirmation";
 import ResetPasswordConfirmation from "./pages/resetPassword/ResetPasswordConfirmation";
 import ResetPassword from "./pages/resetPassword";
 import { motion, AnimatePresence } from "framer-motion";
-import Signup from "./pages/signup";
 import AppLayout from "./layouts/AppLayout";
 import PublicRoute from "./layouts/PublicRoute";
 import ScrollToTop from "./layouts/ScrollToTop";
@@ -45,7 +44,6 @@ function App() {
           />
           <Route path="/reset-password/:id" element={<ResetPassword />} />
         </Route>
-        <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<AppLayout />}>
           <Route
             path="/delegate"
@@ -189,6 +187,8 @@ function App() {
             }
           />
         </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AnimatePresence>
   );

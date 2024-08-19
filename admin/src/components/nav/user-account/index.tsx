@@ -1,18 +1,21 @@
 import { Box, Skeleton, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import AlertDialog from "../../Reusable-Dialog";
-import { useLogout } from "../../../hooks/useAuth";
 import Loader from "../../ui/Loader";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Cookies } from "react-cookie";
+import { logout } from "../../../services/auth";
+
+const cookies = new Cookies();
 
 const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
   name,
   role,
 }) => {
   const [openDialog, setOpenDialog] = React.useState(false);
-
-  const { mutate: logout, isLoading } = useLogout();
 
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -22,9 +25,28 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
     setOpenDialog(false);
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
-    setOpenDialog(false);
-    logout();
+    setIsLoading(true);
+    try {
+      await logout(); // Attempt to log out via API call
+    } finally {
+      // Always remove cookies and redirect to login, regardless of the API call result
+      cookies.remove("accessToken");
+      cookies.remove("profile");
+      toast.success("Logout Successful");
+
+      // Ensure user cannot navigate back to the protected page
+      navigate("/login", { replace: true });
+      window.history.pushState("", "", "/login");
+      window.addEventListener("popstate", () => {
+        navigate("/login", { replace: true });
+      });
+
+      setIsLoading(false);
+    }
   };
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(

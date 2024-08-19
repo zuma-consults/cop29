@@ -238,7 +238,7 @@ const OrganisationTable: React.FC = () => {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              width: 800,
+              width: { xs: "90%", sm: "80%", md: "60%" },
               maxHeight: "90vh",
               overflowY: "auto",
               bgcolor: "background.paper",

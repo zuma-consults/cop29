@@ -7,7 +7,7 @@ const ForgotPasswordConfirmation: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-green-800 justify-center items-center">
-      <div className="bg-white w-full h-max md:w-[480px] p-5 grid gap-3 rounded-lg text-center">
+      <div className="bg-white w-full h-max md:w-[480px] p-5 grid gap-3 rounded-lg text-center mx-2 md:mx-0">
         <h2 className="text-[22px] font-semibold">Check Your Email</h2>
         <p className="text-[16px]">
           We've sent an email with instructions to reset your password. Please
