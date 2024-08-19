@@ -10,7 +10,7 @@ export const navConfig = [
   {
     title: "Events",
     icon: <MdEvent size={24} />,
-    path: "/",
+    path: "/events",
   },
   {
     title: "Delegates",
