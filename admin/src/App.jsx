@@ -31,8 +31,9 @@ function App() {
     <AnimatePresence>
       <ScrollToTop />
       <Routes>
+      <Route path="/login" element={<Login />} />
         <Route element={<PublicRoute />}>
-          <Route path="/login" element={<Login />} />
+         
           <Route path="/forgot-password" element={<ForgetPassword />} />
           <Route
             path="/forgot-password/success"
