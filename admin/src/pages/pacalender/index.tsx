@@ -32,7 +32,7 @@ const dayPropGetter = (date: Date) => {
   return {};
 };
 
-const MyCalendar: React.FC = () => {
+const PaCalendar: React.FC = () => {
   const defaultDate = useMemo(() => new Date(), []);
   const { data, isFetching } = useGetCalender();
 
@@ -86,4 +86,4 @@ const MyCalendar: React.FC = () => {
   );
 };
 
-export default MyCalendar;
+export default PaCalendar;
