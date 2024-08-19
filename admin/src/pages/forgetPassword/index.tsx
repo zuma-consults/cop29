@@ -45,7 +45,7 @@ const ForgotPassword: React.FC = () => {
     <>
       {isLoading && <Loader />}
       <div className="flex h-screen bg-green-800 justify-between">
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center px-2 md:px-0">
           <div className="bg-white w-full h-max md:w-[480px] p-5 grid gap-3 rounded-lg">
             <div className="w-full h-max flex flex-col items-center justify-center gap-1">
               <div className="flex gap-1 items-center">
@@ -114,7 +114,7 @@ const ForgotPassword: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex-1 bg-green-200">
+        <div className="flex-1 bg-green-200 hidden md:block">
           <img
             src="/images/globe.jpg"
             alt="Image description"

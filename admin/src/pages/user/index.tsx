@@ -136,7 +136,7 @@ const User: React.FC = () => {
               maxHeight: "90vh",
               overflowY: "auto",
               transform: "translate(-50%, -50%)",
-              width: 800,
+              width: { xs: "90%", sm: "80%", md: "60%" },
               bgcolor: "background.paper",
               boxShadow: 24,
               p: 4,
