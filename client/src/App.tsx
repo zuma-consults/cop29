@@ -14,6 +14,12 @@ import "aos/dist/aos.css";
 import Profile from "./pages/profile";
 import FAQ from "./pages/faq";
 import "./App.css";
+import ForgotPassword from "./pages/verifications/forgot-password";
+import ResetPassword from "./pages/verifications/reset-password";
+import AccountActivation from "./pages/verifications/account-activation";
+import ForgotPasswordConfirmation from "./pages/verifications/forgot-password-confirmation";
+import ActivationSuccess from "./pages/verifications/activation-success";
+import VerificationConfirmation from "./pages/verifications/verify-confirm";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -37,6 +43,12 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/forgot-confirmation" element={<ForgotPasswordConfirmation />} />
+      <Route path="/verify-confirmation" element={<VerificationConfirmation />} />
+      <Route path="/reset-password/:id" element={<ResetPassword />} />
+      <Route path="/verify/:id" element={<AccountActivation />} />
+      <Route path="/verify/success" element={<ActivationSuccess />} />
       
       <Route path="/" element={<AppLayout />}>
        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />

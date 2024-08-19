@@ -9,6 +9,7 @@ const cors = require("cors");
 const port = process.env.PORT || 7070;
 const { logRequestDuration } = require("./middlewares/middleware");
 
+app.disable('x-powered-by');
 // Middleware setup
 app.use(cors()); // Enable CORS for all routes
 app.use(express.urlencoded({ extended: true }));

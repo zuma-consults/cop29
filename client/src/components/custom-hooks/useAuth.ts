@@ -1,6 +1,5 @@
 import { useQuery, useMutation, QueryClient } from "react-query";
-import { login, logout, getProfile, register, orgRegister } from "../../services/auth";
-import { Cookies } from "react-cookie";
+import { login, logout, getProfile, register, orgRegister, activate, reset, forgot, resendActivation } from "../../services/auth";
 
 // Create instances of QueryClient and Cookies
 const queryClient = new QueryClient();
@@ -40,4 +39,20 @@ export const useLogout = () => {
 // Hook for getting profile
 export const useGetProfile = () => {
   return useQuery("profile", getProfile);
+};
+
+export const useActivate = () => {
+  return useMutation(() => activate());
+};
+
+export const useReset = () => {
+  return useMutation((data: { password: string, confirmPassword: string }) => reset(data));
+};
+
+export const useForgot = () => {
+  return useMutation((data: { email: string }) => forgot(data));
+};
+
+export const useResendActivation = () => {
+  return useMutation((data: { email: string }) => resendActivation(data));
 };

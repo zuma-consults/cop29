@@ -127,7 +127,7 @@ const Profile: React.FC = () => {
 
           <div className="w-full bg-gray-100 rounded-lg p-6 mt-4">
             <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
-              Delegates
+              Status Info
             </h2>
             <DataTable
               columns={delegateColumns}

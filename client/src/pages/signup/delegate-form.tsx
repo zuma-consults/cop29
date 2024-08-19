@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
@@ -34,18 +34,25 @@ const delegateValidationSchema = Yup.object({
 
 const DelegateForm: React.FC = () => {
   const navigate = useNavigate();
+  const { mutate: register, isLoading, data } = useRegister();
+  const [file, setFile] = useState<File | null>(null);
+  useEffect(() => {
+    if (data && data?.status) {
+      toast.success("Account created successfully");
+      navigate("/verify-confirmation");
+    } 
+  }, [data, navigate]);
+
   const handleTerms = () => {
     navigate("/terms-and-conditions")
   }
-  const { mutate: register, isLoading, isSuccess } = useRegister();
-  const [file, setFile] = useState<File | null>(null);
+
 
   if (isLoading) {
     return <Loader />;
   }
-  if (isSuccess) {
-    navigate("/login");
-  }
+
+
   return (
     <Formik
       initialValues={{
@@ -209,12 +216,12 @@ const DelegateForm: React.FC = () => {
               htmlFor="files"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Upload Approval Document (PDF)*
+              Upload Passport (jpg, png)*
             </label>
             <input
               type="file"
               id="files"
-              accept=".pdf"
+              accept=".jpg, .png"
               onChange={(event) => {
                 if (event.currentTarget.files) {
                   setFile(event.currentTarget.files[0]);

@@ -6,13 +6,6 @@ const client = axios.create({
   baseURL: "https://cop29.onrender.com/api/v1/",
 });
 
-// Function to handle navigation
-const navigateToLogin = (): void => {
-  const cookie = new Cookies();
-  cookie.remove("accessToken");
-  window.location.href = "/login";
-};
-
 // State to track shown errors
 const shownErrors = new Set<string>();
 

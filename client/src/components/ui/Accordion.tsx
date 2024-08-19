@@ -45,7 +45,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         </svg>
       </button>
       {isActive && (
-        <div className="p-10 text-gray-600 bg-green-100 text-[16px]" data-aos="fade-right">
+        <div className="p-10 text-gray-600 bg-green-100 text-[16px]">
           {content}
         </div>
       )}

@@ -12,7 +12,7 @@ import ScrollToTop from "./layouts/ScrollToTop";
 import Delegate from "./pages/delegate";
 import Organization from "./pages/organization";
 import Calender from "./pages/calender";
-import PaCalender from "./pages/paCalender";
+import PaCalender from "./pages/pacalender";
 import Event from "./pages/sideEvent";
 import Invoice from "./pages/invoice";
 import User from "./pages/user";
@@ -33,6 +33,7 @@ function App() {
       <Routes>
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/forgot-password" element={<ForgetPassword />} />
           <Route
             path="/forgot-password/success"
@@ -89,7 +90,7 @@ function App() {
             }
           />
           <Route
-            path="/"
+            path="/events"
             element={
               <motion.div
                 variants={pageVariants}

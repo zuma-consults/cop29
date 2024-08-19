@@ -112,7 +112,7 @@ const sendEmail = async (to, name, amount) => {
         "
       >
         <a
-          href="https://www.cop29nigeria.com"
+          href="https://cop29.vercel.app/"
           style="color: whitesmoke; text-decoration: none;"
           >Visit Website</a
         >

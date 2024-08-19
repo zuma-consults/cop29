@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
@@ -39,20 +39,22 @@ const organizationValidationSchema = Yup.object({
 });
 
 const OrganizationForm: React.FC = () => {
-  const { mutate: orgRegister, isLoading, isSuccess } = useOrgRegister();
+  const { mutate: orgRegister, isLoading, data } = useOrgRegister();
   const [files, setFiles] = useState<File | null>(null);
   const [orgImage, setOrgImage] = useState<File | null>(null);
   const navigate = useNavigate();
+  useEffect(() => {
+    if (data && data?.status) {
+      toast.success("Account created successfully");
+      navigate("/verify-confirmation");
+    } 
+  }, [data, navigate]);
   const handleTerms = () => {
     navigate("/terms-and-conditions")
   }
 
   if (isLoading) {
     return <Loader />;
-  }
-
-  if (isSuccess) {
-    navigate("/login");
   }
 
   return (

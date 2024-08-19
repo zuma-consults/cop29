@@ -1,6 +1,5 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { ImLocation } from "react-icons/im";
 import Pills from "../../components/ui/Pills";
 import VideoPlayer from "../../components/ui/VideoPlayer";
 import { formatDate1 } from "../../util/formattedDate";

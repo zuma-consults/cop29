@@ -1,4 +1,5 @@
 
+import { toast } from "react-toastify";
 import { request } from "../util/api";
 
 export const getEvents = async (data: any) => {
@@ -25,8 +26,9 @@ export const createEvent = async (data: any) => {
     };
     const responseData = await request(config);
     return responseData;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
+    toast.error(`${error?.response?.data?.message || error?.message}`);
   }
 };
 

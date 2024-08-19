@@ -30,7 +30,7 @@ const Login: React.FC = () => {
         toast.success("Login Successful");
         const accessToken = result?.data;
         cookies.set("accessToken", accessToken, { path: "/" });
-        navigate("/", { replace: true });
+        navigate("/events", { replace: true });
       }
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || "Error occurred";
