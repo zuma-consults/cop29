@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Login from "./pages/login";
 import ForgetPassword from "./pages/forgetPassword";
 import ForgotPasswordConfirmation from "./pages/forgetPassword/ForgotPasswordConfirmation";
@@ -31,14 +31,9 @@ function App() {
     <AnimatePresence>
       <ScrollToTop />
       <Routes>
-        {/* <Route element={<PublicRoute />}>
-          
-        </Route> */}
-        <Route path="/login" element={<Login />} />
-        <Route
-        path="/"
-        element={<Navigate to="/login" replace />}
-    />
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/forgot-password" element={<ForgetPassword />} />
           <Route
             path="/forgot-password/success"
@@ -49,8 +44,9 @@ function App() {
             element={<ResetPasswordConfirmation />}
           />
           <Route path="/reset-password/:id" element={<ResetPassword />} />
+        </Route>
         <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={<AppLayout />}>
+        <Route path="/" element={<AppLayout />}>
           <Route
             path="/delegate"
             element={
@@ -94,7 +90,7 @@ function App() {
             }
           />
           <Route
-            path="/"
+            path="/events"
             element={
               <motion.div
                 variants={pageVariants}
