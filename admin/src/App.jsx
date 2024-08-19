@@ -12,7 +12,7 @@ import ScrollToTop from "./layouts/ScrollToTop";
 import Delegate from "./pages/delegate";
 import Organization from "./pages/organization";
 import Calender from "./pages/calender";
-import PaCalender from "./pages/paCalender";
+import PaCalender from "./pages/pacalender";
 import Event from "./pages/sideEvent";
 import Invoice from "./pages/invoice";
 import User from "./pages/user";
