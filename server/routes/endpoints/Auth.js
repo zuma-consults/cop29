@@ -17,6 +17,7 @@ const {
   resetAdminPassword,
   verifyEmail,
   resendActivationLink,
+  updateCopApproval,
 } = require("../../controllers/auth-controller");
 const {
   auth,
@@ -37,6 +38,7 @@ let routes = (app) => {
   app.post("/login", login);
   app.post("/logout", auth, logout);
   app.get("/applicants", authAdmin, getAllCopApplicants);
+  app.put("/approve/:id", authAdmin, updateCopApproval);
   app.post("/forgot-password", forgotPassword);
   app.post("/admin-forgot-password", forgotPasswordAdmin);
   app.post("/reset-password", verifyPasswordToken, resetPassword);
