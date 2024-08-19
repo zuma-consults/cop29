@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -6,15 +6,19 @@ import {
   CardContent,
   CardMedia,
   Chip,
+  MenuItem,
   Modal,
+  Select,
   Typography,
 } from "@mui/material";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
 import Loader from "../ui/Loader";
-import { useGetAllCopApplicants } from "../../hooks/useEvent";
-import ColumnFilter from "../columnFilter";
+import {
+  useApproveCopEvent,
+  useGetAllCopApplicants,
+} from "../../hooks/useEvent";
 
 interface TableRow {
   _id: string;
@@ -26,34 +30,37 @@ interface TableRow {
 }
 
 const CopTable: React.FC = () => {
-  const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
-
   const [_, setPage] = useState(1);
 
+  const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
   const [filters, setFilters] = useState({
-    copApproved: false,
+    copApproved: true,
   });
+
+  const handleFilterChange = (key: string, value: boolean) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [key]: value,
+    }));
+  };
 
   const memoizedFilters = useMemo(() => filters, [filters]);
 
   const { data, isFetching, refetch } = useGetAllCopApplicants(memoizedFilters);
+  const { mutate: mutateApproval } = useApproveCopEvent();
 
-  const handleFilterChange = useCallback(
-    (key: string, value: string | boolean) => {
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        [key]: value,
-      }));
-    },
-    []
-  );
+  const handleApprove = (id: any) => {
+    setSelectedEvent(null);
 
-  const handleResetFilter = useCallback((key: string) => {
-    setFilters((prevFilters: any) => {
-      const { [key]: removedFilter, ...rest } = prevFilters;
-      return rest;
+    mutateApproval(id, {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: () => {
+        refetch();
+      },
     });
-  }, []);
+  };
 
   const handleDownloadCSV = () => {
     saveAsCSV({ data, filename: "COP 29 List" });
@@ -80,7 +87,7 @@ const CopTable: React.FC = () => {
 
   useEffect(() => {
     refetch();
-  }, [memoizedFilters, refetch]);
+  }, [memoizedFilters]);
 
   const columns: TableColumn<TableRow>[] = [
     {
@@ -95,15 +102,11 @@ const CopTable: React.FC = () => {
       name: "Delegated By",
       selector: (row) => row.delegatedBy ?? "N/A",
     },
+
     {
       name: (
         <Box style={{ display: "flex", alignItems: "center" }}>
           <Typography className="capitalize">COP Approved</Typography>
-          <ColumnFilter
-            columnKey="search"
-            onFilterChange={handleFilterChange}
-            onResetFilter={handleResetFilter}
-          />
         </Box>
       ),
       cell: (row) =>
@@ -176,13 +179,35 @@ const CopTable: React.FC = () => {
             Export to Excel
             <GoDownload size={20} />
           </Button>
+          <Box sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1 }}>
+            <Select
+              color="success"
+              value={filters.copApproved ? "Approved" : "Pending"}
+              onChange={(event) =>
+                handleFilterChange(
+                  "copApproved",
+                  event.target.value === "Approved"
+                )
+              }
+              displayEmpty
+              inputProps={{ "aria-label": "Filter by COP Approved" }}
+              style={{ minWidth: "120px" }}
+            >
+              <MenuItem color="success" value="Approved">
+                Approved List
+              </MenuItem>
+              <MenuItem color="success" value="Pending">
+                Pending List
+              </MenuItem>
+            </Select>
+          </Box>
         </div>
         <DataTable
           highlightOnHover={true}
           responsive={true}
           customStyles={customStyles}
           columns={columns}
-          data={data?.data}
+          data={data?.data ?? []}
           pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
@@ -253,6 +278,15 @@ const CopTable: React.FC = () => {
                       <Chip label="Pending" color="error" />
                     )}
                   </Typography>
+                  {!selectedEvent.copApproved && (
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => handleApprove(selectedEvent._id)}
+                    >
+                      Click to Approve
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             )}

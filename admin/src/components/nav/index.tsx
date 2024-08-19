@@ -153,7 +153,7 @@ const Nav: React.FC<{
               <Box
                 key={item.title}
                 sx={{
-                  mb: { xs: "0px", md: "15px" },
+                  mb: { xs: "0px", md: "20px" },
                   mr: { xs: "0px", md: "20px" },
                 }}
               >

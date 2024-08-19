@@ -48,9 +48,9 @@ export const navConfig = [
     icon: <TbSquareLetterC size={24} />,
     path: "/cop",
   },
-  {
-    title: "Announcements",
-    icon: <GrAnnounce size={24} />,
-    path: "/announcement",
-  },
+  // {
+  //   title: "Announcements",
+  //   icon: <GrAnnounce size={24} />,
+  //   path: "/announcement",
+  // },
 ];
