@@ -1,5 +1,6 @@
 import { useQuery, useMutation } from "react-query";
 import {
+  approveCopEvent,
   approveEvent,
   createEvent,
   declineEvent,
@@ -127,4 +128,17 @@ export const useGetAllCopApplicants = (queryParams?: Record<string, any>) => {
       retry: 1,
     }
   );
+};
+
+export const useApproveCopEvent = () => {
+  return useMutation(approveCopEvent, {
+    onSuccess: (result) => {
+      if (result?.status) {
+        toast.success("Applicant Approved Successfully");
+      }
+    },
+    onError: () => {
+      toast.error("Applicant Approval failed. Please try again.");
+    },
+  });
 };

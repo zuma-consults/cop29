@@ -110,3 +110,16 @@ export const getAllApplicants = async (params?: Record<string, any>) => {
     console.log(error);
   }
 };
+
+export const approveCopEvent = async (id: number) => {
+  try {
+    const config = {
+      method: "put",
+      url: `approve/${id}`,
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
