@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/login";
 import ForgetPassword from "./pages/forgetPassword";
 import ForgotPasswordConfirmation from "./pages/forgetPassword/ForgotPasswordConfirmation";
@@ -35,6 +35,10 @@ function App() {
           
         </Route> */}
         <Route path="/login" element={<Login />} />
+        <Route
+        path="/"
+        element={<Navigate to="/login" replace />}
+    />
           <Route path="/forgot-password" element={<ForgetPassword />} />
           <Route
             path="/forgot-password/success"
@@ -46,7 +50,7 @@ function App() {
           />
           <Route path="/reset-password/:id" element={<ResetPassword />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={<AppLayout />}>
+        <Route path="/home" element={<AppLayout />}>
           <Route
             path="/delegate"
             element={
