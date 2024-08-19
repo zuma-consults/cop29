@@ -31,9 +31,10 @@ function App() {
     <AnimatePresence>
       <ScrollToTop />
       <Routes>
-      <Route path="/login" element={<Login />} />
-        <Route element={<PublicRoute />}>
-         
+        {/* <Route element={<PublicRoute />}>
+          
+        </Route> */}
+        <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgetPassword />} />
           <Route
             path="/forgot-password/success"
@@ -44,7 +45,6 @@ function App() {
             element={<ResetPasswordConfirmation />}
           />
           <Route path="/reset-password/:id" element={<ResetPassword />} />
-        </Route>
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<AppLayout />}>
           <Route
