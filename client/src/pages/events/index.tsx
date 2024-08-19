@@ -60,7 +60,7 @@ if(isLoading){
       </div> */}
 
       {/* Events Grid */}
-      <div className="md:w-full w-3/4 md:m-0 flex flex-col md:flex-row flex-wrap gap-[20px] items-center px-[30px] text-black">
+      <div className="md:w-full w-4/4 md:m-0 flex flex-col md:flex-row flex-wrap gap-[20px] items-center px-[30px] text-black">
         {eventData?.map((event: any) => (
           <Card key={event.id} event={event} />
         ))}
