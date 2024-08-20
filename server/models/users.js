@@ -66,6 +66,10 @@ const userSchema = mongoose.Schema(
             type: Boolean,
             default: false,
           },
+          copRejected: {
+            type: Boolean,
+            default: false,
+          },
         },
       ],
     },
