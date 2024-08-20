@@ -13,7 +13,7 @@ const sendEmail = async (to, name, amount) => {
     secureConnection: false,
     auth: {
       user: SENDER_EMAIL_ADDRESS, // generated ethereal user
-      pass: "dtic brkx vpht lgah", // generated ethereal password
+      pass: "wvrr djes apqp nzyz", // generated ethereal password
     },
     tls: {
       rejectUnAuthorized: true,

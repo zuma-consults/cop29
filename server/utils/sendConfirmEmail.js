@@ -13,7 +13,7 @@ const sendVerifyEmail = async (to, url, txt, name) => {
     secureConnection: false,
     auth: {
       user: SENDER_EMAIL_ADDRESS, // generated ethereal user
-      pass: "dtic brkx vpht lgah", // generated ethereal password
+      pass: "wvrr djes apqp nzyz", // generated ethereal password
     },
     tls: {
       rejectUnAuthorized: true,
