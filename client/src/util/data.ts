@@ -93,26 +93,26 @@ export const faqs = [
     content:
       "Please visit the NCCC website for details on the criteria: www.nccc.gov.ng",
   },
-  {
-    title: "Is Nigeria planning to have a pavilion at COP29?",
-    content: "Yes, Nigeria has secured a pavilion at COP29.",
-  },
+  // {
+  //   title: "Is Nigeria planning to have a pavilion at COP29?",
+  //   content: "Yes, Nigeria has secured a pavilion at COP29.",
+  // },
   // {
   //   title: "What is the cost per slot for a side event at Nigeria’s pavilion?",
   //   content:
   //     "For details on the cost per slot, please visit the NCCC website: www.nccc.gov.ng and then the NCCC booking portal: https://climateportal.org.ng/",
   // },
-  {
-    title: "What are the application procedures for a side event?",
-    content:
-      "Please visit the NCCC booking portal: https://climateportal.org.ng/",
-  },
-  {
-    title:
-      "Will there be access to live streaming for side events at the Nigeria Pavilion?",
-    content:
-      "Yes, live streaming is available on request, with a separate cost.",
-  },
+  // {
+  //   title: "What are the application procedures for a side event?",
+  //   content:
+  //     "Please visit the NCCC booking portal: https://climateportal.org.ng/",
+  // },
+  // {
+  //   title:
+  //     "Will there be access to live streaming for side events at the Nigeria Pavilion?",
+  //   content:
+  //     "Yes, live streaming is available on request, with a separate cost.",
+  // },
   // {
   //   title: "Are there any preparatory workshops for delegates?",
   //   content:
