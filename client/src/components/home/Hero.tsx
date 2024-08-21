@@ -77,15 +77,15 @@ const Hero: React.FC = () => {
         </div>
         <div className="hidden md:flex flex-col items-end justify-center space-y-4 w-full h-full">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Coat_of_arms_of_Nigeria.svg/400px-Coat_of_arms_of_Nigeria.svg.png" // Replace with the path to your first image
-            alt="First Image"
+            src="/images/arm.png" // Replace with the path to your first image
+            alt="Nigerai's coat of arm image"
             className="rounded-lg w-2/3  h-[200px] object-contain"
             data-aos="fade-left"
             data-aos-duration="1000"
           />
           <img
             src="/images/cop29.jpeg" // Replace with the path to your second image
-            alt="Second Image"
+            alt="COP 29 image"
             className="rounded-lg w-2/3  h-[200px] object-contain"
             data-aos="fade-left"
             data-aos-duration="1000"
