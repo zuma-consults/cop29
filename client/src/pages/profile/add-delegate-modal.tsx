@@ -66,9 +66,9 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
-        {isLoading && <Loader/>}
+      {isLoading && <Loader />}
       <div className="fixed inset-0 bg-black opacity-50" onClick={onClose} />
-      <div className="bg-white rounded-lg shadow-lg p-10 z-10 w-[50%] w-full">
+      <div className="bg-white rounded-lg shadow-lg p-10 z-10 w-[100%] md:w-[50%] ">
         <h2 className="text-xl font-bold">Add Delegate</h2>
         <form
           onSubmit={formik.handleSubmit}
