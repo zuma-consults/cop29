@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
       <div className="flex items-center justify-between w-full">
       <Link to="/" className="flex items-center gap-3">
           <img
-            src="/images/flagicon.svg"
+            src="/images/seal.png"
             alt="Logo"
             className="h-[50px]"
           />
