@@ -57,7 +57,7 @@ const Hero: React.FC = () => {
               Host Side Event
             </Link>
             <HashLink
-              to="/faq#how-it-works"
+              to="/terms-and-conditions"
               className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-red-800 hover:bg-red-200 bg-red-100 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
