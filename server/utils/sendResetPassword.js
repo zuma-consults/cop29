@@ -49,7 +49,7 @@ const sendResetPassword = async (to, url, txt, name) => {
           backgroundColor: '#2c5f2d',
           color: '#ffffff',
         }}>
-          <h5>Nigeria @COP29</h5>
+          <h5>UNFCCC COP29 NIGERIA REGISTRATION</h5>
         </div>
         <div style={{
           padding: '50px',
@@ -81,7 +81,7 @@ const sendResetPassword = async (to, url, txt, name) => {
 
           <p style={{ color: '#666666', fontSize: '15px' }}>
             Best regards,<br />
-            Cop29 Nigeria Team
+            COP29 Nigeria Team
           </p>
         </div>
         <div style={{
