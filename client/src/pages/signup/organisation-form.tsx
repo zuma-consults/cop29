@@ -60,7 +60,7 @@ const OrganizationForm: React.FC = () => {
   return (
     <Formik
       initialValues={{
-        userType: "delegate",
+        userType: "organization",
         name: "",
         email: "",
         phone: "",
@@ -286,7 +286,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="files"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Approval of Participation Letter (pdf file max 2mb)
+              Letter Approving Participation (pdf file max 2mb)
             </label>
             <input
               type="file"
@@ -325,9 +325,9 @@ const OrganizationForm: React.FC = () => {
           <div className="mb-4">
             <label
               htmlFor="orgImage"
-              className="block text-red-500 font-semibold mb-2"
+              className="block text-gray-700 font-semibold mb-2"
             >
-              Official ID Card
+             Upload Scanned Copy of Official ID Card*
             </label>
             <input
               type="file"
@@ -342,6 +342,27 @@ const OrganizationForm: React.FC = () => {
             />
             <ErrorMessage
               name="orgImage"
+              component="div"
+              className="text-red-600 text-xs mt-1"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="designation"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+              Designation*
+            </label>
+            <Field
+              type="text"
+              id="designation"
+              name="designation"
+              placeholder="Enter your designation"
+              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+            />
+            <ErrorMessage
+              name="designation"
               component="div"
               className="text-red-600 text-xs mt-1"
             />
