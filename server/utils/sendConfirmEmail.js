@@ -44,7 +44,7 @@ const sendVerifyEmail = async (to, url, txt, name) => {
         border-radius: 8px 8px 0 0;
       "
     >
-      <h5 style="margin: 0">Nigeria @COP29</h5>
+      <h5 style="margin: 0">UNFCCC COP29 NIGERIA REGISTRATION</h5>
     </div>
     <div style="padding: 50px">
       <h3 style="color: #003300">Hello ${name},</h3>
@@ -72,7 +72,7 @@ const sendVerifyEmail = async (to, url, txt, name) => {
       </p>
       <p style="color: #336633; font-size: 15px">
         Best regards,<br />
-        Cop29 Nigeria Team
+        COP29 Nigeria Team
       </p>
     </div>
     <div
