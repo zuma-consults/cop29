@@ -15,7 +15,6 @@ const responsive = {
 const LatestEvents: React.FC = () => {
   const { data, isLoading } = useGetEvents();
   const eventData = data?.data?.events;
-  console.log(data, "data");
 
   if (isLoading) {
     return <Loader />;
