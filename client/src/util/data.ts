@@ -1,5 +1,5 @@
 import { CgOrganisation } from "react-icons/cg";
-import { IoCreateOutline, IoPersonSharp,  } from "react-icons/io5";
+import { IoCreateOutline, IoPersonSharp } from "react-icons/io5";
 
 export const states = [
   "Abia",
@@ -54,9 +54,9 @@ export const categories = [
 ];
 
 export const organizationTypes = [
-  "MDA",
-  "CSO",
-  "NGO",
+  "  Ministries, Departments, and Agencies (MDA)",
+  " Civil Society Organization (CSO)",
+  "  Non-Governmental Organization (NGO)",
   "State",
   "Private Sector",
   "International Organization",
@@ -162,7 +162,8 @@ export const howItWorks = [
     description:
       "Provide your Name, Email Address, and Phone Number. All fields are required.",
     confirmation: "Confirm your email address.",
-    desHeader: "Ensure all information matches your official photo ID, which you will present at the registration desk.",
+    desHeader:
+      "Ensure all information matches your official photo ID, which you will present at the registration desk.",
     buttonText: "Register",
     link: "/signup",
     login: "Upload your delegate credentials and await approval.",
@@ -173,10 +174,12 @@ export const howItWorks = [
     description:
       "Provide the Event Name, Email Address, and Phone Number. All fields are required.",
     confirmation: "Confirm your email address.",
-    desHeader: "Ensure all information matches your official photo ID, which you will present at the registration desk.",
+    desHeader:
+      "Ensure all information matches your official photo ID, which you will present at the registration desk.",
     buttonText: "Create an Event",
     link: "/create-event",
-    login: "Select a date and time slot for your event. Await approval and invoice. Make the payment and upload proof of payment.",
+    login:
+      "Select a date and time slot for your event. Await approval and invoice. Make the payment and upload proof of payment.",
   },
   {
     icons: [CgOrganisation],
@@ -184,10 +187,10 @@ export const howItWorks = [
     description:
       "Provide your Organization's Name, Email Address, Phone Number, and a Letter of Approval from your Organization.",
     confirmation: "Confirm your email address.",
-    desHeader: "Ensure all information matches your official photo ID, which you will present at the registration desk.",
+    desHeader:
+      "Ensure all information matches your official photo ID, which you will present at the registration desk.",
     buttonText: "Register",
     link: "/signup",
     login: "Upload your organization's credentials and await approval.",
   },
 ];
-
