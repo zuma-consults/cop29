@@ -286,17 +286,30 @@ const OrganizationForm: React.FC = () => {
               htmlFor="files"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Upload Approval Document (pdf file)
+               Approval of Participation Letter (pdf file max 2mb)
             </label>
             <input
               type="file"
               id="files"
               accept=".pdf"
+              // onChange={(event) => {
+              //   if (event.currentTarget.files) {
+              //     setFiles(event.currentTarget.files[0]);
+              //   }
+              // }}
               onChange={(event) => {
-                if (event.currentTarget.files) {
-                  setFiles(event.currentTarget.files[0]);
+                const maxSizeInBytes = 2 * 1024 * 1024; // 2 MB in bytes
+                const file = event.currentTarget.files ? event.currentTarget.files[0] : null;
+            
+                if (file && file.size > maxSizeInBytes) {
+                  alert("File size exceeds the 2 MB limit. Please select a smaller file.");
+                  // Clear the input if needed
+                  event.currentTarget.value = ""; 
+                } else if (file) {
+                  setFiles(file);
                 }
               }}
+            
               className="bg-white w-full border border-gray-300 rounded-lg p-3 text-gray-700"
             />
             <ErrorMessage
@@ -309,9 +322,9 @@ const OrganizationForm: React.FC = () => {
           <div className="mb-4">
             <label
               htmlFor="orgImage"
-              className="block text-gray-700 font-semibold mb-2"
+              className="block text-red-500 font-semibold mb-2"
             >
-              Upload Organization Image (png file, jpg file)
+              Official ID Card
             </label>
             <input
               type="file"
