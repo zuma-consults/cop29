@@ -40,7 +40,7 @@ const Hero: React.FC = () => {
           <div className="flex flex-wrap justify-center md:justify-start items-center gap-4">
             <Link
               to="/signup"
-              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
+              className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
@@ -50,7 +50,7 @@ const Hero: React.FC = () => {
             <Link
               to="/create-event"
               // className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-green-800 bg-white hover:bg-green-100 transition"
-              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
+              className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
@@ -59,7 +59,7 @@ const Hero: React.FC = () => {
             </Link>
             <HashLink
               to="/terms-and-conditions"
-              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-red-800 hover:bg-red-200 bg-red-100 transition"
+              className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-red-800 hover:bg-red-200 bg-red-100 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
@@ -68,7 +68,7 @@ const Hero: React.FC = () => {
             </HashLink>
             <Link
               to="/faq"
-              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-blue-800 hover:bg-blue-200  bg-blue-100 transition"
+              className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-blue-800 hover:bg-blue-200  bg-blue-100 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
