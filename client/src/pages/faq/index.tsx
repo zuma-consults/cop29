@@ -92,7 +92,7 @@ function FAQ() {
                 </div>
               )}
 
-              <p className="text-sm md:text-base mt-1">{item.desHeader}</p>
+              {/* <p className="text-sm md:text-base mt-1">{item.desHeader}</p> */}
 
               <div className="w-full mt-4">
                 <Link
