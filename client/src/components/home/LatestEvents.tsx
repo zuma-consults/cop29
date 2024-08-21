@@ -67,7 +67,7 @@ const LatestEvents: React.FC = () => {
     //     ))}
     //   </AliceCarousel> */}
     // </section>
-    <section className="mt-[10vh] md:mt-0 flex flex-wrap justify-center gap-4 py-10">
+    <section className="flex flex-wrap justify-center gap-4 py-10">
       <div className="w-[40%] h-[40%] md:w-[30%] md:h-[30%] lg:w-[20%] lg:h-[20%] overflow-hidden rounded-full">
         <img
           src="/images/seal.png"
