@@ -8,7 +8,7 @@ const Home: React.FC = () => {
   return (
     <div className="w-[100vw] h-[100%] relative overflow-x-hidden">
       <Hero />
-      <LatestEvents />
+      {/* <LatestEvents /> */}
       <World />
       <Data />
     </div>

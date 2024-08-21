@@ -296,10 +296,10 @@ const CreateEvent = () => {
   ) : (
     <div className="text-center py-[50px] border-2 border-orange-600 my-20 bg-orange-100 mx-10">
       <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
-        You need to be registered and logged in as an organization to book a slot.
+        You need to be registered and logged in as an organization to schedule a meeting.
       </h1>
       <p className="text-gray-600 mb-6">
-        Please log in or register as an organization to book a slot.
+        Please log in or register as an organization to schedule a meeting.
       </p>
       <div className="flex flex-col md:flex-row justify-center gap-4">
         <Link

@@ -29,12 +29,16 @@ const Links: React.FC<LinksProps> = ({
     //   path: "/events",
     // },
     {
-      title: "Book Slot",
+      title: "Schedule Meeting",
       path: "/create-event",
     },
     {
       title: "FAQs",
       path: "/faq",
+    },
+    {
+      title: "Contact Us",
+      path: "/contact-us",
     },
   ];
 

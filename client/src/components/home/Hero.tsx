@@ -6,12 +6,11 @@ import {
   FaQuestionCircle,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
 
 const Hero: React.FC = () => {
   return (
     <section
-      className="relative flex items-center justify-center flex-col  h-screen md:h-[92vh] w-full bg-cover bg-center"
+      className="relative flex items-center justify-center flex-col  h-auto md:h-[92vh] w-full bg-cover bg-center"
       style={{
         backgroundImage: `url("/images/globe.jpg")`, // Fix syntax error
       }}
@@ -21,7 +20,7 @@ const Hero: React.FC = () => {
       <div className="absolute inset-0 bg-co-primary opacity-90"></div>
 
       <div
-        className="relative flex flex-col md:flex-row items-center justify-center md:justify-between gap-0 z-10 h-full w-full"
+        className="relative flex flex-col md:flex-row items-center justify-center md:justify-between gap-0 z-10 h-full w-full mt-20"
         data-aos="fade-up"
         data-aos-duration="1000"
       >
@@ -30,16 +29,15 @@ const Hero: React.FC = () => {
           data-aos="fade-right"
           data-aos-duration="1000"
         >
-          <h1 className="md:text-[60px] text-[50px] mt-20 md:mt-0 text-white font-bold leading-tight">
-            NIGERIA @ COP29
+          <h1 className="md:text-[40px] text-[25px] mt-20 md:mt-0 text-white font-bold leading-tight">
+            WELCOME TO THE UNFCCC COP29 REGISTRATION PORTAL
           </h1>
           <p
-            className="text-base  leading-7 text-white md:inline"
-            style={{ textAlign: "center", width: "100%" }}
+            className="leading-7 text-white md:inline text-[20px]"
+            style={{ width: "100%", fontStyle: "italic" }}
           >
-            Register for COP29
-            {/* , host Side Events and access livestreams from
-            Nigeria's COP29 Pavilion */}
+            NIGERIA THEME : Actualizing financial commitments for Climate
+            Action.
           </p>
           <div className="flex flex-wrap justify-center md:justify-start items-center gap-4 mt-10 md:mt-0">
             <Link
@@ -49,7 +47,7 @@ const Hero: React.FC = () => {
               data-aos-duration="1000"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
-              Delegate Registration
+              Request Accreditation
             </Link>
             <Link
               to="/create-event"
@@ -59,15 +57,15 @@ const Hero: React.FC = () => {
               data-aos-duration="1000"
             >
               <FaPlus className="text-2xl mr-2" />
-              Book a Slot
+              Schedule Meeting
             </Link>
-            <HashLink
+            <Link
               to="/terms-and-conditions"
               className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-red-800 hover:bg-red-200 bg-red-100 transition"
             >
               <FaInfoCircle className="text-2xl mr-2" />
               Important Notice
-            </HashLink>
+            </Link>
             <Link
               to="/faq"
               className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-blue-800 hover:bg-blue-200  bg-blue-100 transition"
@@ -77,20 +75,21 @@ const Hero: React.FC = () => {
             </Link>
           </div>
         </div>
-        <div className="flex md:flex-col items-end justify-center space-y-4 w-full h-full">
+        <div className="flex flex-col items-center md:items-end justify-center space-y-0 w-full h-full ">
           <img
-            src="/images/coat.svg" // Replace with the path to your first image
+            src="/images/unfccc1_.png" // Replace with the path to your first image
             alt="Nigerai's coat of arm image"
-            className="rounded-lg w-2/3  h-[200px] object-contain"
+            className="rounded-lg w-2/3 h-[80px] md:h-[150px] object-contain mt-6 mb-12"
             data-aos="fade-left"
-            data-aos-duration="1000"
+            data-aos-duration="500"
           />
           <img
-            src="/images/cop29.jpeg" // Replace with the path to your second image
+            src="/images/cop29-bgg.png" // Replace with the path to your second image
             alt="COP 29 image"
-            className="rounded-lg w-2/3  h-[200px] object-contain"
+            className=" w-2/3 h-[150px] md:h-[130px] object-contain"
             data-aos="fade-left"
-            data-aos-duration="1000"
+            data-aos-duration="500"
+            style={{ borderRadius: "10%" }}
           />
         </div>
       </div>

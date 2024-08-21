@@ -13,20 +13,25 @@ const Navbar: React.FC = () => {
           <img
             src="/images/seal.png"
             alt="Logo"
-            className="h-[50px]"
+            className="h-[40px]"
           />
-           <img
-            src="/images/logo.svg"
+           {/* <img
+            src="/images/unfccc_.png"
             alt="Logo"
-            className="h-[50px]"
+            className="h-[40px]"
+          /> */}
+           <img
+            src="/images/new.png"
+            alt="Logo"
+            className="h-[40px]"
           />
-          <div className="flex flex-col items-start">
+          {/* <div className="flex flex-col items-start">
             <div className="flex items-center">
               <span className="text-black text-[20px] font-bold">COP</span>
               <span className="text-cyan-800 text-[20px] font-bold">29</span>
             </div>
             <span className="text-sm text-gray-600">Baku Azerbaijan</span>
-          </div>
+          </div> */}
         </Link>
 
         <ul className="flex-row sm:flex hidden justify-end items-center flex-1 font-semibold">
