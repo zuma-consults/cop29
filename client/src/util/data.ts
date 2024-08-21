@@ -97,11 +97,11 @@ export const faqs = [
     title: "Is Nigeria planning to have a pavilion at COP29?",
     content: "Yes, Nigeria has secured a pavilion at COP29.",
   },
-  {
-    title: "What is the cost per slot for a side event at Nigeria’s pavilion?",
-    content:
-      "For details on the cost per slot, please visit the NCCC website: www.nccc.gov.ng and then the NCCC booking portal: https://climateportal.org.ng/",
-  },
+  // {
+  //   title: "What is the cost per slot for a side event at Nigeria’s pavilion?",
+  //   content:
+  //     "For details on the cost per slot, please visit the NCCC website: www.nccc.gov.ng and then the NCCC booking portal: https://climateportal.org.ng/",
+  // },
   {
     title: "What are the application procedures for a side event?",
     content:
@@ -113,16 +113,16 @@ export const faqs = [
     content:
       "Yes, live streaming is available on request, with a separate cost.",
   },
-  {
-    title: "Are there any preparatory workshops for delegates?",
-    content:
-      "Yes, a preparatory workshop will be organized, and details will be communicated to all stakeholders once the date is fixed.",
-  },
-  {
-    title: "What are the transportation arrangements at COP29?",
-    content:
-      "Transportation services will be free of charge to all participants.",
-  },
+  // {
+  //   title: "Are there any preparatory workshops for delegates?",
+  //   content:
+  //     "Yes, a preparatory workshop will be organized, and details will be communicated to all stakeholders once the date is fixed.",
+  // },
+  // {
+  //   title: "What are the transportation arrangements at COP29?",
+  //   content:
+  //     "Transportation services will be free of charge to all participants.",
+  // },
   {
     title: "What is the likely weather condition in Azerbaijan during COP29?",
     content:

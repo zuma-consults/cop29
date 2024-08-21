@@ -11,9 +11,9 @@ import { HashLink } from "react-router-hash-link";
 const Hero: React.FC = () => {
   return (
     <section
-      className="relative flex items-center justify-center flex-col gap-10 md:gap-20 h-screen md:h-[92vh] w-full bg-cover bg-center"
+      className="relative flex items-center justify-center flex-col  h-screen md:h-[92vh] w-full bg-cover bg-center"
       style={{
-        backgroundImage: `url("/images/globe.jpg")`,
+        backgroundImage: `url("/images/globe.jpg")`, // Fix syntax error
       }}
       data-aos="zoom-in-right"
     >
@@ -21,22 +21,20 @@ const Hero: React.FC = () => {
       <div className="absolute inset-0 bg-co-primary opacity-90"></div>
 
       <div
-        className="relative flex flex-col md:flex-row justify-between md:pl-20 items-center z-10 p-5 md:p-8"
+        className="relative flex flex-col md:flex-row items-center justify-center md:justify-between gap-0 z-10 h-full w-full"
         data-aos="fade-up"
         data-aos-duration="1000"
       >
         <div
-          className="text-gray-900 flex flex-col gap-6 md:gap-8 justify-center flex-1 text-center md:text-left"
+          className="text-gray-900 flex flex-col gap-6 md:gap-8 justify-center items-start text-center md:ml-[150px] md:text-left h-full w-2/3"
           data-aos="fade-right"
           data-aos-duration="1000"
         >
-          <h1 className="text-[20px] md:text-[60px] text-white font-bold leading-tight">
-            Nigeria @ Cop29
+          <h1 className="text-[60px] text-white font-bold leading-tight">
+            NIGERIA @ COP29
           </h1>
-          <p className="text-base md:text-lg leading-7 text-white md:w-2/3">
-            Access a World of events with Ease: create, book, and manage freely.
-            Enjoy Low Fees, High Liquidity, and Expert Support Every Step of the
-            Way.
+          <p className="text-base  leading-7 text-white">
+            Register for COP29, host Side Events and access livestreams from Nigeria's  COP29 Pavilion
           </p>
           <div className="flex flex-wrap justify-center md:justify-start items-center gap-4">
             <Link
@@ -46,7 +44,7 @@ const Hero: React.FC = () => {
               data-aos-duration="1000"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
-              Register as a Delegate?
+         Delegate Registration
             </Link>
             <Link
               to="/create-event"
@@ -55,20 +53,20 @@ const Hero: React.FC = () => {
               data-aos-duration="1000"
             >
               <FaPlus className="text-2xl mr-2" />
-              Create a side Event?
+              Host Side Event
             </Link>
             <HashLink
               to="/faq#how-it-works"
-              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-blue-800 hover:bg-blue-200 bg-blue-100 transition"
+              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-red-800 hover:bg-red-200 bg-red-100 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
               <FaInfoCircle className="text-2xl mr-2" />
-              How it Works
+            Important Notice
             </HashLink>
             <Link
               to="/faq"
-              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-orange-800 hover:bg-orange-200  bg-orange-100 transition"
+              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-blue-800 hover:bg-blue-200  bg-blue-100 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
@@ -77,11 +75,18 @@ const Hero: React.FC = () => {
             </Link>
           </div>
         </div>
-        <div className="hidden md:flex flex-1 justify-center">
+        <div className="hidden md:flex flex-col items-end justify-center space-y-4 w-full h-full">
           <img
-            src="/images/dots.svg"
-            alt="Logo"
-            className="rounded-lg w-[80%] md:w-[60%] h-auto"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Coat_of_arms_of_Nigeria.svg/400px-Coat_of_arms_of_Nigeria.svg.png" // Replace with the path to your first image
+            alt="First Image"
+            className="rounded-lg w-2/3  h-[200px] object-contain"
+            data-aos="fade-left"
+            data-aos-duration="1000"
+          />
+          <img
+            src="/images/cop29.jpeg" // Replace with the path to your second image
+            alt="Second Image"
+            className="rounded-lg w-2/3  h-[200px] object-contain"
             data-aos="fade-left"
             data-aos-duration="1000"
           />

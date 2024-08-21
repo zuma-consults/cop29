@@ -9,26 +9,18 @@ const Navbar: React.FC = () => {
   return (
     <nav className="w-full flex items-center justify-between md:p-4 bg-white shadow-sm h-[70px]">
       <div className="flex items-center justify-between w-full">
-        <Link to="/" className="flex gap-2 items-center">
+      <Link to="/" className="flex items-center gap-3">
           <img
             src="/images/logo.svg"
             alt="Logo"
-            className="rounded-lg"
-            width={50}
-            height={10}
+            className="h-[50px]"
           />
-          <div className="flex gap-1 items-center">
+          <div className="flex flex-col items-start">
             <div className="flex items-center">
-              <span className="text-green-800 text-[30px] font-bold">C</span>
-              <img
-                src="/images/flagicon.svg"
-                alt="Icon"
-                className="inline-block"
-                width={33}
-                height={20}
-              />
-              <span className="text-green-800 text-[30px] font-bold">P29</span>
+              <span className="text-black text-[20px] font-bold">COP</span>
+              <span className="text-cyan-800 text-[20px] font-bold">29</span>
             </div>
+            <span className="text-sm text-gray-600">Baku Azerbaijan</span>
           </div>
         </Link>
 
