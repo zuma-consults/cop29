@@ -22,8 +22,8 @@ const LatestEvents: React.FC = () => {
   }
 
   return (
-    <section className="relative flex flex-col p-10 w-full h-[80vh]">
-      <div className="flex justify-between items-center">
+    <section className="relative flex flex-col p-10 w-full h-[10vh]">
+      {/* <div className="flex justify-between items-center">
         <p className="text-[32px] text-gray-800">Side Events</p>
         <Link
           to="/events"
@@ -50,7 +50,7 @@ const LatestEvents: React.FC = () => {
             <Card key={event.id} event={event} />
           </div>
         ))}
-      </AliceCarousel>
+      </AliceCarousel> */}
     </section>
   );
 };
