@@ -15,14 +15,14 @@ const Navbar: React.FC = () => {
             alt="Logo"
             className="h-[50px]"
           />
-           <img
+           {/* <img
             src="/images/logo.svg"
             alt="Logo"
             className="h-[50px]"
-          />
+          /> */}
           <div className="flex flex-col items-start">
             <div className="flex items-center">
-              <span className="text-black text-[20px] font-bold">COP</span>
+              <span className="text-black text-[20px] font-bold">NIGERIA COP</span>
               <span className="text-cyan-800 text-[20px] font-bold">29</span>
             </div>
             <span className="text-sm text-gray-600">Baku Azerbaijan</span>
