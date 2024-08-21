@@ -30,15 +30,15 @@ const Hero: React.FC = () => {
           data-aos="fade-right"
           data-aos-duration="1000"
         >
-          <h1 className="text-[60px] text-white font-bold leading-tight">
+          <h1 className="md:text-[60px] text-[50px] mt-20 md:mt-0 text-white font-bold leading-tight">
             NIGERIA @ COP29
           </h1>
-          <p className="text-base  leading-7 text-white">
+          <p className="text-base  leading-7 text-white hidden md:inline">
             Register for COP29
             {/* , host Side Events and access livestreams from
             Nigeria's COP29 Pavilion */}
           </p>
-          <div className="flex flex-wrap justify-center md:justify-start items-center gap-4">
+          <div className="flex flex-wrap justify-center md:justify-start items-center gap-4 mt-10 md:mt-0">
             <Link
               to="/signup"
               className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
@@ -61,8 +61,6 @@ const Hero: React.FC = () => {
             <HashLink
               to="/terms-and-conditions"
               className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-red-800 hover:bg-red-200 bg-red-100 transition"
-              data-aos="fade-up"
-              data-aos-duration="1000"
             >
               <FaInfoCircle className="text-2xl mr-2" />
               Important Notice
@@ -70,15 +68,13 @@ const Hero: React.FC = () => {
             <Link
               to="/faq"
               className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-blue-800 hover:bg-blue-200  bg-blue-100 transition"
-              data-aos="fade-up"
-              data-aos-duration="1000"
             >
               <FaQuestionCircle className="text-2xl mr-2" />
               Frequently asked Questions
             </Link>
           </div>
         </div>
-        <div className="hidden md:flex flex-col items-end justify-center space-y-4 w-full h-full">
+        <div className="flex md:flex-col items-end justify-center space-y-4 w-full h-full">
           <img
             src="/images/arm.png" // Replace with the path to your first image
             alt="Nigerai's coat of arm image"
