@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
         <div className="sm:flex sm:items-center sm:justify-between">
           <a
             href="/"
-            className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
+            className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse bg-white py-3 px-2"
           >
             <img src="/images/coat.svg" className="h-8" alt=" Logo" />
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
