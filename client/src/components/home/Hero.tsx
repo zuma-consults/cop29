@@ -34,7 +34,8 @@ const Hero: React.FC = () => {
             NIGERIA @ COP29
           </h1>
           <p className="text-base  leading-7 text-white">
-            Register for COP29, host Side Events and access livestreams from Nigeria's  COP29 Pavilion
+            Register for COP29, host Side Events and access livestreams from
+            Nigeria's COP29 Pavilion
           </p>
           <div className="flex flex-wrap justify-center md:justify-start items-center gap-4">
             <Link
@@ -44,7 +45,7 @@ const Hero: React.FC = () => {
               data-aos-duration="1000"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
-         Delegate Registration
+              Delegate Registration
             </Link>
             <Link
               to="/create-event"
@@ -54,7 +55,7 @@ const Hero: React.FC = () => {
               data-aos-duration="1000"
             >
               <FaPlus className="text-2xl mr-2" />
-              Host Side Event
+              Book a Slot
             </Link>
             <HashLink
               to="/terms-and-conditions"
@@ -63,7 +64,7 @@ const Hero: React.FC = () => {
               data-aos-duration="1000"
             >
               <FaInfoCircle className="text-2xl mr-2" />
-            Important Notice
+              Important Notice
             </HashLink>
             <Link
               to="/faq"
