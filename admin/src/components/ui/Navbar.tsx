@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
       <div className="flex items-center justify-between w-full">
         <Link to="/" className="flex gap-2 items-center">
           <img
-            src="/images/coat.png"
+            src="/images/coat.svg"
             alt="Logo"
             className="rounded-lg"
             width={50}

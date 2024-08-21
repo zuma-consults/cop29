@@ -76,7 +76,7 @@ const Hero: React.FC = () => {
         </div>
         <div className="flex md:flex-col items-end justify-center space-y-4 w-full h-full">
           <img
-            src="/images/arm.png" // Replace with the path to your first image
+            src="/images/coat.svg" // Replace with the path to your first image
             alt="Nigerai's coat of arm image"
             className="rounded-lg w-2/3  h-[200px] object-contain"
             data-aos="fade-left"

@@ -6,11 +6,13 @@ import * as Yup from "yup";
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email address").required("Email is required"),
+  phone: Yup.string()
+    .matches(/^[0-9]{10}$/, "Phone number must be 10 digits")
+    .required("Phone number is required"),
   message: Yup.string().required("Message is required"),
 });
 
 const Contact: React.FC = () => {
-
   return (
     <div className="flex flex-col md:flex-row h-screen bg-green-800">
       <div className="flex-1 flex items-center justify-center ">
@@ -21,7 +23,7 @@ const Contact: React.FC = () => {
         >
           <div className="w-full h-max flex flex-col items-center justify-center gap-1">
             <img
-              src="/images/coat.png"
+              src="/images/coat.svg"
               alt="Description of image"
               width={100}
               height={100}
@@ -35,7 +37,7 @@ const Contact: React.FC = () => {
           </p>
 
           <Formik
-            initialValues={{ name: "", email: "", message: "" }}
+            initialValues={{ name: "", email: "", phone: "", message: "" }}
             validationSchema={validationSchema}
             onSubmit={(values, { resetForm }) => {
               console.log(values);
@@ -70,6 +72,21 @@ const Contact: React.FC = () => {
                   />
                   <ErrorMessage
                     name="email"
+                    component="div"
+                    className="text-red-500 text-xs"
+                  />
+                </div>
+
+                <div className="grid gap-1">
+                  <Field
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    placeholder="Your Phone Number*"
+                    className="border-[0.8px] border-gray-400 px-[10px] py-3 text-[12px]"
+                  />
+                  <ErrorMessage
+                    name="phone"
                     component="div"
                     className="text-red-500 text-xs"
                   />
