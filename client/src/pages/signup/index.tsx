@@ -32,7 +32,7 @@ const Signup: React.FC = () => {
         <div className="absolute inset-0 bg-green-800 opacity-60"></div>
       </div>
 
-      <div className="relative bg-white shadow-md rounded-lg w-[50%] p-10 z-20">
+      <div className="relative bg-white shadow-md rounded-lg lg:w-[50%] mt-10 p-10 z-20">
         <div className="flex mb-4">
           <button
             onClick={() => setUserType("delegate")}
