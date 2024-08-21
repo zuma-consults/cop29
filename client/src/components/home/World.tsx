@@ -2,7 +2,7 @@ import React from "react";
 
 const World: React.FC = () => {
   return (
-    <div className="w-full h-[85vh] ">
+    <div className="w-full h-[100vh] ">
       <img
         src="/images/map.svg"
         alt="world.svg"
