@@ -33,7 +33,10 @@ const Hero: React.FC = () => {
           <h1 className="md:text-[60px] text-[50px] mt-20 md:mt-0 text-white font-bold leading-tight">
             NIGERIA @ COP29
           </h1>
-          <p className="text-base  leading-7 text-white hidden md:inline">
+          <p
+            className="text-base  leading-7 text-white md:inline"
+            style={{ textAlign: "center", width: "100%" }}
+          >
             Register for COP29
             {/* , host Side Events and access livestreams from
             Nigeria's COP29 Pavilion */}
