@@ -47,11 +47,11 @@ const OrganizationForm: React.FC = () => {
     if (data && data?.status) {
       toast.success("Account created successfully");
       navigate("/verify-confirmation");
-    } 
+    }
   }, [data, navigate]);
   const handleTerms = () => {
-    navigate("/terms-and-conditions")
-  }
+    navigate("/terms-and-conditions");
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -107,7 +107,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="name"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Name*
+              Organization Name*
             </label>
             <Field
               type="text"
@@ -286,7 +286,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="files"
               className="block text-gray-700 font-semibold mb-2"
             >
-               Approval of Participation Letter (pdf file max 2mb)
+              Approval of Participation Letter (pdf file max 2mb)
             </label>
             <input
               type="file"
@@ -299,17 +299,20 @@ const OrganizationForm: React.FC = () => {
               // }}
               onChange={(event) => {
                 const maxSizeInBytes = 2 * 1024 * 1024; // 2 MB in bytes
-                const file = event.currentTarget.files ? event.currentTarget.files[0] : null;
-            
+                const file = event.currentTarget.files
+                  ? event.currentTarget.files[0]
+                  : null;
+
                 if (file && file.size > maxSizeInBytes) {
-                  alert("File size exceeds the 2 MB limit. Please select a smaller file.");
+                  alert(
+                    "File size exceeds the 2 MB limit. Please select a smaller file."
+                  );
                   // Clear the input if needed
-                  event.currentTarget.value = ""; 
+                  event.currentTarget.value = "";
                 } else if (file) {
                   setFiles(file);
                 }
               }}
-            
               className="bg-white w-full border border-gray-300 rounded-lg p-3 text-gray-700"
             />
             <ErrorMessage
@@ -352,7 +355,7 @@ const OrganizationForm: React.FC = () => {
               name="terms"
               className="mr-2 h-4 w-4 text-green-600 border-gray-300 rounded"
             />
-               <label
+            <label
               htmlFor="terms"
               className="block text-blue-500 font-semibold italic cursor-pointer"
               onClick={handleTerms}
