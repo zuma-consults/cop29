@@ -48,7 +48,8 @@ const Hero: React.FC = () => {
             </Link>
             <Link
               to="/create-event"
-              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-green-800 bg-white hover:bg-green-100 transition"
+              // className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-green-800 bg-white hover:bg-green-100 transition"
+              className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
