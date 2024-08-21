@@ -17,6 +17,7 @@ import "./App.css";
 import ForgotPassword from "./pages/verifications/forgot-password";
 import ResetPassword from "./pages/verifications/reset-password";
 import AccountActivation from "./pages/verifications/account-activation";
+import Contact from "./pages/contact-us";
 import ForgotPasswordConfirmation from "./pages/verifications/forgot-password-confirmation";
 import ActivationSuccess from "./pages/verifications/activation-success";
 import VerificationConfirmation from "./pages/verifications/verify-confirm";
@@ -53,6 +54,7 @@ function App() {
       <Route path="/" element={<AppLayout />}>
        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/" element={<Home />} />
+        <Route path="/contact-us" element={<Contact />} />
         <Route path="/events" element={<Events />} />
         <Route path="/create-event" element={<CreateEvent />} />
         <Route path="/event/:id" element={<EventDetails />} />
