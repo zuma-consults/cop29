@@ -170,13 +170,13 @@ export const howItWorks = [
   },
   {
     icons: [IoCreateOutline],
-    title: "Create an Event",
+    title: "Book a Slot",
     description:
       "Provide the Event Name, Email Address, and Phone Number. All fields are required.",
     confirmation: "Confirm your email address.",
     desHeader:
       "Ensure all information matches your official photo ID, which you will present at the registration desk.",
-    buttonText: "Create an Event",
+    buttonText: "Book a Slot",
     link: "/create-event",
     login:
       "Select a date and time slot for your event. Await approval and invoice. Make the payment and upload proof of payment.",
