@@ -29,6 +29,17 @@ const Hero: React.FC = () => {
           data-aos="fade-right"
           data-aos-duration="1000"
         >
+          <img
+            src="/images/seal-bg.png" // Replace with the path to your first image
+            alt="Nigeria's coat of arm image"
+            className="h-[100px] md:h-[150px] object-contain bg-white lg:ms-10"
+            data-aos="fade-left"
+            data-aos-duration="500"
+            style={{
+              borderRadius: "50%",
+              // margin:"0 auto",
+            }}
+          />
           <h1 className="md:text-[40px] text-[25px] mt-20 md:mt-0 text-white font-bold leading-tight">
             WELCOME TO THE UNFCCC COP29 REGISTRATION PORTAL
           </h1>
@@ -78,7 +89,7 @@ const Hero: React.FC = () => {
         <div className="flex flex-col items-center md:items-end justify-center space-y-0 w-full h-full ">
           <img
             src="/images/unfccc1_.png" // Replace with the path to your first image
-            alt="Nigerai's coat of arm image"
+            alt="Nigeria's coat of arm image"
             className="rounded-lg w-2/3 h-[80px] md:h-[150px] object-contain mt-6 mb-12"
             data-aos="fade-left"
             data-aos-duration="500"
@@ -86,7 +97,7 @@ const Hero: React.FC = () => {
           <img
             src="/images/cop29-bgg.png" // Replace with the path to your second image
             alt="COP 29 image"
-            className=" w-2/3 h-[150px] md:h-[130px] object-contain"
+            className=" w-2/3 h-[80px] md:h-[130px] object-contain"
             data-aos="fade-left"
             data-aos-duration="500"
             style={{ borderRadius: "10%" }}
