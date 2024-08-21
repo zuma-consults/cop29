@@ -12,9 +12,9 @@ const Data: React.FC = () => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       if (entries[0].isIntersecting && !hasAnimated) {
         setHasAnimated(true);
-        const orgsAnim = new CountUp(orgsRef.current!, 300, { duration: 1 });
-        const govsAnim = new CountUp(govsRef.current!, 110, { duration: 2 });
-        const sessionsAnim = new CountUp(sessionsRef.current!, 589, {
+        const orgsAnim = new CountUp(orgsRef.current!, 50, { duration: 1 });
+        const govsAnim = new CountUp(govsRef.current!, 50, { duration: 2 });
+        const sessionsAnim = new CountUp(sessionsRef.current!, 90, {
           duration: 3,
         });
 
