@@ -371,7 +371,7 @@ const OrganizationForm: React.FC = () => {
             className="w-full bg-green-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-green-700 transition"
             disabled={isLoading}
           >
-            {isLoading ? "Submitting..." : "Register"}
+            {isLoading ? "Submitting..." : "Sign Up"}
           </button>
         </Form>
       )}
