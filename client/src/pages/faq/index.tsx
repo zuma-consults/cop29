@@ -14,7 +14,7 @@ function FAQ() {
         className="rounded-lg w-full md:w-full flex justify-center items-center md:items-start py-10 mt-10 md:mt-20 relative"
       >
         <div className="text-center p-10 md:text-left px-4 md:px-0">
-          <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold">
+          <h1 className="text-green-700 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold">
             Frequently Asked Questions
           </h1>
         </div>
