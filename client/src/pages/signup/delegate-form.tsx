@@ -245,7 +245,7 @@ const DelegateForm: React.FC = () => {
             />
             <label
               htmlFor="terms"
-              className="block text-blue-500 font-semibold italic cursor-pointer"
+              className="block text-red-500 font-semibold italic cursor-pointer"
               onClick={handleTerms}
             >
               I agree to the terms and conditions
