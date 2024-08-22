@@ -11,10 +11,10 @@ const {
   sendEventInvoiceById,
   getAllInvoices,
 } = require("../../controllers/event-controller");
-const { auth, authAdmin } = require("../../middlewares/middleware");
+const { auth, authAdmin, authRole } = require("../../middlewares/middleware");
 let routes = (app) => {
   app.post("/event", auth, createEventByOrganization);
-  app.post("/event/admin", authAdmin, createEventByAdmin);
+  app.post("/event/admin", authRole("Super Admin"), createEventByAdmin);
   app.get("/events", getAllEvents);
   app.get("/3events", getLatest3Events);
   app.get("/event/:id", getEventById);
