@@ -287,7 +287,7 @@ const CreateEvent = () => {
                 className="bg-green-700 text-white py-5 px-10 rounded hover:bg-green-800"
                 disabled={isLoading}
               >
-                {isLoading ? "Creating Event..." : "Create Event"}
+                {isLoading ? "Scheduling..." : "Schedule Meeting"}
               </button>
             </div>
           </form>
