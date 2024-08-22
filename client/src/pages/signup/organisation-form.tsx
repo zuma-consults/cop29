@@ -99,7 +99,7 @@ const OrganizationForm: React.FC = () => {
       {({ values, setFieldValue }) => (
         <Form className="p-2 shadow bg-green-50 mt-5">
           <h1 className="text-2xl font-semibold mb-6 text-center text-green-800">
-            Create An Organisation Account
+            Create an Account
           </h1>
           {/* Organization Fields */}
           <div className="mb-4">
