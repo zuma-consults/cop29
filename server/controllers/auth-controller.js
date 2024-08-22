@@ -210,11 +210,11 @@ module.exports = {
 
       try {
         const { body, files } = req;
-        const { name, email, designation } = body;
+        const { name, email, designation, phone } = body;
         const { id } = req.params;
 
         // Validate required fields
-        if (!name || !email) {
+        if (!name || !email || !designation || !phone) {
           return errorHandler(
             res,
             "Please fill in all fields, one or more fields are empty!",
@@ -230,6 +230,10 @@ module.exports = {
             "No account found for this organization.",
             409
           );
+        }
+
+        if (findUser.delegates.length >= 2) {
+          return errorHandler(res, "You can only add two delegates.", 403);
         }
 
         let passport = "";
@@ -259,6 +263,7 @@ module.exports = {
           delegatedBy: findUser.name,
           passport,
           designation,
+          phone,
         };
 
         findUser.delegates.push(delegate);
