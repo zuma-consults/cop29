@@ -25,9 +25,13 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
     initialValues: {
       name: "",
       email: "",
+      designation:'',
+      phone: '',
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
+      designation: Yup.string().required("Designation is required"),
+      phone: Yup.string().required("phone is required"),
       email: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
@@ -36,6 +40,8 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("email", values.email);
+      formData.append("designation", values.designation);
+      values.phone && formData.append("phone", values.phone);
 
       if (file) {
         formData.append("files", file);
@@ -93,6 +99,52 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
                     {formik.touched.name && formik.errors.name && (
                       <div className="text-red-500 text-xs mt-1">
                         {formik.errors.name}
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="designation"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Designation
+                    </label>
+                    <input
+                      id="designation"
+                      name="designation"
+                      type="text"
+                      value={formik.values.designation}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                    />
+                    {formik.touched.designation && formik.errors.designation && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {formik.errors.designation}
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Phone
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="text"
+                      value={formik.values.phone}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                    />
+                    {formik.touched.phone && formik.errors.phone && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {formik.errors.phone}
                       </div>
                     )}
                   </div>
