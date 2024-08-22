@@ -33,8 +33,8 @@ const userSchema = mongoose.Schema(
     },
     userType: {
       type: String,
-      enum: ["delegate", "organization"],
-      default: "delegate",
+      enum: ["organization"],
+      default: "organization",
     },
     organizationType: {
       type: String,
@@ -47,6 +47,10 @@ const userSchema = mongoose.Schema(
             required: true,
           },
           email: {
+            type: String,
+            required: true,
+          },
+          phone: {
             type: String,
             // required: true,
           },
