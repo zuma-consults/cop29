@@ -116,7 +116,7 @@ const sendEmail = async (to, name, amount) => {
           >Visit Website</a
         >
       </p>
-      <p style="color: whitesmoke; font-size: 11px;">© 2024 Cop29 Nigeria</p>
+      <p style="color: whitesmoke; font-size: 11px;">© 2024 COP29 NIGERIA PORTAL</p>
     </div>
   </div>
 </div>
