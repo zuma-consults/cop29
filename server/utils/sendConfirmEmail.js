@@ -86,8 +86,7 @@ const sendVerifyEmail = async (to, url, txt, name) => {
       "
     >
       <p style="color: whitesmoke; font-size: 11px">
-        Cop29 Nigeria is an organization dedicated to promoting sustainability
-        and climate action.
+       Nigeris COP29 Theme: Actualizing financial commitments for Climate Action.
       </p>
       <p style="color: whitesmoke; font-size: 11px; margin-top: 15px">
         <a
