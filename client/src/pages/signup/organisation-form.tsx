@@ -31,7 +31,7 @@ const organizationValidationSchema = Yup.object({
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
   category: Yup.string().required("Category is required"),
-  state: Yup.string().required("State is required"),
+  state: Yup.string(),
   organizationType: Yup.string().required("Organization Type is required"),
   terms: Yup.boolean()
     .oneOf([true], "You must accept the terms and conditions")
@@ -231,7 +231,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="state"
               className="block text-gray-700 font-semibold mb-2"
             >
-              State*
+              State
             </label>
             <Field
               as="select"
