@@ -292,11 +292,6 @@ const OrganizationForm: React.FC = () => {
               type="file"
               id="files"
               accept=".pdf"
-              // onChange={(event) => {
-              //   if (event.currentTarget.files) {
-              //     setFiles(event.currentTarget.files[0]);
-              //   }
-              // }}
               onChange={(event) => {
                 const maxSizeInBytes = 2 * 1024 * 1024; // 2 MB in bytes
                 const file = event.currentTarget.files
@@ -304,10 +299,9 @@ const OrganizationForm: React.FC = () => {
                   : null;
 
                 if (file && file.size > maxSizeInBytes) {
-                  alert(
+                  toast.error(
                     "File size exceeds the 2 MB limit. Please select a smaller file."
                   );
-                  // Clear the input if needed
                   event.currentTarget.value = "";
                 } else if (file) {
                   setFiles(file);
