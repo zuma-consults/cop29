@@ -1,10 +1,4 @@
-const { successHandler } = require("../utils/core");
-const { errorHandler } = require("../utils/errorHandler");
-const Event = require("../models/events");
 const Slot = require("../models/slot");
-const PAGE_SIZE = 12;
-const NodeCache = require("node-cache");
-const myCache = new NodeCache();
 
 module.exports = {
   getAllSlots: async (req, res) => {
