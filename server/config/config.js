@@ -3,17 +3,16 @@ const Role = require("../models/role");
 const Slot = require("../models/slot");
 
 const roles = [{ name: "Admin" }, { name: "Officer" }, { name: "Super Admin" }];
+
 const timeSlots = [
-  { timeSpan: "9:00am to 9:45am" },
-  { timeSpan: "10:00am to 10:45am" },
-  { timeSpan: "11:00am to 11:45am" },
-  { timeSpan: "12:00pm to 12:45pm" },
-  { timeSpan: "1:00pm to 1:45pm" },
-  { timeSpan: "2:00pm to 2:45pm" },
-  { timeSpan: "3:00pm to 3:45pm" },
-  { timeSpan: "4:00pm to 4:45pm" },
-  { timeSpan: "5:00pm to 5:45pm" },
-  // { timeSpan: "6:00pm to 6:45pm" },
+  { timeSpan: "9:00am to 10:20am" },
+  { timeSpan: "10:20am to 11:40am" },
+  { timeSpan: "11:40am to 1:00pm" },
+  { timeSpan: "1:00pm to 2:20pm" },
+  { timeSpan: "2:20pm to 3:40pm" },
+  { timeSpan: "3:40pm to 5:00pm" },
+  { timeSpan: "5:00pm to 6:20pm" },
+  { timeSpan: "6:20pm to 7:40pm" },
 ];
 
 const generateSlots = () => {
@@ -73,7 +72,7 @@ const connectDb = async () => {
       Role.find({ name: { $in: roles.map((role) => role.name) } }),
       Slot.find(),
     ]);
-    
+
     const missingRoles = roles.filter(
       (role) =>
         !existingRoles.some((existingRole) => existingRole.name === role.name)
