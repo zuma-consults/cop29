@@ -128,6 +128,54 @@ const verifyPasswordToken = async (req, res, next) => {
   }
 };
 
+const authRole = (role) => {
+  console.log(role, "auth");
+  return async (req, res, next) => {
+    try {
+      // Assume token is passed in a header named "poc-admin-token"
+      const token = req.header("poc-admin-token");
+
+      if (!token) {
+        return errorHandler(res, "Access Denied: No token provided.", 403);
+      }
+
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+      // Find the token in the database
+      const userToken = await Token.findOne({ userId: decoded.id, token });
+
+      if (!userToken) {
+        return errorHandler(
+          res,
+          "Access Denied: Invalid or expired token. Please login again",
+          403
+        );
+      }
+
+      // Find the user in the database
+      const user = await Admin.findOne({ _id: decoded.id }).populate('role');
+
+      if (!user) {
+        return errorHandler(res, "Access Denied: Admin not found.", 404);
+      }
+      // Check if the user's role matches the required role
+      if (user.role.name !== role) {
+        return errorHandler(res, `Access Denied.`, 403);
+      }
+
+      // Attach the user to the request object
+      req.admin = user._id;
+      next();
+    } catch (err) {
+      return errorHandler(
+        res,
+        "Access Denied: Invalid Token or Expired Access.",
+        403
+      );
+    }
+  };
+};
+
 // Ensure the logs directory exists
 const logDir = path.join(__dirname, "logs");
 if (!fs.existsSync(logDir)) {
@@ -198,4 +246,5 @@ module.exports = {
   logRequestDuration,
   adminVerifyPasswordToken,
   verifyPasswordToken,
+  authRole,
 };
