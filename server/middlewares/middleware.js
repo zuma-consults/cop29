@@ -150,7 +150,7 @@ const logger = winston.createLogger({
       datePattern: "YYYY-MM-DD",
       zippedArchive: true,
       maxSize: "20m",
-      maxFiles: "30d", // Keep logs for 14 days
+      maxFiles: "30d", // Keep logs for 30 days
     }),
     new winston.transports.Console(), // Log to console
   ],
