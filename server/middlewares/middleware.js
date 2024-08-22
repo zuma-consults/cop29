@@ -4,6 +4,11 @@ const Token = require("../models/token.js");
 const User = require("../models/users.js");
 const Admin = require("../models/admin.js");
 const { errorHandler } = require("../utils/errorHandler.js");
+const fs = require("fs");
+const path = require("path");
+const winston = require("winston");
+const DailyRotateFile = require("winston-daily-rotate-file");
+const geoip = require("geoip-lite");
 
 const auth = async (req, res, next) => {
   try {
@@ -123,15 +128,65 @@ const verifyPasswordToken = async (req, res, next) => {
   }
 };
 
+// Ensure the logs directory exists
+const logDir = path.join(__dirname, "logs");
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir);
+}
+
+// Configure Winston logger with daily rotation
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json(), // Log as JSON for structured logging
+    winston.format.printf(({ timestamp, level, message }) => {
+      return `${timestamp} ${level}: ${message}`;
+    })
+  ),
+  transports: [
+    new DailyRotateFile({
+      filename: path.join(logDir, "request-%DATE%.log"), // Use the logs directory
+      datePattern: "YYYY-MM-DD",
+      zippedArchive: true,
+      maxSize: "20m",
+      maxFiles: "30d", // Keep logs for 30 days
+    }),
+    new winston.transports.Console(), // Log to console
+  ],
+});
+
 const logRequestDuration = async (req, res, next) => {
   const start = Date.now();
 
   res.on("finish", () => {
     const duration = Date.now() - start;
-    console.log(`[${new Date().toISOString()}] ${req.method} request to 
-    ${req.originalUrl} completed in ${duration}ms with status ${
+
+    // Get IP address and geolocation
+    const ip = req.ip || req.connection.remoteAddress;
+    const geo = geoip.lookup(ip);
+    const location = geo
+      ? `${geo.city}, ${geo.region}, ${geo.country}`
+      : "Unknown location";
+
+    // Determine user type
+    const userType = req.user ? "user" : req.admin ? "admin" : "none";
+
+    // Create the log message
+    const logMessage = `[${new Date().toISOString()}] ${
+      req.method
+    } request to ${
+      req.originalUrl
+    } from IP ${ip} (${location}) completed in ${duration}ms with status ${
       res.statusCode
-    }`);
+    }. User-Agent: ${
+      req.headers["user-agent"]
+    }, UserType: ${userType}, UserId: ${
+      req.user || req.admin || "Not logged in"
+    }`;
+
+    // Log to file and console
+    logger.info(logMessage);
   });
 
   next();
