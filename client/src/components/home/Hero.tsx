@@ -6,6 +6,7 @@ import {
   FaQuestionCircle,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import CountdownTimer from "../ui/CountDown";
 
 const Hero: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ const Hero: React.FC = () => {
         data-aos="fade-up"
         data-aos-duration="1000"
       >
+        <CountdownTimer />
         <div
           className="text-gray-900 flex flex-col gap-6 md:gap-8 justify-center items-start text-center md:ml-[150px] md:text-left h-full w-2/3"
           data-aos="fade-right"
@@ -82,7 +84,7 @@ const Hero: React.FC = () => {
             </Link>
           </div>
           <Link
-              to="/contact-us"
+              to="/intl-org"
               className="text-center w-[95%] lg:w-[85%] rounded py-4 mx-2 flex justify-center items-center text-white bg-orange-500 hover:bg-green-700 transition"
               // data-aos="fade-up"
               // data-aos-duration="1000"
