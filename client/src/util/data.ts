@@ -61,7 +61,7 @@ export const organizationTypes = [
   "Civil Society Organization (CSO)",
   "Non-Governmental Organization (NGO)",
   "Private Sector",
-  "International Organization",
+  // "International Organization",
 ];
 
 export const faqs = [

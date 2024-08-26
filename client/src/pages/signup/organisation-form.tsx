@@ -99,7 +99,7 @@ const OrganizationForm: React.FC = () => {
       {({ values, setFieldValue }) => (
         <Form className="p-2 shadow bg-green-50 mt-5">
           <h1 className="text-2xl font-semibold mb-6 text-center text-green-800">
-            Create an Account
+            Create an Account for your Organisation
           </h1>
           {/* Organization Fields */}
           <div className="mb-4">
@@ -149,7 +149,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="phone"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Phone Number*
+              Contact Person's Phone Number*
             </label>
             <Field
               type="text"
@@ -197,6 +197,38 @@ const OrganizationForm: React.FC = () => {
               className="text-red-600 text-xs mt-1"
             />
           </div>
+          {/* <div className="relative mb-4">
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+              Confirm Password*
+            </label>
+            <Field
+              type={values.showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 pr-10"
+            />
+            <div
+              className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mt-5"
+              onClick={() =>
+                setFieldValue("showPassword", !values.showPassword)
+              }
+            >
+              {values.showPassword ? (
+                <FaRegEye size={20} />
+              ) : (
+                <FaRegEyeSlash size={20} />
+              )}
+            </div>
+            <ErrorMessage
+              name="password"
+              component="div"
+              className="text-red-600 text-xs mt-1"
+            />
+          </div> */}
 
           {/* Specific Fields for Organization */}
           <div className="mb-4">
@@ -286,7 +318,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="files"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Letter Approving Participation (pdf file max 2mb)
+              Letter Approving Organisation Participation (pdf file max 2mb)
             </label>
             <input
               type="file"
@@ -321,7 +353,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="orgImage"
               className="block text-gray-700 font-semibold mb-2"
             >
-             Upload Scanned Copy of Official ID Card*
+             Upload Scanned Copy of Contact Person's ID Card*
             </label>
             <input
               type="file"
@@ -346,7 +378,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="designation"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Designation*
+              Contact Person's Designation*
             </label>
             <Field
               type="text"

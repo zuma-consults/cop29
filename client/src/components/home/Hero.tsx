@@ -32,13 +32,9 @@ const Hero: React.FC = () => {
           <img
             src="/images/seal-bg.png" // Replace with the path to your first image
             alt="Nigeria's coat of arm image"
-            className="h-[100px] md:h-[150px] object-contain bg-white lg:ms-10"
+            className="h-[100px] md:h-[150px] object-contain bg-white lg:ms-10 m-auto md:m-0 rounded-full"
             data-aos="fade-left"
             data-aos-duration="500"
-            style={{
-              borderRadius: "50%",
-              // margin:"0 auto",
-            }}
           />
           <h1 className="md:text-[40px] text-[25px] mt-20 md:mt-0 text-white font-bold leading-tight">
             WELCOME TO THE UNFCCC COP29 REGISTRATION PORTAL
@@ -85,6 +81,15 @@ const Hero: React.FC = () => {
               Frequently asked Questions
             </Link>
           </div>
+          <Link
+              to="/contact-us"
+              className="text-center w-[95%] lg:w-[85%] rounded py-4 mx-2 flex justify-center items-center text-white bg-orange-500 hover:bg-green-700 transition"
+              // data-aos="fade-up"
+              // data-aos-duration="1000"
+            >
+              <FaCalendarAlt className="text-2xl mr-2" />
+            International Organisations
+            </Link>
         </div>
         <div className="flex flex-col items-center md:items-end justify-center space-y-0 w-full h-full ">
           <img

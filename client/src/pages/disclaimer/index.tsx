@@ -63,10 +63,10 @@ const TermsAndConditions = () => {
           relevant supporting documents such as invitation letters or
           correspondence to confirm:
         </p>
-        <ul style={{ lineHeight: "1.6" }}>
-           <li className="mb-4">Participation is directly linked to high-level conversations to be held at COP 29, such as ongoing negotiations.</li>
-           <li className="mb-4">Signing of bilateral agreements and MoUs to concretize financial commitments.</li>
-           <li className="mb-4">Participation in thematic meetings as a representative of Nigeria.</li>
+        <ul style={{ lineHeight: "1.6", marginLeft: "20px", listStyleType: "disc" }}>
+          <li style={{ marginBottom: "10px" }}>Participation is directly linked to high-level conversations to be held at COP 29, such as ongoing negotiations.</li>
+          <li style={{ marginBottom: "10px" }}>Signing of bilateral agreements and MoUs to concretize financial commitments.</li>
+          <li style={{ marginBottom: "10px" }}>Participation in thematic meetings as a representative of Nigeria.</li>
         </ul>
       </section>
 
@@ -74,15 +74,15 @@ const TermsAndConditions = () => {
         <h2 style={{ color: "#003300", fontSize: "20px" }}>
           Additional Guidelines
         </h2>
-        <ul style={{ lineHeight: "1.6" }}>
-           <li className="mb-4">
+        <ul style={{ lineHeight: "1.6", marginLeft: "20px", listStyleType: "decimal" }}>
+          <li style={{ marginBottom: "10px" }}>
             Approvals will be granted strictly on merit, and full-and-real-time
             access into the data concerning who is attending and those the
             government is sponsoring to COP 29 will also be made available to
             the general public on the Climate Accountability and Transparency
             Portal (CAT-P) to ensure transparency.
           </li>
-           <li className="mb-4">
+          <li style={{ marginBottom: "10px" }}>
             The Nigeria delegation is to efficiently utilize the on-site
             delegation office within the conference complex to host high-level
             meetings and bilaterals. Members of the delegation will therefore be
@@ -94,8 +94,8 @@ const TermsAndConditions = () => {
 
       <section style={{ marginBottom: "20px" }}>
         <h2 style={{ color: "#003300", fontSize: "20px" }}>Disclaimer</h2>
-        <ul style={{ lineHeight: "1.6" }}>
-           <li className="mb-4">
+        <ul style={{ lineHeight: "1.6", marginLeft: "20px", listStyleType: "decimal" }}>
+          <li style={{ marginBottom: "10px" }}>
             <strong>Governmental Priority:</strong> Only government
             organizations are automatically eligible for registration. Other
             bodies such as CSOs, NGOs may qualify if their reason for
@@ -105,34 +105,34 @@ const TermsAndConditions = () => {
             toward engaging with companies, multilateral partners, and
             stakeholders who will attract finance and opportunities to Nigeria.
           </li>
-           <li className="mb-4">
+          <li style={{ marginBottom: "10px" }}>
             <strong>Organizational Representation:</strong> Registration must
             be completed through a recognized organization; individual
             applications are not permitted.
           </li>
-           <li className="mb-4">
+          <li style={{ marginBottom: "10px" }}>
             <strong>Mandate Alignment:</strong> The organization must have a
             clear mandate or mission aligned with climate change, sustainable
             development, or related issues, in line with national climate
             policies, the UNFCCC's goals, and the specific objectives of COP29.
           </li>
-           <li className="mb-4">
+          <li style={{ marginBottom: "10px" }}>
             <strong>Limited Delegation:</strong> In compliance with Federal
             Government directives, organizations may submit a maximum of two
             participants for accreditation. Up to two additional participants
             may be considered for organizations hosting side events.
           </li>
-           <li className="mb-4">
+          <li style={{ marginBottom: "10px" }}>
             <strong>Financial Responsibility:</strong> Participating
             organizations are responsible for covering all expenses related to
             their representatives’ participation in the UNFCCC COP29.
           </li>
-           <li className="mb-4">
+          <li style={{ marginBottom: "10px" }}>
             <strong>Fee for Side Events:</strong> Hosting a side event at COP29
             Nigeria’s Pavilion requires payment of a fee. Details can be found
             in the side event application section.
           </li>
-           <li className="mb-4">
+          <li style={{ marginBottom: "10px" }}>
             <strong>Mandatory Reporting:</strong> By registering to participate
             in COP29, organizations commit to submitting a comprehensive report
             detailing sessions, events, and outcomes of their participation,
@@ -145,33 +145,33 @@ const TermsAndConditions = () => {
         <h2 style={{ color: "#003300", fontSize: "20px" }}>
           Guidance on How to Register
         </h2>
-        <ul style={{ lineHeight: "1.6" }}>
-           <li className="mb-4">
+        <ul style={{ lineHeight: "1.6", marginLeft: "20px", listStyleType: "decimal" }}>
+          <li style={{ marginBottom: "10px" }}>
             <strong>Eligibility:</strong> Ensure your organization is
             governmental or has a mission aligned with climate change and
             sustainable development. Non-governmental bodies should apply via
             the side event application process.
           </li>
-           <li className="mb-4">
+          <li style={{ marginBottom: "10px" }}>
             <strong>Application Submission:</strong> Complete your application
             through your organization, not as an individual.
           </li>
-           <li className="mb-4">
+          <li style={{ marginBottom: "10px" }}>
             <strong>Delegation Size:</strong> Limit your delegation to two
             participants. If hosting a side event, you may apply for
             accreditation for up to two additional participants.
           </li>
-           <li className="mb-4">
+          <li style={{ marginBottom: "10px" }}>
             <strong>Side Event Application:</strong> If your organization
             intends to host a side event, complete the side event form and
             prepare to cover the associated fees.
           </li>
-           <li className="mb-4">
+          <li style={{ marginBottom: "10px" }}>
             <strong>Pre-COP29 Workshop:</strong> Ensure your accredited
             participants attend the orientation and pre-COP29 workshop organized
             by the NCCC.
           </li>
-           <li className="mb-4">
+          <li style={{ marginBottom: "10px" }}>
             <strong>Post-COP Report:</strong> After COP29, a comprehensive
             report detailing sessions, events, and outcomes, endorsed by the
             organization's Head, must be submitted to the National Council on

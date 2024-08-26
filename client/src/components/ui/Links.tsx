@@ -19,9 +19,9 @@ const Links: React.FC<LinksProps> = ({
   const { data: user, isLoading, refetch } = useGetProfile();
   const { mutate: logout, isLoading: logoutloading } = useLogout();
 
-  if (isLoading || logoutloading) {
-    return <Loader />;
-  }
+  // if (isLoading || logoutloading) {
+  //   return <Loader />;
+  // }
 
   const links = [
     // {
