@@ -62,19 +62,26 @@ const sendResetPassword = async (to, url, txt, name) => {
             reset your password:
           </p>
 
+          <p style="text-align: center; margin: 20px 0;">
           <a href=${url} 
-            style="
-              display: inline-block;
-              padding: 10px 20px;
-              margin: 20px 0;
-              background-color: #28a745;
-              color: #ffffff;
-              text-decoration: none;
-              border-radius: 5px;
-        "
+                style="
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #28a745;
+                color: #ffffff;
+                text-decoration: none;
+                border-radius: 5px;
+                "
           >
             <strong>${txt}</strong>
           </a>
+          </p>
+
+          <p>
+            If the button doesn’t work, please copy and paste the following URL into your web browser:
+            <a href="${url}">${url}</a>
+          </p>
+
           <p style={{ color: '#666666', fontSize: '15px' }}>
             If you did not request a password reset, please ignore this email.
           </p>
