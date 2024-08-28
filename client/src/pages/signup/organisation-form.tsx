@@ -30,10 +30,15 @@ const organizationValidationSchema = Yup.object({
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password')], "Passwords must match")
+    .required("Please confirm your password"),
   category: Yup.string().required("Category is required"),
+  thematicArea: Yup.string().required("Thematic Area is required"),
   state: Yup.string(),
   organizationType: Yup.string().required("Organization Type is required"),
-  reason: Yup.string().required("Reason for attending is required"),
+  reasonForAttendance: Yup.string().required("Reason for attending is required"),
+  contactDesignation: Yup.string().required("Designation of Contact Person is required"),
   terms: Yup.boolean()
     .oneOf([true], "You must accept the terms and conditions")
     .required(),
@@ -42,6 +47,7 @@ const organizationValidationSchema = Yup.object({
 const OrganizationForm: React.FC = () => {
   const { mutate: orgRegister, isLoading, data } = useOrgRegister();
   const [files, setFiles] = useState<File | null>(null);
+  const [documentSupportingAttendance, setDocumentSupportingAttendance] = useState<File | null>(null);
   const [orgImage, setOrgImage] = useState<File | null>(null);
   const navigate = useNavigate();
   useEffect(() => {
@@ -69,7 +75,9 @@ const OrganizationForm: React.FC = () => {
         category: "",
         state: "",
         organizationType: "",
-        reason: "",
+        reasonForAttendance: "",
+        contactDesignation: "",
+        thematicArea: "",
         terms: false,
         showPassword: false,
       }}
@@ -87,8 +95,9 @@ const OrganizationForm: React.FC = () => {
 
         if (files) formData.append("files", files);
         if (orgImage) formData.append("orgImage", orgImage);
-
-        if (!files) {
+        if (documentSupportingAttendance) formData.append("documentSupportingAttendance", documentSupportingAttendance);
+   
+        if (!files || !orgImage) {
           toast.warn("Upload required files");
         } else {
           orgRegister(formData);
@@ -183,16 +192,16 @@ const OrganizationForm: React.FC = () => {
 
           <div className="relative mb-4">
             <label
-              htmlFor="password"
+              htmlFor="confirmPassword"
               className="block text-gray-700 font-semibold mb-2"
             >
               Confirm Password*
             </label>
             <Field
               type={values.showPassword ? "text" : "password"}
-              id="password"
-              name="password"
-              placeholder="Enter your password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Enter your confirm password"
               className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 pr-10"
             />
             <div
@@ -208,7 +217,7 @@ const OrganizationForm: React.FC = () => {
               )}
             </div>
             <ErrorMessage
-              name="password"
+              name="confirmPassword"
               component="div"
               className="text-red-600 text-xs mt-1"
             />
@@ -264,15 +273,15 @@ const OrganizationForm: React.FC = () => {
 
           <div className="mb-4">
             <label
-              htmlFor="category"
+              htmlFor="thematicArea"
               className="block text-gray-700 font-semibold mb-2"
             >
               Thematic Area*
             </label>
             <Field
               as="select"
-              id="category"
-              name="category"
+              id="thematicArea"
+              name="thematicArea"
               className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
             >
               <option value="">Select Thematic Area</option>
@@ -345,20 +354,20 @@ const OrganizationForm: React.FC = () => {
 
           <div className="mb-4">
             <label
-              htmlFor="designation"
+              htmlFor="contactDesignation"
               className="block text-gray-700 font-semibold mb-2"
             >
               Contact Person's Designation*
             </label>
             <Field
               type="text"
-              id="designation"
-              name="designation"
-              placeholder="Enter your designation"
+              id="contactDesignation"
+              name="contactDesignation"
+              placeholder="contact person's designation"
               className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
             />
             <ErrorMessage
-              name="designation"
+              name="contactDesignation"
               component="div"
               className="text-red-600 text-xs mt-1"
             />
@@ -369,7 +378,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="files"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Letter Approving Organisation Participation (pdf file max 2mb)
+              Letter Approving Organisation Participation (pdf file max 2mb)*
             </label>
             <input
               type="file"
@@ -430,21 +439,21 @@ const OrganizationForm: React.FC = () => {
 
           <div className="mb-4">
             <label
-              htmlFor="reason"
+              htmlFor="reasonForAttendance"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Reason for Attendance
+              Reason for Attendance*
             </label>
             <Field
               type="text"
             as="textarea"
-              id="reason"
-              name="reason"
+              id="reasonForAttendance"
+              name="reasonForAttendance"
               placeholder="Reason for attending "
               className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
             />
             <ErrorMessage
-              name="reason"
+              name="reasonForAttendance"
               component="div"
               className="text-red-600 text-xs mt-1"
             />
@@ -452,18 +461,28 @@ const OrganizationForm: React.FC = () => {
 
           <div className="mb-4">
             <label
-              htmlFor="orgImage"
+              htmlFor="supportImage"
               className="block text-gray-700 font-semibold mb-2"
             >
-             Upload Document Supporting Reason for Attendance
+             Upload Document Supporting Reason for Attendance (pdf file max 2mb)
             </label>
             <input
               type="file"
-              id="orgImage"
-              accept=".png, .jpg, .jpeg"
+              id="supportImage"
+              accept=".pdf"
               onChange={(event) => {
-                if (event.currentTarget.files) {
-                  setOrgImage(event.currentTarget.files[0]);
+                const maxSizeInBytes = 2 * 1024 * 1024; // 2 MB in bytes
+                const file = event.currentTarget.files
+                  ? event.currentTarget.files[0]
+                  : null;
+
+                if (file && file.size > maxSizeInBytes) {
+                  toast.error(
+                    "File size exceeds the 2 MB limit. Please select a smaller file."
+                  );
+                  event.currentTarget.value = "";
+                } else if (file) {
+                  setDocumentSupportingAttendance(file);
                 }
               }}
               className="bg-white w-full border border-gray-300 rounded-lg p-3 text-gray-700"
