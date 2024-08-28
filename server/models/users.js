@@ -52,6 +52,10 @@ const userSchema = mongoose.Schema(
     organizationType: {
       type: String,
     },
+    contactDesignation:{
+      type: String,
+      required: true,
+    },
     delegates: {
       type: [
         {
