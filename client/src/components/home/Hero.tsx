@@ -6,6 +6,7 @@ import {
   FaQuestionCircle,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import CountdownTimer from "../ui/CountDown";
 
 const Hero: React.FC = () => {
   return (
@@ -24,11 +25,19 @@ const Hero: React.FC = () => {
         data-aos="fade-up"
         data-aos-duration="1000"
       >
+        <CountdownTimer />
         <div
           className="text-gray-900 flex flex-col gap-6 md:gap-8 justify-center items-start text-center md:ml-[150px] md:text-left h-full w-2/3"
           data-aos="fade-right"
           data-aos-duration="1000"
         >
+          <img
+            src="/images/seal-bg.png" // Replace with the path to your first image
+            alt="Nigeria's coat of arm image"
+            className="h-[100px] md:h-[150px] object-contain bg-white lg:ms-10 m-auto md:m-0 rounded-full"
+            data-aos="fade-left"
+            data-aos-duration="500"
+          />
           <h1 className="md:text-[40px] text-[25px] mt-20 md:mt-0 text-white font-bold leading-tight">
             WELCOME TO THE UNFCCC COP29 REGISTRATION PORTAL
           </h1>
@@ -74,11 +83,20 @@ const Hero: React.FC = () => {
               Frequently asked Questions
             </Link>
           </div>
+          <Link
+              to="/intl-org"
+              className="text-center w-[95%] lg:w-[85%] rounded py-4 mx-2 flex justify-center items-center text-white bg-orange-500 hover:bg-green-700 transition"
+              // data-aos="fade-up"
+              // data-aos-duration="1000"
+            >
+              <FaCalendarAlt className="text-2xl mr-2" />
+            International Organisations
+            </Link>
         </div>
         <div className="flex flex-col items-center md:items-end justify-center space-y-0 w-full h-full ">
           <img
             src="/images/unfccc1_.png" // Replace with the path to your first image
-            alt="Nigerai's coat of arm image"
+            alt="Nigeria's coat of arm image"
             className="rounded-lg w-2/3 h-[80px] md:h-[150px] object-contain mt-6 mb-12"
             data-aos="fade-left"
             data-aos-duration="500"
@@ -86,7 +104,7 @@ const Hero: React.FC = () => {
           <img
             src="/images/cop29-bgg.png" // Replace with the path to your second image
             alt="COP 29 image"
-            className=" w-2/3 h-[150px] md:h-[130px] object-contain"
+            className=" w-2/3 h-[80px] md:h-[130px] object-contain"
             data-aos="fade-left"
             data-aos-duration="500"
             style={{ borderRadius: "10%" }}

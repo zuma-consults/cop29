@@ -99,8 +99,7 @@ const sendEmail = async (to, name, amount) => {
       "
     >
       <p style="color: whitesmoke; font-size: 11px; margin: 15px 0;">
-        Cop29 Nigeria is an organization dedicated to promoting sustainability
-        and climate action.
+       Nigeris COP29 Theme: Actualizing financial commitments for Climate Action.
       </p>
       <p
         style="
@@ -117,7 +116,7 @@ const sendEmail = async (to, name, amount) => {
           >Visit Website</a
         >
       </p>
-      <p style="color: whitesmoke; font-size: 11px;">© 2024 Cop29 Nigeria</p>
+      <p style="color: whitesmoke; font-size: 11px;">© 2024 COP29 NIGERIA PORTAL</p>
     </div>
   </div>
 </div>

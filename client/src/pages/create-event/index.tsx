@@ -39,9 +39,9 @@ const CreateEvent = () => {
     validationSchema: Yup.object({
       imageUrl: Yup.mixed().required("Image is required"),
       title: Yup.string().required("Event title is required"),
-      description: Yup.string().required("Event description is required"),
+      description: Yup.string().required("Purpose of Meeting is required"),
       tags: Yup.string().required("Tags are required"),
-      objective: Yup.string().required("Event objective is required"),
+      objective: Yup.string().required("Meeting Participants is required"),
       timeSlot: Yup.string().required("Time slot is required"),
     }),
     onSubmit: async (values, { resetForm }) => {
@@ -87,9 +87,9 @@ const CreateEvent = () => {
           data-aos="Meeting-in-right"
         >
           <h1 className="text-green-700 font-bold text-2xl text-center md:text-left">
-            Create a Side Event
+            Schedule a Meeting
           </h1>
-          <div
+          {/* <div
             className="p-6 rounded-lg w-full flex flex-col cursor-pointer items-center justify-center gap-3 mt-2 bg-green-50"
             onClick={() => document.getElementById("imageUrl")?.click()}
           >
@@ -131,7 +131,7 @@ const CreateEvent = () => {
                 {formik.errors.imageUrl}
               </div>
             )}
-          </div>
+          </div> */}
           <form
             onSubmit={formik.handleSubmit}
             className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6"
@@ -141,7 +141,7 @@ const CreateEvent = () => {
                 htmlFor="title"
                 className="block text-gray-700 font-semibold"
               >
-                Event Title
+               Meeting Type
               </label>
               <input
                 id="title"
@@ -155,6 +155,7 @@ const CreateEvent = () => {
                     ? "border-red-500"
                     : "border-gray-300"
                 }`}
+                placeholder="Bilateral, Group Meeting etc..."
               />
               {formik.touched.title && formik.errors.title && (
                 <div className="text-red-500 text-sm">
@@ -209,7 +210,7 @@ const CreateEvent = () => {
                 htmlFor="description"
                 className="block text-gray-700 font-semibold"
               >
-                Event Description
+                Purpose of Meeting
               </label>
               <textarea
                 id="description"
@@ -235,7 +236,7 @@ const CreateEvent = () => {
                 htmlFor="objective"
                 className="block text-gray-700 font-semibold"
               >
-                Event Objective
+                Meeting Participants
               </label>
               <textarea
                 id="objective"
@@ -256,7 +257,7 @@ const CreateEvent = () => {
                 </div>
               )}
             </div>
-            <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
+            {/* <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
               <label
                 htmlFor="tags"
                 className="block text-gray-700 font-semibold"
@@ -279,14 +280,14 @@ const CreateEvent = () => {
               {formik.touched.tags && formik.errors.tags && (
                 <div className="text-red-500 text-sm">{formik.errors.tags}</div>
               )}
-            </div>
+            </div> */}
             <div className="flex items-center justify-end mt-6 col-span-1 md:col-span-2">
               <button
                 type="submit"
                 className="bg-green-700 text-white py-5 px-10 rounded hover:bg-green-800"
                 disabled={isLoading}
               >
-                {isLoading ? "Creating Event..." : "Create Event"}
+                {isLoading ? "Scheduling..." : "Schedule Meeting"}
               </button>
             </div>
           </form>
@@ -296,7 +297,8 @@ const CreateEvent = () => {
   ) : (
     <div className="text-center py-[50px] border-2 border-orange-600 my-20 bg-orange-100 mx-10">
       <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
-        You need to be registered and logged in as an organization to schedule a meeting.
+        You need to be registered and logged in as an organization to schedule a
+        meeting.
       </h1>
       <p className="text-gray-600 mb-6">
         Please log in or register as an organization to schedule a meeting.

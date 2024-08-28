@@ -26,78 +26,84 @@ const sendResetPassword = async (to, url, txt, name) => {
     subject: "COP29 NIGERIA",
     text: "Change Password",
     html: `
-    <div style={{
-      backgroundColor: '#f6f6f6',
-      fontFamily: 'Arial, sans-serif',
-      margin: '0',
-      padding: '0',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '100vh'
-    }}>
-      <div style={{
-        maxWidth: '650px',
-        margin: '0 auto',
-        backgroundColor: '#ffffff',
-        borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-      }}>
-        <div style={{
-          textAlign: 'center',
-          padding: '20px',
-          backgroundColor: '#2c5f2d',
-          color: '#ffffff',
-        }}>
-          <h5>Nigeria @COP29</h5>
-        </div>
-        <div style={{
-          padding: '50px',
-          display: 'grid',
-        }}>
-          <h3 style="color: #003300;">Hello ${name},</h3>
-          <p style={{ color: '#666666', fontSize: '15px' }}>
-            We received a request to reset your password for your Cop29 Nigeria
-            account. If you made this request, please click the link below to
-            reset your password:
-          </p>
-
-          <a href=${url} 
-            style="
-              display: inline-block;
-              padding: 10px 20px;
-              margin: 20px 0;
-              background-color: #28a745;
-              color: #ffffff;
-              text-decoration: none;
-              border-radius: 5px;
-        "
-          >
-            <strong>${txt}</strong>
-          </a>
-          <p style={{ color: '#666666', fontSize: '15px' }}>
-            If you did not request a password reset, please ignore this email.
-          </p>
-
-          <p style={{ color: '#666666', fontSize: '15px' }}>
-            Best regards,<br />
-            Cop29 Nigeria Team
-          </p>
-        </div>
-        <div style={{
-          textAlign: 'center',
-          padding: '20px',
-          backgroundColor: '#2c5f2d',
-          color: '#ffffff',
-          fontSize: '14px',
-        }}>
-          <p style={{ color: 'whitesmoke', fontSize: '11px', margin: '0' }}>
-            <a href="https://cop29.vercel.app/" style={{ color: 'whitesmoke', textDecoration: 'none' }}>Visit Website</a>
-          </p>
-          <p style={{ color: 'whitesmoke', fontSize: '11px', margin: '15px 0 0 0' }}>© 2024 Cop29 Nigeria</p>
-        </div>
-      </div>
+    <div
+    style="
+      max-width: 650px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    "
+  >
+    <div
+      style="
+        text-align: center;
+        padding: 20px 0;
+        background-color: #004d00;
+        color: #ffffff;
+        border-radius: 8px 8px 0 0;
+      "
+    >
+      <h5 style="margin: 0">UNFCCC COP29 NIGERIA REGISTRATION</h5>
     </div>
+    <div style="padding: 50px">
+      <h3 style="color: #003300">Hello ${name},</h3>
+      <p style="color: #336633; font-size: 15px">
+      To reset your password, please click the link below:
+      </p>
+      <div style="padding: 20px;">
+      <p style="text-align: center; margin: 20px 0;">
+        <a
+          href="${url}"
+          style="
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+          "
+        >
+          <strong>${txt}</strong>
+        </a>
+      </p>
+      <p>
+        If the button doesn’t work, please copy and paste the following URL into your web browser: <br></br>
+        <a href="${url}">${url}</a>
+      </p>
+    </div>
+    
+      <p style="color: #336633; font-size: 15px">
+        If you did not request for password reset, please ignore this email.
+      </p>
+      <p style="color: #336633; font-size: 15px">
+        Best regards,<br />
+        COP29 Nigeria Team
+      </p>
+    </div>
+    <div
+      style="
+        text-align: center;
+        padding: 20px;
+        background-color: #004d00;
+        color: #ffffff;
+        font-size: 14px;
+        border-radius: 0 0 8px 8px;
+      "
+    >
+      <p style="color: whitesmoke; font-size: 11px">
+       Nigeris COP29 Theme: Actualizing financial commitments for Climate Action.
+      </p>
+      <p style="color: whitesmoke; font-size: 11px; margin-top: 15px">
+        <a
+          href="https://cop29.vercel.app/"
+          style="color: whitesmoke; text-decoration: none"
+          >Visit Website</a
+        >
+      </p>
+      <p style="color: whitesmoke; font-size: 11px">© 2024 COP29 NIGERIA PORTAL</p>
+    </div>
+  </div>
     `,
   };
 

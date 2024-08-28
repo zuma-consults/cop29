@@ -31,7 +31,7 @@ const organizationValidationSchema = Yup.object({
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
   category: Yup.string().required("Category is required"),
-  state: Yup.string().required("State is required"),
+  state: Yup.string(),
   organizationType: Yup.string().required("Organization Type is required"),
   terms: Yup.boolean()
     .oneOf([true], "You must accept the terms and conditions")
@@ -60,7 +60,7 @@ const OrganizationForm: React.FC = () => {
   return (
     <Formik
       initialValues={{
-        userType: "delegate",
+        userType: "organization",
         name: "",
         email: "",
         phone: "",
@@ -99,7 +99,7 @@ const OrganizationForm: React.FC = () => {
       {({ values, setFieldValue }) => (
         <Form className="p-2 shadow bg-green-50 mt-5">
           <h1 className="text-2xl font-semibold mb-6 text-center text-green-800">
-            Create An Organisation Account
+            Create an Account for your Organisation
           </h1>
           {/* Organization Fields */}
           <div className="mb-4">
@@ -149,7 +149,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="phone"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Phone Number*
+              Contact Person's Phone Number*
             </label>
             <Field
               type="text"
@@ -197,6 +197,38 @@ const OrganizationForm: React.FC = () => {
               className="text-red-600 text-xs mt-1"
             />
           </div>
+          {/* <div className="relative mb-4">
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+              Confirm Password*
+            </label>
+            <Field
+              type={values.showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 pr-10"
+            />
+            <div
+              className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mt-5"
+              onClick={() =>
+                setFieldValue("showPassword", !values.showPassword)
+              }
+            >
+              {values.showPassword ? (
+                <FaRegEye size={20} />
+              ) : (
+                <FaRegEyeSlash size={20} />
+              )}
+            </div>
+            <ErrorMessage
+              name="password"
+              component="div"
+              className="text-red-600 text-xs mt-1"
+            />
+          </div> */}
 
           {/* Specific Fields for Organization */}
           <div className="mb-4">
@@ -231,7 +263,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="state"
               className="block text-gray-700 font-semibold mb-2"
             >
-              State*
+              State
             </label>
             <Field
               as="select"
@@ -286,17 +318,12 @@ const OrganizationForm: React.FC = () => {
               htmlFor="files"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Approval of Participation Letter (pdf file max 2mb)
+              Letter Approving Organisation Participation (pdf file max 2mb)
             </label>
             <input
               type="file"
               id="files"
               accept=".pdf"
-              // onChange={(event) => {
-              //   if (event.currentTarget.files) {
-              //     setFiles(event.currentTarget.files[0]);
-              //   }
-              // }}
               onChange={(event) => {
                 const maxSizeInBytes = 2 * 1024 * 1024; // 2 MB in bytes
                 const file = event.currentTarget.files
@@ -304,10 +331,9 @@ const OrganizationForm: React.FC = () => {
                   : null;
 
                 if (file && file.size > maxSizeInBytes) {
-                  alert(
+                  toast.error(
                     "File size exceeds the 2 MB limit. Please select a smaller file."
                   );
-                  // Clear the input if needed
                   event.currentTarget.value = "";
                 } else if (file) {
                   setFiles(file);
@@ -325,9 +351,9 @@ const OrganizationForm: React.FC = () => {
           <div className="mb-4">
             <label
               htmlFor="orgImage"
-              className="block text-red-500 font-semibold mb-2"
+              className="block text-gray-700 font-semibold mb-2"
             >
-              Official ID Card
+             Upload Scanned Copy of Contact Person's ID Card*
             </label>
             <input
               type="file"
@@ -342,6 +368,27 @@ const OrganizationForm: React.FC = () => {
             />
             <ErrorMessage
               name="orgImage"
+              component="div"
+              className="text-red-600 text-xs mt-1"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="designation"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+              Contact Person's Designation*
+            </label>
+            <Field
+              type="text"
+              id="designation"
+              name="designation"
+              placeholder="Enter your designation"
+              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+            />
+            <ErrorMessage
+              name="designation"
               component="div"
               className="text-red-600 text-xs mt-1"
             />

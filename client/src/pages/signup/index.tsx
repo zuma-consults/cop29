@@ -5,7 +5,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const Signup: React.FC = () => {
-  const [userType, setUserType] = useState<string>("delegate");
+  const [userType, setUserType] = useState<string>("organization");
   const navigate = useNavigate();
   const handleBack = ()=> {
     navigate("/")
@@ -33,7 +33,7 @@ const Signup: React.FC = () => {
       </div>
 
       <div className="relative bg-white shadow-md rounded-lg lg:w-[50%] mt-10 p-10 z-20">
-        <div className="flex mb-4">
+        {/* <div className="flex mb-4">
           <button
             onClick={() => setUserType("delegate")}
             className={`flex-1 py-2 rounded-l-lg ${
@@ -54,9 +54,9 @@ const Signup: React.FC = () => {
           >
             Register as an organization
           </button>
-        </div>
+        </div> */}
 
-        {userType === "delegate" && <DelegateForm />}
+        {/* {userType === "delegate" && <DelegateForm />} */}
         {userType === "organization" && <OrganizationForm />}
       </div>
     </div>

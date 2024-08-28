@@ -54,12 +54,14 @@ export const categories = [
 ];
 
 export const organizationTypes = [
-  "  Ministries, Departments, and Agencies (MDA)",
-  " Civil Society Organization (CSO)",
-  "  Non-Governmental Organization (NGO)",
-  "State",
+  "Ministries, Departments, and Agencies (MDA)",
+  "National Assembly",
+  "House of Assembly",
+  "State Government",
+  "Civil Society Organization (CSO)",
+  "Non-Governmental Organization (NGO)",
   "Private Sector",
-  "International Organization",
+  // "International Organization",
 ];
 
 export const faqs = [

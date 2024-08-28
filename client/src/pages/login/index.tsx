@@ -21,8 +21,6 @@ const Login: React.FC = () => {
   const { mutate: login, isLoading, data } = useLogin();
   const navigate = useNavigate();
 
-  console.log(data, "login data");
-
   if (isLoading) {
     return <Loader />;
   }
