@@ -92,15 +92,15 @@ const CopTable: React.FC = () => {
   const columns: TableColumn<TableRow>[] = [
     {
       name: "Name",
-      selector: (row) => row.name ?? "N/A",
+      selector: (row) => row?.name ?? "N/A",
     },
     {
       name: "Email",
-      selector: (row) => row.email ?? "N/A",
+      selector: (row) => row?.email ?? "N/A",
     },
     {
       name: "Delegated By",
-      selector: (row) => row.delegatedBy ?? "N/A",
+      selector: (row) => row?.delegatedBy ?? "N/A",
     },
 
     {
@@ -110,7 +110,7 @@ const CopTable: React.FC = () => {
         </Box>
       ),
       cell: (row) =>
-        row.copApproved ? (
+        row?.copApproved ? (
           <Chip label="Approved" color="success" className="capitalize" />
         ) : (
           <Chip label="Pending" color="error" />
@@ -238,8 +238,8 @@ const CopTable: React.FC = () => {
                   <CardMedia
                     component="img"
                     height="200"
-                    image={selectedEvent.passport}
-                    alt={`${selectedEvent.name} Logo`}
+                    image={selectedEvent?.passport}
+                    alt={`${selectedEvent?.name} Logo`}
                     sx={{
                       objectFit: "contain",
                       marginBottom: "16px",
@@ -252,23 +252,23 @@ const CopTable: React.FC = () => {
                 <CardContent className="flex flex-col justify-center items-center gap-5">
                   {/* Render Name */}
                   <Typography variant="body1" component="div">
-                    <strong>Name: </strong> {selectedEvent.name}
+                    <strong>Name: </strong> {selectedEvent?.name}
                   </Typography>
 
                   {/* Render Email */}
                   <Typography variant="body1" component="div">
-                    <strong>Email: </strong> {selectedEvent.email}
+                    <strong>Email: </strong> {selectedEvent?.email}
                   </Typography>
 
                   {/* Render Organization Type */}
                   <Typography variant="body1" component="div">
-                    <strong>Type: </strong> {selectedEvent.delegatedBy}
+                    <strong>Type: </strong> {selectedEvent?.delegatedBy}
                   </Typography>
 
                   {/* Render Status */}
                   <Typography variant="body1" component="div">
                     <strong>Status: </strong>
-                    {selectedEvent.copApproved ? (
+                    {selectedEvent?.copApproved ? (
                       <Chip
                         label="Approved"
                         color="success"
@@ -278,11 +278,11 @@ const CopTable: React.FC = () => {
                       <Chip label="Pending" color="error" />
                     )}
                   </Typography>
-                  {!selectedEvent.copApproved && (
+                  {!selectedEvent?.copApproved && (
                     <Button
                       variant="contained"
                       color="success"
-                      onClick={() => handleApprove(selectedEvent._id)}
+                      onClick={() => handleApprove(selectedEvent?._id)}
                     >
                       Click to Approve
                     </Button>

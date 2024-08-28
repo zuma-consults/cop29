@@ -53,7 +53,7 @@ const Event: React.FC = () => {
                 },
               }}
             >
-              Create a new event
+              Schedule Meeting
               <IoCreateSharp size={20} />
             </Button>
           </div>

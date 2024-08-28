@@ -105,15 +105,15 @@ const OrganisationTable: React.FC = () => {
   const columns: TableColumn<TableRow>[] = [
     {
       name: "Name",
-      selector: (row: { name: any }) => row.name ?? "N/A",
+      selector: (row: { name: any }) => row?.name ?? "N/A",
     },
     {
       name: "Email",
-      selector: (row: { email: any }) => row.email ?? "N/A",
+      selector: (row: { email: any }) => row?.email ?? "N/A",
     },
     {
       name: "Phone",
-      selector: (row: { phone: any }) => row.phone ?? "N/A",
+      selector: (row: { phone: any }) => row?.phone ?? "N/A",
     },
     {
       name: (
@@ -126,7 +126,7 @@ const OrganisationTable: React.FC = () => {
           />
         </Box>
       ),
-      selector: (row: { userType: any }) => row.userType ?? "N/A",
+      selector: (row: { userType: any }) => row?.userType ?? "N/A",
     },
     {
       name: "Organization Type",
@@ -136,7 +136,7 @@ const OrganisationTable: React.FC = () => {
 
     {
       name: "Status",
-      selector: (row: { status: any }) => row.status ?? "N/A",
+      selector: (row: { status: any }) => row?.status ?? "N/A",
       cell: (row: {
         status:
           | string
@@ -255,8 +255,8 @@ const OrganisationTable: React.FC = () => {
                   <CardMedia
                     component="img"
                     height="200" // You can adjust this value as needed
-                    image={selectedEvent.image}
-                    alt={`${selectedEvent.name} Logo`}
+                    image={selectedEvent?.image}
+                    alt={`${selectedEvent?.name} Logo`}
                     sx={{
                       objectFit: "contain",
                       marginBottom: "16px",
@@ -269,17 +269,17 @@ const OrganisationTable: React.FC = () => {
                 <CardContent className="flex flex-col justify-center items-center gap-5">
                   {/* Render Name */}
                   <Typography variant="body1" component="div">
-                    <strong>Name: </strong> {selectedEvent.name}
+                    <strong>Name: </strong> {selectedEvent?.name}
                   </Typography>
 
                   {/* Render Email */}
                   <Typography variant="body1" component="div">
-                    <strong>Email: </strong> {selectedEvent.email}
+                    <strong>Email: </strong> {selectedEvent?.email}
                   </Typography>
 
                   {/* Render Phone */}
                   <Typography variant="body1" component="div">
-                    <strong>Phone: </strong> {selectedEvent.phone}
+                    <strong>Phone: </strong> {selectedEvent?.phone}
                   </Typography>
 
                   {/* Render State */}
@@ -288,36 +288,36 @@ const OrganisationTable: React.FC = () => {
                     component="div"
                     className="capitalize"
                   >
-                    <strong>State: </strong> {selectedEvent.state}
+                    <strong>State: </strong> {selectedEvent?.state}
                   </Typography>
 
                   {/* Render Category */}
                   <Typography variant="body1" component="div">
-                    <strong>Category: </strong> {selectedEvent.category}
+                    <strong>Category: </strong> {selectedEvent?.category}
                   </Typography>
 
                   {/* Render Organization Type */}
                   <Typography variant="body1" component="div">
                     <strong>Organization Type: </strong>{" "}
-                    {selectedEvent.organizationType}
+                    {selectedEvent?.organizationType}
                   </Typography>
 
                   {/* Render Status */}
                   <Typography variant="body1" component="div">
                     <strong>Status: </strong>
-                    {selectedEvent.status === "approved" ? (
+                    {selectedEvent?.status === "approved" ? (
                       <Chip
-                        label={selectedEvent.status}
+                        label={selectedEvent?.status}
                         color="success"
                         className="capitalize"
                       />
                     ) : (
-                      <Chip label={selectedEvent.status} color="error" />
+                      <Chip label={selectedEvent?.status} color="error" />
                     )}
                   </Typography>
 
                   {/* Action Buttons for Pending Status */}
-                  {selectedEvent.status === "Pending" && (
+                  {selectedEvent?.status === "Pending" && (
                     <Box className="flex justify-between gap-5 mt-4">
                       <Button
                         variant="contained"

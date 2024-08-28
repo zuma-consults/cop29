@@ -87,16 +87,16 @@ const UserTable: React.FC = () => {
   const columns: TableColumn<TableRow>[] = [
     {
       name: "Name",
-      selector: (row: { name: any }) => row.name ?? "N/A",
+      selector: (row: { name: any }) => row?.name ?? "N/A",
     },
 
     {
       name: "Email",
-      selector: (row: { email: any }) => row.email ?? "N/A",
+      selector: (row: { email: any }) => row?.email ?? "N/A",
     },
     {
       name: "Role",
-      selector: (row) => row.role.name ?? "N/A",
+      selector: (row) => row?.role?.name ?? "N/A",
     },
 
     {

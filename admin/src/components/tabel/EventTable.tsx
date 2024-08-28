@@ -33,8 +33,8 @@ const EventTable: React.FC = () => {
 
   const memoizedFilters = useMemo(
     () => ({
-      search: filters.search,
-      tag: filters.tags,
+      search: filters?.search,
+      tag: filters?.tags,
     }),
     [filters.search, filters.tags]
   );
@@ -96,34 +96,34 @@ const EventTable: React.FC = () => {
           />
         </Box>
       ),
-      selector: (row) => row.title ?? "N/A",
+      selector: (row) => row?.title ?? "N/A",
     },
     {
       name: "Date",
-      selector: (row) => row.start,
+      selector: (row) => row?.start,
       format: (row) => (
         <Typography variant="body2" color="text.secondary">
-          {new Date(row.start).toLocaleDateString()}
+          {new Date(row?.start).toLocaleDateString()}
         </Typography>
       ),
     },
     {
       name: "Duration",
-      selector: (row) => row.start,
+      selector: (row) => row?.start,
       format: (row) => (
         <Typography variant="body2" color="text.secondary">
-          {formatDuration(row.start, row.end)}
+          {formatDuration(row?.start, row?.end)}
         </Typography>
       ),
     },
     {
       name: "Tags",
       selector: (row) =>
-        Array.isArray(row.tags) ? row.tags.join(", ") : "N/A",
+        Array.isArray(row?.tags) ? row.tags?.join(", ") : "N/A",
     },
     {
       name: "Status",
-      selector: (row) => row.status ?? "N/A",
+      selector: (row) => row?.status ?? "N/A",
       cell: (row) => (
         <div className="text-left capitalize flex items-center">
           {row.status === "approved" ? (
@@ -136,7 +136,7 @@ const EventTable: React.FC = () => {
             />
           ) : (
             <Chip
-              label={row.status}
+              label={row?.status}
               color="warning"
               sx={{
                 textTransform: "capitalize",
@@ -151,7 +151,7 @@ const EventTable: React.FC = () => {
       cell: (row) => (
         <div className="flex justify-end cursor-pointer">
           <Link
-            to={`/event/${row.countId}`}
+            to={`/event/${row?.countId}`}
             state={{ ...row }}
             className="w-[150px] cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
           >
