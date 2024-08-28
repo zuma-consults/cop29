@@ -186,7 +186,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="password"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Password*
+              Confirm Password*
             </label>
             <Field
               type={values.showPassword ? "text" : "password"}
