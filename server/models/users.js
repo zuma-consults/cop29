@@ -16,6 +16,7 @@ const userSchema = mongoose.Schema(
     },
     phone: {
       type: String,
+      required: true,
     },
     category: {
       type: String,
@@ -23,13 +24,25 @@ const userSchema = mongoose.Schema(
     state: {
       type: String,
     },
-    image: {
+    contactIdCard: {
+      type: String,
+      required: true,
+    },
+    thematicArea: {
+      type: String,
+      required: true,
+    },
+    reasonForAttendance: {
+      type: String,
+      required: true,
+    },
+    documentSupportingAttendance: {
       type: String,
     },
     status: {
       type: String,
       enum: ["pending", "approved", "suspended"],
-      default: "approved",
+      default: "pending",
     },
     userType: {
       type: String,
@@ -52,11 +65,11 @@ const userSchema = mongoose.Schema(
           },
           phone: {
             type: String,
-            // required: true,
+            required: true,
           },
           designation: {
             type: String,
-            // required: true,
+            required: true,
           },
           passport: {
             type: String,
@@ -79,6 +92,7 @@ const userSchema = mongoose.Schema(
     },
     letterProof: {
       type: String,
+      required: true,
     },
     terms: {
       type: Boolean,
