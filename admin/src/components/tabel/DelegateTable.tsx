@@ -98,11 +98,11 @@ const DelegateTable: React.FC = () => {
     {
       name: "Name",
 
-      selector: (row: { name: any }) => row.name ?? "N/A",
+      selector: (row: { name: any }) => row?.name ?? "N/A",
     },
     {
       name: "Email",
-      selector: (row: { email: any }) => row.email ?? "N/A",
+      selector: (row: { email: any }) => row?.email ?? "N/A",
     },
     {
       name: (
@@ -115,16 +115,16 @@ const DelegateTable: React.FC = () => {
           />
         </Box>
       ),
-      selector: (row: { userType: any }) => row.userType ?? "N/A",
+      selector: (row: { userType: any }) => row?.userType ?? "N/A",
     },
     {
       name: "Phone",
-      selector: (row: { phone: any }) => row.phone ?? "N/A",
+      selector: (row: { phone: any }) => row?.phone ?? "N/A",
     },
 
     {
       name: "Status",
-      selector: (row: { status: any }) => row.status ?? "N/A",
+      selector: (row: { status: any }) => row?.status ?? "N/A",
       cell: (row: {
         status:
           | string
@@ -240,23 +240,23 @@ const DelegateTable: React.FC = () => {
               <Card>
                 <CardContent className="flex flex-col justify-center items-center gap-3">
                   <Typography variant="h5" component="div">
-                    {selectedEvent.name}
+                    {selectedEvent?.name}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {selectedEvent.phone}
+                    {selectedEvent?.phone}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {selectedEvent.email}
+                    {selectedEvent?.email}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {selectedEvent.userType}
+                    {selectedEvent?.userType}
                   </Typography>
 
                   <div className="mb-4">
-                    {selectedEvent.status == "approved" ? (
-                      <Chip label={selectedEvent.status} color="success" />
+                    {selectedEvent?.status == "approved" ? (
+                      <Chip label={selectedEvent?.status} color="success" />
                     ) : (
-                      <Chip label={selectedEvent.status} color="error" />
+                      <Chip label={selectedEvent?.status} color="error" />
                     )}
                   </div>
 

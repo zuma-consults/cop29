@@ -10,7 +10,7 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [openSmallNav, setOpenSmallNav] = useState(false);
 
   return (
-    <Box >
+    <Box>
       <Nav
         large={openLargeNav}
         small={openSmallNav}
@@ -33,7 +33,9 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
           </MainContent>
           <DashboardFooter
             isLargeNavOpen={openLargeNav}
-            text="Made with ❤️ by Okike Consults"
+            // text="Made with ❤️ by Okike Consults"
+            text="The Office of the Special Envoy on Climate Action and the National Council on Climate Change Secretariat
+"
           />
         </Box>
       </Box>

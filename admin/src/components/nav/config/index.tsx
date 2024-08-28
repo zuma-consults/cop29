@@ -38,11 +38,11 @@ export const navConfig = [
     icon: <RiAdminFill size={24} />,
     path: "/user",
   },
-  {
-    title: "PA Calender",
-    icon: <FaCalendarAlt size={24} />,
-    path: "/pacalender",
-  },
+  // {
+  //   title: "PA Calendar",
+  //   icon: <FaCalendarAlt size={24} />,
+  //   path: "/pacalender",
+  // },
   {
     title: "COP Applicants",
     icon: <TbSquareLetterC size={24} />,

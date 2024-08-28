@@ -107,27 +107,9 @@ const Nav: React.FC<{
             className="flex gap-2 items-center"
             onClick={() => navigate("/events")}
           >
-            <img
-              src="/images/logo.svg"
-              alt="Logo"
-              className="rounded-lg"
-              width={50}
-              height={10}
-            />
+            <img src="/images/seal.png" alt="Logo" className="h-[40px]" />
             <div className="gap-1 items-center hidden md:block">
-              <div className="flex items-center">
-                <span className="text-green-800 text-[30px] font-bold">C</span>
-                <img
-                  src="/images/flagicon.svg"
-                  alt="Icon"
-                  className="inline-block"
-                  width={33}
-                  height={20}
-                />
-                <span className="text-green-800 text-[30px] font-bold">
-                  P29
-                </span>
-              </div>
+              <img src="/images/new.png" alt="Logo" className="h-[40px]" />
             </div>
           </div>
           <Box

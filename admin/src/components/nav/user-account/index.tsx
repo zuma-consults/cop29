@@ -75,7 +75,7 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
       >
         <Box sx={{ flexGrow: 1, mr: "20px" }}>
           <Box>
-            {role ? (
+            {name ? (
               <Typography
                 sx={{
                   fontSize: "16px",
