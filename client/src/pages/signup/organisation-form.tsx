@@ -104,6 +104,7 @@ const OrganizationForm: React.FC = () => {
             Create an Account for your Organisation
           </h1>
           {/* Organization Fields */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="mb-4">
             <label
               htmlFor="name"
@@ -146,22 +147,35 @@ const OrganizationForm: React.FC = () => {
             />
           </div>
 
-          <div className="mb-4">
+
+          <div className="relative mb-4">
             <label
-              htmlFor="phone"
+              htmlFor="password"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Contact Person's Phone Number*
+              Password*
             </label>
             <Field
-              type="text"
-              id="phone"
-              name="phone"
-              placeholder="Enter your phone number"
-              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+              type={values.showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 pr-10"
             />
+            <div
+              className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mt-5"
+              onClick={() =>
+                setFieldValue("showPassword", !values.showPassword)
+              }
+            >
+              {values.showPassword ? (
+                <FaRegEye size={20} />
+              ) : (
+                <FaRegEyeSlash size={20} />
+              )}
+            </div>
             <ErrorMessage
-              name="phone"
+              name="password"
               component="div"
               className="text-red-600 text-xs mt-1"
             />
@@ -199,6 +213,28 @@ const OrganizationForm: React.FC = () => {
               className="text-red-600 text-xs mt-1"
             />
           </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="phone"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+              Contact Person's Phone Number*
+            </label>
+            <Field
+              type="text"
+              id="phone"
+              name="phone"
+              placeholder="Enter your phone number"
+              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+            />
+            <ErrorMessage
+              name="phone"
+              component="div"
+              className="text-red-600 text-xs mt-1"
+            />
+          </div>
+
           <div className="mb-4">
             <label
               htmlFor="category"
@@ -225,6 +261,7 @@ const OrganizationForm: React.FC = () => {
               className="text-red-600 text-xs mt-1"
             />
           </div>
+
           <div className="mb-4">
             <label
               htmlFor="category"
@@ -306,7 +343,27 @@ const OrganizationForm: React.FC = () => {
             />
           </div>
 
-          {/* File Uploads */}
+          <div className="mb-4">
+            <label
+              htmlFor="designation"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+              Contact Person's Designation*
+            </label>
+            <Field
+              type="text"
+              id="designation"
+              name="designation"
+              placeholder="Enter your designation"
+              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+            />
+            <ErrorMessage
+              name="designation"
+              component="div"
+              className="text-red-600 text-xs mt-1"
+            />
+          </div>
+
           <div className="mb-4">
             <label
               htmlFor="files"
@@ -366,27 +423,11 @@ const OrganizationForm: React.FC = () => {
               className="text-red-600 text-xs mt-1"
             />
           </div>
-
-          <div className="mb-4">
-            <label
-              htmlFor="designation"
-              className="block text-gray-700 font-semibold mb-2"
-            >
-              Contact Person's Designation*
-            </label>
-            <Field
-              type="text"
-              id="designation"
-              name="designation"
-              placeholder="Enter your designation"
-              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-            />
-            <ErrorMessage
-              name="designation"
-              component="div"
-              className="text-red-600 text-xs mt-1"
-            />
           </div>
+
+          {/* File Uploads */}
+
+
           <div className="mb-4">
             <label
               htmlFor="reason"
@@ -404,6 +445,31 @@ const OrganizationForm: React.FC = () => {
             />
             <ErrorMessage
               name="reason"
+              component="div"
+              className="text-red-600 text-xs mt-1"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="orgImage"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+             Upload Document Supporting Reason for Attendance
+            </label>
+            <input
+              type="file"
+              id="orgImage"
+              accept=".png, .jpg, .jpeg"
+              onChange={(event) => {
+                if (event.currentTarget.files) {
+                  setOrgImage(event.currentTarget.files[0]);
+                }
+              }}
+              className="bg-white w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+            />
+            <ErrorMessage
+              name="orgImage"
               component="div"
               className="text-red-600 text-xs mt-1"
             />
