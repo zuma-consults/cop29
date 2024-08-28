@@ -234,7 +234,7 @@ module.exports = {
 
           return successHandler(
             res,
-            "Your account has been created. Please check your email to verify your email address and complete your application for COP 29 by adding your delegates.",
+            "Your account has been created. Please check your email to verify your email address and complete your application for COP 29 by adding your delegates."
             // newUser
           );
         } catch (error) {
@@ -295,6 +295,11 @@ module.exports = {
               passport = result.url;
             }
           }
+        }
+
+        // Check if passport is provided
+        if (!passport) {
+          return errorHandler(res, "Passport is required.", 400);
         }
 
         // Add delegate to the organization's delegates array
