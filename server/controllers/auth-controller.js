@@ -235,7 +235,7 @@ module.exports = {
           return successHandler(
             res,
             "Your account has been created. Please check your email to verify your email address and complete your application for COP 29 by adding your delegates.",
-            newUser
+            // newUser
           );
         } catch (error) {
           return errorHandler(res, error.message, error.statusCode || 500);
