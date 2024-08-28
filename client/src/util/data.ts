@@ -51,6 +51,7 @@ export const categories = [
   "Environment",
   "Manufacturing",
   "Tourism",
+  "Negotiators"
 ];
 
 export const organizationTypes = [
@@ -58,11 +59,24 @@ export const organizationTypes = [
   "National Assembly",
   "House of Assembly",
   "State Government",
-  "Civil Society Organization (CSO)",
-  "Non-Governmental Organization (NGO)",
+  "State Assembly",
   "Private Sector",
-  // "International Organization",
+  "Private Sector",
+  "other"
 ];
+
+export const thematicAreas = [
+  "Agriculture and Food Security",
+ "Biodiversity",
+  "Ecosystems and Water Resourses",
+  "Human Settlements",
+  "Oceans",
+  "Health",
+  "Private Sector Initiative",
+  "Gender Sensitive Aproaches",
+  "Local Indigenous and Traditional Knowledge",
+  "Other Areas"
+]
 
 export const faqs = [
   {

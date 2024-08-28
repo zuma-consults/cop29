@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-import { categories, organizationTypes, states } from "../../util/data";
+import { categories, organizationTypes, states, thematicAreas } from "../../util/data";
 import Loader from "../../components/ui/Loader";
 import { useOrgRegister } from "../../components/custom-hooks/useAuth";
 import { toast } from "react-toastify";
@@ -33,6 +33,7 @@ const organizationValidationSchema = Yup.object({
   category: Yup.string().required("Category is required"),
   state: Yup.string(),
   organizationType: Yup.string().required("Organization Type is required"),
+  reason: Yup.string().required("Reason for attending is required"),
   terms: Yup.boolean()
     .oneOf([true], "You must accept the terms and conditions")
     .required(),
@@ -68,6 +69,7 @@ const OrganizationForm: React.FC = () => {
         category: "",
         state: "",
         organizationType: "",
+        reason: "",
         terms: false,
         showPassword: false,
       }}
@@ -197,40 +199,6 @@ const OrganizationForm: React.FC = () => {
               className="text-red-600 text-xs mt-1"
             />
           </div>
-          {/* <div className="relative mb-4">
-            <label
-              htmlFor="password"
-              className="block text-gray-700 font-semibold mb-2"
-            >
-              Confirm Password*
-            </label>
-            <Field
-              type={values.showPassword ? "text" : "password"}
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 pr-10"
-            />
-            <div
-              className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mt-5"
-              onClick={() =>
-                setFieldValue("showPassword", !values.showPassword)
-              }
-            >
-              {values.showPassword ? (
-                <FaRegEye size={20} />
-              ) : (
-                <FaRegEyeSlash size={20} />
-              )}
-            </div>
-            <ErrorMessage
-              name="password"
-              component="div"
-              className="text-red-600 text-xs mt-1"
-            />
-          </div> */}
-
-          {/* Specific Fields for Organization */}
           <div className="mb-4">
             <label
               htmlFor="category"
@@ -248,6 +216,32 @@ const OrganizationForm: React.FC = () => {
               {categories.map((category) => (
                 <option key={category} value={category}>
                   {category}
+                </option>
+              ))}
+            </Field>
+            <ErrorMessage
+              name="category"
+              component="div"
+              className="text-red-600 text-xs mt-1"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="category"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+              Thematic Area*
+            </label>
+            <Field
+              as="select"
+              id="category"
+              name="category"
+              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+            >
+              <option value="">Select Thematic Area</option>
+              {thematicAreas.map((thematicArea) => (
+                <option key={thematicArea} value={thematicArea}>
+                  {thematicArea}
                 </option>
               ))}
             </Field>
@@ -389,6 +383,27 @@ const OrganizationForm: React.FC = () => {
             />
             <ErrorMessage
               name="designation"
+              component="div"
+              className="text-red-600 text-xs mt-1"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="reason"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+              Reason for Attendance
+            </label>
+            <Field
+              type="text"
+              row={5}
+              id="reason"
+              name="reason"
+              placeholder="Reason for attending "
+              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+            />
+            <ErrorMessage
+              name="reason"
               component="div"
               className="text-red-600 text-xs mt-1"
             />
