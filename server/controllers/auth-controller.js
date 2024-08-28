@@ -18,8 +18,16 @@ module.exports = {
       } else {
         try {
           const { body, files } = req;
-          const { name, password, email, userType, designation } = req.body;
-          if (!name || !password || !email || !userType) {
+          const { name, password, email, phone, designation, thematicArea } =
+            req.body;
+          if (
+            !name ||
+            !password ||
+            !email ||
+            !phone ||
+            !designation ||
+            !thematicArea
+          ) {
             return errorHandler(
               res,
               "Please fill in all fields, one or more fields are empty!",
@@ -111,8 +119,24 @@ module.exports = {
       } else {
         try {
           const { body, files } = req;
-          const { name, password, email, userType } = req.body;
-          if (!name || !password || !email || !userType) {
+          const {
+            name,
+            password,
+            email,
+            phone,
+            designation,
+            thematicArea,
+            reasonForAttendance,
+          } = req.body;
+          if (
+            !name ||
+            !password ||
+            !email ||
+            !phone ||
+            !designation ||
+            !thematicArea ||
+            !reasonForAttendance
+          ) {
             return errorHandler(
               res,
               "Please fill in all fields, one or more fields are empty!",
@@ -166,14 +190,31 @@ module.exports = {
                   localFileName,
                   "COP29"
                 );
-                body.image = result.url;
+                body.contactIdCard = result.url;
+              }
+            }
+
+            // Process documentSupportingAttendance
+            const attendanceDoc = files.filter(
+              (file) => file.fieldname === "documentSupportingAttendance"
+            );
+            if (attendanceDoc.length > 0) {
+              for (const file of attendanceDoc) {
+                const localFilePath = file.path;
+                const localFileName = file.filename;
+
+                const result = await uploadToCloudinary(
+                  localFilePath,
+                  localFileName,
+                  "COP29"
+                );
+                body.documentSupportingAttendance = result.url;
               }
             }
           }
 
           const newUser = new User({
             name,
-            userType,
             email,
             ...req.body,
             password: passwordHash,
@@ -617,7 +658,10 @@ module.exports = {
   verifyEmail: async (req, res) => {
     try {
       // Find the user by their ID and update their verifiedEmail in the database
-      await User.updateOne({ _id: req.user }, { verifiedEmail: true });
+      await User.updateOne(
+        { _id: req.user },
+        { verifiedEmail: true, status: "approved" }
+      );
 
       return successHandler(res, "Email Verified.");
     } catch (err) {
