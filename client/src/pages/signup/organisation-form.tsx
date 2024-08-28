@@ -396,7 +396,7 @@ const OrganizationForm: React.FC = () => {
             </label>
             <Field
               type="text"
-              row={5}
+            as="textarea"
               id="reason"
               name="reason"
               placeholder="Reason for attending "
