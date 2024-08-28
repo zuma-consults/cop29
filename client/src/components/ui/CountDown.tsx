@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 // Define the type for the time left object
-type TimeLeft = {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-} | undefined;
+type TimeLeft =
+  | {
+      days: number;
+      hours: number;
+      minutes: number;
+      seconds: number;
+    }
+  | undefined;
 
 const CountdownTimer: React.FC = () => {
   const calculateTimeLeft = (): TimeLeft => {
-    const registrationEndDate = new Date('2024-10-25T23:59:59'); // Set your end date and time here
+    const registrationEndDate = new Date("2024-10-25T23:59:59"); // Set your end date and time here
     const now = new Date();
     const difference = registrationEndDate.getTime() - now.getTime();
 
@@ -37,8 +39,10 @@ const CountdownTimer: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center bg-green-900 text-white p-6 rounded-lg shadow-lg md:absolute m-3 top-0 right-10">
-      <h1 className="text-2xl font-bold mb-4">Accreditation for UNFCCC COP29 will close in:</h1>
+    <div className="flex flex-col items-center  text-white p-6 rounded-lg md:absolute m-3 top-0 right-10">
+      <h1 className="text-2xl font-bold mb-4 text-center">
+        Accreditation for UNFCCC COP29 will close in:
+      </h1>
       {timeLeft ? (
         <div className="flex space-x-4">
           <div className="flex flex-col items-center">

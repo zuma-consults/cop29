@@ -49,24 +49,33 @@ const sendVerifyEmail = async (to, url, txt, name) => {
     <div style="padding: 50px">
       <h3 style="color: #003300">Hello ${name},</h3>
       <p style="color: #336633; font-size: 15px">
-        Thank you for signing up for Cop29 Nigeria! To complete your
-        registration, please verify your email address by clicking the button
-        below:
+        Thank you for signing up for Cop29 Nigeria!
       </p>
-      <a
-        href="${url}"
-        style="
-          display: inline-block;
-          padding: 10px 20px;
-          margin: 20px 0;
-          background-color: #28a745;
-          color: #ffffff;
-          text-decoration: none;
-          border-radius: 5px;
-        "
-      >
-        <strong>${txt}</strong>
-      </a>
+      <div style="padding: 20px;">
+      <p>
+        To complete your registration, please click the link below:
+      </p>
+      <p style="text-align: center; margin: 20px 0;">
+        <a
+          href="${url}"
+          style="
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+          "
+        >
+          <strong>${txt}</strong>
+        </a>
+      </p>
+      <p>
+        If the button doesn’t work, please copy and paste the following URL into your web browser:
+        <a href="${url}">${url}</a>
+      </p>
+    </div>
+    
       <p style="color: #336633; font-size: 15px">
         If you did not sign up for this account, please ignore this email.
       </p>
