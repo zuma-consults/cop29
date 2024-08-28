@@ -124,16 +124,16 @@ module.exports = {
             password,
             email,
             phone,
-            designation,
             thematicArea,
             reasonForAttendance,
+            contactDesignation,
           } = req.body;
           if (
             !name ||
             !password ||
             !email ||
             !phone ||
-            !designation ||
+            !contactDesignation ||
             !thematicArea ||
             !reasonForAttendance
           ) {
