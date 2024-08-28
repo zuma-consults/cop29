@@ -129,7 +129,6 @@ const verifyPasswordToken = async (req, res, next) => {
 };
 
 const authRole = (role) => {
-  console.log(role, "auth");
   return async (req, res, next) => {
     try {
       // Assume token is passed in a header named "poc-admin-token"

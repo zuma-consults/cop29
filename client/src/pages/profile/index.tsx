@@ -102,7 +102,8 @@ const Profile: React.FC = () => {
               Email: {organizationData.email}
               </h2> */}
               <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
-                Email: {organizationData.email}
+                Email:{" "}
+                <span className="lowercase">{organizationData.email}</span>
               </p>
               <p className="text-sm md:text-base text-gray-600 mt-2">
                 Phone: {organizationData.phone}
