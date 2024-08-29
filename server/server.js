@@ -5,19 +5,40 @@ const express = require("express");
 const app = express();
 const connectDb = require("./config/config");
 const cors = require("cors");
-const rateLimit = require('express-rate-limit');
+const rateLimit = require("express-rate-limit");
 
 const port = process.env.PORT || 7070;
 const { logRequestDuration } = require("./middlewares/middleware");
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
-});const helmet = require('helmet');
-
+});
+const helmet = require("helmet");
 
 app.use(helmet());
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       scriptSrc: ["'self'", "trusted-cdn.com"],
+//       // Additional policies...
+//     },
+//   })
+// );
+
+// app.use(
+//   session({
+//     secret: 'your-secret',
+//     cookie: {
+//       secure: true, // Requires HTTPS
+//       httpOnly: true,
+//       sameSite: 'strict', // or 'lax'
+//     },
+//   })
+// );
+
 app.use(limiter);
-app.disable('x-powered-by');
+app.disable("x-powered-by");
 // Middleware setup
 app.use(cors()); // Enable CORS for all routes
 app.use(express.urlencoded({ extended: true }));
