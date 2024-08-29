@@ -26,3 +26,11 @@ body {
   border-radius: 20px !important;
   overflow: hidden;
 }
+:root {
+  color-scheme: light; /* Force light mode */
+}
+
+body {
+  background-color: #ffffff; /* Ensure background is white */
+  color: #000000; /* Ensure text is black */
+}
