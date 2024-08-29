@@ -1,6 +1,7 @@
 const Message = require("../models/message");
 const { successHandler } = require("../utils/core");
 const { errorHandler } = require("../utils/errorHandler");
+const sendMessageEmail = require("../utils/sendMessageEmail");
 
 module.exports = {
   sendInternationalMessage: async (req, res) => {
@@ -36,6 +37,7 @@ module.exports = {
         preferredDateTime,
       });
       await newMessage.save();
+      sendMessageEmail(email, url, "Click to complete your application", name);
       return successHandler(res, "Meeting Request Sent.");
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
