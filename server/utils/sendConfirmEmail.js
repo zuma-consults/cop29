@@ -1,7 +1,7 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 
-const { SENDER_EMAIL_ADDRESS } = process.env;
+const { SENDER_EMAIL_ADDRESS, SENDER_EMAIL_ADDRESS_FROM } = process.env;
 
 const sendVerifyEmail = async (to, url, txt, name) => {
   const smtpTransport = nodemailer.createTransport({
@@ -21,7 +21,7 @@ const sendVerifyEmail = async (to, url, txt, name) => {
   });
 
   const mailOptions = {
-    from: SENDER_EMAIL_ADDRESS,
+    from: SENDER_EMAIL_ADDRESS_FROM,
     to: to,
     subject: "COP29 NIGERIA",
     text: "Activate Account",
