@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DelegateForm from "./delegate-form";
+// import DelegateForm from "./delegate-form";
 import OrganizationForm from "./organisation-form";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";

@@ -59,7 +59,9 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
 
   useEffect(() => {
     if (data && data.status) {
-      toast.success("Delegate added successfully", { toastId: "customId" });
+      toast.success("Delegate added successfully", { 
+        toastId: "add delegate id" 
+      });
       refetch();
       setFile(null);
       onClose();
