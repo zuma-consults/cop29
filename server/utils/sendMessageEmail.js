@@ -1,7 +1,7 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 
-const { SENDER_EMAIL_ADDRESS } = process.env;
+const { SENDER_EMAIL_ADDRESS, SENDER_EMAIL_ADDRESS_FROM } = process.env;
 
 const sendMessageEmail = async (
   name,
@@ -27,8 +27,8 @@ const sendMessageEmail = async (
   });
 
   const mailOptions = {
-    from: SENDER_EMAIL_ADDRESS,
-    to: "copregistration@natccc.gov.ng",
+    from: SENDER_EMAIL_ADDRESS_FROM,
+    to: "nuhuahmed365@gmail.com",
     subject: "International Organization Meeting Request",
     html: `
     <div style="background-color: #f6f6f6; margin: 0; padding: 0;">
