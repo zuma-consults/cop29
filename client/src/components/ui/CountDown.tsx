@@ -39,7 +39,7 @@ const CountdownTimer: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center  text-white p-6 rounded-lg md:absolute m-3 top-0 right-10 bg-green-900">
+    <div className="flex flex-col items-center  text-white p-6 rounded-lg md:absolute m-3 top-0 right-10">
       <h1 className="text-2xl font-bold mb-4 text-center">
         Accreditation for UNFCCC COP29 will close in:
       </h1>
