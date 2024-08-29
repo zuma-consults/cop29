@@ -38,13 +38,7 @@ module.exports = {
         preferredDateTime,
       });
       await newMessage.save();
-      sendMessageEmail(
-        name,
-        phone,
-        reasonForMeeting,
-        email,
-        dateTime
-      );
+      sendMessageEmail(name, phone, reasonForMeeting, email, dateTime);
       return successHandler(res, "Meeting Request Sent.");
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
@@ -62,7 +56,7 @@ module.exports = {
       }
 
       const findMessage = await Message.findOne({ email });
-
+      
       if (findMessage) {
         return errorHandler(res, "Message Sent.", 409);
       }
@@ -80,9 +74,38 @@ module.exports = {
       return errorHandler(res, error.message, error.statusCode);
     }
   },
+  getAllMessages: async (req, res) => {
+    try {
+      const { page = 1, limit = 50, messageType } = req.query;
+
+      const query = messageType
+        ? { messageType }
+        : { messageType: "international" };
+
+      const messages = await Message.find(query)
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(parseInt(limit));
+
+      const totalMessages = await Message.countDocuments(query);
+
+      // Prepare the response with pagination info
+      const response = {
+        totalPages: Math.ceil(totalMessages / limit),
+        currentPage: parseInt(page),
+        totalMessages,
+        messages,
+      };
+
+      const message = `All ${messageType ? messageType : "Messages"} Found`;
+
+      return successHandler(res, message, response);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode);
+    }
+  },
 };
 
-// const timestamp = "2024-08-27T15:00:00.000Z";
 function formattedDateTime(timestamp) {
   const formattedDateTime = moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
   return formattedDateTime;
