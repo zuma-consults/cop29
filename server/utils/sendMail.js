@@ -1,7 +1,7 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 
-const { SENDER_EMAIL_ADDRESS } = process.env;
+const { SENDER_EMAIL_ADDRESS, SENDER_EMAIL_ADDRESS_FROM } = process.env;
 
 const sendEmail = async (to, name, amount) => {
   const smtpTransport = nodemailer.createTransport({
@@ -21,7 +21,7 @@ const sendEmail = async (to, name, amount) => {
   });
 
   const mailOptions = {
-    from: SENDER_EMAIL_ADDRESS,
+    from: SENDER_EMAIL_ADDRESS_FROM,
     to: to,
     subject: "COP 29 INVOICE",
     html: `
