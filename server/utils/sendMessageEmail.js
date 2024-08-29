@@ -28,7 +28,7 @@ const sendMessageEmail = async (
 
   const mailOptions = {
     from: SENDER_EMAIL_ADDRESS,
-    to: "fagbuji@gmail.com",
+    to: "copregistration@natccc.gov.ng",
     subject: "International Organization Meeting Request",
     html: `
     <div style="background-color: #f6f6f6; margin: 0; padding: 0;">
