@@ -90,7 +90,7 @@ const Hero: React.FC = () => {
               // data-aos-duration="1000"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
-            International Organisations
+              International Organisation Meeting Request
             </Link>
         </div>
         <div className="flex flex-col items-center md:items-end justify-center space-y-0 w-full h-full ">

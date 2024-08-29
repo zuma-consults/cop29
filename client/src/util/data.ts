@@ -61,8 +61,7 @@ export const organizationTypes = [
   "State Government",
   "State Assembly",
   "Private Sector",
-  "Private Sector",
-  "other"
+  "Others"
 ];
 
 export const thematicAreas = [
