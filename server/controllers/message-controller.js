@@ -2,6 +2,7 @@ const Message = require("../models/message");
 const { successHandler } = require("../utils/core");
 const { errorHandler } = require("../utils/errorHandler");
 const sendMessageEmail = require("../utils/sendMessageEmail");
+const moment = require("moment");
 
 module.exports = {
   sendInternationalMessage: async (req, res) => {
@@ -21,7 +22,7 @@ module.exports = {
           400
         );
       }
-
+      let dateTime = formattedDateTime(preferredDateTime);
       const findMessage = await Message.findOne({ email });
 
       if (findMessage) {
@@ -37,7 +38,13 @@ module.exports = {
         preferredDateTime,
       });
       await newMessage.save();
-      sendMessageEmail(email, url, "Click to complete your application", name);
+      sendMessageEmail(
+        name,
+        phone,
+        reasonForMeeting,
+        email,
+        dateTime
+      );
       return successHandler(res, "Meeting Request Sent.");
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
@@ -74,3 +81,9 @@ module.exports = {
     }
   },
 };
+
+// const timestamp = "2024-08-27T15:00:00.000Z";
+function formattedDateTime(timestamp) {
+  const formattedDateTime = moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
+  return formattedDateTime;
+}
