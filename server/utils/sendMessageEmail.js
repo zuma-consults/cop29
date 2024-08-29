@@ -14,9 +14,9 @@ const sendMessageEmail = async (
     service: "gmail",
     port: 465,
     secure: true, // true for 465, false for other ports
-    logger: true,
+    logger: false,
     debug: true,
-    secureConnection: false,
+    secureConnection: true,
     auth: {
       user: SENDER_EMAIL_ADDRESS, // generated ethereal user
       pass: "wvrr djes apqp nzyz", // generated ethereal password
