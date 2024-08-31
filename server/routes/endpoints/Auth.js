@@ -26,7 +26,7 @@ const {
   verifyPasswordToken,
 } = require("../../middlewares/middleware");
 let routes = (app) => {
-  app.post("/register", createUser);
+  // app.post("/register", createUser);
   app.post("/org/register", createOrganisationAsUser);
   app.get("/users", authAdmin, getAllUsers);
   app.get("/user/:id", getUserById);
