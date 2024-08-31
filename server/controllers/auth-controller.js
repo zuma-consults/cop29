@@ -551,6 +551,23 @@ module.exports = {
         return errorHandler(res, "Delegate not found", 404);
       }
 
+      let event = await Event.findOne({ organizerId: user._id });
+      if (!event) {
+        return errorHandler(
+          res,
+          "Organization is yet to schedule a meeting",
+          404
+        );
+      }
+
+      if (event.status !== "approved") {
+        return errorHandler(
+          res,
+          "Organization does not appear to have an approved meeting.",
+          403
+        );
+      }
+
       // // Find the specific delegate and update their copApproved status
       const delegate = user.delegates.id(id);
       if (!delegate) {
