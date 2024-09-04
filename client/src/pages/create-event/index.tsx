@@ -285,8 +285,7 @@ const CreateEvent = () => {
               <button
                 type="submit"
                 className="bg-green-700 text-white py-5 px-10 rounded hover:bg-green-800"
-                // disabled={isLoading}
-                disabled
+                disabled={isLoading}
               >
                 {isLoading ? "Scheduling..." : "Schedule Meeting"}
               </button>

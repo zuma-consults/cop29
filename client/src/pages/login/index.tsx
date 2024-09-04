@@ -137,8 +137,7 @@ const Login: React.FC = () => {
                 <button
                   type="submit"
                   className="bg-green-600 text-white py-2 px-4 rounded-lg"
-                  // disabled={isLoading}
-                  disabled
+                  disabled={isLoading}
                 >
                   {isLoading ? "Logging in..." : "Log In"}
                 </button>
