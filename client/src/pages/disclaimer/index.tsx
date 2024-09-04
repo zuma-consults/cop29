@@ -128,11 +128,6 @@ const TermsAndConditions = () => {
             their representatives’ participation in the UNFCCC COP29.
           </li>
           <li style={{ marginBottom: "10px" }}>
-            <strong>Fee for Side Events:</strong> Hosting a side event at COP29
-            Nigeria’s Pavilion requires payment of a fee. Details can be found
-            in the side event application section.
-          </li>
-          <li style={{ marginBottom: "10px" }}>
             <strong>Mandatory Reporting:</strong> By registering to participate
             in COP29, organizations commit to submitting a comprehensive report
             detailing sessions, events, and outcomes of their participation,
