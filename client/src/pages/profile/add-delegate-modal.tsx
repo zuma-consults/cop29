@@ -25,8 +25,8 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
     initialValues: {
       name: "",
       email: "",
-      designation:'',
-      phone: '',
+      designation: "",
+      phone: "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
@@ -59,8 +59,8 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
 
   useEffect(() => {
     if (data && data.status) {
-      toast.success("Delegate added successfully", { 
-        toastId: "add delegate id" 
+      toast.success("Delegate added successfully", {
+        toastId: "add delegate id",
       });
       refetch();
       setFile(null);
@@ -72,8 +72,11 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
     <div>
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onClose} />
-          <div className="bg-white rounded-lg shadow-lg p-8 z-10 w-[50%]">
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50"
+            onClick={onClose}
+          />
+          <div className="bg-white rounded-lg shadow-lg p-8 z-10 md:w-[50%] w-[90%]">
             {isLoading ? (
               <Loader />
             ) : (
@@ -121,11 +124,12 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
                       onBlur={formik.handleBlur}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-green-500 focus:border-green-500 sm:text-sm"
                     />
-                    {formik.touched.designation && formik.errors.designation && (
-                      <div className="text-red-500 text-xs mt-1">
-                        {formik.errors.designation}
-                      </div>
-                    )}
+                    {formik.touched.designation &&
+                      formik.errors.designation && (
+                        <div className="text-red-500 text-xs mt-1">
+                          {formik.errors.designation}
+                        </div>
+                      )}
                   </div>
 
                   <div>

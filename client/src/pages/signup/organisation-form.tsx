@@ -442,14 +442,14 @@ const OrganizationForm: React.FC = () => {
               htmlFor="reasonForAttendance"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Reason for Attendance*
+              Reason for Participation*
             </label>
             <Field
               type="text"
             as="textarea"
               id="reasonForAttendance"
               name="reasonForAttendance"
-              placeholder="Reason for attending "
+              placeholder="Field Negotiator, Confirmed Bilateral, Organisation Mandate etc"
               className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
             />
             <ErrorMessage
@@ -464,7 +464,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="supportImage"
               className="block text-gray-700 font-semibold mb-2"
             >
-             Upload Document Supporting Reason for Attendance (pdf file max 2mb)
+             Upload Document Supporting Reason for Participation (pdf file max 2mb)
             </label>
             <input
               type="file"
@@ -519,8 +519,7 @@ const OrganizationForm: React.FC = () => {
           <button
             type="submit"
             className="w-full bg-green-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-green-700 transition"
-            // disabled={isLoading}
-            disabled
+            disabled={isLoading}
           >
             {isLoading ? "Submitting..." : "Sign Up"}
           </button>

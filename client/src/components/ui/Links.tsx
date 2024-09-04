@@ -50,7 +50,6 @@ const Links: React.FC<LinksProps> = ({
       path: "/profile",
     });
   }
-
   const isActive = (path: string) => location.pathname === path;
 
   const handleLogout = () => {
