@@ -442,14 +442,14 @@ const OrganizationForm: React.FC = () => {
               htmlFor="reasonForAttendance"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Reason for Attendance*
+              Reason for Participation*
             </label>
             <Field
               type="text"
             as="textarea"
               id="reasonForAttendance"
               name="reasonForAttendance"
-              placeholder="Reason for attending "
+              placeholder="Field Negotiator, Confirmed Bilateral, Organisation Mandate etc"
               className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
             />
             <ErrorMessage
