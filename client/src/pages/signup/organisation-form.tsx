@@ -464,7 +464,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="supportImage"
               className="block text-gray-700 font-semibold mb-2"
             >
-             Upload Document Supporting Reason for Attendance (pdf file max 2mb)
+             Upload Document Supporting Reason for Participation (pdf file max 2mb)
             </label>
             <input
               type="file"
