@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Route, Routes } from "react-router-dom";
 import EventDetails from "./pages/eventDetails";
 import Home from "./pages/home";
@@ -22,20 +22,37 @@ import ForgotPasswordConfirmation from "./pages/verifications/forgot-password-co
 import ActivationSuccess from "./pages/verifications/activation-success";
 import VerificationConfirmation from "./pages/verifications/verify-confirm";
 import InternationalOrg from "./pages/intl-org";
+import { getProfile } from "./services/auth";
 
 function App() {
   const [loading, setLoading] = useState(true);
-  AOS.init({
-    duration: 1200,
-    offset: 100,
-    easing: "ease-in-out",
-  });
+
+  const fetchUserProfile = useCallback(async () => {
+    try {
+      const result = await getProfile();
+      if (result?.status) {
+        localStorage.setItem("userProfile", JSON.stringify(result?.data));
+      }
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  }, []);
+
   useEffect(() => {
+    AOS.init({
+      duration: 1200,
+      offset: 100,
+      easing: "ease-in-out",
+    });
+
+    fetchUserProfile();
+
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1000);
+
     return () => clearTimeout(timer);
-  }, []);
+  }, [fetchUserProfile]);
 
   if (loading) {
     return <Loader />;
@@ -51,9 +68,9 @@ function App() {
       <Route path="/reset-password/:id" element={<ResetPassword />} />
       <Route path="/verify/:id" element={<AccountActivation />} />
       <Route path="/verify/success" element={<ActivationSuccess />} />
-      
+
       <Route path="/" element={<AppLayout />}>
-       <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/" element={<Home />} />
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/intl-org" element={<InternationalOrg />} />
