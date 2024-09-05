@@ -9,8 +9,8 @@ const Role = require("../models/role");
 module.exports = {
   createAdmin: async (req, res) => {
     try {
-      const { firstName, lastName, password, email } = req.body;
-      if (!firstName || !lastName || !email || !password) {
+      const { firstName, lastName, password, username } = req.body;
+      if (!firstName || !lastName || !username || !password) {
         return errorHandler(
           res,
           "Please fill in all fields, one or more fields are empty!",
@@ -18,7 +18,7 @@ module.exports = {
         );
       }
 
-      const findAdmin = await Admin.findOne({ email });
+      const findAdmin = await Admin.findOne({ username });
 
       if (findAdmin) {
         return errorHandler(res, "The admin already has an account", 409);
@@ -34,7 +34,7 @@ module.exports = {
       const passwordHash = await bcrypt.hash(password, 12);
       const newAdmin = new Admin({
         name: `${firstName} ${lastName}`,
-        email,
+        username,
         ...req.body,
         password: passwordHash,
       });
@@ -46,10 +46,10 @@ module.exports = {
   },
   login: async (req, res) => {
     try {
-      const { email, password } = req.body;
-      const admin = await Admin.findOne({ email });
+      const { username, password } = req.body;
+      const admin = await Admin.findOne({ username });
       if (!admin) {
-        return errorHandler(res, "Email or Password is incorrect.", 404);
+        return errorHandler(res, "Username or Password is incorrect.", 400);
       }
       if (admin.suspended) {
         return errorHandler(
@@ -60,7 +60,7 @@ module.exports = {
       }
       const isMatch = await bcrypt.compare(password, admin.password);
       if (!isMatch) {
-        return errorHandler(res, "Email or Password is incorrect.", 404);
+        return errorHandler(res, "Username or Password is incorrect.", 400);
       }
       const accessToken = await generateTokens(admin);
 
@@ -232,9 +232,4 @@ module.exports = {
 function validatePassword(password) {
   const re = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$/;
   return re.test(password);
-}
-function validateEmail(email) {
-  // Regular expression for validating an Email
-  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return re.test(email);
 }
