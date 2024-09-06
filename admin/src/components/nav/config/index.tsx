@@ -8,15 +8,15 @@ import { TbSquareLetterC } from "react-icons/tb";
 
 export const navConfig = [
   {
-    title: "Events",
+    title: "Scheduled meetings",
     icon: <MdEvent size={24} />,
-    path: "/events",
+    path: "/scheduled-meetings",
   },
-  {
-    title: "Delegates",
-    icon: <IoIosPeople size={24} />,
-    path: "/delegate",
-  },
+  // {
+  //   title: "Delegates",
+  //   icon: <IoIosPeople size={24} />,
+  //   path: "/delegate",
+  // },
   {
     title: "Organizations",
     icon: <CgOrganisation size={24} />,

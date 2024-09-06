@@ -30,7 +30,7 @@ const Login: React.FC = () => {
         toast.success("Login Successful");
         const accessToken = result?.data;
         cookies.set("accessToken", accessToken, { path: "/" });
-        navigate("/events", { replace: true });
+        navigate("/scheduled-meetings", { replace: true });
       }
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || "Error occurred";
@@ -60,26 +60,24 @@ const Login: React.FC = () => {
             <p className="text-[22px] font-semibold">Log into your account</p>
 
             <TextField
-              type="email"
-              label="Email Address*"
+              type="username"
+              label="Username"
               variant="outlined"
               fullWidth
               margin="normal"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                  message: "Enter a valid email address",
-                },
+              {...register("username", {
+                required: "Username is required",
               })}
-              error={!!errors.email}
+              error={!!errors.username}
               helperText={
-                errors.email ? (errors.email.message as string) : undefined
+                errors.username
+                  ? (errors.username.message as string)
+                  : undefined
               }
             />
             <TextField
               type={showPassword ? "text" : "password"}
-              label="Password*"
+              label="Password"
               variant="outlined"
               fullWidth
               margin="normal"

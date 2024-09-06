@@ -24,7 +24,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 interface UserFormInputs {
   firstName: string;
   lastName: string;
-  email: string;
+  username: string;
   password: string;
   phone: string;
   role: string;
@@ -56,7 +56,7 @@ const User: React.FC = () => {
     const userPayload = {
       firstName: data.firstName,
       lastName: data.lastName,
-      email: data.email,
+      username: data.username,
       password: data.password,
       phone: data.phone,
       role: data.role,
@@ -183,19 +183,13 @@ const User: React.FC = () => {
               ))}
             </TextField>
             <TextField
-              label="Email"
+              label="Username"
               variant="outlined"
               fullWidth
               margin="normal"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                  message: "Enter a valid email address",
-                },
-              })}
-              error={!!errors.email}
-              helperText={errors.email?.message}
+              {...register("username")}
+              error={!!errors.username}
+              helperText={errors.username?.message}
             />
             <TextField
               label="Phone"
