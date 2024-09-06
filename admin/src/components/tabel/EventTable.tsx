@@ -16,7 +16,7 @@ interface TableRow {
   status: string;
   title: string;
   date: any;
-  tags: string;
+  organizer: string;
   invoice?: string;
   description: string;
   start: string;
@@ -117,9 +117,12 @@ const EventTable: React.FC = () => {
       ),
     },
     {
-      name: "Tags",
-      selector: (row) =>
-        Array.isArray(row?.tags) ? row.tags?.join(", ") : "N/A",
+      name: (
+        <Box style={{ display: "flex", alignItems: "center" }}>
+          <Typography className="capitalize">Organizer</Typography>
+        </Box>
+      ),
+      selector: (row) => row?.organizer ?? "N/A",
     },
     {
       name: "Status",
