@@ -373,19 +373,13 @@ const NegotiatorForm: React.FC = () => {
                     id="organizationType"
                     name="organizationType"
                     className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                    disabled="disabled"
+                    defaultValue="Ministries, Departments, and Agencies (MDA)"
                   >
-                    <option value="">Select Organization Type</option>
-                    {organizationTypes.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    ))}
+                    <option value="Ministries, Departments, and Agencies (MDA)">
+                      Ministries, Departments, and Agencies (MDA)
+                    </option>
                   </Field>
-                  <ErrorMessage
-                    name="organizationType"
-                    component="div"
-                    className="text-red-600 text-xs mt-1"
-                  />
                 </div>
 
                 <div className="mb-4">
@@ -399,7 +393,7 @@ const NegotiatorForm: React.FC = () => {
                     type="text"
                     id="contactDesignation"
                     name="contactDesignation"
-                    placeholder="contact person's designation"
+                    placeholder="Contact person's designation"
                     className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
                   />
                   <ErrorMessage
@@ -409,7 +403,7 @@ const NegotiatorForm: React.FC = () => {
                   />
                 </div>
 
-                <div className="mb-4">
+                {/* <div className="mb-4">
                   <label
                     htmlFor="files"
                     className="block text-gray-700 font-semibold mb-2"
@@ -443,7 +437,7 @@ const NegotiatorForm: React.FC = () => {
                     component="div"
                     className="text-red-600 text-xs mt-1"
                   />
-                </div>
+                </div> */}
 
                 <div className="mb-4">
                   <label
@@ -475,27 +469,27 @@ const NegotiatorForm: React.FC = () => {
 
               <div className="mb-4">
                 <label
-                  htmlFor="reasonForAttendance"
+                  htmlFor="workStream"
                   className="block text-gray-700 font-semibold mb-2"
                 >
-                  Reason for Participation*
+                  Work Stream*
                 </label>
                 <Field
                   type="text"
                   as="textarea"
-                  id="reasonForAttendance"
-                  name="reasonForAttendance"
-                  placeholder="Field Negotiator, Confirmed Bilateral, Organisation Mandate etc"
+                  id="workStream"
+                  name="workStream"
+                  placeholder="Enter Work Stream"
                   className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
                 />
                 <ErrorMessage
-                  name="reasonForAttendance"
+                  name="workStream"
                   component="div"
                   className="text-red-600 text-xs mt-1"
                 />
               </div>
 
-              <div className="mb-4">
+              {/* <div className="mb-4">
                 <label
                   htmlFor="supportImage"
                   className="block text-gray-700 font-semibold mb-2"
@@ -529,7 +523,7 @@ const NegotiatorForm: React.FC = () => {
                   component="div"
                   className="text-red-600 text-xs mt-1"
                 />
-              </div>
+              </div> */}
 
               {/* Terms and Conditions Checkbox */}
               <div className="flex items-center mb-4">
