@@ -363,7 +363,7 @@ const OrganizationForm: React.FC = () => {
               type="text"
               id="contactDesignation"
               name="contactDesignation"
-              placeholder="contact person's designation"
+              placeholder="Contact person's designation"
               className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
             />
             <ErrorMessage
