@@ -425,9 +425,9 @@ module.exports = {
       const user = await User.findByIdAndUpdate(id, update, {
         new: true,
       });
-      if (!user) return errorHandler(res, "No User found with the ID", 404);
+      if (!user) return errorHandler(res, "No Organization Found.", 404);
 
-      return successHandler(res, "User Updated", user);
+      return successHandler(res, "Organization Updated", user);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
     }

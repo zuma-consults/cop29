@@ -41,7 +41,7 @@ const userSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "approved", "suspended"],
+      enum: ["pending", "approved", "suspended", "rejected"],
       default: "pending",
     },
     userType: {
@@ -52,7 +52,7 @@ const userSchema = mongoose.Schema(
     organizationType: {
       type: String,
     },
-    contactDesignation:{
+    contactDesignation: {
       type: String,
       required: true,
     },
