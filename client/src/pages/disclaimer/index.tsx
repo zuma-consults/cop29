@@ -119,8 +119,7 @@ const TermsAndConditions = () => {
           <li style={{ marginBottom: "10px" }}>
             <strong>Limited Delegation:</strong> In compliance with Federal
             Government directives, organizations may submit a maximum of two
-            participants for accreditation. Up to two additional participants
-            may be considered for organizations hosting side events.
+            participants for accreditation.
           </li>
           <li style={{ marginBottom: "10px" }}>
             <strong>Financial Responsibility:</strong> Participating
@@ -156,11 +155,11 @@ const TermsAndConditions = () => {
             participants. If hosting a side event, you may apply for
             accreditation for up to two additional participants.
           </li>
-          <li style={{ marginBottom: "10px" }}>
+          {/* <li style={{ marginBottom: "10px" }}>
             <strong>Side Event Application:</strong> If your organization
             intends to host a side event, complete the side event form and
             prepare to cover the associated fees.
-          </li>
+          </li> */}
           <li style={{ marginBottom: "10px" }}>
             <strong>Pre-COP29 Workshop:</strong> Ensure your accredited
             participants attend the orientation and pre-COP29 workshop organized
