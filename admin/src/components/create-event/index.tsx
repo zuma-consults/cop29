@@ -91,7 +91,7 @@ const CreateEvent: React.FC<{
           data-aos="Meeting-in-right"
         >
           <h1 className="text-green-700 font-bold text-[26px] text-center md:text-left">
-            Create an Event
+            Schedule Meeting
           </h1>
           <div
             className="p-6 rounded-lg w-full flex flex-col cursor-pointer items-center justify-center gap-3 mt-2 bg-green-50"
