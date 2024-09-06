@@ -27,7 +27,7 @@ const Hero: React.FC = () => {
       >
         <CountdownTimer />
         <div
-          className="text-gray-900 flex flex-col gap-6 md:gap-8 justify-center items-start text-center md:ml-[150px] md:text-left h-full w-2/3"
+          className="text-gray-900 flex flex-col gap-6 md:gap-8 justify-center items-start text-center md:ml-[150px] md:text-left h-full w-full"
           data-aos="fade-right"
           data-aos-duration="1000"
         >
@@ -48,20 +48,28 @@ const Hero: React.FC = () => {
             NIGERIA THEME : Actualizing financial commitments for Climate
             Action.
           </p>
-          <div className="flex flex-wrap justify-center md:justify-start items-center gap-4 mt-10 md:mt-0">
+          <div className="flex flex-wrap justify-start items-center gap-4 mt-10 md:mt-0 w-full">
             <Link
               to="/signup"
-              className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
+              className="text-center w-full lg:w-[40%] rounded py-4 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
-              Request Accreditation
+              Request Accreditation as Participants
+            </Link>
+            <Link
+              to="/negotiator"
+              className="text-center w-full lg:w-[40%] rounded py-4 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
+              data-aos="fade-up"
+              data-aos-duration="1000"
+            >
+              <FaCalendarAlt className="text-2xl mr-2" />
+              Request Accreditation as Negotiator
             </Link>
             <Link
               to="/create-event"
-              // className="text-center w-full md:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-green-800 bg-white hover:bg-green-100 transition"
-              className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
+              className="text-center w-full lg:w-[40%] rounded py-4 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
@@ -70,28 +78,26 @@ const Hero: React.FC = () => {
             </Link>
             <Link
               to="/terms-and-conditions"
-              className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-red-800 hover:bg-red-200 bg-red-100 transition"
+              className="text-center w-full lg:w-[40%] rounded py-4 flex justify-center items-center text-red-800 hover:bg-red-200 bg-red-100 transition"
             >
               <FaInfoCircle className="text-2xl mr-2" />
               Important Notice
             </Link>
             <Link
               to="/faq"
-              className="text-center w-full lg:w-[40%] rounded py-4 mx-2 flex justify-center items-center text-blue-800 hover:bg-blue-200  bg-blue-100 transition"
+              className="text-center w-full lg:w-[40%] rounded py-4 flex justify-center items-center text-blue-800 hover:bg-blue-200 bg-blue-100 transition"
             >
               <FaQuestionCircle className="text-2xl mr-2" />
-              Frequently asked Questions
+              Frequently Asked Questions
             </Link>
-          </div>
-          <Link
+            <Link
               to="/intl-org"
-              className="text-center w-[95%] lg:w-[85%] rounded py-4 mx-2 flex justify-center items-center text-white bg-orange-500 hover:bg-green-700 transition"
-              // data-aos="fade-up"
-              // data-aos-duration="1000"
+              className="text-center w-full lg:w-[40%] rounded py-4 flex justify-center items-center text-white bg-orange-500 hover:bg-orange-400 transition"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
               International Organisation Meeting Request
             </Link>
+          </div>
         </div>
         <div className="flex flex-col items-center md:items-end justify-center space-y-0 w-full h-full ">
           <img

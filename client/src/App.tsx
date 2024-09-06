@@ -23,6 +23,7 @@ import ActivationSuccess from "./pages/verifications/activation-success";
 import VerificationConfirmation from "./pages/verifications/verify-confirm";
 import InternationalOrg from "./pages/intl-org";
 import { getProfile } from "./services/auth";
+import NegotiatorForm from "./pages/signup/negotiator-form";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -62,6 +63,7 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/negotiator" element={<NegotiatorForm />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/forgot-confirmation" element={<ForgotPasswordConfirmation />} />
       <Route path="/verify-confirmation" element={<VerificationConfirmation />} />
