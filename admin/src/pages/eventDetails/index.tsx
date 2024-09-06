@@ -13,39 +13,22 @@ import Loader from "../../components/ui/Loader";
 const EventDetails: React.FC = () => {
   const location = useLocation();
   const event = location.state as {
-    image: string;
     status: string;
     title: string;
     start: string;
     end: string;
-    location: string;
-    price: string;
-    tags: string[];
     description: string;
     organizer: string;
     id: number;
     countId: number;
-    invoiceStatus: string;
   };
 
   if (!event) {
     return <div>Event not found</div>;
   }
 
-  const {
-    image,
-    status,
-    title,
-    start,
-    end,
-    tags,
-    description,
-    organizer,
-    id,
-    countId,
-    invoiceStatus,
-  } = event;
-  const tagArr = tags[0].split(",");
+  const { status, title, start, end, description, organizer, id, countId } =
+    event;
   const { mutate: mutateApproval, isLoading: loadingApproval } =
     useApproveEvent();
   const { mutate: mutateDecline, isLoading: loadingDecline } =
@@ -80,15 +63,7 @@ const EventDetails: React.FC = () => {
             Go Back
           </Button>
         </div>
-        <div className="flex flex-col items-center justify-center">
-          <div className="h-[200px] sm:h-[300px] md:h-[400px] w-full">
-            <img
-              src={image}
-              alt={title}
-              className="w-full h-full object-cover rounded-3xl shadow-lg"
-            />
-          </div>
-        </div>
+
         <div className="relative  border-green-200 pb-6 sm:pb-8 md:pb-10">
           <div className="mt-6 sm:mt-8 md:mt-10 grid gap-4 sm:gap-6 md:gap-8">
             <div>
@@ -126,20 +101,7 @@ const EventDetails: React.FC = () => {
                 {description}
               </div>
             </div>
-            <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
-              Tags
-              <div className="flex items-center justify-start gap-2 flex-wrap">
-                {tagArr.map((el) => (
-                  <Chip
-                    label={el}
-                    color="success"
-                    sx={{
-                      textTransform: "capitalize",
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
+
             <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
               Organized by
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
@@ -158,8 +120,11 @@ const EventDetails: React.FC = () => {
               }}
             />
           </div>
+          {
+            status !== "approved" && (
+          
           <div className="flex items-center justify-end gap-10">
-            {invoiceStatus === "Received" ? (
+            {status === "processing" ? (
               <Button
                 variant="contained"
                 color="success"
@@ -190,6 +155,7 @@ const EventDetails: React.FC = () => {
               Decline
             </Button>
           </div>
+          )}
         </div>
       </div>
     </>

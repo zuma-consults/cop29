@@ -14,7 +14,6 @@ import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
 import { useOrganisation } from "../../hooks/useOrganisation";
 import Loader from "../ui/Loader";
-import ColumnFilter from "../columnFilter";
 
 interface TableRow {
   id: number;
@@ -24,7 +23,6 @@ interface TableRow {
   category: string;
   state: string;
   status: string;
-  userType: string;
   organizationType: string;
   image: string;
 }
@@ -114,19 +112,6 @@ const OrganisationTable: React.FC = () => {
     {
       name: "Phone",
       selector: (row: { phone: any }) => row?.phone ?? "N/A",
-    },
-    {
-      name: (
-        <Box style={{ display: "flex", alignItems: "center" }}>
-          <Typography className="capitalize">Type</Typography>
-          <ColumnFilter
-            columnKey="userType"
-            onFilterChange={handleFilterChange}
-            onResetFilter={handleResetFilter}
-          />
-        </Box>
-      ),
-      selector: (row: { userType: any }) => row?.userType ?? "N/A",
     },
     {
       name: "Organization Type",
@@ -317,7 +302,7 @@ const OrganisationTable: React.FC = () => {
                   </Typography>
 
                   {/* Action Buttons for Pending Status */}
-                  {selectedEvent?.status === "Pending" && (
+                  {selectedEvent?.status === "pending" && (
                     <Box className="flex justify-between gap-5 mt-4">
                       <Button
                         variant="contained"

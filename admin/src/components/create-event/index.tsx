@@ -1,5 +1,4 @@
-import React, { useMemo} from "react";
-import { MdOutlineCloudUpload } from "react-icons/md";
+import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -12,7 +11,6 @@ import {
 } from "@mui/material";
 import { useCreateEvent, useGetAllTimeSlots } from "../../hooks/useEvent";
 import Loader from "../ui/Loader";
-import { useOrganisation } from "../../hooks/useOrganisation";
 
 const CreateEvent: React.FC<{
   setOpen: (value: boolean) => void;
@@ -20,17 +18,8 @@ const CreateEvent: React.FC<{
 }> = ({ setOpen, refetchAllEvents }) => {
   const { mutate, isLoading } = useCreateEvent({ setOpen, refetchAllEvents });
 
-  const memoizedFilters = useMemo(
-    () => ({
-      userType: "organization",
-    }),
-    []
-  );
-
-  const { data: organisationData, isLoading: loadingOrganisation } = useOrganisation(memoizedFilters);
-
-  const { data: timslotsData, isLoading: loadingTimeSlots } = useGetAllTimeSlots();
-  const extratedOrganisationData = organisationData?.data?.users || [];
+  const { data: timslotsData, isLoading: loadingTimeSlots } =
+    useGetAllTimeSlots();
   const extratedTimeSlots = timslotsData?.slots || [];
   const openSlots = extratedTimeSlots.filter(
     (slot: { bookingStatus: any }) => slot.bookingStatus
@@ -38,45 +27,27 @@ const CreateEvent: React.FC<{
 
   const formik = useFormik({
     initialValues: {
-      imageUrl: null,
       title: "",
-      externalLink: "",
+      organizer: "",
       description: "",
       objective: "",
-      tags: "",
       timeSlot: "",
-      organization: "",
     },
     validationSchema: Yup.object({
-      imageUrl: Yup.mixed().required("Image is required"),
       title: Yup.string().required("Event title is required"),
-      externalLink: Yup.string()
-        .url("Invalid URL")
-        .required("Meeting link is required"),
+      organizer: Yup.string().required("Organizer is required"),
       description: Yup.string().required("Event description is required"),
-      tags: Yup.string().required("Tags are required"),
       objective: Yup.string().required("Event objective is required"),
       timeSlot: Yup.string().required("Time slot is required"),
-      organization: Yup.string().required("Organization name is required"),
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
-      if (values.imageUrl !== null) {
-        formData.append("image", values.imageUrl);
-      }
+
       formData.append("title", values.title);
-      formData.append("externalLink", values.externalLink);
       formData.append("description", values.description);
-      formData.append("objective", values.objective);
+      formData.append("objectives", values.objective);
       formData.append("slotId", values.timeSlot);
-      formData.append("organizerId", values.organization);
-      formData.append(
-        "tags",
-        values.tags
-          .split(",")
-          .map((tag) => tag.trim())
-          .join(",")
-      );
+      formData.append("organizer", values.organizer);
       formData.append("status", "approved");
       mutate(formData);
     },
@@ -84,7 +55,7 @@ const CreateEvent: React.FC<{
 
   return (
     <>
-      {isLoading || loadingOrganisation || loadingTimeSlots && <Loader />}
+      {isLoading || (loadingTimeSlots && <Loader />)}
       <div className="flex items-center justify-center p-4 md:p-0">
         <div
           className="w-full max-w-4xl bg-white p-5 rounded-lg shadow-lg"
@@ -93,53 +64,7 @@ const CreateEvent: React.FC<{
           <h1 className="text-green-700 font-bold text-[26px] text-center md:text-left">
             Schedule Meeting
           </h1>
-          <div
-            className="p-6 rounded-lg w-full flex flex-col cursor-pointer items-center justify-center gap-3 mt-2 bg-green-50"
-            onClick={() => document.getElementById("imageUrl")?.click()}
-          >
-            <h2 className="text-gray-600 font-bold text-center">
-              Upload Event Header Image
-            </h2>
-            <input
-              id="imageUrl"
-              name="imageUrl"
-              type="file"
-              accept="image/jpeg, image/png"
-              onChange={(event) => {
-                if (event?.currentTarget?.files) {
-                  formik.setFieldValue(
-                    "imageUrl",
-                    event.currentTarget.files[0]
-                  );
-                }
-              }}
-              onBlur={formik.handleBlur}
-              style={{ display: "none" }}
-            />
-            <MdOutlineCloudUpload className="text-[46px] text-green-700" />
 
-            <span className="text-gray-500">Supported formats: JPEG, PNG</span>
-
-            {/* Image Preview */}
-            {formik.values.imageUrl && (
-              <div className="mt-1 flex flex-col justify-center items-center">
-                <img
-                  src={URL.createObjectURL(formik.values.imageUrl)}
-                  alt="Selected Image"
-                  className="w-32 h-32 object-cover rounded-md"
-                />
-                <p className="text-gray-600 mt-2">
-                  {(formik.values.imageUrl as File)?.name}
-                </p>
-              </div>
-            )}
-
-            {formik.touched.imageUrl && formik.errors.imageUrl ? (
-              <div className="text-red-500 text-sm">
-                {formik.errors.imageUrl}
-              </div>
-            ) : null}
-          </div>
           <form
             onSubmit={formik.handleSubmit}
             className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6"
@@ -161,29 +86,27 @@ const CreateEvent: React.FC<{
               />
             </div>
 
-            {/* Meeting Link */}
+            {/* Organizer */}
             <div className="flex flex-col gap-2">
               <TextField
-                id="externalLink"
-                name="externalLink"
-                label="Meeting Link"
+                id="organizer"
+                name="organizer"
+                label="Organizer"
                 color="success"
                 variant="outlined"
-                value={formik.values.externalLink}
+                value={formik.values.organizer}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={
-                  formik.touched.externalLink &&
-                  Boolean(formik.errors.externalLink)
+                  formik.touched.organizer && Boolean(formik.errors.organizer)
                 }
-                helperText={
-                  formik.touched.externalLink && formik.errors.externalLink
-                }
+                helperText={formik.touched.organizer && formik.errors.organizer}
                 fullWidth
               />
             </div>
+
             {/* time slot */}
-            <div className="flex flex-col gap-2">
+            <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
               <FormControl variant="outlined" color="success" fullWidth>
                 <InputLabel id="timeSlot-label">Time Slot</InputLabel>
                 <Select
@@ -215,39 +138,6 @@ const CreateEvent: React.FC<{
                 {formik.touched.timeSlot && formik.errors.timeSlot && (
                   <div className="text-red-500 text-sm">
                     {formik.errors.timeSlot}
-                  </div>
-                )}
-              </FormControl>
-            </div>
-
-            {/* organization name */}
-            <div className="flex flex-col gap-2">
-              <FormControl variant="outlined" color="success" fullWidth>
-                <InputLabel id="organization-label">Organization</InputLabel>
-                <Select
-                  labelId="organization-label"
-                  id="organization"
-                  name="organization"
-                  value={formik.values.organization}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.organization &&
-                    Boolean(formik.errors.organization)
-                  }
-                  label="Organization"
-                >
-                  {extratedOrganisationData?.map(
-                    (org: { id: string; name: string }) => (
-                      <MenuItem key={org.id} value={org.id}>
-                        {org.name}
-                      </MenuItem>
-                    )
-                  )}
-                </Select>
-                {formik.touched.organization && formik.errors.organization && (
-                  <div className="text-red-500 text-sm">
-                    {formik.errors.organization}
                   </div>
                 )}
               </FormControl>
@@ -294,23 +184,6 @@ const CreateEvent: React.FC<{
                 helperText={formik.touched.objective && formik.errors.objective}
                 multiline
                 rows={4}
-                fullWidth
-              />
-            </div>
-
-            {/* tags */}
-            <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
-              <TextField
-                id="tags"
-                name="tags"
-                label="Tags (comma-separated)"
-                variant="outlined"
-                color="success"
-                value={formik.values.tags}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.tags && Boolean(formik.errors.tags)}
-                helperText={formik.touched.tags && formik.errors.tags}
                 fullWidth
               />
             </div>
