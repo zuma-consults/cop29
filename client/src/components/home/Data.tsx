@@ -92,7 +92,7 @@ const Data: React.FC = () => {
             0
           </div>
           <span className="text-[16px] md:text-[20px] font-semibold">
-            Sessions
+            Booked Slots
           </span>
         </div>
       </div>
