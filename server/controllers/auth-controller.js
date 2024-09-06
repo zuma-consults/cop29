@@ -353,7 +353,7 @@ module.exports = {
     try {
       const { page = 1, limit = 50, userType } = req.query;
 
-      const query = userType ? { userType } : {};
+      const query = userType ? { userType } : { verifiedEmail: true };
 
       const users = await User.find(query)
         .sort({ createdAt: -1 })
@@ -390,7 +390,9 @@ module.exports = {
   getUserByToken: async (req, res) => {
     try {
       let id = req.user;
-      let user = await User.findOne({ _id: id });
+      let user = await User.findOne({ _id: id }).select(
+        "name email phone state userType status category thematicArea contactDesignation delegates"
+      );
       if (!user) return errorHandler(res, "No User found", 404);
       return successHandler(res, "User Found", user);
     } catch (error) {

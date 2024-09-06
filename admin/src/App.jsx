@@ -45,7 +45,7 @@ function App() {
           <Route path="/reset-password/:id" element={<ResetPassword />} />
         </Route>
         <Route path="/" element={<AppLayout />}>
-          <Route
+          {/* <Route
             path="/delegate"
             element={
               <motion.div
@@ -58,7 +58,7 @@ function App() {
                 <Delegate />
               </motion.div>
             }
-          />
+          /> */}
           <Route
             path="/organization"
             element={
@@ -88,7 +88,7 @@ function App() {
             }
           />
           <Route
-            path="/events"
+            path="/scheduled-meetings"
             element={
               <motion.div
                 variants={pageVariants}
