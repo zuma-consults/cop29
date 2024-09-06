@@ -74,6 +74,7 @@ export const thematicAreas = [
   "Private Sector Initiative",
   "Gender Sensitive Aproaches",
   "Local Indigenous and Traditional Knowledge",
+  "Mountains",
   "Other Areas"
 ]
 
