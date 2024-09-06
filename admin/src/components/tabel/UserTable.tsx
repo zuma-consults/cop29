@@ -20,7 +20,7 @@ interface TableRow {
     name: string;
   };
   name: string;
-  email: string;
+  username: string;
   status: string;
   phone: string;
   createdAt: string;
@@ -59,7 +59,7 @@ const UserTable: React.FC = () => {
       const userPayload = {
         firstName: selectedEvent.firstName,
         lastName: selectedEvent.lastName,
-        email: selectedEvent.email,
+        username: selectedEvent.username,
         password: selectedEvent.password,
         phone: selectedEvent.phone,
         role: selectedEvent.role.name,
@@ -91,8 +91,8 @@ const UserTable: React.FC = () => {
     },
 
     {
-      name: "Email",
-      selector: (row: { email: any }) => row?.email ?? "N/A",
+      name: "username",
+      selector: (row: { username: any }) => row?.username ?? "N/A",
     },
     {
       name: "Role",
@@ -207,15 +207,15 @@ const UserTable: React.FC = () => {
                   }
                 />
                 <TextField
-                  label="Email"
-                  value={selectedEvent.email}
+                  label="Username"
+                  value={selectedEvent.username}
                   fullWidth
                   margin="normal"
                   variant="outlined"
                   onChange={(e) =>
                     setSelectedEvent({
                       ...selectedEvent,
-                      email: e.target.value,
+                      username: e.target.value,
                     })
                   }
                 />
