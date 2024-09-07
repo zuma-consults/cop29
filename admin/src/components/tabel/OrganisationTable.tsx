@@ -12,8 +12,13 @@ import React, { useState, useMemo, useEffect, useCallback } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
-import { useOrganisation } from "../../hooks/useOrganisation";
+import {
+  useApproveOrganisation,
+  useDeclineOrganisation,
+  useOrganisation,
+} from "../../hooks/useOrganisation";
 import Loader from "../ui/Loader";
+import { set } from "react-hook-form";
 
 interface TableRow {
   id: number;
@@ -29,8 +34,8 @@ interface TableRow {
 
 const OrganisationTable: React.FC = () => {
   const [_, setPage] = useState(1);
-  const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
-
+  const [selectedOrgnisation, setSelectedOrgnisation] = useState<any>(null);
+  console.log("OrganisationTable", selectedOrgnisation);
   const [filters, setFilters] = useState({
     userType: "organization",
   });
@@ -41,6 +46,11 @@ const OrganisationTable: React.FC = () => {
     }),
     [filters.userType]
   );
+
+  const { mutate: mutateApproval, isLoading: loadingOrganisation } =
+    useApproveOrganisation();
+  const { mutate: mutateDecline, isLoading: loadingDecline } =
+    useDeclineOrganisation();
 
   const { data, isFetching, refetch } = useOrganisation(memoizedFilters);
 
@@ -71,15 +81,16 @@ const OrganisationTable: React.FC = () => {
     setPage(page);
   }, []);
 
-  const handleAccept = useCallback(() => {
-    console.log("Accepted");
-    setSelectedEvent(null);
-  }, []);
-
-  const handleReject = useCallback(() => {
-    console.log("Rejected");
-    setSelectedEvent(null);
-  }, []);
+  console.log("OrganisationTable", selectedOrgnisation);
+  const handelActionEvent = async (type: string) => {
+    if (type === "approve") {
+      mutateApproval(selectedOrgnisation?.id);
+      setSelectedOrgnisation(null);
+    } else {
+      mutateDecline(selectedOrgnisation?.d);
+      setSelectedOrgnisation(null);
+    }
+  };
 
   useEffect(() => {
     refetch();
@@ -162,7 +173,7 @@ const OrganisationTable: React.FC = () => {
                 color: "black",
               },
             }}
-            onClick={() => setSelectedEvent(row)}
+            onClick={() => setSelectedOrgnisation(row)}
           >
             View
             <GoArrowRight size={19} />
@@ -216,7 +227,10 @@ const OrganisationTable: React.FC = () => {
           onChangePage={handlePageChange}
         />
 
-        <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>
+        <Modal
+          open={!!selectedOrgnisation}
+          onClose={() => setSelectedOrgnisation(null)}
+        >
           <Box
             sx={{
               position: "absolute" as "absolute",
@@ -233,15 +247,15 @@ const OrganisationTable: React.FC = () => {
               borderRadius: "8px",
             }}
           >
-            {selectedEvent && (
+            {selectedOrgnisation && (
               <Card>
                 {/* Render the Organization Logo */}
                 <div className="flex justify-center items-center">
                   <CardMedia
                     component="img"
                     height="200" // You can adjust this value as needed
-                    image={selectedEvent?.image}
-                    alt={`${selectedEvent?.name} Logo`}
+                    image={selectedOrgnisation?.image}
+                    alt={`${selectedOrgnisation?.name} Logo`}
                     sx={{
                       objectFit: "contain",
                       marginBottom: "16px",
@@ -254,17 +268,17 @@ const OrganisationTable: React.FC = () => {
                 <CardContent className="flex flex-col justify-center items-center gap-5">
                   {/* Render Name */}
                   <Typography variant="body1" component="div">
-                    <strong>Name: </strong> {selectedEvent?.name}
+                    <strong>Name: </strong> {selectedOrgnisation?.name}
                   </Typography>
 
                   {/* Render Email */}
                   <Typography variant="body1" component="div">
-                    <strong>Email: </strong> {selectedEvent?.email}
+                    <strong>Email: </strong> {selectedOrgnisation?.email}
                   </Typography>
 
                   {/* Render Phone */}
                   <Typography variant="body1" component="div">
-                    <strong>Phone: </strong> {selectedEvent?.phone}
+                    <strong>Phone: </strong> {selectedOrgnisation?.phone}
                   </Typography>
 
                   {/* Render State */}
@@ -273,48 +287,48 @@ const OrganisationTable: React.FC = () => {
                     component="div"
                     className="capitalize"
                   >
-                    <strong>State: </strong> {selectedEvent?.state}
+                    <strong>State: </strong> {selectedOrgnisation?.state}
                   </Typography>
 
                   {/* Render Category */}
                   <Typography variant="body1" component="div">
-                    <strong>Category: </strong> {selectedEvent?.category}
+                    <strong>Category: </strong> {selectedOrgnisation?.category}
                   </Typography>
 
                   {/* Render Organization Type */}
                   <Typography variant="body1" component="div">
                     <strong>Organization Type: </strong>{" "}
-                    {selectedEvent?.organizationType}
+                    {selectedOrgnisation?.organizationType}
                   </Typography>
 
                   {/* Render Status */}
                   <Typography variant="body1" component="div">
                     <strong>Status: </strong>
-                    {selectedEvent?.status === "approved" ? (
+                    {selectedOrgnisation?.status === "approved" ? (
                       <Chip
-                        label={selectedEvent?.status}
+                        label={selectedOrgnisation?.status}
                         color="success"
                         className="capitalize"
                       />
                     ) : (
-                      <Chip label={selectedEvent?.status} color="error" />
+                      <Chip label={selectedOrgnisation?.status} color="error" />
                     )}
                   </Typography>
 
                   {/* Action Buttons for Pending Status */}
-                  {selectedEvent?.status === "pending" && (
+                  {selectedOrgnisation?.status === "pending" && (
                     <Box className="flex justify-between gap-5 mt-4">
                       <Button
                         variant="contained"
                         color="success"
-                        onClick={handleAccept}
+                        onClick={() => handelActionEvent("approve")}
                       >
                         Accept
                       </Button>
                       <Button
                         variant="contained"
                         color="error"
-                        onClick={handleReject}
+                        onClick={() => handelActionEvent("decline")}
                       >
                         Reject
                       </Button>
