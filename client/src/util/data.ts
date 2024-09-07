@@ -51,7 +51,6 @@ export const categories = [
   "Environment",
   "Manufacturing",
   "Tourism",
-  "Negotiators"
 ];
 
 export const organizationTypes = [
