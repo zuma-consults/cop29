@@ -28,13 +28,15 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    workStream: {
+      type: String,
+    },
     thematicArea: {
       type: String,
       required: true,
     },
     reasonForAttendance: {
       type: String,
-      required: true,
     },
     documentSupportingAttendance: {
       type: String,
@@ -53,6 +55,10 @@ const userSchema = mongoose.Schema(
       type: String,
     },
     contactDesignation: {
+      type: String,
+      required: true,
+    },
+    contactName: {
       type: String,
       required: true,
     },
@@ -96,7 +102,6 @@ const userSchema = mongoose.Schema(
     },
     letterProof: {
       type: String,
-      required: true,
     },
     terms: {
       type: Boolean,
