@@ -176,7 +176,7 @@ const EventTable: React.FC = () => {
                 },
               }}
             >
-              View event
+              View Details
               <GoArrowRight size={19} />
             </Button>
           </Link>

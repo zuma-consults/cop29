@@ -34,10 +34,10 @@ const CreateEvent: React.FC<{
       timeSlot: "",
     },
     validationSchema: Yup.object({
-      title: Yup.string().required("Event title is required"),
+      title: Yup.string().required("Meeting title is required"),
       organizer: Yup.string().required("Organizer is required"),
-      description: Yup.string().required("Event description is required"),
-      objective: Yup.string().required("Event objective is required"),
+      description: Yup.string().required("Meeting description is required"),
+      objective: Yup.string().required("Meeting objective is required"),
       timeSlot: Yup.string().required("Time slot is required"),
     }),
     onSubmit: async (values) => {
@@ -62,19 +62,19 @@ const CreateEvent: React.FC<{
           data-aos="Meeting-in-right"
         >
           <h1 className="text-green-700 font-bold text-[26px] text-center md:text-left">
-            Schedule Meeting
+            Schedule a Meeting
           </h1>
 
           <form
             onSubmit={formik.handleSubmit}
             className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6"
           >
-            {/* Event Title */}
+            {/* Meeting Title */}
             <div className="flex flex-col gap-2">
               <TextField
                 id="title"
                 name="title"
-                label="Event Title"
+                label="Meeting Title"
                 color="success"
                 variant="outlined"
                 value={formik.values.title}
@@ -143,12 +143,12 @@ const CreateEvent: React.FC<{
               </FormControl>
             </div>
 
-            {/* Event Description */}
+            {/* Meeting Description */}
             <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
               <TextField
                 id="description"
                 name="description"
-                label="Event Description"
+                label="Meeting Description"
                 variant="outlined"
                 color="success"
                 value={formik.values.description}
@@ -167,12 +167,12 @@ const CreateEvent: React.FC<{
               />
             </div>
 
-            {/* event objective */}
+            {/* Meeting objective */}
             <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
               <TextField
                 id="objective"
                 name="objective"
-                label="Event Objective"
+                label="Meeting Objective"
                 variant="outlined"
                 color="success"
                 value={formik.values.objective}
@@ -195,7 +195,7 @@ const CreateEvent: React.FC<{
                 color="success"
                 fullWidth
               >
-                Submit Event
+                Submit Meeting
               </Button>
             </div>
           </form>
