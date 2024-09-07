@@ -124,9 +124,9 @@ module.exports = {
             password,
             email,
             phone,
-            thematicArea,
             reasonForAttendance,
             contactDesignation,
+            contactName,
           } = req.body;
           if (
             !name ||
@@ -134,8 +134,8 @@ module.exports = {
             !email ||
             !phone ||
             !contactDesignation ||
-            !thematicArea ||
-            !reasonForAttendance
+            !reasonForAttendance ||
+            !contactName
           ) {
             return errorHandler(
               res,
@@ -174,6 +174,8 @@ module.exports = {
                 );
                 body.letterProof = result.url;
               }
+            } else {
+              return errorHandler(res, "Please attach Letter of Proof", 400);
             }
 
             // Process orgImage (Logo)
@@ -192,6 +194,12 @@ module.exports = {
                 );
                 body.contactIdCard = result.url;
               }
+            } else {
+              return errorHandler(
+                res,
+                "Please attach Contact Person's Scanned ID",
+                400
+              );
             }
 
             // Process documentSupportingAttendance
@@ -210,7 +218,15 @@ module.exports = {
                 );
                 body.documentSupportingAttendance = result.url;
               }
+            } else {
+              return errorHandler(
+                res,
+                "Please Attach Document Supporting Attendance",
+                400
+              );
             }
+          } else {
+            return errorHandler(res, "Please Attach Documents", 400);
           }
 
           const newUser = new User({
@@ -219,7 +235,108 @@ module.exports = {
             ...req.body,
             password: passwordHash,
           });
+          await newUser.save();
+          // Send success response
 
+          const access_token = await createAccessToken({ id: newUser._id });
+          const url = `${CLIENT_URL}/verify/${access_token}`;
+          sendVerifyEmail(
+            email,
+            url,
+            "Click to complete your application",
+            name
+          );
+
+          return successHandler(
+            res,
+            "Your account has been created. Please check your email to verify your email address and complete your application for COP 29 by adding your delegates."
+            // newUser
+          );
+        } catch (error) {
+          return errorHandler(res, error.message, error.statusCode || 500);
+        }
+      }
+    });
+  },
+  createOrganisationAsNegotiator: async (req, res) => {
+    upload(req, res, async (err) => {
+      if (err) {
+        return errorHandler(res, err.code, 400);
+      } else {
+        try {
+          const { body, files } = req;
+          const {
+            name,
+            password,
+            email,
+            phone,
+            thematicArea,
+            contactDesignation,
+            contactName,
+          } = req.body;
+          if (
+            !name ||
+            !password ||
+            !email ||
+            !phone ||
+            !contactDesignation ||
+            !thematicArea ||
+            !contactName
+          ) {
+            return errorHandler(
+              res,
+              "Please fill in all fields, one or more fields are empty!",
+              400
+            );
+          }
+
+          const findUser = await User.findOne({ email });
+
+          if (findUser) {
+            return errorHandler(res, "An account already exists.", 409);
+          }
+
+          if (!validatePassword(password)) {
+            return errorHandler(
+              res,
+              "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+              400
+            );
+          }
+
+          const passwordHash = await bcrypt.hash(password, 12);
+
+          if (files && files.length > 0) {
+            // Process orgImage (Logo)
+            const imageFiles = files.filter(
+              (file) => file.fieldname === "orgImage"
+            );
+            if (imageFiles.length > 0) {
+              for (const file of imageFiles) {
+                const localFilePath = file.path;
+                const localFileName = file.filename;
+
+                const result = await uploadToCloudinary(
+                  localFilePath,
+                  localFileName,
+                  "COP29"
+                );
+                body.contactIdCard = result.url;
+              }
+            } else {
+              return errorHandler(res, "Please attach Letter of Proof", 400);
+            }
+          } else {
+            return errorHandler(res, "Please Attach Documents", 400);
+          }
+
+          const newUser = new User({
+            name,
+            email,
+            ...req.body,
+            category: "Negotiator",
+            password: passwordHash,
+          });
           await newUser.save();
           // Send success response
 
@@ -415,7 +532,6 @@ module.exports = {
           }
           await UserToken.findOneAndDelete({ userId: id });
         } catch (error) {
-          console.error("Error deleting user token on deactivating", error);
           return errorHandler(res, "Request Not Completed", 500);
         }
       }
