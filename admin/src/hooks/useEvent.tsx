@@ -22,13 +22,13 @@ export const useCreateEvent = ({
   return useMutation(createEvent, {
     onSuccess: (result) => {
       if (result?.status) {
-        toast.success("Event Created Successfully");
+        toast.success("Meeting Created Successfully");
         setOpen(false);
         refetchAllEvents();
       }
     },
     onError: (_error) => {
-      toast.error("Event Creation failed. Please try again.");
+      toast.error("Meeting Creation failed. Please try again.");
     },
   });
 };
@@ -76,11 +76,11 @@ export const useApproveEvent = () => {
   return useMutation(approveEvent, {
     onSuccess: (result) => {
       if (result?.status) {
-        toast.success("Event Approved Successfully");
+        toast.success("Meeting Approved Successfully");
       }
     },
     onError: () => {
-      toast.error("Event Approval failed. Please try again.");
+      toast.error("Meeting Approval failed. Please try again.");
     },
   });
 };
@@ -89,11 +89,11 @@ export const useDeclineEvent = () => {
   return useMutation(declineEvent, {
     onSuccess: (result) => {
       if (result?.status) {
-        toast.success("Event Declined Successfully");
+        toast.success("Meeting Declined Successfully");
       }
     },
     onError: () => {
-      toast.error("Event Decline failed. Please try again.");
+      toast.error("Meeting Decline failed. Please try again.");
     },
   });
 };

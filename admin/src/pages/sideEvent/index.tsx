@@ -32,7 +32,7 @@ const Event: React.FC = () => {
         <div className="flex flex-col gap-2 px-5 md:px-0  sm:mt-[2.5rem] mt-1">
           <div className="flex align-center md:flex-row flex-col sm:gap-10 w-auto justify-between">
             <span className="text-sm  font-extrabold text-[#2E7D31]">
-              All Events
+              All Scheduled Meetings
             </span>
             <Button
               onClick={() => setOpen(true)}
