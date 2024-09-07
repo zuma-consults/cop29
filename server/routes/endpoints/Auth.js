@@ -18,6 +18,7 @@ const {
   verifyEmail,
   resendActivationLink,
   updateCopApproval,
+  createOrganisationAsNegotiator,
 } = require("../../controllers/auth-controller");
 const {
   auth,
@@ -28,6 +29,7 @@ const {
 let routes = (app) => {
   // app.post("/register", createUser);
   app.post("/org/register", createOrganisationAsUser);
+  app.post("/negotiator/register", createOrganisationAsNegotiator);
   app.get("/users", authAdmin, getAllUsers);
   app.get("/user/:id", getUserById);
   app.get("/token", auth, getUserByToken);
