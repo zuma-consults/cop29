@@ -6,6 +6,7 @@ import Loader from "../../components/ui/Loader";
 import { useNegotiatorRegister } from "../../components/custom-hooks/useAuth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { states, thematicAreas } from "../../util/data";
 
 interface FormValues {
   name: string;
@@ -265,7 +266,7 @@ const NegotiatorForm: React.FC = () => {
                     htmlFor="state"
                     className="block text-gray-700 font-semibold mb-2"
                   >
-                    State*
+                    State
                   </label>
                   <Field
                     as="select"
@@ -273,7 +274,12 @@ const NegotiatorForm: React.FC = () => {
                     name="state"
                     className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
                   >
-                    <option value="FCT">FCT</option>
+                    <option value="">Select State</option>
+                    {states.map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    ))}
                   </Field>
                   <ErrorMessage
                     name="state"
@@ -319,10 +325,15 @@ const NegotiatorForm: React.FC = () => {
                     name="thematicArea"
                     className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
                   >
-                    <option value="Agriculture">Agriculture</option>
+                    <option value="">Select Thematic Area</option>
+                    {thematicAreas.map((thematicArea) => (
+                      <option key={thematicArea} value={thematicArea}>
+                        {thematicArea}
+                      </option>
+                    ))}
                   </Field>
                   <ErrorMessage
-                    name="thematicArea"
+                    name="category"
                     component="div"
                     className="text-red-600 text-xs mt-1"
                   />
