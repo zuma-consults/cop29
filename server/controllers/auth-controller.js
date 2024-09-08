@@ -655,32 +655,35 @@ module.exports = {
 
       // If copApproved is provided in the query parameters, add it to the query object
       if (copApproved !== undefined) {
-        query["delegates.copApproved"] = copApproved === "true";
+        query["delegates.copApproved"] = copApproved;
       }
-
       // Find all users sorted by creation date
       const users = await User.find(query).sort({ createdAt: -1 });
 
       // Extract delegates from each user and combine them into one array
       const delegates = users.reduce((acc, user) => {
         if (user.delegates && user.delegates.length > 0) {
-          acc.push(
-            ...user.delegates.filter(
-              (delegate) => delegate.copApproved === (copApproved === "true")
-            )
-          );
+          if (copApproved !== undefined) {
+            // Only push delegates with matching copApproved status
+            acc.push(
+              ...user.delegates.filter(
+                (delegate) => String(delegate.copApproved) === copApproved
+              )
+            );
+          } else {
+            // If copApproved is not provided, push all delegates
+            acc.push(...user.delegates);
+          }
         }
         return acc;
       }, []);
 
       // Set the message based on the copApproved filter
       let message;
-      if (copApproved === "true") {
-        message = "Approved COP 29 Applicants";
-      } else if (copApproved === "false") {
-        message = "Pending COP 29 Applicants";
+      if (copApproved) {
+        message = `${copApproved} COP 29 applicants`;
       } else {
-        message = "All COP 29 Applicants";
+        message = "All COP 29 applicants";
       }
 
       return successHandler(res, message, delegates);
@@ -691,7 +694,7 @@ module.exports = {
   updateCopApproval: async (req, res) => {
     try {
       const { id } = req.params;
-
+      let { copApproved } = req.body;
       // Find the user that contains the delegate with the specified _id
       const user = await User.findOne({ "delegates._id": id });
 
@@ -721,14 +724,18 @@ module.exports = {
       if (!delegate) {
         return errorHandler(res, "Delegate not found", 404);
       }
-      if (delegate.copApproved === true) {
-        return successHandler(res, "Application approved.", delegate);
+      if (delegate.copApproved !== "pending") {
+        return errorHandler(
+          res,
+          `Delegate's request has already been processed.`,
+          403
+        );
       }
 
-      delegate.copApproved = true;
+      delegate.copApproved = copApproved;
       await user.save();
 
-      return successHandler(res, "Application approved.", delegate);
+      return successHandler(res, `Application ${copApproved}.`, delegate);
     } catch (error) {
       return errorHandler(res, "Error Occurred", error.statusCode || 500);
     }
