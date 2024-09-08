@@ -367,10 +367,9 @@ module.exports = {
       }
 
       try {
-        const { body, files } = req;
+        const { body, files, user } = req;
         const { name, email, designation, phone } = body;
         const { id } = req.params;
-
         // Validate required fields
         if (!name || !email || !designation || !phone) {
           return errorHandler(
@@ -386,6 +385,14 @@ module.exports = {
           return errorHandler(
             res,
             "No account found for this organization.",
+            409
+          );
+        }
+        
+        if (findUser._id.toString() !== user.toString()) {
+          return errorHandler(
+            res,
+            "Not authorized",
             409
           );
         }
