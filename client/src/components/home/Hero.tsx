@@ -48,10 +48,10 @@ const Hero: React.FC = () => {
             NIGERIA THEME : Actualizing financial commitments for Climate
             Action.
           </p>
-          <div className="flex flex-wrap justify-start items-center gap-4 mt-10 md:mt-0 w-full">
+          <div className="grid md:grid-cols-2 justify-start items-center gap-4 mt-10 md:mt-0 w-full">
             <Link
               to="/signup"
-              className="text-center w-full lg:w-[40%] rounded py-4 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
+              className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
@@ -60,7 +60,7 @@ const Hero: React.FC = () => {
             </Link>
             <Link
               to="/negotiator"
-              className="text-center w-full lg:w-[40%] rounded py-4 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
+              className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-blue-800 hover:bg-green-700 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
@@ -69,7 +69,7 @@ const Hero: React.FC = () => {
             </Link>
             <Link
               to="/create-event"
-              className="text-center w-full lg:w-[40%] rounded py-4 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
+              className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-pink-800 hover:bg-green-700 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
@@ -78,21 +78,21 @@ const Hero: React.FC = () => {
             </Link>
             <Link
               to="/terms-and-conditions"
-              className="text-center w-full lg:w-[40%] rounded py-4 flex justify-center items-center text-red-800 hover:bg-red-200 bg-red-100 transition"
+              className="text-center w-full rounded py-4 flex justify-center items-center text-red-800 hover:bg-red-200 bg-red-100 transition"
             >
               <FaInfoCircle className="text-2xl mr-2" />
               Important Notice
             </Link>
             <Link
               to="/faq"
-              className="text-center w-full lg:w-[40%] rounded py-4 flex justify-center items-center text-blue-800 hover:bg-blue-200 bg-blue-100 transition"
+              className="text-center w-full rounded py-4 flex justify-center items-center text-blue-800 hover:bg-blue-200 bg-blue-100 transition"
             >
               <FaQuestionCircle className="text-2xl mr-2" />
               Frequently Asked Questions
             </Link>
             <Link
               to="/intl-org"
-              className="text-center w-full lg:w-[40%] rounded py-4 flex justify-center items-center text-white bg-orange-500 hover:bg-orange-400 transition"
+              className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-orange-500 hover:bg-orange-400 transition"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
               International Organisation Meeting Request
