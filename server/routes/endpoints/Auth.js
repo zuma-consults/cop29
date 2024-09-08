@@ -38,7 +38,7 @@ let routes = (app) => {
   app.put("/user/:id",authAdmin,  updateUserById);
   app.put("/add-delegate/:id", auth, addDelegatesToOrganisation);
   app.put("/password/user/", auth, changeUserPasswordById);
-  app.delete("/user/:id", deleteUserById);
+  // app.delete("/user/:id", deleteUserById);
   app.post("/login", login);
   app.post("/logout", auth, logout);
   app.get("/applicants", authAdmin, getAllCopApplicants);
