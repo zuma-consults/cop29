@@ -830,7 +830,8 @@ module.exports = {
       // Find the user by their ID and update their verifiedEmail in the database
       await User.updateOne(
         { _id: req.user },
-        { verifiedEmail: true, status: "approved" }
+        // { verifiedEmail: true, status: "approved" }
+        { verifiedEmail: true }
       );
 
       return successHandler(res, "Email Verified.");
