@@ -16,7 +16,7 @@ interface TableRow {
   status: string;
   title: string;
   date: any;
-  tags: string;
+  organizer: string;
   invoice?: string;
   description: string;
   start: string;
@@ -117,9 +117,12 @@ const EventTable: React.FC = () => {
       ),
     },
     {
-      name: "Tags",
-      selector: (row) =>
-        Array.isArray(row?.tags) ? row.tags?.join(", ") : "N/A",
+      name: (
+        <Box style={{ display: "flex", alignItems: "center" }}>
+          <Typography className="capitalize">Organizer</Typography>
+        </Box>
+      ),
+      selector: (row) => row?.organizer ?? "N/A",
     },
     {
       name: "Status",
@@ -151,7 +154,7 @@ const EventTable: React.FC = () => {
       cell: (row) => (
         <div className="flex justify-end cursor-pointer">
           <Link
-            to={`/event/${row?.countId}`}
+            to={`/scheduled-meetings/${row?.countId}`}
             state={{ ...row }}
             className="w-[150px] cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
           >
@@ -173,7 +176,7 @@ const EventTable: React.FC = () => {
                 },
               }}
             >
-              View event
+              View Details
               <GoArrowRight size={19} />
             </Button>
           </Link>

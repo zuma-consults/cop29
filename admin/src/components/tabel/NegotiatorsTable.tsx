@@ -6,7 +6,7 @@ import saveAsCSV from "json-to-csv-export";
 import {
   useApproveOrganisation,
   useDeclineOrganisation,
-  useOrganisation,
+  useNegotiators,
 } from "../../hooks/useOrganisation";
 import Loader from "../ui/Loader";
 import { Link } from "react-router-dom";
@@ -23,18 +23,19 @@ interface TableRow {
   image: string;
 }
 
-const OrganisationTable: React.FC = () => {
-  const [_, setPage] = useState(1);
-  const [selectedOrgnisation, setSelectedOrgnisation] = useState<any>(null);
+const NegotiatorsTable: React.FC = () => {
+  const [page, setPage] = useState(1);
+  const [selectedNegotiators, setSelectedNegotiators] = useState<any>(null);
   const [filters, setFilters] = useState({
     userType: "organization",
   });
 
   const memoizedFilters = useMemo(
     () => ({
-      userType: filters.userType,
+      // userType: filters.userType,
+      page,
     }),
-    [filters.userType]
+    [filters.userType, page]
   );
 
   const { mutate: mutateApproval, isLoading: loadingOrganisation } =
@@ -42,7 +43,7 @@ const OrganisationTable: React.FC = () => {
   const { mutate: mutateDecline, isLoading: loadingDecline } =
     useDeclineOrganisation();
 
-  const { data, isFetching, refetch } = useOrganisation(memoizedFilters);
+  const { data, isFetching, refetch } = useNegotiators(memoizedFilters);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -73,11 +74,11 @@ const OrganisationTable: React.FC = () => {
 
   const handelActionEvent = async (type: string) => {
     if (type === "approve") {
-      mutateApproval(selectedOrgnisation?.id);
-      setSelectedOrgnisation(null);
+      mutateApproval(selectedNegotiators?.id);
+      setSelectedNegotiators(null);
     } else {
-      mutateDecline(selectedOrgnisation?.d);
-      setSelectedOrgnisation(null);
+      mutateDecline(selectedNegotiators?.d);
+      setSelectedNegotiators(null);
     }
   };
 
@@ -146,7 +147,7 @@ const OrganisationTable: React.FC = () => {
       cell: (row) => (
         <div className="flex justify-end cursor-pointer">
           <Link
-            to={`/organization/${row?.id}`}
+            to={`/negotiators/${row?.id}`}
             state={{ ...row }}
             className="w-[150px] cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
           >
@@ -225,4 +226,4 @@ const OrganisationTable: React.FC = () => {
   );
 };
 
-export default OrganisationTable;
+export default NegotiatorsTable;

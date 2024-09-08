@@ -414,7 +414,7 @@ module.exports = {
       if (event.status !== "processing") {
         return errorHandler(
           res,
-          `Event status is not in processing state. Event has be ${event.status}.`,
+          `Event status is not in processing state. Event has been ${event.status}. already`,
           400
         );
       }

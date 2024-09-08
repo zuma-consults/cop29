@@ -51,7 +51,6 @@ export const categories = [
   "Environment",
   "Manufacturing",
   "Tourism",
-  "Negotiators"
 ];
 
 export const organizationTypes = [
@@ -74,6 +73,7 @@ export const thematicAreas = [
   "Private Sector Initiative",
   "Gender Sensitive Aproaches",
   "Local Indigenous and Traditional Knowledge",
+  "Mountains",
   "Other Areas"
 ]
 
