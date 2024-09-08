@@ -65,7 +65,7 @@ const Hero: React.FC = () => {
               data-aos-duration="1000"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
-              Request Accreditation as Negotiators
+              Request Accreditation as a Negotiator
             </Link>
             <Link
               to="/create-event"
