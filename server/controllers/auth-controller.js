@@ -1,6 +1,7 @@
 const { successHandler } = require("../utils/core");
 const { errorHandler } = require("../utils/errorHandler");
 const User = require("../models/users");
+const Event = require("../models/events");
 const { generateTokens, createAccessToken } = require("../utils/generateToken");
 const bcrypt = require("bcrypt");
 const UserToken = require("../models/token");
@@ -124,9 +125,9 @@ module.exports = {
             password,
             email,
             phone,
-            thematicArea,
             reasonForAttendance,
             contactDesignation,
+            contactName,
           } = req.body;
           if (
             !name ||
@@ -134,8 +135,8 @@ module.exports = {
             !email ||
             !phone ||
             !contactDesignation ||
-            !thematicArea ||
-            !reasonForAttendance
+            !reasonForAttendance ||
+            !contactName
           ) {
             return errorHandler(
               res,
@@ -174,6 +175,8 @@ module.exports = {
                 );
                 body.letterProof = result.url;
               }
+            } else {
+              return errorHandler(res, "Please attach Letter of Proof", 400);
             }
 
             // Process orgImage (Logo)
@@ -192,6 +195,12 @@ module.exports = {
                 );
                 body.contactIdCard = result.url;
               }
+            } else {
+              return errorHandler(
+                res,
+                "Please attach Contact Person's Scanned ID",
+                400
+              );
             }
 
             // Process documentSupportingAttendance
@@ -210,7 +219,15 @@ module.exports = {
                 );
                 body.documentSupportingAttendance = result.url;
               }
+            } else {
+              return errorHandler(
+                res,
+                "Please Attach Document Supporting Attendance",
+                400
+              );
             }
+          } else {
+            return errorHandler(res, "Please Attach Documents", 400);
           }
 
           const newUser = new User({
@@ -219,7 +236,108 @@ module.exports = {
             ...req.body,
             password: passwordHash,
           });
+          await newUser.save();
+          // Send success response
 
+          const access_token = await createAccessToken({ id: newUser._id });
+          const url = `${CLIENT_URL}/verify/${access_token}`;
+          sendVerifyEmail(
+            email,
+            url,
+            "Click to complete your application",
+            name
+          );
+
+          return successHandler(
+            res,
+            "Your account has been created. Please check your email to verify your email address and complete your application for COP 29 by adding your delegates."
+            // newUser
+          );
+        } catch (error) {
+          return errorHandler(res, error.message, error.statusCode || 500);
+        }
+      }
+    });
+  },
+  createOrganisationAsNegotiator: async (req, res) => {
+    upload(req, res, async (err) => {
+      if (err) {
+        return errorHandler(res, err.code, 400);
+      } else {
+        try {
+          const { body, files } = req;
+          const {
+            name,
+            password,
+            email,
+            phone,
+            thematicArea,
+            contactDesignation,
+            contactName,
+          } = req.body;
+          if (
+            !name ||
+            !password ||
+            !email ||
+            !phone ||
+            !contactDesignation ||
+            !thematicArea ||
+            !contactName
+          ) {
+            return errorHandler(
+              res,
+              "Please fill in all fields, one or more fields are empty!",
+              400
+            );
+          }
+
+          const findUser = await User.findOne({ email });
+
+          if (findUser) {
+            return errorHandler(res, "An account already exists.", 409);
+          }
+
+          if (!validatePassword(password)) {
+            return errorHandler(
+              res,
+              "Password should be Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character",
+              400
+            );
+          }
+
+          const passwordHash = await bcrypt.hash(password, 12);
+
+          if (files && files.length > 0) {
+            // Process orgImage (Logo)
+            const imageFiles = files.filter(
+              (file) => file.fieldname === "orgImage"
+            );
+            if (imageFiles.length > 0) {
+              for (const file of imageFiles) {
+                const localFilePath = file.path;
+                const localFileName = file.filename;
+
+                const result = await uploadToCloudinary(
+                  localFilePath,
+                  localFileName,
+                  "COP29"
+                );
+                body.contactIdCard = result.url;
+              }
+            } else {
+              return errorHandler(res, "Please attach Letter of Proof", 400);
+            }
+          } else {
+            return errorHandler(res, "Please Attach Documents", 400);
+          }
+
+          const newUser = new User({
+            name,
+            email,
+            ...req.body,
+            category: "Negotiator",
+            password: passwordHash,
+          });
           await newUser.save();
           // Send success response
 
@@ -250,10 +368,9 @@ module.exports = {
       }
 
       try {
-        const { body, files } = req;
+        const { body, files, user } = req;
         const { name, email, designation, phone } = body;
         const { id } = req.params;
-
         // Validate required fields
         if (!name || !email || !designation || !phone) {
           return errorHandler(
@@ -269,6 +386,14 @@ module.exports = {
           return errorHandler(
             res,
             "No account found for this organization.",
+            409
+          );
+        }
+        
+        if (findUser._id.toString() !== user.toString()) {
+          return errorHandler(
+            res,
+            "Not authorized",
             409
           );
         }
@@ -353,7 +478,9 @@ module.exports = {
     try {
       const { page = 1, limit = 50, userType } = req.query;
 
-      const query = userType ? { userType } : { verifiedEmail: true };
+      const query = userType
+        ? { userType, verifiedEmail: true }
+        : { verifiedEmail: true };
 
       const users = await User.find(query)
         .sort({ createdAt: -1 })
@@ -371,6 +498,34 @@ module.exports = {
       };
 
       const message = `All ${userType ? userType : "Users"} Found`;
+
+      return successHandler(res, message, response);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode);
+    }
+  },
+  getAllNegotiators: async (req, res) => {
+    try {
+      const { page = 1, limit = 50 } = req.query;
+
+      const query = { verifiedEmail: true, category: "Negotiator" };
+
+      const users = await User.find(query)
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(parseInt(limit));
+
+      const totalUsers = await User.countDocuments(query);
+
+      // Prepare the response with pagination info
+      const response = {
+        totalPages: Math.ceil(totalUsers / limit),
+        currentPage: parseInt(page),
+        totalUsers,
+        users,
+      };
+
+      const message = `All Negotiators Found`;
 
       return successHandler(res, message, response);
     } catch (error) {
@@ -415,7 +570,6 @@ module.exports = {
           }
           await UserToken.findOneAndDelete({ userId: id });
         } catch (error) {
-          console.error("Error deleting user token on deactivating", error);
           return errorHandler(res, "Request Not Completed", 500);
         }
       }
@@ -505,34 +659,37 @@ module.exports = {
       const { copApproved } = req.query;
 
       // Create a query object for filtering based on copApproved
-      const query = { verifiedEmail: true };
+      const query = { verifiedEmail: true, status: "approved" };
 
       // If copApproved is provided in the query parameters, add it to the query object
       if (copApproved !== undefined) {
-        query["delegates.copApproved"] = copApproved === "true";
+        query["delegates.copApproved"] = copApproved;
       }
-
       // Find all users sorted by creation date
       const users = await User.find(query).sort({ createdAt: -1 });
 
       // Extract delegates from each user and combine them into one array
       const delegates = users.reduce((acc, user) => {
         if (user.delegates && user.delegates.length > 0) {
-          acc.push(
-            ...user.delegates.filter(
-              (delegate) => delegate.copApproved === (copApproved === "true")
-            )
-          );
+          if (copApproved !== undefined) {
+            // Only push delegates with matching copApproved status
+            acc.push(
+              ...user.delegates.filter(
+                (delegate) => String(delegate.copApproved) === copApproved
+              )
+            );
+          } else {
+            // If copApproved is not provided, push all delegates
+            acc.push(...user.delegates);
+          }
         }
         return acc;
       }, []);
 
       // Set the message based on the copApproved filter
       let message;
-      if (copApproved === "true") {
-        message = "Approved COP 29 Applicants";
-      } else if (copApproved === "false") {
-        message = "Pending COP 29 Applicants";
+      if (copApproved !== undefined) {
+        message = `${capitalize(copApproved)} COP 29 Applicants`;
       } else {
         message = "All COP 29 Applicants";
       }
@@ -545,7 +702,7 @@ module.exports = {
   updateCopApproval: async (req, res) => {
     try {
       const { id } = req.params;
-
+      let { copApproved } = req.body;
       // Find the user that contains the delegate with the specified _id
       const user = await User.findOne({ "delegates._id": id });
 
@@ -575,14 +732,18 @@ module.exports = {
       if (!delegate) {
         return errorHandler(res, "Delegate not found", 404);
       }
-      if (delegate.copApproved === true) {
-        return successHandler(res, "Application approved.", delegate);
+      if (delegate.copApproved !== "pending") {
+        return errorHandler(
+          res,
+          `Delegate's request has already been processed.`,
+          403
+        );
       }
 
-      delegate.copApproved = true;
+      delegate.copApproved = copApproved;
       await user.save();
 
-      return successHandler(res, "Application approved.", delegate);
+      return successHandler(res, `Application ${copApproved}.`, delegate);
     } catch (error) {
       return errorHandler(res, "Error Occurred", error.statusCode || 500);
     }
@@ -684,7 +845,8 @@ module.exports = {
       // Find the user by their ID and update their verifiedEmail in the database
       await User.updateOne(
         { _id: req.user },
-        { verifiedEmail: true, status: "approved" }
+        // { verifiedEmail: true, status: "approved" }
+        { verifiedEmail: true }
       );
 
       return successHandler(res, "Email Verified.");
@@ -732,4 +894,12 @@ module.exports = {
 function validatePassword(password) {
   const re = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$/;
   return re.test(password);
+}
+
+function capitalize(str) {
+  if (str === null || str === undefined || str.length === 0) {
+    return str; // Return the original string if it's empty or null
+  }
+
+  return str[0].toUpperCase() + str.slice(1);
 }

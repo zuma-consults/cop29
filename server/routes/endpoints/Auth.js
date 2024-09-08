@@ -18,6 +18,8 @@ const {
   verifyEmail,
   resendActivationLink,
   updateCopApproval,
+  createOrganisationAsNegotiator,
+  getAllNegotiators,
 } = require("../../controllers/auth-controller");
 const {
   auth,
@@ -28,13 +30,15 @@ const {
 let routes = (app) => {
   // app.post("/register", createUser);
   app.post("/org/register", createOrganisationAsUser);
+  app.post("/negotiator/register", createOrganisationAsNegotiator);
   app.get("/users", authAdmin, getAllUsers);
-  app.get("/user/:id", getUserById);
+  app.get("/negotiators", authAdmin, getAllNegotiators);
+  app.get("/user/:id", authAdmin, getUserById);
   app.get("/token", auth, getUserByToken);
-  app.put("/user/:id", updateUserById);
-  app.put("/add-delegate/:id",auth, addDelegatesToOrganisation);
-  app.put("/password/user/",auth, changeUserPasswordById);
-  app.delete("/user/:id", deleteUserById);
+  app.put("/user/:id",authAdmin,  updateUserById);
+  app.put("/add-delegate/:id", auth, addDelegatesToOrganisation);
+  app.put("/password/user/", auth, changeUserPasswordById);
+  // app.delete("/user/:id", deleteUserById);
   app.post("/login", login);
   app.post("/logout", auth, logout);
   app.get("/applicants", authAdmin, getAllCopApplicants);

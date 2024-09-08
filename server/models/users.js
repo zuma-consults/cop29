@@ -28,13 +28,15 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    workStream: {
+      type: String,
+    },
     thematicArea: {
       type: String,
       required: true,
     },
     reasonForAttendance: {
       type: String,
-      required: true,
     },
     documentSupportingAttendance: {
       type: String,
@@ -53,6 +55,10 @@ const userSchema = mongoose.Schema(
       type: String,
     },
     contactDesignation: {
+      type: String,
+      required: true,
+    },
+    contactName: {
       type: String,
       required: true,
     },
@@ -84,19 +90,15 @@ const userSchema = mongoose.Schema(
             required: true,
           },
           copApproved: {
-            type: Boolean,
-            default: false,
-          },
-          copRejected: {
-            type: Boolean,
-            default: false,
+            type: String,
+            enum: ["pending", "approved", "rejected"],
+            default: "pending",
           },
         },
       ],
     },
     letterProof: {
       type: String,
-      required: true,
     },
     terms: {
       type: Boolean,
