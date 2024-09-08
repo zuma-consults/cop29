@@ -404,7 +404,7 @@ const NegotiatorForm: React.FC = () => {
                     htmlFor="orgImage"
                     className="block text-gray-700 font-semibold mb-2"
                   >
-                    Organization Image (jpg/png)*
+                    Contact Person's ID (jpg/png)*
                   </label>
                   <input
                     type="file"
