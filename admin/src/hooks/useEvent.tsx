@@ -3,6 +3,7 @@ import {
   approveCopEvent,
   approveEvent,
   createEvent,
+  declineCopEvent,
   declineEvent,
   generateInvoice,
   getAllApplicants,
@@ -139,6 +140,19 @@ export const useApproveCopEvent = () => {
     },
     onError: () => {
       toast.error("Applicant Approval failed. Please try again.");
+    },
+  });
+};
+
+export const useDeclineCopEvent = () => {
+  return useMutation(declineCopEvent, {
+    onSuccess: (result) => {
+      if (result?.status) {
+        toast.success("Applicant Declined Successfully");
+      }
+    },
+    onError: () => {
+      toast.error("Applicant Decline failed. Please try again.");
     },
   });
 };

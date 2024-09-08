@@ -2,9 +2,12 @@ import { CgOrganisation } from "react-icons/cg";
 import { IoIosPeople } from "react-icons/io";
 import { MdEvent } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
+import { FaPersonBreastfeeding } from "react-icons/fa6";
 import { FaCalendarAlt } from "react-icons/fa";
-// import { GrAnnounce } from "react-icons/gr";
+import { GrAnnounce } from "react-icons/gr";
 import { TbSquareLetterC } from "react-icons/tb";
+import { RiContactsBook3Fill } from "react-icons/ri";
+import { TiWorldOutline } from "react-icons/ti";
 
 export const navConfig = [
   {
@@ -21,6 +24,11 @@ export const navConfig = [
     title: "Organizations",
     icon: <CgOrganisation size={24} />,
     path: "/organization",
+  },
+  {
+    title: "Negotiators",
+    icon: <FaPersonBreastfeeding size={24} />,
+    path: "/negotiators",
   },
 
   // {
@@ -48,9 +56,14 @@ export const navConfig = [
     icon: <TbSquareLetterC size={24} />,
     path: "/cop",
   },
-  // {
-  //   title: "Announcements",
-  //   icon: <GrAnnounce size={24} />,
-  //   path: "/announcement",
-  // },
+  {
+    title: "Contact us Messages",
+    icon: <RiContactsBook3Fill size={24} />,
+    path: "/contact-us",
+  },
+  {
+    title: "International Messages",
+    icon: <TiWorldOutline size={24} />,
+    path: "/international",
+  },
 ];

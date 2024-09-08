@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import {
   approveOrgansation,
   declineOrganisation,
+  getAllNegotiators,
   getAllOrganisation,
 } from "../services/organisation";
 import { toast } from "react-toastify";
@@ -16,6 +17,25 @@ export const useOrganisation = (queryParams?: Record<string, any>) => {
   return useQuery(
     ["AllOrganisation", memoizedQueryParams],
     () => getAllOrganisation(memoizedQueryParams),
+    {
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+      cacheTime: 30 * 60 * 1000,
+      retry: 1,
+    }
+  );
+};
+
+export const useNegotiators = (queryParams?: Record<string, any>) => {
+  const memoizedQueryParams = useMemo(() => {
+    return Object.fromEntries(
+      Object.entries(queryParams || {}).filter(([_, value]) => value !== "")
+    );
+  }, [queryParams]);
+  return useQuery(
+    ["AllNegotiators", memoizedQueryParams],
+    () => getAllNegotiators(memoizedQueryParams),
     {
       staleTime: 5 * 60 * 1000,
       refetchOnWindowFocus: false,

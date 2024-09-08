@@ -154,7 +154,7 @@ const EventTable: React.FC = () => {
       cell: (row) => (
         <div className="flex justify-end cursor-pointer">
           <Link
-            to={`/event/${row?.countId}`}
+            to={`/scheduled-meetings/${row?.countId}`}
             state={{ ...row }}
             className="w-[150px] cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
           >

@@ -14,6 +14,20 @@ export const getAllOrganisation = async (params?: Record<string, any>) => {
   }
 };
 
+export const getAllNegotiators = async (params?: Record<string, any>) => {
+  try {
+    const config = {
+      method: "get",
+      url: "negotiators",
+      params,
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const approveOrgansation = async (id: number) => {
   try {
     const config = {

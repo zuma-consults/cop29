@@ -8,6 +8,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  CircularProgress,
 } from "@mui/material";
 import { useCreateEvent, useGetAllTimeSlots } from "../../hooks/useEvent";
 import Loader from "../ui/Loader";
@@ -48,7 +49,7 @@ const CreateEvent: React.FC<{
       formData.append("objectives", values.objective);
       formData.append("slotId", values.timeSlot);
       formData.append("organizer", values.organizer);
-      formData.append("status", "approved");
+      // formData.append("status", "approved");
       mutate(formData);
     },
   });
@@ -194,8 +195,13 @@ const CreateEvent: React.FC<{
                 variant="contained"
                 color="success"
                 fullWidth
+                disabled={isLoading}
               >
-                Submit Meeting
+                {isLoading ? (
+                  <CircularProgress size={24} color="success" />
+                ) : (
+                  "Submit Meeting"
+                )}
               </Button>
             </div>
           </form>

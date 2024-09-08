@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { formatDate1 } from "../../utils/helper";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import { Button, Chip } from "@mui/material";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
-import {
-  useApproveEvent,
-  useDeclineEvent,
-  useGenerateInvoice,
-} from "../../hooks/useEvent";
+import { useApproveEvent, useDeclineEvent } from "../../hooks/useEvent";
 import Loader from "../../components/ui/Loader";
 
 const EventDetails: React.FC = () => {
   const location = useLocation();
+
   const event = location.state as {
     status: string;
     title: string;
@@ -24,33 +28,44 @@ const EventDetails: React.FC = () => {
   };
 
   if (!event) {
-    return <div>Event not found</div>;
+    return <div>Meeting not found</div>;
   }
+  const { title, start, end, description, organizer, id, countId } = event;
 
-  const { status, title, start, end, description, organizer, id, countId } =
-    event;
+  const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
+  const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
+  const [status, setStatus] = useState(event.status);
+  const handleApproveClick = () => setOpenApproveDialog(true);
+  const handleDeclineClick = () => setOpenDeclineDialog(true);
+  const handleClose = () => {
+    setOpenApproveDialog(false);
+    setOpenDeclineDialog(false);
+  };
+
   const { mutate: mutateApproval, isLoading: loadingApproval } =
     useApproveEvent();
   const { mutate: mutateDecline, isLoading: loadingDecline } =
     useDeclineEvent();
-  const { mutate: mutateGenerateInvoice, isLoading: loadingGenerateInvoice } =
-    useGenerateInvoice();
 
   const handelActionEvent = async (type: string) => {
     if (type === "approve") {
-      mutateApproval(id);
+      mutateApproval(id, {
+        onSuccess: () => {
+          setStatus("approved");
+        },
+      });
     } else if (type === "decline") {
-      mutateDecline(id);
-    } else {
-      mutateGenerateInvoice(countId);
+      mutateDecline(id, {
+        onSuccess: () => {
+          setStatus("decline");
+        },
+      });
     }
   };
 
   return (
     <>
-      {loadingApproval ||
-        loadingDecline ||
-        (loadingGenerateInvoice && <Loader />)}
+      {(loadingApproval || loadingDecline) && <Loader />}
 
       <div className="px-5 py-10 bg-gray-100">
         <div className="flex items-center justify-start mb-5">
@@ -96,7 +111,7 @@ const EventDetails: React.FC = () => {
               </p>
             </div>
             <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
-              About this Event
+              About this meeting
               <div className="w-full text-[12px] sm:text-[14px] text-gray-600 font-normal">
                 {description}
               </div>
@@ -120,44 +135,87 @@ const EventDetails: React.FC = () => {
               }}
             />
           </div>
-          {
-            status !== "approved" && (
-          
-          <div className="flex items-center justify-end gap-10">
-            {status === "processing" ? (
-              <Button
-                variant="contained"
-                color="success"
-                className="absolute bottom-0 right-0"
-                onClick={() => handelActionEvent("approve")}
-                disabled={loadingApproval}
-              >
-                Approve
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                color="warning"
-                className="absolute bottom-0 right-0"
-                onClick={() => handelActionEvent("generateInvoice")}
-              >
-                Make payment
-              </Button>
-            )}
+          {status !== "approved" && status !== "decline" && (
+            <div className="flex items-center justify-end gap-10">
+              {status === "processing" ? (
+                <Button
+                  variant="contained"
+                  color="success"
+                  className="absolute bottom-0 right-0"
+                  onClick={handleApproveClick}
+                  disabled={loadingApproval}
+                >
+                  Approve
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="warning"
+                  className="absolute bottom-0 right-0"
+                  onClick={() => handelActionEvent("generateInvoice")}
+                >
+                  Make payment
+                </Button>
+              )}
 
-            <Button
-              variant="contained"
-              color="error"
-              className="absolute bottom-0 right-0"
-              onClick={() => handelActionEvent("decline")}
-              disabled={loadingDecline}
-            >
-              Decline
-            </Button>
-          </div>
+              <Button
+                variant="contained"
+                color="error"
+                className="absolute bottom-0 right-0"
+                onClick={handleDeclineClick}
+                disabled={loadingDecline}
+              >
+                Decline
+              </Button>
+            </div>
           )}
         </div>
       </div>
+      <Dialog open={openApproveDialog} onClose={handleClose}>
+        <DialogTitle>Confirm Approval</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to approve this meeting?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleClose();
+              handelActionEvent("approve");
+            }}
+            color="success"
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openDeclineDialog} onClose={handleClose}>
+        <DialogTitle>Confirm Decline</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to decline this meeting?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleClose();
+              handelActionEvent("decline");
+            }}
+            color="error"
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

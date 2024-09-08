@@ -1,8 +1,8 @@
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import React from "react";
-import AnnouncementTable from "../../components/tabel/AnnouncementTable";
 import { IoCreateSharp } from "react-icons/io5";
 import { useForm, Controller } from "react-hook-form";
+import ContactUsTable from "../../components/tabel/ContactUsTable";
 
 interface FormData {
   subject: string;
@@ -10,7 +10,7 @@ interface FormData {
   sender: string;
 }
 
-const Announcement: React.FC = () => {
+const ContactUs: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const { control, handleSubmit, reset } = useForm<FormData>();
 
@@ -39,16 +39,16 @@ const Announcement: React.FC = () => {
               textAlign={"center"}
               sx={{ color: "#908E8F" }}
             >
-              Announcement
+              Contact us messages
             </Typography>
           </Box>
 
           <div className="flex flex-col gap-2 px-5 md:px-0  sm:mt-[2.5rem] mt-1">
             <div className="flex align-center md:flex-row flex-col sm:gap-10 w-auto justify-between">
               <span className="text-sm font-extrabold text-[#2E7D31]">
-                All Announcements
+                All Contact Us Messages
               </span>
-              <Button
+              {/* <Button
                 onClick={() => setOpen(true)}
                 sx={{
                   backgroundColor: "green",
@@ -69,7 +69,7 @@ const Announcement: React.FC = () => {
               >
                 Create new announcement
                 <IoCreateSharp size={20} />
-              </Button>
+              </Button> */}
             </div>
 
             <div>
@@ -84,7 +84,7 @@ const Announcement: React.FC = () => {
             </div>
           </div>
         </div>
-        <AnnouncementTable />
+        <ContactUsTable />
       </div>
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box
@@ -153,4 +153,4 @@ const Announcement: React.FC = () => {
   );
 };
 
-export default Announcement;
+export default ContactUs;
