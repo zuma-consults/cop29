@@ -470,7 +470,9 @@ module.exports = {
     try {
       const { page = 1, limit = 50, userType } = req.query;
 
-      const query = userType ? { userType } : { verifiedEmail: true };
+      const query = userType
+        ? { userType, verifiedEmail: true }
+        : { verifiedEmail: true };
 
       const users = await User.find(query)
         .sort({ createdAt: -1 })
@@ -488,6 +490,34 @@ module.exports = {
       };
 
       const message = `All ${userType ? userType : "Users"} Found`;
+
+      return successHandler(res, message, response);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode);
+    }
+  },
+  getAllNegotiators: async (req, res) => {
+    try {
+      const { page = 1, limit = 50 } = req.query;
+
+      const query = { verifiedEmail: true, category: "Negotiator" };
+
+      const users = await User.find(query)
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(parseInt(limit));
+
+      const totalUsers = await User.countDocuments(query);
+
+      // Prepare the response with pagination info
+      const response = {
+        totalPages: Math.ceil(totalUsers / limit),
+        currentPage: parseInt(page),
+        totalUsers,
+        users,
+      };
+
+      const message = `All Negotiators Found`;
 
       return successHandler(res, message, response);
     } catch (error) {
