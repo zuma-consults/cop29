@@ -15,16 +15,13 @@ const Navbar: React.FC = () => {
             alt="Logo"
             className="h-[40px]"
           />
-           {/* <img
-            src="/images/unfccc_.png"
-            alt="Logo"
-            className="h-[40px]"
-          /> */}
+          
            <img
             src="/images/new.png"
             alt="Logo"
             className="h-[40px]"
           />
+        
           {/* <div className="flex flex-col items-start">
             <div className="flex items-center">
               <span className="text-black text-[20px] font-bold">COP</span>

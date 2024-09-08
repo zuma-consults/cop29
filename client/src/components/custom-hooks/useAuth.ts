@@ -19,6 +19,7 @@ export const useRegister = () => {
     },
   });
 };
+
 export const useOrgRegister = () => {
   return useMutation(orgRegister, {
     onSuccess: () => {
