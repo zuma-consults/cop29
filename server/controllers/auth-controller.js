@@ -680,10 +680,10 @@ module.exports = {
 
       // Set the message based on the copApproved filter
       let message;
-      if (copApproved) {
-        message = `${copApproved} COP 29 applicants`;
+      if (copApproved !== undefined) {
+        message = `${capitalize(copApproved)} COP 29 Applicants`;
       } else {
-        message = "All COP 29 applicants";
+        message = "All COP 29 Applicants";
       }
 
       return successHandler(res, message, delegates);
@@ -886,4 +886,12 @@ module.exports = {
 function validatePassword(password) {
   const re = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$/;
   return re.test(password);
+}
+
+function capitalize(str) {
+  if (str === null || str === undefined || str.length === 0) {
+    return str; // Return the original string if it's empty or null
+  }
+
+  return str[0].toUpperCase() + str.slice(1);
 }
