@@ -19,6 +19,7 @@ const {
   resendActivationLink,
   updateCopApproval,
   createOrganisationAsNegotiator,
+  getAllNegotiators,
 } = require("../../controllers/auth-controller");
 const {
   auth,
@@ -30,7 +31,8 @@ let routes = (app) => {
   // app.post("/register", createUser);
   app.post("/org/register", createOrganisationAsUser);
   app.post("/negotiator/register", createOrganisationAsNegotiator);
-  app.get("/users", authAdmin, getAllUsers);
+  app.get("/users", getAllUsers);
+  app.get("/negotiators", getAllNegotiators);
   app.get("/user/:id", getUserById);
   app.get("/token", auth, getUserByToken);
   app.put("/user/:id", updateUserById);
