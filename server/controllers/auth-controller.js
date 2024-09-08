@@ -1,6 +1,7 @@
 const { successHandler } = require("../utils/core");
 const { errorHandler } = require("../utils/errorHandler");
 const User = require("../models/users");
+const Event = require("../models/events");
 const { generateTokens, createAccessToken } = require("../utils/generateToken");
 const bcrypt = require("bcrypt");
 const UserToken = require("../models/token");
