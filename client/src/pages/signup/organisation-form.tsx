@@ -379,7 +379,7 @@ const OrganizationForm: React.FC = () => {
                 type="text"
                 id="contactDesignation"
                 name="contactDesignation"
-                placeholder="contact person's designation"
+                placeholder="Contact Person's Designation"
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
               />
               <ErrorMessage
@@ -400,7 +400,7 @@ const OrganizationForm: React.FC = () => {
                 type="text"
                 id="contactName"
                 name="contactName"
-                placeholder="contact person's Name"
+                placeholder="Contact Person's Name"
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
               />
               <ErrorMessage
@@ -520,7 +520,7 @@ const OrganizationForm: React.FC = () => {
               as="textarea"
               id="reasonForAttendance"
               name="reasonForAttendance"
-              placeholder="Field Negotiator, Confirmed Bilateral, Organisation Mandate etc"
+              placeholder="Confirmed Bilateral, Organisation Mandate etc"
               className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
             />
             <ErrorMessage
