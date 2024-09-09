@@ -92,11 +92,11 @@ const sendResetPassword = async (to, url, txt, name) => {
       "
     >
       <p style="color: whitesmoke; font-size: 11px">
-       Nigeris COP29 Theme: Actualizing financial commitments for Climate Action.
+       Nigeria COP29 Theme: Actualizing financial commitments for Climate Action.
       </p>
       <p style="color: whitesmoke; font-size: 11px; margin-top: 15px">
         <a
-          href="https://cop29.vercel.app/"
+          href="https://nigccdelegation.natccc.gov.ng/"
           style="color: whitesmoke; text-decoration: none"
           >Visit Website</a
         >
