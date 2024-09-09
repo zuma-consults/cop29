@@ -35,7 +35,7 @@ let routes = (app) => {
   app.get("/negotiators", authAdmin, getAllNegotiators);
   app.get("/user/:id", authAdmin, getUserById);
   app.get("/token", auth, getUserByToken);
-  app.put("/user/:id",authAdmin,  updateUserById);
+  app.put("/user/:id", authAdmin, updateUserById);
   app.put("/add-delegate/:id", auth, addDelegatesToOrganisation);
   app.put("/password/user/", auth, changeUserPasswordById);
   // app.delete("/user/:id", deleteUserById);
