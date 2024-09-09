@@ -60,12 +60,12 @@ export const organizationTypes = [
   "State Government",
   "State Assembly",
   "Private Sector",
-  "Others"
+  "Others",
 ];
 
 export const thematicAreas = [
   "Agriculture and Food Security",
- "Biodiversity",
+  "Biodiversity",
   "Ecosystems and Water Resourses",
   "Human Settlements",
   "Oceans",
@@ -74,8 +74,17 @@ export const thematicAreas = [
   "Gender Sensitive Aproaches",
   "Local Indigenous and Traditional Knowledge",
   "Mountains",
-  "Other Areas"
-]
+  "Climate Adaptation and Resilience",
+  "Energy Transition",
+  "Sustainable Agriculture",
+  "Climate Finance",
+  "Youth and Gender Inclusion",
+  "Loss and Damage",
+  "International Cooperation and Partnerships ",
+  "Disaster Risk reduction ",
+  "Climate Education and Awareness",
+  "Other Areas",
+];
 
 export const faqs = [
   {
