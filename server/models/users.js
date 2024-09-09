@@ -89,6 +89,9 @@ const userSchema = mongoose.Schema(
             type: String,
             required: true,
           },
+          code: {
+            type: String,
+          },
           copApproved: {
             type: String,
             enum: ["pending", "approved", "rejected"],
