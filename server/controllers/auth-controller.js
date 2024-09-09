@@ -10,6 +10,10 @@ const sendResetPassword = require("../utils/sendResetPassword");
 const Admin = require("../models/admin");
 const sendVerifyEmail = require("../utils/sendConfirmEmail");
 const { CLIENT_URL, ADMIN_CLIENT_URL } = process.env;
+const crypto = require("crypto");
+const QRCode = require("qrcode");
+const Slot = require("../models/slot");
+const sendEmail = require("../utils/sendMail");
 
 module.exports = {
   createUser: async (req, res) => {
@@ -389,13 +393,9 @@ module.exports = {
             409
           );
         }
-        
+
         if (findUser._id.toString() !== user.toString()) {
-          return errorHandler(
-            res,
-            "Not authorized",
-            409
-          );
+          return errorHandler(res, "Not authorized", 409);
         }
 
         if (findUser.delegates.length >= 2) {
@@ -705,7 +705,6 @@ module.exports = {
       let { copApproved } = req.body;
       // Find the user that contains the delegate with the specified _id
       const user = await User.findOne({ "delegates._id": id });
-
       if (!user) {
         return errorHandler(res, "Delegate not found", 404);
       }
@@ -738,6 +737,18 @@ module.exports = {
           `Delegate's request has already been processed.`,
           403
         );
+      }
+
+      if (copApproved === "approved") {
+        let code = generateCode(delegate.name);
+        delegate.code = code;
+
+        try {
+          let url = await QRCode.toDataURL(code);
+          sendEmail(delegate.email, delegate.name, url);
+        } catch (err) {
+          console.error("Error generating or uploading QR Code:", err);
+        }
       }
 
       delegate.copApproved = copApproved;
@@ -889,6 +900,46 @@ module.exports = {
       return errorHandler(res, err.message, 500);
     }
   },
+  getDataOverview: async (req, res) => {
+    try {
+      // Create a query object for filtering verified users with approved status
+      const query = { verifiedEmail: true, status: "approved" };
+
+      // Find all users sorted by creation date
+      const users = await User.find(query).sort({ createdAt: -1 });
+
+      // Initialize counts for users and delegates
+      let totalOrganizations = 0;
+      let totalDelegates = 0;
+
+      // Extract delegates from each user and count only those with copApproved === approved
+      users.forEach((user) => {
+        if (user.delegates && user.delegates.length > 0) {
+          totalDelegates += user.delegates.filter(
+            (delegate) => delegate.copApproved === "approved"
+          ).length;
+        }
+      });
+
+      // Set the total number of users
+      totalOrganizations = users.length;
+      const slots = await Slot.find({ bookingStatus: "booked" });
+      const bookedSlotes = slots.length;
+      // Set the message
+      const message = "Data Overview";
+
+      // Return total counts for users and delegates
+      const result = {
+        totalOrganizations,
+        totalDelegates,
+        bookedSlotes,
+      };
+
+      return successHandler(res, message, result);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode || 500);
+    }
+  },
 };
 
 function validatePassword(password) {
@@ -900,6 +951,12 @@ function capitalize(str) {
   if (str === null || str === undefined || str.length === 0) {
     return str; // Return the original string if it's empty or null
   }
-
   return str[0].toUpperCase() + str.slice(1);
+}
+
+function generateCode(sentence) {
+  const timestamp = Date.now().toString();
+  const combinedString = sentence + timestamp;
+  const hash = crypto.createHash("sha256").update(combinedString).digest("hex");
+  return hash.slice(0, 6).toUpperCase();
 }
