@@ -298,7 +298,7 @@ const CreateEvent = () => {
     <div className="flex items-center justify-center text-center p-[50px] border-2 border-orange-600 my-20 bg-orange-100 mx-10 h-[50vh]">
   <div>
     <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
-      You need to create an account to request for accreditation
+      You need to create an account and login to request for accreditation.
     </h1>
     <p className="text-gray-600 mb-6">
       Please log in or create account.
