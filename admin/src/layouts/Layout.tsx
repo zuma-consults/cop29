@@ -34,7 +34,7 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
           <DashboardFooter
             isLargeNavOpen={openLargeNav}
             // text="Made with ❤️ by Okike Consults"
-            text="The Office of the Special Envoy on Climate Action and the National Council on Climate Change Secretariat
+            text="The National Council on Climate Change Secretariat (NCCCS)
 "
           />
         </Box>

@@ -63,7 +63,7 @@ const ResetPassword: React.FC = () => {
             <div className="w-full h-max flex flex-col items-center justify-center gap-1">
               <div className="w-full h-max flex flex-col items-center justify-center gap-1">
                 <img
-                  src="/images/coat.svg"
+                  src="/images/seal.png"
                   alt="Description of image"
                   width={100}
                   height={100}

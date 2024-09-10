@@ -7,7 +7,7 @@ const TermsAndConditions = () => {
         margin: "auto",
       }}
     >
-      <h1
+      {/* <h1
         style={{
           color: "red",
           textAlign: "center",
@@ -27,7 +27,28 @@ const TermsAndConditions = () => {
         }}
       >
         Accreditation for UNFCCC COP29 will close on October 25, 2024.
-      </p>
+      </p> */}
+      <h2
+        style={{
+          fontSize: "18px",
+          marginBottom: "20px",
+          color: "red",
+        }}
+      >
+        <span
+          style={{
+            fontSize: "18px",
+            marginBottom: "20px",
+            color: "red",
+            fontWeight: 700,
+          }}
+        >
+          IMPORTANT NOTICE:
+        </span>{" "}
+        <br />
+        Kindly note that requests for accreditation for UNFCCC COP29 on this
+        portal will close at 11:59 PM (WAT) on October 25, 2024.
+      </h2>
 
       <section style={{ marginBottom: "20px" }}>
         <h2 style={{ color: "#003300", fontSize: "20px" }}>
@@ -39,9 +60,9 @@ const TermsAndConditions = () => {
           Transparency Platform and other measures to ensure efficiency and
           accountability in the nation's participation in the 29th UN Climate
           Change Conference (COP 29) in Baku, Azerbaijan, all prospective
-          members of the Federal government’s UNFCCC COP29 delegation are
-          hereby notified that accreditation requests are subject to
-          Presidential approval.
+          members of the Federal government’s UNFCCC COP29 delegation are hereby
+          notified that accreditation requests are subject to Presidential
+          approval.
         </p>
         <p style={{ lineHeight: "1.6" }}>
           Consequently, approvals will be granted only to individuals or
@@ -63,52 +84,72 @@ const TermsAndConditions = () => {
           relevant supporting documents such as invitation letters or
           correspondence to confirm:
         </p>
-        <ul style={{ lineHeight: "1.6", marginLeft: "20px", listStyleType: "disc" }}>
-          <li style={{ marginBottom: "10px" }}>Participation is directly linked to high-level conversations to be held at COP 29, such as ongoing negotiations.</li>
-          <li style={{ marginBottom: "10px" }}>Signing of bilateral agreements and MoUs to concretize financial commitments.</li>
-          <li style={{ marginBottom: "10px" }}>Participation in thematic meetings as a representative of Nigeria.</li>
+        <ul
+          style={{
+            lineHeight: "1.6",
+            marginLeft: "20px",
+            listStyleType: "disc",
+          }}
+        >
+          <li style={{ marginBottom: "10px" }}>
+            Participation is directly linked to high-level conversations to be
+            held at COP 29, such as ongoing negotiations.
+          </li>
+          <li style={{ marginBottom: "10px" }}>
+            Signing of bilateral agreements and MoUs to concretize financial
+            commitments.
+          </li>
+          <li style={{ marginBottom: "10px" }}>
+            Participation in thematic meetings as a representative of Nigeria.
+          </li>
         </ul>
       </section>
 
       <section style={{ marginBottom: "20px" }}>
         <h2 style={{ color: "#003300", fontSize: "20px" }}>
-          Additional Guidelines
+          Additional Information
         </h2>
-        <ul style={{ lineHeight: "1.6", marginLeft: "20px", listStyleType: "decimal" }}>
+        <ul
+          style={{
+            lineHeight: "1.6",
+            marginLeft: "20px",
+            listStyleType: "decimal",
+          }}
+        >
           <li style={{ marginBottom: "10px" }}>
-            Approvals will be granted strictly on merit, and full-and-real-time
-            access into the data concerning who is attending and those the
-            government is sponsoring to COP 29 will also be made available to
-            the general public on the Climate Accountability and Transparency
-            Portal (CAT-P) to ensure transparency.
+            To ensure transparency and accountability, all delegates are to
+            kindly note that approvals will be granted strictly on merit,
+            Additionally, the full list of attendees (including government
+            sponsored) will be made available to the general public on the
+            portal.
           </li>
           <li style={{ marginBottom: "10px" }}>
             The Nigeria delegation is to efficiently utilize the on-site
             delegation office within the conference complex to host high-level
-            meetings and bilaterals. Members of the delegation will therefore be
-            required to schedule meetings ahead with the time-slotting system
-            provided on the portal.
+            meetings and bilaterals.Members of the delegation will therefore be
+            required to kindly request and schedule meetings ahead of
+            time-slotting system provided on the portal.
           </li>
         </ul>
       </section>
 
       <section style={{ marginBottom: "20px" }}>
         <h2 style={{ color: "#003300", fontSize: "20px" }}>Disclaimer</h2>
-        <ul style={{ lineHeight: "1.6", marginLeft: "20px", listStyleType: "decimal" }}>
+        <ul
+          style={{
+            lineHeight: "1.6",
+            marginLeft: "20px",
+            listStyleType: "decimal",
+          }}
+        >
           <li style={{ marginBottom: "10px" }}>
             <strong>Governmental Priority:</strong> Only government
-            organizations are automatically eligible for registration. Other
-            bodies such as CSOs, NGOs may qualify if their reason for
-            participation is aligned with the theme for Nigeria, "Actualizing
-            Financial Commitments for Climate Action," and the objective of
-            their participation has an economic imperative and is directed
-            toward engaging with companies, multilateral partners, and
-            stakeholders who will attract finance and opportunities to Nigeria.
+            organizations are automatically eligible for registration.
           </li>
           <li style={{ marginBottom: "10px" }}>
-            <strong>Organizational Representation:</strong> Registration must
-            be completed through a recognized organization; individual
-            applications are not permitted.
+            <strong>Organizational Representation:</strong> Registration must be
+            completed through a recognized organization; individual applications
+            are not permitted.
           </li>
           <li style={{ marginBottom: "10px" }}>
             <strong>Mandate Alignment:</strong> The organization must have a
@@ -118,8 +159,8 @@ const TermsAndConditions = () => {
           </li>
           <li style={{ marginBottom: "10px" }}>
             <strong>Limited Delegation:</strong> In compliance with Federal
-            Government directives, organizations may submit a maximum of two
-            participants for accreditation.
+            Government directives, organizations may submit a maximum of three
+            (3) participants for accreditation.
           </li>
           <li style={{ marginBottom: "10px" }}>
             <strong>Financial Responsibility:</strong> Participating
@@ -132,6 +173,24 @@ const TermsAndConditions = () => {
             detailing sessions, events, and outcomes of their participation,
             which will form part of the final COP29 national report.
           </li>
+          <li>
+            <strong>Data Security Disclaimer:</strong> The National Council on
+            Climate Change Secretariat(NCCCS) is committed to safeguarding the
+            privacy and security of your personal data in compliance with the
+            Nigeria Data Protection Regulation (NDPR) 2019. We implement a
+            variety of security measures to ensure the confidentiality,
+            integrity, and availability of your information. However, please
+            note that no method of transmission over the internet or electronic
+            storage is entirely secure. <br /> By accessing and using this
+            website, you acknowledge and accept that while we strive to protect
+            your data, we cannot guarantee its absolute security. Any
+            transmission of personal information is at your own risk, and we are
+            not liable for any unauthorized access, hacking, data loss, or theft
+            that occurs as a result. <br /> We strongly advise users to take
+            appropriate steps to protect their own data, such as using secure
+            passwords and avoiding sharing sensitive information over unsecured
+            networks.
+          </li>
         </ul>
       </section>
 
@@ -139,7 +198,13 @@ const TermsAndConditions = () => {
         <h2 style={{ color: "#003300", fontSize: "20px" }}>
           Guidance on How to Register
         </h2>
-        <ul style={{ lineHeight: "1.6", marginLeft: "20px", listStyleType: "decimal" }}>
+        <ul
+          style={{
+            lineHeight: "1.6",
+            marginLeft: "20px",
+            listStyleType: "decimal",
+          }}
+        >
           <li style={{ marginBottom: "10px" }}>
             <strong>Eligibility:</strong> Ensure your organization is
             governmental or has a mission aligned with climate change and

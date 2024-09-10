@@ -81,9 +81,9 @@ export const thematicAreas = [
   "Youth and Gender Inclusion",
   "Loss and Damage",
   "International Cooperation and Partnerships ",
-  "Disaster Risk reduction ",
+  "Disaster Risk Reduction ",
   "Climate Education and Awareness",
-  "Other Areas",
+  "Others",
 ];
 
 export const faqs = [
