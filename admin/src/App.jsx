@@ -20,7 +20,7 @@ import ContactUs from "./pages/contact-us";
 import International from "./pages/international";
 import EventDetails from "./pages/eventDetails";
 import OrganisationDetails from "./pages/organisationDetails";
-import NegotiatorsDetails from "./pages/NegotiatorsDetails";
+import NegotiatorsDetails from "./pages/negotiatorsDetails";
 import Cop from "./pages/cop";
 
 const pageVariants = {
