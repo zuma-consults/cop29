@@ -56,7 +56,7 @@ module.exports = {
       }
 
       const findMessage = await Message.findOne({ email });
-      
+
       if (findMessage) {
         return errorHandler(res, "Message Sent.", 409);
       }
@@ -78,11 +78,7 @@ module.exports = {
     try {
       const { page = 1, limit = 50, messageType } = req.query;
 
-      const query = messageType
-        ? { messageType }
-        : { messageType: "international" };
-
-      const messages = await Message.find(query)
+      const messages = await Message.find({ messageType: messageType })
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
         .limit(parseInt(limit));
