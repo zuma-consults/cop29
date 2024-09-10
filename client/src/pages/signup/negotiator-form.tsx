@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FaRegEyeSlash, FaRegEye, FaArrowLeft } from "react-icons/fa";
@@ -7,6 +7,7 @@ import { useNegotiatorRegister } from "../../components/custom-hooks/useAuth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { states, thematicAreas } from "../../util/data";
+import TCModal from "../../components/ui/TCModal";
 
 interface FormValues {
   name: string;
@@ -55,6 +56,19 @@ const organizationValidationSchema = Yup.object({
 const NegotiatorForm: React.FC = () => {
   const { mutate: orgRegister, isLoading, data } = useNegotiatorRegister();
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [hasAgreed, setHasAgreed] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleAgreeTerms = () => {
+    setHasAgreed(true);
+    setIsChecked(true)
+    setIsModalOpen(false);
+  };
 
   const handleBack = () => {
     navigate("/");
@@ -68,7 +82,8 @@ const NegotiatorForm: React.FC = () => {
   }, [data, navigate]);
 
   const handleTerms = () => {
-    navigate("/terms-and-conditions");
+    // navigate("/terms-and-conditions");
+    setIsModalOpen(true);
   };
 
   if (isLoading) {
@@ -110,6 +125,7 @@ const NegotiatorForm: React.FC = () => {
             contactName: "",
             workStream: "",
             showPassword: false,
+            terms: isChecked,
             orgImage: null,
           }}
           validationSchema={organizationValidationSchema}
@@ -339,7 +355,7 @@ const NegotiatorForm: React.FC = () => {
                   />
                 </div>
 
-                <div className="mb-4">
+                <div className="mb-4" >
                   <label
                     htmlFor="contactDesignation"
                     className="block text-gray-700 font-semibold mb-2"
@@ -426,12 +442,13 @@ const NegotiatorForm: React.FC = () => {
               </div>
 
               {/* Terms and Conditions Checkbox */}
-              <div className="flex items-center mb-4">
+              <div className="flex items-center mb-4" onClick={handleTerms}>
                 <Field
                   type="checkbox"
                   id="terms"
                   name="terms"
                   className="mr-2 h-4 w-4 text-green-600 border-gray-300 rounded"
+                  disabled={!hasAgreed} // Disables checkbox if terms are not agreed
                 />
                 <label
                   htmlFor="terms"
@@ -459,6 +476,11 @@ const NegotiatorForm: React.FC = () => {
           )}
         </Formik>
       </div>
+      <TCModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onAgree={handleAgreeTerms}
+      />
     </div>
   );
 };

@@ -12,6 +12,7 @@ import Loader from "../../components/ui/Loader";
 import { useOrgRegister } from "../../components/custom-hooks/useAuth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import TCModal from "../../components/ui/TCModal";
 
 interface FormValues {
   userType: string;
@@ -57,6 +58,7 @@ const organizationValidationSchema = Yup.object({
 const OrganizationForm: React.FC = () => {
   const { mutate: orgRegister, isLoading, data } = useOrgRegister();
   const [files, setFiles] = useState<File | null>(null);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
   const [documentSupportingAttendance, setDocumentSupportingAttendance] =
     useState<File | null>(null);
   const [orgImage, setOrgImage] = useState<File | null>(null);
@@ -68,7 +70,20 @@ const OrganizationForm: React.FC = () => {
     }
   }, [data, navigate]);
   const handleTerms = () => {
-    navigate("/terms-and-conditions");
+    // navigate("/terms-and-conditions");
+    setIsModalOpen(true);
+  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasAgreed, setHasAgreed] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleAgreeTerms = () => {
+    setHasAgreed(true);
+    setIsChecked(true)
+    setIsModalOpen(false);
   };
 
   if (isLoading) {
@@ -76,6 +91,7 @@ const OrganizationForm: React.FC = () => {
   }
 
   return (
+    <>
     <Formik
       initialValues={{
         userType: "organization",
@@ -90,7 +106,7 @@ const OrganizationForm: React.FC = () => {
         contactDesignation: "",
         contactName: "",
         thematicArea: "",
-        terms: false,
+        terms: isChecked,
         showPassword: false,
       }}
       validationSchema={organizationValidationSchema}
@@ -567,26 +583,27 @@ const OrganizationForm: React.FC = () => {
           </div>
 
           {/* Terms and Conditions Checkbox */}
-          <div className="flex items-center mb-4">
-            <Field
-              type="checkbox"
-              id="terms"
-              name="terms"
-              className="mr-2 h-4 w-4 text-green-600 border-gray-300 rounded"
-            />
-            <label
-              htmlFor="terms"
-              className="block text-red-500 font-semibold italic cursor-pointer"
-              onClick={handleTerms}
-            >
-              I agree to the terms and conditions
-            </label>
-          </div>
-          <ErrorMessage
-            name="terms"
-            component="div"
-            className="text-red-600 text-xs mt-1"
-          />
+          <div className="flex items-center mb-4" onClick={handleTerms}>
+                <Field
+                  type="checkbox"
+                  id="terms"
+                  name="terms"
+                  className="mr-2 h-4 w-4 text-green-600 border-gray-300 rounded"
+                  disabled={!hasAgreed} // Disables checkbox if terms are not agreed
+                />
+                <label
+                  htmlFor="terms"
+                  className="block text-red-500 font-semibold italic cursor-pointer"
+                  onClick={handleTerms}
+                >
+                  I agree to the terms and conditions
+                </label>
+              </div>
+              <ErrorMessage
+                name="terms"
+                component="div"
+                className="text-red-600 text-xs mt-1"
+              />
 
           <button
             type="submit"
@@ -598,6 +615,12 @@ const OrganizationForm: React.FC = () => {
         </Form>
       )}
     </Formik>
+     <TCModal
+     isOpen={isModalOpen}
+     onClose={handleCloseModal}
+     onAgree={handleAgreeTerms}
+   />
+   </>
   );
 };
 
