@@ -11,7 +11,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
   return (
     <div className="relative">
       <button
-        className="px-3 py-2 rounded-full text-green-800 font-normal hover:bg-gray-100"
+        className="px-3 py-2 rounded-small text-white  font-normal"
         onClick={() => setOpen(!open)}
       >
         {title}

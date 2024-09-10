@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLogout } from "../custom-hooks/useAuth";
 import { useState, useEffect } from "react";
+import Dropdown from "./Dropdown";
 
 interface LinksProps {
   direction?: "row" | "column" | "col";
@@ -18,6 +19,11 @@ const Links: React.FC<LinksProps> = ({
   const [user, setUser] = useState<any>(null); // Use state to track the user
 
   const { mutate: logout } = useLogout();
+
+  const accreditationItems = [
+    { title: "As Participant", path: "/signup" },
+    { title: "As Negotiator", path: "/negotiator" },
+  ];
 
   useEffect(() => {
     // Check localStorage for user profile on mount
@@ -95,16 +101,15 @@ const Links: React.FC<LinksProps> = ({
               >
                 Login
               </Link>
-              <Link
-                to="/signup"
+              <div
                 className={`bg-green-800 text-white px-3 py-[6px] rounded ${
                   location.pathname === "/signup"
                     ? "bg-green-900"
                     : "hover:bg-green-900"
                 }`}
               >
-                Create Account
-              </Link>
+                <Dropdown title="Create Account" items={accreditationItems} />
+              </div>
             </>
           )}
         </div>
