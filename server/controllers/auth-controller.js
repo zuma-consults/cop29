@@ -398,7 +398,7 @@ module.exports = {
           return errorHandler(res, "Not authorized", 409);
         }
 
-        if (findUser.delegates.length >= 2) {
+        if (findUser.delegates.length >= 3) {
           return errorHandler(res, "You can only add two delegates.", 403);
         }
 

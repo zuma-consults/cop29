@@ -143,17 +143,15 @@ const TermsAndConditions = () => {
           <li style={{ marginBottom: "10px" }}>
             <strong>Eligibility:</strong> Ensure your organization is
             governmental or has a mission aligned with climate change and
-            sustainable development. Non-governmental bodies should apply via
-            the side event application process.
+            sustainable development.
           </li>
           <li style={{ marginBottom: "10px" }}>
             <strong>Application Submission:</strong> Complete your application
             through your organization, not as an individual.
           </li>
           <li style={{ marginBottom: "10px" }}>
-            <strong>Delegation Size:</strong> Limit your delegation to two
-            participants. If hosting a side event, you may apply for
-            accreditation for up to two additional participants.
+            <strong>Delegation Size:</strong> Limit your delegation to three (3)
+            participants.
           </li>
           {/* <li style={{ marginBottom: "10px" }}>
             <strong>Side Event Application:</strong> If your organization
