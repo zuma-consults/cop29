@@ -141,7 +141,7 @@ const CreateEvent = () => {
                 htmlFor="title"
                 className="block text-gray-700 font-semibold"
               >
-               Meeting Type
+                Meeting Type
               </label>
               <input
                 id="title"
@@ -295,29 +295,30 @@ const CreateEvent = () => {
       </div>
     </div>
   ) : (
-    <div className="text-center py-[50px] border-2 border-orange-600 my-20 bg-orange-100 mx-10">
-      <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
-        You need to be registered and logged in as an organization to schedule a
-        meeting.
-      </h1>
-      <p className="text-gray-600 mb-6">
-        Please log in or register as an organization to schedule a meeting.
-      </p>
-      <div className="flex flex-col md:flex-row justify-center gap-4">
-        <Link
-          to="/login"
-          className="bg-co-primary text-white py-2 px-4 rounded hover:bg-green-800 transition"
-        >
-          Log In
-        </Link>
-        <Link
-          to="/signup"
-          className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
-        >
-          Register
-        </Link>
-      </div>
+    <div className="flex items-center justify-center text-center p-[50px] border-2 border-orange-600 my-20 bg-orange-100 mx-10 h-[50vh]">
+  <div>
+    <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
+      You need to create an account to request for accreditation
+    </h1>
+    <p className="text-gray-600 mb-6">
+      Please log in or create account.
+    </p>
+    <div className="flex flex-col md:flex-row justify-center gap-4">
+      <Link
+        to="/login"
+        className="bg-co-primary text-white py-2 px-4 rounded hover:bg-green-800 transition"
+      >
+        Log In
+      </Link>
+      <Link
+        to="/signup"
+        className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+      >
+        Create Account
+      </Link>
     </div>
+  </div>
+</div>
   );
 };
 
