@@ -21,7 +21,9 @@ const Links: React.FC<LinksProps> = ({
 
   useEffect(() => {
     // Check localStorage for user profile on mount
-    const storedUser = JSON.parse(localStorage.getItem("userProfile") as string);
+    const storedUser = JSON.parse(
+      localStorage.getItem("userProfile") as string
+    );
     setUser(storedUser);
   }, [localStorage]); // Empty dependency array ensures this runs only on mount
 
@@ -101,7 +103,7 @@ const Links: React.FC<LinksProps> = ({
                     : "hover:bg-green-900"
                 }`}
               >
-                Sign Up
+                Create Account
               </Link>
             </>
           )}
@@ -154,7 +156,7 @@ const Links: React.FC<LinksProps> = ({
                       : "hover:bg-slate-600"
                   }`}
                 >
-                  Sign Up
+                  Create Account
                 </Link>
               </>
             )}
