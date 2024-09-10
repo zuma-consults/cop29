@@ -62,7 +62,7 @@ export const navConfig = [
     path: "/contact-us",
   },
   {
-    title: "International Messages",
+    title: "International Requests",
     icon: <TiWorldOutline size={24} />,
     path: "/international",
   },

@@ -38,14 +38,14 @@ const International: React.FC = () => {
               textAlign={"center"}
               sx={{ color: "#908E8F" }}
             >
-              International messages
+              International Requests
             </Typography>
           </Box>
 
           <div className="flex flex-col gap-2 px-5 md:px-0  sm:mt-[2.5rem] mt-1">
             <div className="flex align-center md:flex-row flex-col sm:gap-10 w-auto justify-between">
               <span className="text-sm font-extrabold text-[#2E7D31]">
-                All International Messages
+                All International Requests
               </span>
               {/* <Button
                 onClick={() => setOpen(true)}

@@ -83,7 +83,7 @@ module.exports = {
         .skip((page - 1) * limit)
         .limit(parseInt(limit));
 
-      const totalMessages = await Message.countDocuments(query);
+      const totalMessages = await Message.countDocuments({ messageType: messageType });
 
       // Prepare the response with pagination info
       const response = {
