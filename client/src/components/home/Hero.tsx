@@ -48,7 +48,7 @@ const Hero: React.FC = () => {
             NIGERIA THEME : Actualizing financial commitments for Climate
             Action.
           </p>
-          <div className="grid md:grid-cols-2 justify-start items-center gap-4 mt-10 md:mt-0 w-full">
+          <div className="grid md:grid-cols-2 md:justify-start justify-center items-center gap-4 mt-10 md:mt-0 w-full">
             <Link
               to="/profile"
               className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
