@@ -9,6 +9,11 @@ import { Link } from "react-router-dom";
 import CountdownTimer from "../ui/CountDown";
 
 const Hero: React.FC = () => {
+  const handleOpenPDF = () => {
+    const pdfUrl = "/images/overview.pdf"; // Replace with the actual PDF URL
+    window.open(pdfUrl, "_blank");
+  };
+
   return (
     <section
       className="relative flex items-center justify-center flex-col  h-auto md:h-[92vh] w-full bg-cover bg-center"
@@ -97,6 +102,12 @@ const Hero: React.FC = () => {
               <FaCalendarAlt className="text-2xl mr-2" />
               International Organisation Meeting Request
             </Link>
+            <button
+              onClick={handleOpenPDF}
+              className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-pink-800 hover:bg-green-700 transition"
+            >
+              View COP29 Overview Schedule{" "}
+            </button>
           </div>
         </div>
         <div className="flex flex-col items-center md:items-end justify-center space-y-0 w-full h-full ">

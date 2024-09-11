@@ -43,9 +43,7 @@ const organizationValidationSchema = Yup.object({
   thematicArea: Yup.string().required("Thematic Area is required"),
   state: Yup.string(),
   organizationType: Yup.string().required("Organization Type is required"),
-  reasonForAttendance: Yup.string().required(
-    "Reason for attending is required"
-  ),
+  reasonForAttendance: Yup.string(),
   contactDesignation: Yup.string().required(
     "Designation of Contact Person is required"
   ),
@@ -529,7 +527,7 @@ const OrganizationForm: React.FC = () => {
               htmlFor="reasonForAttendance"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Reason for Participation*
+              Reason for Participation
             </label>
             <Field
               type="text"
@@ -546,7 +544,7 @@ const OrganizationForm: React.FC = () => {
             />
           </div>
 
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label
               htmlFor="supportImage"
               className="block text-gray-700 font-semibold mb-2"
@@ -580,7 +578,7 @@ const OrganizationForm: React.FC = () => {
               component="div"
               className="text-red-600 text-xs mt-1"
             />
-          </div>
+          </div> */}
 
           {/* Terms and Conditions Checkbox */}
           <div className="flex items-center mb-4" onClick={handleTerms}>

@@ -174,7 +174,7 @@ const TermsAndConditions = () => {
             which will form part of the final COP29 national report.
           </li>
           <li>
-            <strong>Data Security Disclaimer:</strong> The National Council on
+            <strong>Data Privacy:</strong> The National Council on
             Climate Change Secretariat(NCCCS) is committed to safeguarding the
             privacy and security of your personal data in compliance with the
             Nigeria Data Protection Regulation (NDPR) 2019. We implement a
