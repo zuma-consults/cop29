@@ -286,7 +286,7 @@ const CopTable: React.FC = () => {
 
                   {/* Render Organization Type */}
                   <Typography variant="body1" component="div">
-                    <strong>Delegated By: </strong> {selectedCop?.delegatedBy}
+                    <strong>Organization: </strong> {selectedCop?.delegatedBy}
                   </Typography>
 
                   {/* Render Status */}

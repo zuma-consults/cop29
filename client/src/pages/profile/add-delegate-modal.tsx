@@ -82,7 +82,7 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
             ) : (
               <>
                 <h2 className="text-2xl font-semibold text-green-600 mb-6">
-                  Add a Delegate
+                  Add a Delegate / Nominee
                 </h2>
                 <form onSubmit={formik.handleSubmit} className="space-y-4">
                   <div>
@@ -183,7 +183,7 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
                       htmlFor="file"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Upload Delegate Passport
+                      Upload Delegate Passport Data Page
                     </label>
                     <input
                       id="file"

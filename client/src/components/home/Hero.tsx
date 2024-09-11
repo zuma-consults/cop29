@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import CountdownTimer from "../ui/CountDown";
+import { HashLink } from 'react-router-hash-link';
 
 const Hero: React.FC = () => {
   const handleOpenPDF = () => {
@@ -44,7 +45,7 @@ const Hero: React.FC = () => {
             data-aos-duration="500"
           />
           <h1 className="md:text-[40px] text-[25px] mt-20 md:mt-0 text-white font-bold leading-tight">
-            WELCOME TO THE UNFCCC COP29 REGISTRATION PORTAL
+            WELCOME TO THE NIGERIA UNFCCC COP29 REGISTRATION PORTAL
           </h1>
           <p
             className="leading-7 text-white md:inline text-[20px]"
@@ -61,7 +62,7 @@ const Hero: React.FC = () => {
               data-aos-duration="1000"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
-              Request Accreditation as Participants
+              Request Accreditation (Delegates)
             </Link>
             <Link
               to="/profile"
@@ -70,7 +71,7 @@ const Hero: React.FC = () => {
               data-aos-duration="1000"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
-              Request Accreditation as a Negotiator
+              Request Accreditation (Negotiators)
             </Link>
             {/* <Link
               to="/create-event"
@@ -88,13 +89,13 @@ const Hero: React.FC = () => {
               <FaInfoCircle className="text-2xl mr-2" />
               Important Notice
             </Link>
-            <Link
-              to="/faq"
+            <HashLink
+              to="/faq#how-it-works"
               className="text-center w-full rounded py-4 flex justify-center items-center text-blue-800 hover:bg-blue-200 bg-blue-100 transition"
             >
               <FaQuestionCircle className="text-2xl mr-2" />
-              Frequently Asked Questions
-            </Link>
+              How It Works
+            </HashLink>
             <Link
               to="/intl-org"
               className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-orange-500 hover:bg-orange-400 transition"

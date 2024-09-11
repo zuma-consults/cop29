@@ -21,8 +21,8 @@ const Links: React.FC<LinksProps> = ({
   const { mutate: logout } = useLogout();
 
   const accreditationItems = [
-    { title: "As Participant", path: "/signup" },
-    { title: "As Negotiator", path: "/negotiator" },
+    { title: "Delegates", path: "/signup" },
+    { title: "Negotiators", path: "/negotiator" },
   ];
 
   useEffect(() => {

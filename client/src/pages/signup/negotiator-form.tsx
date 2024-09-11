@@ -163,7 +163,7 @@ const NegotiatorForm: React.FC = () => {
               {({ values, setFieldValue }) => (
                 <Form className="p-2 shadow bg-green-50 mt-5">
                   <h1 className="text-2xl font-semibold mb-6 text-center text-green-800">
-                    Create an Account As Negotiator
+                    Create an Account as Negotiator
                   </h1>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -178,6 +178,7 @@ const NegotiatorForm: React.FC = () => {
                         type="text"
                         id="name"
                         name="name"
+                        placeholder="Enter your organization name"
                         className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
                       />
                       <ErrorMessage
@@ -198,6 +199,7 @@ const NegotiatorForm: React.FC = () => {
                         type="email"
                         id="email"
                         name="email"
+                        placeholder="Enter your email address"
                         className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
                       />
                       <ErrorMessage
@@ -218,6 +220,7 @@ const NegotiatorForm: React.FC = () => {
                         type={values.showPassword ? "text" : "password"}
                         id="password"
                         name="password"
+                        placeholder="Enter your password"
                         className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 pr-10"
                       />
                       <div
@@ -283,6 +286,7 @@ const NegotiatorForm: React.FC = () => {
                         type="text"
                         id="phone"
                         name="phone"
+                        placeholder="Enter phone number"
                         className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
                       />
                       <ErrorMessage
@@ -381,6 +385,7 @@ const NegotiatorForm: React.FC = () => {
                         type="text"
                         id="contactDesignation"
                         name="contactDesignation"
+                        placeholder="Enter your designation"
                         className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
                       />
                       <ErrorMessage
@@ -401,6 +406,7 @@ const NegotiatorForm: React.FC = () => {
                         type="text"
                         id="contactName"
                         name="contactName"
+                        placeholder="Enter your contact name"
                         className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
                       />
                       <ErrorMessage
@@ -415,12 +421,13 @@ const NegotiatorForm: React.FC = () => {
                         htmlFor="workStream"
                         className="block text-gray-700 font-semibold mb-2"
                       >
-                        Workstream*
+                        Work Stream*
                       </label>
                       <Field
                         type="text"
                         id="workStream"
                         name="workStream"
+                        placeholder="Enter your area of focus"
                         className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
                       />
                       <ErrorMessage

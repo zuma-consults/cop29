@@ -156,7 +156,7 @@ const OrganizationForm: React.FC = () => {
                 type="text"
                 id="name"
                 name="name"
-                placeholder="Enter your name"
+                placeholder="Enter your organization's name"
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
               />
               <ErrorMessage
@@ -429,7 +429,7 @@ const OrganizationForm: React.FC = () => {
                 htmlFor="files"
                 className="block text-gray-700 font-semibold mb-2"
               >
-                Letter Approving Organisation Participation (pdf file max 2mb)*
+                Letter Approving Organisation Participation to include Names of Delegates (pdf file max 2mb)*
               </label>
               <input
                 type="file"

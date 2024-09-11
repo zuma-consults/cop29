@@ -92,8 +92,8 @@ const TermsAndConditions = () => {
           }}
         >
           <li style={{ marginBottom: "10px" }}>
-            Participation is directly linked to high-level conversations to be
-            held at COP 29, such as ongoing negotiations.
+            Participation is directly linked to the high-level summit and
+            negotiations to be held at COP 29.
           </li>
           <li style={{ marginBottom: "10px" }}>
             Signing of bilateral agreements and MoUs to concretize financial
@@ -174,22 +174,21 @@ const TermsAndConditions = () => {
             which will form part of the final COP29 national report.
           </li>
           <li>
-            <strong>Data Privacy:</strong> The National Council on
-            Climate Change Secretariat(NCCCS) is committed to safeguarding the
-            privacy and security of your personal data in compliance with the
-            Nigeria Data Protection Regulation (NDPR) 2019. We implement a
-            variety of security measures to ensure the confidentiality,
-            integrity, and availability of your information. However, please
-            note that no method of transmission over the internet or electronic
-            storage is entirely secure. <br /> By accessing and using this
-            website, you acknowledge and accept that while we strive to protect
-            your data, we cannot guarantee its absolute security. Any
-            transmission of personal information is at your own risk, and we are
-            not liable for any unauthorized access, hacking, data loss, or theft
-            that occurs as a result. <br /> We strongly advise users to take
-            appropriate steps to protect their own data, such as using secure
-            passwords and avoiding sharing sensitive information over unsecured
-            networks.
+            <strong>Data Privacy:</strong> The National Council on Climate
+            Change Secretariat(NCCCS) is committed to safeguarding the privacy
+            and security of your personal data in compliance with the Nigeria
+            Data Protection Regulation (NDPR) 2019. We implement a variety of
+            security measures to ensure the confidentiality, integrity, and
+            availability of your information. However, please note that no
+            method of transmission over the internet or electronic storage is
+            entirely secure. <br /> By accessing and using this website, you
+            acknowledge and accept that while we strive to protect your data, we
+            cannot guarantee its absolute security. Any transmission of personal
+            information is at your own risk, and we are not liable for any
+            unauthorized access, hacking, data loss, or theft that occurs as a
+            result. <br /> We strongly advise users to take appropriate steps to
+            protect their own data, such as using secure passwords and avoiding
+            sharing sensitive information over unsecured networks.
           </li>
         </ul>
       </section>

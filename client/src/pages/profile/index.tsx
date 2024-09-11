@@ -151,7 +151,7 @@ const Profile: React.FC = () => {
                 onClick={() => setModalOpen(true)}
                 className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
               >
-                Add Organization Delegates
+                Add Delegate(s) / Nominee(s) for your Organization
               </button>
             )}
           </div>
