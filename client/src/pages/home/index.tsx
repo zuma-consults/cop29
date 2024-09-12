@@ -39,7 +39,7 @@ const Home: React.FC = () => {
       <World />
 
       {loading ? (
-        <div className="flex justify-center items-center h-[200px]">
+        <div className="flex justify-center items-center h-[500px]">
           <p className="text-gray-500">Loading data...</p>
         </div>
       ) : (
