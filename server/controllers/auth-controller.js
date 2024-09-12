@@ -924,7 +924,7 @@ module.exports = {
       // Set the total number of users
       totalOrganizations = users.length;
       const slots = await Slot.find({ bookingStatus: "booked" });
-      const bookedSlotes = slots.length;
+      const bookedSlots = slots.length;
       // Set the message
       const message = "Data Overview";
 
@@ -932,7 +932,7 @@ module.exports = {
       const result = {
         totalOrganizations,
         totalDelegates,
-        bookedSlotes,
+        bookedSlots,
       };
 
       return successHandler(res, message, result);
