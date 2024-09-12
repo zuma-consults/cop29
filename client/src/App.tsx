@@ -53,6 +53,35 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    // Disable right-click
+    document.addEventListener('contextmenu', (event) => event.preventDefault());
+  
+    // Disable copy, cut, and paste
+    const handleCopyCutPaste = (event: ClipboardEvent) => {
+      event.preventDefault();
+    };
+    document.addEventListener('copy', handleCopyCutPaste);
+    document.addEventListener('cut', handleCopyCutPaste);
+    document.addEventListener('paste', handleCopyCutPaste);
+  
+    // Disable dragging for images and links
+    const preventDrag = (event: DragEvent) => {
+      event.preventDefault();
+    };
+    document.addEventListener('dragstart', preventDrag);
+  
+    return () => {
+      document.removeEventListener('contextmenu', (event) => event.preventDefault());
+      document.removeEventListener('copy', handleCopyCutPaste);
+      document.removeEventListener('cut', handleCopyCutPaste);
+      document.removeEventListener('paste', handleCopyCutPaste);
+      document.removeEventListener('dragstart', preventDrag);
+    };
+  }, []);
+  
+  
+
   const fetchUserProfile = useCallback(async () => {
     try {
       const result = await getProfile();

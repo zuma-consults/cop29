@@ -13,6 +13,7 @@ interface OverviewData {
 
 const Home: React.FC = () => {
   const [data, setData] = useState<OverviewData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchOverview = async () => {
     try {
@@ -22,6 +23,8 @@ const Home: React.FC = () => {
       }
     } catch (error) {
       console.error("Error fetching overview data:", error);
+    } finally {
+      setLoading(false); // Set loading to false after the API call finishes
     }
   };
 
@@ -34,7 +37,14 @@ const Home: React.FC = () => {
       <Hero />
       {/* <LatestEvents /> */}
       <World />
-      {data && <Data overviewDetails={data} />}
+
+      {loading ? (
+        <div className="flex justify-center items-center h-[200px]">
+          <p className="text-gray-500">Loading data...</p>
+        </div>
+      ) : (
+        data && <Data overviewDetails={data} />
+      )}
     </div>
   );
 };
