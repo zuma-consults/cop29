@@ -2,7 +2,9 @@ import { CountUp } from "countup.js";
 import React, { useEffect, useRef, useState } from "react";
 import "intersection-observer";
 
-const Data: React.FC = () => {
+const Data: React.FC = ({overviewDetails}: {
+  
+}) => {
   const orgsRef = useRef<HTMLDivElement>(null);
   const govsRef = useRef<HTMLDivElement>(null);
   const sessionsRef = useRef<HTMLDivElement>(null);
@@ -12,9 +14,9 @@ const Data: React.FC = () => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       if (entries[0].isIntersecting && !hasAnimated) {
         setHasAnimated(true);
-        const orgsAnim = new CountUp(orgsRef.current!, 50, { duration: 1 });
-        const govsAnim = new CountUp(govsRef.current!, 50, { duration: 2 });
-        const sessionsAnim = new CountUp(sessionsRef.current!, 90, {
+        const orgsAnim = new CountUp(orgsRef.current!, overviewDetails?.totalDelegates || 0, { duration: 1 });
+        const govsAnim = new CountUp(govsRef.current!, overviewDetails?.totalOrganizations || 0, { duration: 2 });
+        const sessionsAnim = new CountUp(sessionsRef.current!, overviewDetails?.bookedSlots || 0, {
           duration: 3,
         });
 

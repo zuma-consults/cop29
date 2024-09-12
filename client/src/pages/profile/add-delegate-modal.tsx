@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { useAddDelegate } from "../../components/custom-hooks/useOrg";
 import Loader from "../../components/ui/Loader";
 import { toast } from "react-toastify";
+import { Field, ErrorMessage } from "formik";
 
 interface AddDelegateModalProps {
   isOpen: boolean;
@@ -27,21 +28,27 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
       email: "",
       designation: "",
       phone: "",
+      department: "",
+      state: "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
       designation: Yup.string().required("Designation is required"),
-      phone: Yup.string().required("phone is required"),
+      phone: Yup.string().required("Phone is required"),
       email: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
+      department: Yup.string().required("Department is required"),
+      state: Yup.string().required("State is required"),
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("email", values.email);
       formData.append("designation", values.designation);
-      values.phone && formData.append("phone", values.phone);
+      formData.append("phone", values.phone);
+      formData.append("department", values.department);
+      formData.append("state", values.state);
 
       if (file) {
         formData.append("files", file);
@@ -104,6 +111,60 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
                     {formik.touched.name && formik.errors.name && (
                       <div className="text-red-500 text-xs mt-1">
                         {formik.errors.name}
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="department"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Department
+                    </label>
+                    <input
+                      id="department"
+                      name="department"
+                      type="text"
+                      value={formik.values.department}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                    />
+                    {formik.touched.department && formik.errors.department && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {formik.errors.department}
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="state"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      State
+                    </label>
+                    <Field
+                      as="select"
+                      id="state"
+                      name="state"
+                      value={formik.values.state}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                    >
+                      <option value="">Select State</option>
+                      {/* Replace this with your actual list of states */}
+                      {["State 1", "State 2", "State 3"].map((state) => (
+                        <option key={state} value={state}>
+                          {state}
+                        </option>
+                      ))}
+                    </Field>
+                    {formik.touched.state && formik.errors.state && (
+                      <div className="text-red-500 text-xs mt-1">
+                        {formik.errors.state}
                       </div>
                     )}
                   </div>

@@ -32,6 +32,10 @@ const organizationValidationSchema = Yup.object({
     .required("Email is required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      "Password must contain at least one letter, one number, and one special character"
+    )
     .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
