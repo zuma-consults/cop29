@@ -1,53 +1,15 @@
-import { CountUp } from "countup.js";
-import React, { useEffect, useRef, useState } from "react";
-import "intersection-observer";
+import React from "react";
 
-const Data: React.FC<{ overviewDetails: any }> = ({ overviewDetails }) => {
-  const orgsRef = useRef<HTMLDivElement>(null);
-  const govsRef = useRef<HTMLDivElement>(null);
-  const sessionsRef = useRef<HTMLDivElement>(null);
-  const [hasAnimated, setHasAnimated] = useState(false);
+interface OverviewDetailsProps {
+  overviewDetails: {
+    totalDelegates: number;
+    totalOrganizations: number;
+    bookedSlots: number;
+  };
+}
 
-  useEffect(() => {
-    if (!overviewDetails) return; // Prevent animation if data is not available
-
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      if (entries[0].isIntersecting && !hasAnimated) {
-        setHasAnimated(true);
-
-        const orgsAnim = new CountUp(orgsRef.current!, overviewDetails.totalDelegates || 0, { duration: 1 });
-        const govsAnim = new CountUp(govsRef.current!, overviewDetails.totalOrganizations || 0, { duration: 2 });
-        const sessionsAnim = new CountUp(sessionsRef.current!, overviewDetails.bookedSlots || 0, {
-          duration: 3,
-        });
-
-        if (!orgsAnim.error) orgsAnim.start();
-        if (!govsAnim.error) govsAnim.start();
-        if (!sessionsAnim.error) sessionsAnim.start();
-      }
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.1,
-    });
-
-    if (orgsRef.current) observer.observe(orgsRef.current);
-    if (govsRef.current) observer.observe(govsRef.current);
-    if (sessionsRef.current) observer.observe(sessionsRef.current);
-
-    return () => {
-      if (orgsRef.current) observer.unobserve(orgsRef.current);
-      if (govsRef.current) observer.unobserve(govsRef.current);
-      if (sessionsRef.current) observer.unobserve(sessionsRef.current);
-    };
-  }, [overviewDetails, hasAnimated]);
-
-  if (!overviewDetails) {
-    return null; // Prevent rendering until data is available
-  }
-
+const Data: React.FC<OverviewDetailsProps> = ({ overviewDetails }) => {
+  console.log(overviewDetails)
   return (
     <section
       className="relative flex flex-col gap-10 md:gap-20 pt-10 h-auto md:h-[80vh] w-full bg-cover bg-center"
@@ -62,7 +24,7 @@ const Data: React.FC<{ overviewDetails: any }> = ({ overviewDetails }) => {
           data-aos="fade-up"
           data-aos-duration="1000"
         >
-          <div ref={orgsRef} className="text-[50px]">{overviewDetails.totalDelegates}</div>
+          <div className="text-[50px]">{overviewDetails.totalDelegates}</div>
           <span className="text-[16px] md:text-[20px] font-semibold">Participating Delegates</span>
         </div>
         <div
@@ -70,7 +32,7 @@ const Data: React.FC<{ overviewDetails: any }> = ({ overviewDetails }) => {
           data-aos="fade-up"
           data-aos-duration="1000"
         >
-          <div ref={govsRef} className="text-[50px]">{overviewDetails.totalOrganizations}</div>
+          <div className="text-[50px]">{overviewDetails.totalOrganizations}</div>
           <span className="text-[16px] md:text-[20px] font-semibold">Organizations</span>
         </div>
         <div
@@ -78,7 +40,7 @@ const Data: React.FC<{ overviewDetails: any }> = ({ overviewDetails }) => {
           data-aos="fade-up"
           data-aos-duration="1000"
         >
-          <div ref={sessionsRef} className="text-[50px]">{overviewDetails.bookedSlots}</div>
+          <div className="text-[50px]">{overviewDetails.bookedSlots}</div>
           <span className="text-[16px] md:text-[20px] font-semibold">Booked Slots</span>
         </div>
       </div>

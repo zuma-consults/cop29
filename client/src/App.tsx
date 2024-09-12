@@ -31,6 +31,28 @@ function App() {
   const [loading, setLoading] = useState(true);
   const env = import.meta.env.VITE_ENV; // Access the environment variable
 
+  useEffect(() => {
+    // Disable right-click
+    document.addEventListener('contextmenu', (event) => event.preventDefault());
+
+    // Disable F12, Ctrl+Shift+I (Inspect)
+    const handleKeydown = (event: any) => {
+      if (
+        event.keyCode === 123 || // F12
+        (event.ctrlKey && event.shiftKey && event.keyCode === 73) || // Ctrl+Shift+I
+        (event.ctrlKey && event.shiftKey && event.keyCode === 74) // Ctrl+Shift+J (Console)
+      ) {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener('keydown', handleKeydown);
+
+    return () => {
+      document.removeEventListener('contextmenu', (event) => event.preventDefault());
+      window.removeEventListener('keydown', handleKeydown);
+    };
+  }, []);
+
   const fetchUserProfile = useCallback(async () => {
     try {
       const result = await getProfile();
