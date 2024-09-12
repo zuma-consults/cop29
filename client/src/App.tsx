@@ -26,6 +26,7 @@ import { getProfile } from "./services/auth";
 import NegotiatorForm from "./pages/signup/negotiator-form";
 import { MdBuild } from "react-icons/md";
 import { FaTools } from "react-icons/fa";
+import {detectDevTools} from './components/custom-hooks/detectDevtools'
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -46,6 +47,9 @@ function App() {
       }
     };
     window.addEventListener('keydown', handleKeydown);
+
+       // Detect DevTools open
+       detectDevTools();
 
     return () => {
       document.removeEventListener('contextmenu', (event) => event.preventDefault());

@@ -24,9 +24,9 @@ const Login: React.FC = () => {
   if (isLoading) {
     return <Loader />;
   }
-  if (data && data.status) {
-    navigate("/");
-  }
+  // if (data && data.status) {
+  //   navigate("/");
+  // }
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-green-800">
@@ -75,11 +75,15 @@ const Login: React.FC = () => {
               showPassword: false,
             }}
             validationSchema={validationSchema}
-            onSubmit={(
-              { showPassword, rememberMe, ...values },
-              { resetForm }
-            ) => {
-              login(values);
+            onSubmit={async ({ showPassword, rememberMe, ...values }, { resetForm }) => {
+              await login(values, {
+                onSuccess: (response) => {
+                  if (response?.status) {
+                    localStorage.setItem("userProfile", JSON.stringify(response?.data));
+                    navigate("/"); // Redirect to the home page after successful login
+                  }
+                },
+              });
               resetForm();
             }}
           >
