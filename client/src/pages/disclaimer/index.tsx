@@ -219,24 +219,25 @@ const TermsAndConditions = () => {
         <p style={{ fontSize: "14px" }}>
           The National Council on Climate Change Secretariat (NCCCS) is
           committed to safeguarding the privacy and security of your personal
-          data in compliance with the Nigeria Data Protection Regulation (NDPR)
-          2019 and the General Data Protection Regulation (GDPR). We implement a
-          variety of security measures to ensure the confidentiality, integrity,
-          and availability of your information. However, please note that no
-          method of transmission over the internet or electronic storage is
-          entirely secure.
+          data in compliance with the Nigeria Data Protection Act (NDPA) 2023.
+          We implement a variety of security measures to ensure the
+          confidentiality, integrity, and availability of your information.
+          However, please note that no method of transmission over the internet
+          or electronic storage is entirely secure.
           <br />
-          <br /> By accessing and using this website, you acknowledge and accept
-          that while we strive to protect your data, we cannot guarantee its
-          absolute security. Any transmission of personal information is at your
-          own risk, and we are not liable for any unauthorized access, hacking,
-          data loss, or theft that occurs as a result.
           <br />
-          <br /> In accordance with GDPR and NDPR, your personal data may be
-          shared for purposes of transparency, accountability, and compliance
-          with legal obligations, when necessary. We will ensure that any
-          sharing of data is done in a lawful manner and with adequate
-          safeguards in place to protect your privacy.
+          By registering on this portal, the applicant declares consent that
+          organization name and accredited delegates might be published in line
+          with the accountability and transparency guidelines. Applicants
+          acknowledge and accept that while we strive to protect your data, we
+          cannot guarantee its absolute security. Any transmission of personal
+          information is at your own risk, and we are not liable for any
+          unauthorized access, hacking, data loss, or theft that occurs as a
+          result.
+          <br />
+          <br />
+          We will ensure that any sharing of data is done in a lawful manner and
+          with adequate safeguards in place to protect your privacy.
           <br />
           <br /> We strongly advise users to take appropriate steps to protect
           their own data, such as using secure passwords and avoiding sharing
