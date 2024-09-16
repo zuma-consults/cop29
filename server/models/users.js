@@ -117,7 +117,7 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    preferredDateTime: { type: Date },
+    preferredDateTime: { type: Date, required: true },
   },
   {
     toJSON: {
