@@ -11,7 +11,7 @@ const port = process.env.PORT || 7070;
 const { logRequestDuration } = require("./middlewares/middleware");
 const limiter = rateLimit({
   windowMs: 25 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 150, // limit each IP to 100 requests per windowMs
 });
 const helmet = require("helmet");
 const { errorHandler,systemError } = require("./utils/errorHandler");
