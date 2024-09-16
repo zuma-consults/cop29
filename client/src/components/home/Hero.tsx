@@ -44,14 +44,14 @@ const Hero: React.FC = () => {
           data-aos="fade-right"
           data-aos-duration="1000"
         >
-          <img
+          {/* <img
             src="/images/new.png" // Replace with the path to your first image
             alt="N"
             className="h-[100px] md:h-[150px] object-contain bg-white lg:ms-0 m-auto md:m-0 rounded-lg"
             data-aos="fade-left"
             data-aos-duration="500"
-          />
-          <h1 className="md:text-[40px] text-[25px] mt-20 md:mt-0 text-white font-bold leading-tight">
+          /> */}
+          <h1 className="md:text-[44px] text-[25px] mt-20 md:mt-0 text-white font-bold leading-tight">
             WELCOME TO THE NIGERIA UNFCCC COP29 REGISTRATION PORTAL
           </h1>
           <p
@@ -65,8 +65,8 @@ const Hero: React.FC = () => {
             <div
               onClick={() => handleNavigate("delegates")}
               className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
-              data-aos="fade-up"
-              data-aos-duration="1000"
+              // data-aos="fade-up"
+              // data-aos-duration="1000"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
               Request Accreditation (Delegates)
@@ -74,8 +74,8 @@ const Hero: React.FC = () => {
             <div
               onClick={() => handleNavigate("negotiators")}
               className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-blue-800 hover:bg-green-700 transition"
-              data-aos="fade-up"
-              data-aos-duration="1000"
+              // data-aos="fade-up"
+              // data-aos-duration="1000"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
               Request Accreditation (Negotiators)
