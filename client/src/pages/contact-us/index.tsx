@@ -40,7 +40,7 @@ const Contact: React.FC = () => {
         >
           <div className="w-full h-max flex flex-col items-center justify-center gap-1">
             <img
-              src="/images/coat.svg"
+              src="/images/coat.png"
               alt="Logo"
               width={100}
               height={100}
