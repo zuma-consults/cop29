@@ -1,7 +1,6 @@
 import React from "react";
 import {
   FaCalendarAlt,
-  FaPlus,
   FaInfoCircle,
   FaQuestionCircle,
 } from "react-icons/fa";
