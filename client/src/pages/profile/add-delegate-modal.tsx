@@ -40,7 +40,8 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
         .email("Invalid email address")
         .required("Email is required"),
       department: Yup.string().required("Department is required"),
-      state: Yup.string().required("State is required"),
+      state: Yup.string().required("State of residence is required"),
+      file: Yup.mixed().required("Passport data page is required"),
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
@@ -144,16 +145,15 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
                       htmlFor="state"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      State
+                      State of Residence
                     </label>
-                    <Field
-                      as="select"
+                    <select
                       id="state"
                       name="state"
                       value={formik.values.state}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                      className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
                     >
                       <option value="">Select State</option>
                       {states?.map((state) => (
@@ -161,7 +161,8 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
                           {state}
                         </option>
                       ))}
-                    </Field>
+                    </select>
+
                     {formik.touched.state && formik.errors.state && (
                       <div className="text-red-500 text-xs mt-1">
                         {formik.errors.state}
