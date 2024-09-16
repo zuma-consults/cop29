@@ -45,17 +45,17 @@ function FAQ() {
               <h2 className="text-xl md:text-2xl font-bold mt-1">
                 {item.title}
               </h2>
-              <p className="text-sm md:text-base mt-1">{item.desHeader}</p>
 
               <div>
                 <h3 className="text-xl md:text-lg text-gray-600 font-bold mt-1">
-                  1 Registration
+                  1. Create Account
                 </h3>
                 <ul className="text-sm md:text-base mt-1 list-disc pl-5">
                   {item.description
-                    .split(". ")
+                    .split(",") // Split by commas
                     .map(
-                      (line, i) => line.trim() !== "" && <li key={i}>{line}</li>
+                      (line, i) =>
+                        line.trim() !== "" && <li key={i}>{line.trim()}</li> // Trim each line and render
                     )}
                 </ul>
               </div>
@@ -63,11 +63,11 @@ function FAQ() {
               {item.confirmation && (
                 <div>
                   <h3 className="text-xl md:text-lg text-gray-600 font-bold mt-1">
-                    2 Confirmation
+                    2. Confirmation
                   </h3>
                   <ul className="text-sm md:text-base mt-1 list-disc pl-5">
                     {item.confirmation
-                      .split(". ")
+                      .split(", ")
                       .map(
                         (line, i) =>
                           line.trim() !== "" && <li key={i}>{line}</li>
@@ -79,11 +79,11 @@ function FAQ() {
               {item.login && (
                 <div>
                   <h3 className="text-xl md:text-lg text-gray-600 font-bold mt-1">
-                    2 Login
+                    3. Nominate delegates
                   </h3>
                   <ul className="text-sm md:text-base mt-1 list-disc pl-5">
                     {item.login
-                      .split(". ")
+                      .split(", ")
                       .map(
                         (line, i) =>
                           line.trim() !== "" && <li key={i}>{line}</li>
@@ -93,7 +93,16 @@ function FAQ() {
               )}
 
               {/* <p className="text-sm md:text-base mt-1">{item.desHeader}</p> */}
-
+              <br />
+              <p className="text-sm md:text-base mt-1 text-red-600">
+                Note:{" "}
+                {item.desHeader
+                  .split(",") // Split by commas
+                  .map(
+                    (line, i) =>
+                      line.trim() !== "" && <li key={i}>{line.trim()}</li> // Trim each line and render
+                  )}
+              </p>
               <div className="w-full mt-4">
                 <Link
                   to={item.link}
