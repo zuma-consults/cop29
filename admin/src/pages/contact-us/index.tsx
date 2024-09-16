@@ -15,7 +15,6 @@ const ContactUs: React.FC = () => {
   const { control, handleSubmit, reset } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
-    console.log("New Announcement Data:", data);
     // Handle the creation of a new announcement here
     reset(); // Reset the form after submission
     setOpen(false); // Close the modal

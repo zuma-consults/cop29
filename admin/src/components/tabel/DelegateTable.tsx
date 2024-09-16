@@ -66,12 +66,10 @@ const DelegateTable: React.FC = () => {
   }, []);
 
   const handleAccept = useCallback(() => {
-    console.log("Accepted");
     setSelectedEvent(null);
   }, []);
 
   const handleReject = useCallback(() => {
-    console.log("Rejected");
     setSelectedEvent(null);
   }, []);
 

@@ -47,11 +47,16 @@ const organizationValidationSchema = Yup.object({
   thematicArea: Yup.string().required("Thematic Area is required"),
   state: Yup.string().required("State is required"),
   organizationType: Yup.string().required("Organization Type is required"),
-  reasonForAttendance: Yup.string().required("Reason for Attendance is required"),
+  reasonForAttendance: Yup.string().required(
+    "Reason for Attendance is required"
+  ),
   contactDesignation: Yup.string().required(
     "Designation of Contact Person is required"
   ),
   contactName: Yup.string().required("Name of Contact Person is required"),
+  preferredDateTime: Yup.date()
+    .required("Preferred date and time are required")
+    .min(new Date(), "Preferred date and time must be in the future"),
 });
 
 const OrganizationForm: React.FC = () => {
@@ -107,10 +112,10 @@ const OrganizationForm: React.FC = () => {
           thematicArea: "",
           terms: true,
           showPassword: false,
+          preferredDateTime: "",
         }}
         validationSchema={organizationValidationSchema}
         onSubmit={(values, { resetForm }) => {
-          console.log(values);
           const formData = new FormData();
           (Object.keys(values) as (keyof FormValues)[]).forEach((key) => {
             const value = values[key];
@@ -544,6 +549,26 @@ const OrganizationForm: React.FC = () => {
                 name="reasonForAttendance"
                 component="div"
                 className="text-red-600 text-xs mt-1"
+              />
+            </div>
+
+            <div className="grid gap-1 mb-4">
+              <label
+                htmlFor="preferredDateTime"
+                className="block text-gray-700 font-semibold mb-2"
+              >
+                Preferred Date and Time*
+              </label>
+              <Field
+                type="datetime-local"
+                id="preferredDateTime"
+                name="preferredDateTime"
+                className="border-[0.8px] border-gray-400 px-[10px] py-3 text-[12px] rounded-lg"
+              />
+              <ErrorMessage
+                name="preferredDateTime"
+                component="div"
+                className="text-red-500 text-xs"
               />
             </div>
 

@@ -52,7 +52,6 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ onSelectSlot }) => {
   }, [data]);
 
   const handleSelectEvent = (event: any) => {
-    console.log("Selected Event:", event);
     <Alert severity="info">Selected Event: {event.title}</Alert>;
     <Alert severity="info">This is an info Alert.</Alert>;
   };

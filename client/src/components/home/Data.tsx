@@ -9,7 +9,6 @@ interface OverviewDetailsProps {
 }
 
 const Data: React.FC<OverviewDetailsProps> = ({ overviewDetails }) => {
-  console.log(overviewDetails)
   return (
     <section
       className="relative flex flex-col gap-10 md:gap-20 pt-10 h-auto md:h-[80vh] w-full bg-cover bg-center"
