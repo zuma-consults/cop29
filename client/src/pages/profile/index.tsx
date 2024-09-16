@@ -60,41 +60,8 @@ const Profile: React.FC = () => {
 
   return (
     <div className="pb-[5%] md:pb-[2%] flex items-center justify-center flex-col gap-10 px-5 md:px-20 relative">
-      {!organizationData ? (
-        <div className="flex items-center w-full justify-center text-center p-[50px] border-2 border-orange-600 my-20 bg-orange-100 mx-10 h-[50vh]">
-          <div>
-            <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
-              You need to create an account to request for accreditation
-            </h1>
-            <p className="text-gray-600 mb-6">
-              Please log in or create account.
-            </p>
-            <div className="flex flex-col md:flex-row justify-center gap-4">
-              <Link
-                to="/login"
-                className="bg-co-primary text-white py-2 px-4 rounded hover:bg-green-800 transition"
-              >
-                Log In
-              </Link>
-              {profileType?.type === "delegate" ? (
-                <Link
-                  to="/signup"
-                  className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
-                >
-                  Create Account as Organisation
-                </Link>
-              ) : (
-                <Link
-                  to="/negotiator"
-                  className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
-                >
-                  Create Account as Negotiator
-                </Link>
-              )}
-            </div>
-          </div>
-        </div>
-      ) : (
+      {/* { */}
+      
         <>
           <div
             style={{
@@ -184,7 +151,7 @@ const Profile: React.FC = () => {
             id={user?.data?.id}
           />
         </>
-      )}
+      
     </div>
   );
 };
