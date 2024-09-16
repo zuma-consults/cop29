@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
     <nav className="w-full flex items-center justify-between md:p-4 bg-white shadow-sm h-[70px] fixed top-0 right-0 left-0 z-[3000]">
       <div className="flex items-center justify-between w-full">
         <Link to="/" className="flex items-center gap-3">
-          <img src="/images/seal.png" alt="Logo" className="h-[40px]" />
+          {/* <img src="/images/seal.png" alt="Logo" className="h-[40px]" /> */}
           <img src="/images/new.png" alt="Logo" className="h-[40px]" />
         </Link>
 
