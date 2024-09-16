@@ -49,7 +49,7 @@ const organizationValidationSchema = Yup.object({
   workStream: Yup.string().required("Workstream is required"),
   orgImage: Yup.mixed()
     .nullable()
-    .required("Organization image is required")
+    .required("Contact ID is required")
     .test(
       "FILE_FORMAT",
       "Invalid format. Only jpg and png are allowed.",
