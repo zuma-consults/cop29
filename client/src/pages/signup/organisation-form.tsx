@@ -12,7 +12,7 @@ import Loader from "../../components/ui/Loader";
 import { useOrgRegister } from "../../components/custom-hooks/useAuth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import TCModal from "../../components/ui/TCModal";
+// import TCModal from "../../components/ui/TCModal";
 
 interface FormValues {
   userType: string;
@@ -45,9 +45,9 @@ const organizationValidationSchema = Yup.object({
     .required("Please confirm your password"),
   category: Yup.string().required("Category is required"),
   thematicArea: Yup.string().required("Thematic Area is required"),
-  state: Yup.string(),
+  state: Yup.string().required("State is required"),
   organizationType: Yup.string().required("Organization Type is required"),
-  reasonForAttendance: Yup.string(),
+  reasonForAttendance: Yup.string().required("Reason for Attendance is required"),
   contactDesignation: Yup.string().required(
     "Designation of Contact Person is required"
   ),
@@ -60,7 +60,7 @@ const organizationValidationSchema = Yup.object({
 const OrganizationForm: React.FC = () => {
   const { mutate: orgRegister, isLoading, data } = useOrgRegister();
   const [files, setFiles] = useState<File | null>(null);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  // const [isChecked, setIsChecked] = useState<boolean>(false);
   const [documentSupportingAttendance, setDocumentSupportingAttendance] =
     useState<File | null>(null);
   const [orgImage, setOrgImage] = useState<File | null>(null);
@@ -71,22 +71,22 @@ const OrganizationForm: React.FC = () => {
       navigate("/verify-confirmation");
     }
   }, [data, navigate]);
-  const handleTerms = () => {
-    // navigate("/terms-and-conditions");
-    setIsModalOpen(true);
-  };
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [hasAgreed, setHasAgreed] = useState(false);
+  // const handleTerms = () => {
+  //   // navigate("/terms-and-conditions");
+  //   setIsModalOpen(true);
+  // };
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [hasAgreed, setHasAgreed] = useState(false);
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  // const handleCloseModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
-  const handleAgreeTerms = () => {
-    setHasAgreed(true);
-    setIsChecked(true)
-    setIsModalOpen(false);
-  };
+  // const handleAgreeTerms = () => {
+  //   setHasAgreed(true);
+  //   setIsChecked(true)
+  //   setIsModalOpen(false);
+  // };
 
   if (isLoading) {
     return <Loader />;
@@ -94,461 +94,463 @@ const OrganizationForm: React.FC = () => {
 
   return (
     <>
-    <Formik
-      initialValues={{
-        userType: "organization",
-        name: "",
-        email: "",
-        phone: "",
-        password: "",
-        category: "",
-        state: "",
-        organizationType: "",
-        reasonForAttendance: "",
-        contactDesignation: "",
-        contactName: "",
-        thematicArea: "",
-        terms: isChecked,
-        showPassword: false,
-      }}
-      validationSchema={organizationValidationSchema}
-      onSubmit={(values, { resetForm }) => {
-        console.log(values)
-        const formData = new FormData();
-        (Object.keys(values) as (keyof FormValues)[]).forEach((key) => {
-          const value = values[key];
-          if (typeof value === "boolean") {
-            formData.append(key, value.toString());
-          } else if (value !== "" && key !== "terms") {
-            formData.append(key, value);
+      <Formik
+        initialValues={{
+          userType: "organization",
+          name: "",
+          email: "",
+          phone: "",
+          password: "",
+          category: "",
+          state: "",
+          organizationType: "",
+          reasonForAttendance: "",
+          contactDesignation: "",
+          contactName: "",
+          thematicArea: "",
+          terms: true,
+          showPassword: false,
+        }}
+        validationSchema={organizationValidationSchema}
+        onSubmit={(values, { resetForm }) => {
+          console.log(values);
+          const formData = new FormData();
+          (Object.keys(values) as (keyof FormValues)[]).forEach((key) => {
+            const value = values[key];
+            if (typeof value === "boolean") {
+              formData.append(key, value.toString());
+            } else if (value !== "" && key !== "terms") {
+              formData.append(key, value);
+            }
+          });
+
+          if (files) formData.append("files", files);
+          if (orgImage) formData.append("orgImage", orgImage);
+          if (documentSupportingAttendance)
+            formData.append(
+              "documentSupportingAttendance",
+              documentSupportingAttendance
+            );
+
+          if (!files || !orgImage) {
+            toast.warn("Upload required files");
+          } else {
+            orgRegister(formData);
+            resetForm();
+            setFiles(null);
+            setOrgImage(null);
           }
-        });
-
-        if (files) formData.append("files", files);
-        if (orgImage) formData.append("orgImage", orgImage);
-        if (documentSupportingAttendance)
-          formData.append(
-            "documentSupportingAttendance",
-            documentSupportingAttendance
-          );
-
-        if (!files || !orgImage) {
-          toast.warn("Upload required files");
-        } else {
-          orgRegister(formData);
-          resetForm();
-          setFiles(null);
-          setOrgImage(null);
-        }
-      }}
-    >
-      {({ values, setFieldValue }) => (
-        <Form className="p-2 shadow bg-green-50 mt-5">
-          <h1 className="text-2xl font-semibold mb-6 text-center text-green-800">
-            Create an Account for your Organisation
-          </h1>
-          {/* Organization Fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="mb-4">
-              <label
-                htmlFor="name"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                Organization Name*
-              </label>
-              <Field
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Enter your organization's name"
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-              />
-              <ErrorMessage
-                name="name"
-                component="div"
-                className="text-red-600 text-xs mt-1"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                Email Address*
-              </label>
-              <Field
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Enter your email"
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-              />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="text-red-600 text-xs mt-1"
-              />
-            </div>
-
-            <div className="relative mb-4">
-              <label
-                htmlFor="password"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                Password*
-              </label>
-              <Field
-                type={values.showPassword ? "text" : "password"}
-                id="password"
-                name="password"
-                placeholder="Enter your password"
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 pr-10"
-              />
-              <div
-                className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mt-5"
-                onClick={() =>
-                  setFieldValue("showPassword", !values.showPassword)
-                }
-              >
-                {values.showPassword ? (
-                  <FaRegEye size={20} />
-                ) : (
-                  <FaRegEyeSlash size={20} />
-                )}
+        }}
+      >
+        {({ values, setFieldValue }) => (
+          <Form className="p-2 shadow bg-green-50 mt-5">
+            <h1 className="text-2xl font-semibold mb-6 text-center text-green-800">
+              Create an Account for your Organisation
+            </h1>
+            {/* Organization Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="mb-4">
+                <label
+                  htmlFor="name"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Organization Name*
+                </label>
+                <Field
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Enter your organization's name"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                />
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
               </div>
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="text-red-600 text-xs mt-1"
-              />
-            </div>
 
-            <div className="relative mb-4">
-              <label
-                htmlFor="confirmPassword"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                Confirm Password*
-              </label>
-              <Field
-                type={values.showPassword ? "text" : "password"}
-                id="confirmPassword"
-                name="confirmPassword"
-                placeholder="Enter your confirm password"
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 pr-10"
-              />
-              <div
-                className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mt-5"
-                onClick={() =>
-                  setFieldValue("showPassword", !values.showPassword)
-                }
-              >
-                {values.showPassword ? (
-                  <FaRegEye size={20} />
-                ) : (
-                  <FaRegEyeSlash size={20} />
-                )}
+              <div className="mb-4">
+                <label
+                  htmlFor="email"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Email Address*
+                </label>
+                <Field
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                />
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
               </div>
-              <ErrorMessage
-                name="confirmPassword"
-                component="div"
-                className="text-red-600 text-xs mt-1"
-              />
-            </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="phone"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                Contact Person's Phone Number*
-              </label>
-              <Field
-                type="text"
-                id="phone"
-                name="phone"
-                placeholder="Enter your phone number"
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-              />
-              <ErrorMessage
-                name="phone"
-                component="div"
-                className="text-red-600 text-xs mt-1"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="category"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                Sector*
-              </label>
-              <Field
-                as="select"
-                id="category"
-                name="category"
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-              >
-                <option value="">Select Sector</option>
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </Field>
-              <ErrorMessage
-                name="category"
-                component="div"
-                className="text-red-600 text-xs mt-1"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="thematicArea"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                Thematic Area*
-              </label>
-              <Field
-                as="select"
-                id="thematicArea"
-                name="thematicArea"
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-              >
-                <option value="">Select Thematic Area</option>
-                {thematicAreas.map((thematicArea) => (
-                  <option key={thematicArea} value={thematicArea}>
-                    {thematicArea}
-                  </option>
-                ))}
-              </Field>
-              <ErrorMessage
-                name="category"
-                component="div"
-                className="text-red-600 text-xs mt-1"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="state"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                State
-              </label>
-              <Field
-                as="select"
-                id="state"
-                name="state"
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-              >
-                <option value="">Select State</option>
-                {states.map((state) => (
-                  <option key={state} value={state}>
-                    {state}
-                  </option>
-                ))}
-              </Field>
-              <ErrorMessage
-                name="state"
-                component="div"
-                className="text-red-600 text-xs mt-1"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="organizationType"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                Organization Type*
-              </label>
-              <Field
-                as="select"
-                id="organizationType"
-                name="organizationType"
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-              >
-                <option value="">Select Organization Type</option>
-                {organizationTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </Field>
-              <ErrorMessage
-                name="organizationType"
-                component="div"
-                className="text-red-600 text-xs mt-1"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="contactDesignation"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                Contact Person's Designation*
-              </label>
-              <Field
-                type="text"
-                id="contactDesignation"
-                name="contactDesignation"
-                placeholder="Contact Person's Designation"
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-              />
-              <ErrorMessage
-                name="contactDesignation"
-                component="div"
-                className="text-red-600 text-xs mt-1"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="contactName"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                Contact Person's Name*
-              </label>
-              <Field
-                type="text"
-                id="contactName"
-                name="contactName"
-                placeholder="Contact Person's Name"
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-              />
-              <ErrorMessage
-                name="contactName"
-                component="div"
-                className="text-red-600 text-xs mt-1"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="files"
-                className="block text-gray-700 font-semibold mb-2"
-              >
-                Letter Approving Organisation Participation to include Names of Delegates (pdf file max 2mb)*
-              </label>
-              <input
-                type="file"
-                id="files"
-                accept=".pdf"
-                onChange={(event) => {
-                  const maxSizeInBytes = 2 * 1024 * 1024; // 2 MB in bytes
-                  const file = event.currentTarget.files
-                    ? event.currentTarget.files[0]
-                    : null;
-
-                  if (file && file.size > maxSizeInBytes) {
-                    toast.error(
-                      "File size exceeds the 2 MB limit. Please select a smaller file."
-                    );
-                    event.currentTarget.value = "";
-                  } else if (file) {
-                    setFiles(file);
+              <div className="relative mb-4">
+                <label
+                  htmlFor="password"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Password*
+                </label>
+                <Field
+                  type={values.showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 pr-10"
+                />
+                <div
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mt-5"
+                  onClick={() =>
+                    setFieldValue("showPassword", !values.showPassword)
                   }
-                }}
-                className="bg-white w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-              />
-              <ErrorMessage
-                name="files"
-                component="div"
-                className="text-red-600 text-xs mt-1"
-              />
+                >
+                  {values.showPassword ? (
+                    <FaRegEye size={20} />
+                  ) : (
+                    <FaRegEyeSlash size={20} />
+                  )}
+                </div>
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </div>
+
+              <div className="relative mb-4">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Confirm Password*
+                </label>
+                <Field
+                  type={values.showPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Enter your confirm password"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 pr-10"
+                />
+                <div
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mt-5"
+                  onClick={() =>
+                    setFieldValue("showPassword", !values.showPassword)
+                  }
+                >
+                  {values.showPassword ? (
+                    <FaRegEye size={20} />
+                  ) : (
+                    <FaRegEyeSlash size={20} />
+                  )}
+                </div>
+                <ErrorMessage
+                  name="confirmPassword"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="phone"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Contact Person's Phone Number*
+                </label>
+                <Field
+                  type="text"
+                  id="phone"
+                  name="phone"
+                  placeholder="Enter your phone number"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                />
+                <ErrorMessage
+                  name="phone"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="category"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Sector*
+                </label>
+                <Field
+                  as="select"
+                  id="category"
+                  name="category"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                >
+                  <option value="">Select Sector</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </Field>
+                <ErrorMessage
+                  name="category"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="thematicArea"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Thematic Area*
+                </label>
+                <Field
+                  as="select"
+                  id="thematicArea"
+                  name="thematicArea"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                >
+                  <option value="">Select Thematic Area</option>
+                  {thematicAreas.map((thematicArea) => (
+                    <option key={thematicArea} value={thematicArea}>
+                      {thematicArea}
+                    </option>
+                  ))}
+                </Field>
+                <ErrorMessage
+                  name="category"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="state"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  State*
+                </label>
+                <Field
+                  as="select"
+                  id="state"
+                  name="state"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                >
+                  <option value="">Select State</option>
+                  {states.map((state) => (
+                    <option key={state} value={state}>
+                      {state}
+                    </option>
+                  ))}
+                </Field>
+                <ErrorMessage
+                  name="state"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="organizationType"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Organization Type*
+                </label>
+                <Field
+                  as="select"
+                  id="organizationType"
+                  name="organizationType"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                >
+                  <option value="">Select Organization Type</option>
+                  {organizationTypes.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </Field>
+                <ErrorMessage
+                  name="organizationType"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="contactDesignation"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Contact Person's Designation*
+                </label>
+                <Field
+                  type="text"
+                  id="contactDesignation"
+                  name="contactDesignation"
+                  placeholder="Contact Person's Designation"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                />
+                <ErrorMessage
+                  name="contactDesignation"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="contactName"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Contact Person's Name*
+                </label>
+                <Field
+                  type="text"
+                  id="contactName"
+                  name="contactName"
+                  placeholder="Contact Person's Name"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                />
+                <ErrorMessage
+                  name="contactName"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="files"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Letter Approving Organisation Participation to include Names
+                  of Delegates (pdf file max 2mb)*
+                </label>
+                <input
+                  type="file"
+                  id="files"
+                  accept=".pdf"
+                  onChange={(event) => {
+                    const maxSizeInBytes = 2 * 1024 * 1024; // 2 MB in bytes
+                    const file = event.currentTarget.files
+                      ? event.currentTarget.files[0]
+                      : null;
+
+                    if (file && file.size > maxSizeInBytes) {
+                      toast.error(
+                        "File size exceeds the 2 MB limit. Please select a smaller file."
+                      );
+                      event.currentTarget.value = "";
+                    } else if (file) {
+                      setFiles(file);
+                    }
+                  }}
+                  className="bg-white w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                />
+                <ErrorMessage
+                  name="files"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="orgImage"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Upload Scanned Copy of Contact Person's ID Card*
+                </label>
+                <input
+                  type="file"
+                  id="orgImage"
+                  accept=".png, .jpg, .jpeg"
+                  onChange={(event) => {
+                    if (event.currentTarget.files) {
+                      setOrgImage(event.currentTarget.files[0]);
+                    }
+                  }}
+                  className="bg-white w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                />
+                <ErrorMessage
+                  name="orgImage"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label
+                  htmlFor="supportImage"
+                  className="block text-gray-700 font-semibold mb-2"
+                >
+                  Upload Document Supporting Reason for Participation (pdf file
+                  max 2mb)*
+                </label>
+                <input
+                  type="file"
+                  id="supportImage"
+                  accept=".pdf"
+                  onChange={(event) => {
+                    const maxSizeInBytes = 2 * 1024 * 1024; // 2 MB in bytes
+                    const file = event.currentTarget.files
+                      ? event.currentTarget.files[0]
+                      : null;
+
+                    if (file && file.size > maxSizeInBytes) {
+                      toast.error(
+                        "File size exceeds the 2 MB limit. Please select a smaller file."
+                      );
+                      event.currentTarget.value = "";
+                    } else if (file) {
+                      setDocumentSupportingAttendance(file);
+                    }
+                  }}
+                  className="bg-white w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+                />
+                <ErrorMessage
+                  name="orgImage"
+                  component="div"
+                  className="text-red-600 text-xs mt-1"
+                />
+              </div>
             </div>
+
+            {/* File Uploads */}
 
             <div className="mb-4">
               <label
-                htmlFor="orgImage"
+                htmlFor="reasonForAttendance"
                 className="block text-gray-700 font-semibold mb-2"
               >
-                Upload Scanned Copy of Contact Person's ID Card*
+                Reason for Participation*
               </label>
-              <input
-                type="file"
-                id="orgImage"
-                accept=".png, .jpg, .jpeg"
-                onChange={(event) => {
-                  if (event.currentTarget.files) {
-                    setOrgImage(event.currentTarget.files[0]);
-                  }
-                }}
-                className="bg-white w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+              <Field
+                type="text"
+                as="textarea"
+                id="reasonForAttendance"
+                name="reasonForAttendance"
+                placeholder="Confirmed Bilateral, Organisation Mandate etc"
+                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
               />
               <ErrorMessage
-                name="orgImage"
+                name="reasonForAttendance"
                 component="div"
                 className="text-red-600 text-xs mt-1"
               />
             </div>
 
-            <div className="mb-4">
-            <label
-              htmlFor="supportImage"
-              className="block text-gray-700 font-semibold mb-2"
-            >
-             Upload Document Supporting Reason for Participation (pdf file max 2mb)*
-            </label>
-            <input
-              type="file"
-              id="supportImage"
-              accept=".pdf"
-              onChange={(event) => {
-                const maxSizeInBytes = 2 * 1024 * 1024; // 2 MB in bytes
-                const file = event.currentTarget.files
-                  ? event.currentTarget.files[0]
-                  : null;
-
-                if (file && file.size > maxSizeInBytes) {
-                  toast.error(
-                    "File size exceeds the 2 MB limit. Please select a smaller file."
-                  );
-                  event.currentTarget.value = "";
-                } else if (file) {
-                  setDocumentSupportingAttendance(file);
-                }
-              }}
-              className="bg-white w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-            />
-            <ErrorMessage
-              name="orgImage"
-              component="div"
-              className="text-red-600 text-xs mt-1"
-            />
-          </div>
-          </div>
-
-          {/* File Uploads */}
-
-          <div className="mb-4">
-            <label
-              htmlFor="reasonForAttendance"
-              className="block text-gray-700 font-semibold mb-2"
-            >
-              Reason for Participation
-            </label>
-            <Field
-              type="text"
-              as="textarea"
-              id="reasonForAttendance"
-              name="reasonForAttendance"
-              placeholder="Confirmed Bilateral, Organisation Mandate etc"
-              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
-            />
-            <ErrorMessage
-              name="reasonForAttendance"
-              component="div"
-              className="text-red-600 text-xs mt-1"
-            />
-          </div>
-
-          {/* <div className="mb-4">
+            {/* <div className="mb-4">
             <label
               htmlFor="supportImage"
               className="block text-gray-700 font-semibold mb-2"
@@ -584,8 +586,8 @@ const OrganizationForm: React.FC = () => {
             />
           </div> */}
 
-          {/* Terms and Conditions Checkbox */}
-          <div className="flex items-center mb-4" onClick={handleTerms}>
+            {/* Terms and Conditions Checkbox */}
+            {/* <div className="flex items-center mb-4" onClick={handleTerms}>
                 <Field
                   type="checkbox"
                   id="terms"
@@ -605,24 +607,24 @@ const OrganizationForm: React.FC = () => {
                 name="terms"
                 component="div"
                 className="text-red-600 text-xs mt-1"
-              />
+              /> */}
 
-          <button
-            type="submit"
-            className="w-full bg-green-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-green-700 transition"
-            disabled={isLoading}
-          >
-            {isLoading ? "Submitting..." : "Sign Up"}
-          </button>
-        </Form>
-      )}
-    </Formik>
-     <TCModal
+            <button
+              type="submit"
+              className="w-full bg-green-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-green-700 transition"
+              disabled={isLoading}
+            >
+              {isLoading ? "Submitting..." : "Sign Up"}
+            </button>
+          </Form>
+        )}
+      </Formik>
+      {/* <TCModal
      isOpen={isModalOpen}
      onClose={handleCloseModal}
      onAgree={handleAgreeTerms}
-   />
-   </>
+   /> */}
+    </>
   );
 };
 

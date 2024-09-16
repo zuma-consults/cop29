@@ -5,6 +5,7 @@ import { useAddDelegate } from "../../components/custom-hooks/useOrg";
 import Loader from "../../components/ui/Loader";
 import { toast } from "react-toastify";
 import { Field, ErrorMessage } from "formik";
+import { states } from "../../util/data";
 
 interface AddDelegateModalProps {
   isOpen: boolean;
@@ -155,8 +156,7 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-green-500 focus:border-green-500 sm:text-sm"
                     >
                       <option value="">Select State</option>
-                      {/* Replace this with your actual list of states */}
-                      {["State 1", "State 2", "State 3"].map((state) => (
+                      {states?.map((state) => (
                         <option key={state} value={state}>
                           {state}
                         </option>

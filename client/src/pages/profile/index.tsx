@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { useGetProfile } from "../../components/custom-hooks/useAuth";
 import Loader from "../../components/ui/Loader";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AddDelegateModal from "./add-delegate-modal";
 
 interface Delegate {
@@ -48,6 +48,9 @@ const delegateColumns = [
 const Profile: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const { data: user, isLoading, refetch } = useGetProfile();
+  const location = useLocation();
+
+  const profileType = location.state as { type: string } | null;
 
   if (isLoading) {
     return <Loader />;
@@ -73,18 +76,21 @@ const Profile: React.FC = () => {
               >
                 Log In
               </Link>
-              <Link
-                to="/signup"
-                className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
-              >
-                Create Account as Organisation
-              </Link>
-              <Link
-                to="/negotiator"
-                className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
-              >
-                Create Account as Negotiator
-              </Link>
+              {profileType?.type === "delegate" ? (
+                <Link
+                  to="/signup"
+                  className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+                >
+                  Create Account as Organisation
+                </Link>
+              ) : (
+                <Link
+                  to="/negotiator"
+                  className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+                >
+                  Create Account as Negotiator
+                </Link>
+              )}
             </div>
           </div>
         </div>

@@ -6,9 +6,9 @@ import Footer from "../components/ui/Footer";
 
 function AppLayout() {
   return (
-    <div className="w-[100vw] text-[12px] h-full overflow-x-hidden mt-10">
+    <div className="w-[100vw] text-[12px] h-full overflow-x-hidden">
       <Navbar />
-      <div>
+      <div className="mt-20">
         <Outlet />
       </div>
       {/* <NewsLetter /> */}

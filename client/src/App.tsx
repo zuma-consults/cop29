@@ -26,63 +26,63 @@ import { getProfile } from "./services/auth";
 import NegotiatorForm from "./pages/signup/negotiator-form";
 import { MdBuild } from "react-icons/md";
 import { FaTools } from "react-icons/fa";
-import {detectDevTools} from './components/custom-hooks/detectDevtools'
+// import {detectDevTools} from './components/custom-hooks/detectDevtools'
 
 function App() {
   const [loading, setLoading] = useState(true);
   const env = import.meta.env.VITE_ENV; // Access the environment variable
 
-  useEffect(() => {
-    // Disable right-click
-    document.addEventListener('contextmenu', (event) => event.preventDefault());
+  // useEffect(() => {
+  //   // Disable right-click
+  //   document.addEventListener('contextmenu', (event) => event.preventDefault());
 
-    // Disable F12, Ctrl+Shift+I (Inspect)
-    const handleKeydown = (event: any) => {
-      if (
-        event.keyCode === 123 || // F12
-        (event.ctrlKey && event.shiftKey && event.keyCode === 73) || // Ctrl+Shift+I
-        (event.ctrlKey && event.shiftKey && event.keyCode === 74) // Ctrl+Shift+J (Console)
-      ) {
-        event.preventDefault();
-      }
-    };
-    window.addEventListener('keydown', handleKeydown);
+  //   // Disable F12, Ctrl+Shift+I (Inspect)
+  //   const handleKeydown = (event: any) => {
+  //     if (
+  //       event.keyCode === 123 || // F12
+  //       (event.ctrlKey && event.shiftKey && event.keyCode === 73) || // Ctrl+Shift+I
+  //       (event.ctrlKey && event.shiftKey && event.keyCode === 74) // Ctrl+Shift+J (Console)
+  //     ) {
+  //       event.preventDefault();
+  //     }
+  //   };
+  //   window.addEventListener('keydown', handleKeydown);
 
-       // Detect DevTools open
-       detectDevTools();
+  //      // Detect DevTools open
+  //     //  detectDevTools();
 
-    return () => {
-      document.removeEventListener('contextmenu', (event) => event.preventDefault());
-      window.removeEventListener('keydown', handleKeydown);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener('contextmenu', (event) => event.preventDefault());
+  //     window.removeEventListener('keydown', handleKeydown);
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    // Disable right-click
-    document.addEventListener('contextmenu', (event) => event.preventDefault());
+  // useEffect(() => {
+  //   // Disable right-click
+  //   document.addEventListener('contextmenu', (event) => event.preventDefault());
   
-    // Disable copy, cut, and paste
-    const handleCopyCutPaste = (event: ClipboardEvent) => {
-      event.preventDefault();
-    };
-    document.addEventListener('copy', handleCopyCutPaste);
-    document.addEventListener('cut', handleCopyCutPaste);
-    document.addEventListener('paste', handleCopyCutPaste);
+  //   // Disable copy, cut, and paste
+  //   const handleCopyCutPaste = (event: ClipboardEvent) => {
+  //     event.preventDefault();
+  //   };
+  //   document.addEventListener('copy', handleCopyCutPaste);
+  //   document.addEventListener('cut', handleCopyCutPaste);
+  //   document.addEventListener('paste', handleCopyCutPaste);
   
-    // Disable dragging for images and links
-    const preventDrag = (event: DragEvent) => {
-      event.preventDefault();
-    };
-    document.addEventListener('dragstart', preventDrag);
+  //   // Disable dragging for images and links
+  //   const preventDrag = (event: DragEvent) => {
+  //     event.preventDefault();
+  //   };
+  //   document.addEventListener('dragstart', preventDrag);
   
-    return () => {
-      document.removeEventListener('contextmenu', (event) => event.preventDefault());
-      document.removeEventListener('copy', handleCopyCutPaste);
-      document.removeEventListener('cut', handleCopyCutPaste);
-      document.removeEventListener('paste', handleCopyCutPaste);
-      document.removeEventListener('dragstart', preventDrag);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener('contextmenu', (event) => event.preventDefault());
+  //     document.removeEventListener('copy', handleCopyCutPaste);
+  //     document.removeEventListener('cut', handleCopyCutPaste);
+  //     document.removeEventListener('paste', handleCopyCutPaste);
+  //     document.removeEventListener('dragstart', preventDrag);
+  //   };
+  // }, []);
   
   
 

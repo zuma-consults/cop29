@@ -131,11 +131,11 @@ const TermsAndConditions = () => {
             Participation is directly linked to the high-level summit and
             negotiations to be held at COP 29.
           </li>
-          <li style={{ marginBottom: "10px" , fontSize: "14px"}}>
+          <li style={{ marginBottom: "10px", fontSize: "14px" }}>
             Signing of bilateral agreements and MoUs to concretize financial
             commitments.
           </li>
-          <li style={{ marginBottom: "10px" , fontSize: "14px"}}>
+          <li style={{ marginBottom: "10px", fontSize: "14px" }}>
             Participation in thematic meetings as a representative of Nigeria.
           </li>
         </ul>
@@ -213,23 +213,34 @@ const TermsAndConditions = () => {
       </section> */}
 
       <section style={{ marginBottom: "20px" }}>
-        <h2 style={{ color: "#003300", fontSize: "20px" }}>Data Privacy</h2>
-        <p style={{ fontSize: "14px"}}>
-          The National Council on Climate Change Secretariat(NCCCS) is committed
-          to safeguarding the privacy and security of your personal data in
-          compliance with the Nigeria Data Protection Regulation (NDPR) 2019. We
-          implement a variety of security measures to ensure the
-          confidentiality, integrity, and availability of your information.
-          However, please note that no method of transmission over the internet
-          or electronic storage is entirely secure. <br /> By accessing and
-          using this website, you acknowledge and accept that while we strive to
-          protect your data, we cannot guarantee its absolute security. Any
-          transmission of personal information is at your own risk, and we are
-          not liable for any unauthorized access, hacking, data loss, or theft
-          that occurs as a result. <br /> We strongly advise users to take
-          appropriate steps to protect their own data, such as using secure
-          passwords and avoiding sharing sensitive information over unsecured
-          networks.
+        <h2 style={{ color: "#003300", fontSize: "20px" }}>
+          Data Privacy Policy
+        </h2>
+        <p style={{ fontSize: "14px" }}>
+          The National Council on Climate Change Secretariat (NCCCS) is
+          committed to safeguarding the privacy and security of your personal
+          data in compliance with the Nigeria Data Protection Regulation (NDPR)
+          2019 and the General Data Protection Regulation (GDPR). We implement a
+          variety of security measures to ensure the confidentiality, integrity,
+          and availability of your information. However, please note that no
+          method of transmission over the internet or electronic storage is
+          entirely secure.
+          <br />
+          <br /> By accessing and using this website, you acknowledge and accept
+          that while we strive to protect your data, we cannot guarantee its
+          absolute security. Any transmission of personal information is at your
+          own risk, and we are not liable for any unauthorized access, hacking,
+          data loss, or theft that occurs as a result.
+          <br />
+          <br /> In accordance with GDPR and NDPR, your personal data may be
+          shared for purposes of transparency, accountability, and compliance
+          with legal obligations, when necessary. We will ensure that any
+          sharing of data is done in a lawful manner and with adequate
+          safeguards in place to protect your privacy.
+          <br />
+          <br /> We strongly advise users to take appropriate steps to protect
+          their own data, such as using secure passwords and avoiding sharing
+          sensitive information over unsecured networks.
         </p>
       </section>
 
@@ -262,7 +273,7 @@ const TermsAndConditions = () => {
             intends to host a side event, complete the side event form and
             prepare to cover the associated fees.
           </li> */}
-          {/* <li style={{ marginBottom: "10px", fontSize: "14px" }}>
+      {/* <li style={{ marginBottom: "10px", fontSize: "14px" }}>
             <strong>Pre-COP29 Workshop:</strong> Ensure your accredited
             participants attend the orientation and pre-COP29 workshop organized
             by the NCCC.
@@ -274,7 +285,7 @@ const TermsAndConditions = () => {
             Climate Change.
           </li>
         </ul>
-      </section> */} 
+      </section> */}
     </div>
   );
 };

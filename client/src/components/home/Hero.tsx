@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import CountdownTimer from "../ui/CountDown";
-import { HashLink } from 'react-router-hash-link';
+import { HashLink } from "react-router-hash-link";
 
 const Hero: React.FC = () => {
   const handleOpenPDF = () => {
@@ -60,6 +60,7 @@ const Hero: React.FC = () => {
               className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
+              state={{ type: "delegate" }}
             >
               <FaCalendarAlt className="text-2xl mr-2" />
               Request Accreditation (Delegates)
@@ -69,6 +70,7 @@ const Hero: React.FC = () => {
               className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-blue-800 hover:bg-green-700 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
+              state={{ type: "negotiators" }}
             >
               <FaCalendarAlt className="text-2xl mr-2" />
               Request Accreditation (Negotiators)
