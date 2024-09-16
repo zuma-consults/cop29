@@ -114,8 +114,7 @@ export const faqs = [
   },
   {
     title: "I want to be part of Nigeria’s delegation; what are the criteria?",
-    content:
-      "Please visit the NCCC website for details on the criteria: www.nccc.gov.ng",
+    content: "Please check the important notice section of this portal.",
   },
   // {
   //   title: "Is Nigeria planning to have a pavilion at COP29?",
