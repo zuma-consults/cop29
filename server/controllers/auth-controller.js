@@ -419,7 +419,10 @@ module.exports = {
           );
         }
 
-        if (findUser._id.toString() !== user.toString()) {
+        if (
+          findUser._id.toString() !== user.toString() ||
+          findUser.category === "Negotiator"
+        ) {
           return errorHandler(res, "Not authorized", 409);
         }
 
