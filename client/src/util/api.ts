@@ -36,7 +36,6 @@ export const request = async (config: AxiosRequestConfig): Promise<any> => {
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError<ErrorResponse>;
       const { status, data } = axiosError.response || {};
-
       // Generate a unique key for the error message
       const errorKey = `${status}-${data?.message || "Network Error"}`;
 
@@ -46,15 +45,17 @@ export const request = async (config: AxiosRequestConfig): Promise<any> => {
 
         // Show the error toast with user-friendly messages
         if (status === 401 || status === 403) {
-          return
+          return;
           // toast.error("It seems you're not authorized to perform this action. Please log in and try again.");
           // navigateToLogin();
-        } 
+        }
         if (status && status >= 400 && status < 500) {
           // toast.error("There was an issue with your request. Please check the information and try again.");
-        } 
-         if (status && status >= 500) {
-          toast.error("Oops! Something went wrong on our end. Please try again later.");
+        }
+        if (status && status >= 500) {
+          toast.error(
+            "Oops! Something went wrong on our end. Please try again later."
+          );
         }
       }
     } else {
