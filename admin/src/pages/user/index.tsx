@@ -87,7 +87,7 @@ const User: React.FC = () => {
             <span className="text-sm font-extrabold text-[#2E7D31]">
               All Users
             </span>
-            <Button
+            {/* <Button
               onClick={() => setOpen(true)}
               sx={{
                 backgroundColor: "green",
@@ -108,7 +108,7 @@ const User: React.FC = () => {
             >
               Create a new user
               <IoCreateSharp size={20} />
-            </Button>
+            </Button> */}
           </div>
           <div className="">
             <div className="w-[103px] h-[8px] bg-[#2E7D31]"></div>
