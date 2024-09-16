@@ -284,7 +284,7 @@ const NegotiatorForm: React.FC = () => {
                         htmlFor="phone"
                         className="block text-gray-700 font-semibold mb-2"
                       >
-                        Contact Person's Phone Number*
+                         Phone Number*
                       </label>
                       <Field
                         type="text"
@@ -383,7 +383,7 @@ const NegotiatorForm: React.FC = () => {
                         htmlFor="contactDesignation"
                         className="block text-gray-700 font-semibold mb-2"
                       >
-                        Contact Person's Designation*
+                         Designation*
                       </label>
                       <Field
                         type="text"
@@ -404,13 +404,13 @@ const NegotiatorForm: React.FC = () => {
                         htmlFor="contactName"
                         className="block text-gray-700 font-semibold mb-2"
                       >
-                        Contact Person's Name*
+                         Name*
                       </label>
                       <Field
                         type="text"
                         id="contactName"
                         name="contactName"
-                        placeholder="Enter your contact name"
+                        placeholder="Enter your name"
                         className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
                       />
                       <ErrorMessage
@@ -446,7 +446,7 @@ const NegotiatorForm: React.FC = () => {
                         htmlFor="orgImage"
                         className="block text-gray-700 font-semibold mb-2"
                       >
-                        Contact Person's ID (jpg/png)*
+                        Your Passport Data Page (jpg/png)*
                       </label>
                       <input
                         type="file"
