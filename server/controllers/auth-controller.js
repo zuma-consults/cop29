@@ -14,6 +14,8 @@ const crypto = require("crypto");
 const QRCode = require("qrcode");
 const Slot = require("../models/slot");
 const sendEmail = require("../utils/sendMail");
+const NodeCache = require("node-cache");
+const myCache = new NodeCache();
 
 module.exports = {
   createUser: async (req, res) => {
@@ -905,6 +907,16 @@ module.exports = {
   },
   getDataOverview: async (req, res) => {
     try {
+      // Check if overview data is in cache
+      if (myCache.has("overview")) {
+        const cachedOverview = myCache.get("overview");
+        return successHandler(
+          res,
+          "Data Overview",
+          cachedOverview
+        );
+      }
+
       // Create a query object for filtering verified users with approved status
       const query = { verifiedEmail: true, status: "approved" };
 
@@ -915,7 +927,7 @@ module.exports = {
       let totalOrganizations = 0;
       let totalDelegates = 0;
 
-      // Extract delegates from each user and count only those with copApproved === approved
+      // Extract delegates from each user and count only those with copApproved === 'approved'
       users.forEach((user) => {
         if (user.delegates && user.delegates.length > 0) {
           totalDelegates += user.delegates.filter(
@@ -924,21 +936,25 @@ module.exports = {
         }
       });
 
-      // Set the total number of users
+      // Set the total number of organizations
       totalOrganizations = users.length;
+
+      // Find all booked slots
       const slots = await Slot.find({ bookingStatus: "booked" });
       const bookedSlots = slots.length;
-      // Set the message
-      const message = "Data Overview";
 
-      // Return total counts for users and delegates
+      // Prepare the result
       const result = {
         totalOrganizations,
         totalDelegates,
         bookedSlots,
       };
 
-      return successHandler(res, message, result);
+      // Cache the result for 10 minutes (600 seconds)
+      myCache.set("overview", result, 600);
+
+      // Return the result
+      return successHandler(res, "Data Overview", result);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode || 500);
     }
