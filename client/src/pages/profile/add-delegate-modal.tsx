@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { useAddDelegate } from "../../components/custom-hooks/useOrg";
 import Loader from "../../components/ui/Loader";
 import { toast } from "react-toastify";
-import { Field, ErrorMessage } from "formik";
+import { Field, } from "formik";
 import { states } from "../../util/data";
 
 interface AddDelegateModalProps {
