@@ -52,9 +52,6 @@ const organizationValidationSchema = Yup.object({
     "Designation of Contact Person is required"
   ),
   contactName: Yup.string().required("Name of Contact Person is required"),
-  terms: Yup.boolean()
-    .oneOf([true], "You must accept the terms and conditions")
-    .required(),
 });
 
 const OrganizationForm: React.FC = () => {
