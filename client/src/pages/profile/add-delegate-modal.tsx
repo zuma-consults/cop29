@@ -40,10 +40,13 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
         .email("Invalid email address")
         .required("Email is required"),
       department: Yup.string().required("Department is required"),
-      state: Yup.string().required("State of residence is required"),
-      file: Yup.mixed().required("Passport data page is required"),
+      state: Yup.string().required("State of is required"),
     }),
     onSubmit: async (values) => {
+      if (!file) {
+        toast.error("Passport data page is required");
+        return;
+      }
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("email", values.email);
@@ -258,6 +261,11 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
                     {file && (
                       <div className="text-green-500 text-xs mt-2">
                         File ready for upload
+                      </div>
+                    )}
+                    {!file && formik.submitCount > 0 && (
+                      <div className="text-red-500 text-xs mt-1">
+                        Passport data page is required
                       </div>
                     )}
                   </div>
