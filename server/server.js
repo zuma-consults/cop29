@@ -28,7 +28,7 @@ const corsOptions = {
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error("CORS policy does not allow this origin"), false);
+      callback(new Error("CORS Error"), false);
     }
   },
   // methods: ['GET','POST'], // Only allow GET and POST requests
@@ -72,7 +72,7 @@ app.get("/", (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  if (err.message === "CORS policy does not allow this origin") {
+  if (err.message === "CORS Error") {
     return res.status(403).json({ message: err.message });
   }
   next(err);
