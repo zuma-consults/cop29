@@ -48,7 +48,6 @@ const delegateColumns = [
 const Profile: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const { data: user, isLoading, refetch } = useGetProfile();
-
   const accreditationType = localStorage.getItem("accreditationType");
 
   if (isLoading) {
@@ -151,29 +150,33 @@ const Profile: React.FC = () => {
               alt="Organization"
               className="w-32 h-32 object-cover rounded-full shadow-lg"
             /> */}
-            {organizationData.userType === "organization" && (
-              <button
-                onClick={() => setModalOpen(true)}
-                className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
-              >
-                Add Delegate(s) / Nominee(s) for your Organization
-              </button>
-            )}
+
+            {organizationData.userType === "organization" &&
+              organizationData.category !== "Negotiator" && (
+                <button
+                  onClick={() => setModalOpen(true)}
+                  className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+                >
+                  Add Delegate(s) / Nominee(s) for your Organization
+                </button>
+              )}
           </div>
 
-          <div className="w-full bg-gray-100 rounded-lg p-6 mt-4">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
-              Delegates
-            </h2>
-            <DataTable
-              columns={delegateColumns}
-              data={organizationData.delegates || []}
-              pagination
-              highlightOnHover
-              pointerOnHover
-              responsive
-            />
-          </div>
+          {organizationData.category !== "Negotiator" && (
+            <div className="w-full bg-gray-100 rounded-lg p-6 mt-4">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
+                Delegates
+              </h2>
+              <DataTable
+                columns={delegateColumns}
+                data={organizationData.delegates || []}
+                pagination
+                highlightOnHover
+                pointerOnHover
+                responsive
+              />
+            </div>
+          )}
 
           {/* Custom Modal Component */}
           <AddDelegateModal
