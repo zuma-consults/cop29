@@ -384,24 +384,6 @@ module.exports = {
           );
         }
 
-        // Find the organization by ID
-        const findUser = await User.findById(id);
-        if (!findUser) {
-          return errorHandler(
-            res,
-            "No account found for this organization.",
-            409
-          );
-        }
-
-        if (findUser._id.toString() !== user.toString()) {
-          return errorHandler(res, "Not authorized", 409);
-        }
-
-        if (findUser.delegates.length >= 3) {
-          return errorHandler(res, "You can only add two delegates.", 403);
-        }
-
         let passport = "";
 
         // Process uploaded files
@@ -424,7 +406,25 @@ module.exports = {
 
         // Check if passport is provided
         if (!passport) {
-          return errorHandler(res, "Passport is required.", 400);
+          return errorHandler(res, "Passport data page is required.", 400);
+        }
+
+        // Find the organization by ID
+        const findUser = await User.findById(id);
+        if (!findUser) {
+          return errorHandler(
+            res,
+            "No account found for this organization.",
+            409
+          );
+        }
+
+        if (findUser._id.toString() !== user.toString()) {
+          return errorHandler(res, "Not authorized", 409);
+        }
+
+        if (findUser.delegates.length >= 3) {
+          return errorHandler(res, "You can only add two delegates.", 403);
         }
 
         // Add delegate to the organization's delegates array
