@@ -182,39 +182,41 @@ export const links = [
 export const howItWorks = [
   {
     icons: [IoPersonSharp],
-    title: "Register as a Delegate",
+    title: "Request Accreditation (Delegates)",
     description:
-      "Provide your Name, Email Address, and Phone Number. All fields are required.",
-    confirmation: "Confirm your email address.",
+      "An account must be created by an authorized contact person on behalf of the organization., Please review the important notice thoroughly., Proceed to complete the form as the designated contact person ensuring all required documents are submitted for account creation.",
+    confirmation: "Please confirm your email address., Then proceed to log in.",
     desHeader:
-      "Ensure all information matches your official photo ID, which you will present at the registration desk.",
-    buttonText: "Register",
+      "A contact person can also be a delegate, An email of approval of accreditation request is awaited with the time slot attached and approved delegates sent email containing their details.",
+    buttonText: "Create Account",
     link: "/signup",
-    login: "Upload your delegate credentials and await approval.",
-  },
-  {
-    icons: [IoCreateOutline],
-    title: "Book a Slot",
-    description:
-      "Provide the Event Name, Email Address, and Phone Number. All fields are required.",
-    confirmation: "Confirm your email address.",
-    desHeader:
-      "Ensure all information matches your official photo ID, which you will present at the registration desk.",
-    buttonText: "Book a Slot",
-    link: "/create-event",
     login:
-      "Select a date and time slot for your event. Await approval and invoice. Make the payment and upload proof of payment.",
+      "Visit your profile page., Add delegates from your organization with accurate data matching their official ID and passport data page.",
   },
+  // {
+  //   icons: [IoCreateOutline],
+  //   title: "Book a Slot",
+  //   description:
+  //     "Provide the Event Name, Email Address, and Phone Number. All fields are required.",
+  //   confirmation: "Confirm your email address.",
+  //   desHeader:
+  //     "Ensure all information matches your official photo ID, which you will present at the registration desk.",
+  //   buttonText: "Book a Slot",
+  //   link: "/create-event",
+  //   login:
+  //     "Select a date and time slot for your event. Await approval and invoice. Make the payment and upload proof of payment.",
+  // },
   {
     icons: [CgOrganisation],
-    title: "Register as an Organization",
+    title: "Request Accreditation (Negotiators)",
     description:
-      "Provide your Organization's Name, Email Address, Phone Number, and a Letter of Approval from your Organization.",
-    confirmation: "Confirm your email address.",
+      "Please review the important notice thoroughly., Proceed to complete the form ensuring all required documents are submitted for account creation.",
+    confirmation:
+      "Confirm your email address to complete your request., Then proceed to log in., Visit your profile page to check your application status.",
     desHeader:
       "Ensure all information matches your official photo ID, which you will present at the registration desk.",
-    buttonText: "Register",
-    link: "/signup",
-    login: "Upload your organization's credentials and await approval.",
+    buttonText: "Create Account",
+    link: "/negotiator",
+    // login: "Upload your organization's credentials and await approval.",
   },
 ];
