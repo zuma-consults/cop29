@@ -1,9 +1,9 @@
 interface TCModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onAgree: () => void;
-  }
-  
+  isOpen: boolean;
+  onClose: () => void;
+  onAgree: () => void;
+}
+
 const TCModal = ({ isOpen, onClose, onAgree }: TCModalProps) => {
   if (!isOpen) return null;
 
@@ -16,9 +16,7 @@ const TCModal = ({ isOpen, onClose, onAgree }: TCModalProps) => {
         >
           &times;
         </button>
-        <div
-        className="w-full h-full"
-        >
+        <div className="w-full h-full">
           <h1
             style={{
               color: "red",
@@ -42,28 +40,24 @@ const TCModal = ({ isOpen, onClose, onAgree }: TCModalProps) => {
           </p>
 
           <section style={{ marginBottom: "20px" }}>
-            <h2 style={{ color: "#003300", fontSize: "20px" }}>
-              Presidential Directive
-            </h2>
             <p style={{ lineHeight: "1.6" }}>
-              In accordance with the directive issued by President Bola Ahmed
-              Tinubu on August 21, 2024, to establish a Climate Accountability
-              and Transparency Platform and other measures to ensure efficiency
-              and accountability in the nation's participation in the 29th UN
-              Climate Change Conference (COP 29) in Baku, Azerbaijan, all
-              prospective members of the Federal government’s UNFCCC COP29
-              delegation are hereby notified that accreditation requests are
-              subject to Presidential approval.
+              As authorised by His Excellency, President Bola Ahmed Tinubu,
+              GCFR, the Climate Accountability and Transparency Portal is
+              established to ensure efficiency and accountability in the
+              nation's participation in the 29th UN Climate Change Conference
+              (CoP 29) in Baku, Azerbaijan.
             </p>
             <p style={{ lineHeight: "1.6" }}>
-              Consequently, approvals will be granted only to individuals or
-              organizations that can clearly demonstrate that their
-              participation aligns with the theme for Nigeria, "Actualizing
-              Financial Commitments for Climate Action." Furthermore, the
-              participation must have an economic imperative and be directed
-              toward engaging with companies, multilateral partners, and
-              stakeholders who will attract finance and opportunities to
-              Nigeria.
+              All prospective members of Nigeria's UNFCCC COP29 delegation are
+              hereby notified that accreditation requests are subject to
+              Presidential approval. Consequently, approvals will be granted
+              only to individuals or organizations that can clearly demonstrate
+              that their participation aligns with the theme for Nigeria,
+              "Actualizing Financial Commitments for Climate Action."
+              The participation must have an economic imperative
+              and be directed toward engaging with companies, multilateral
+              partners, and stakeholders who will attract finance and
+              opportunities to Nigeria.
             </p>
           </section>
 
@@ -224,15 +218,14 @@ const TCModal = ({ isOpen, onClose, onAgree }: TCModalProps) => {
             </ul>
           </section>
           <div className="mt-4 flex justify-end">
-          <button
-            onClick={onAgree}
-            className="bg-green-800 text-white px-4 py-2 rounded hover:bg-green-700 mb-10"
-          >
-            I Agree
-          </button>
+            <button
+              onClick={onAgree}
+              className="bg-green-800 text-white px-4 py-2 rounded hover:bg-green-700 mb-10"
+            >
+              I Agree
+            </button>
+          </div>
         </div>
-        </div>
-       
       </div>
     </div>
   );
