@@ -14,7 +14,7 @@ const limiter = rateLimit({
   max: 100, // limit each IP to 100 requests per windowMs
 });
 const helmet = require("helmet");
-// const { errorHandler, systemError } = require("./utils/errorHandler");
+const { errorHandler, systemError } = require("./utils/errorHandler");
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -28,7 +28,7 @@ const corsOptions = {
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error("CORS policy does not allow this origin"), false);
     }
   },
   // methods: ['GET','POST'], // Only allow GET and POST requests
@@ -37,6 +37,8 @@ const corsOptions = {
   // credentials: true, // Allow credentials (cookies, authorization headers)
   // optionsSuccessStatus: 200, // Response status for preflight requests
   // maxAge: 86400, // Cache preflight response for 24 hours
+  optionsSuccessStatus: 200, // Response for preflight requests
+  credentials: true,
 };
 
 app.use(helmet());
@@ -67,6 +69,13 @@ app.get("/", (req, res) => {
   res.send(
     "Welcome to the index route for endpoints of the COP29 App project."
   );
+});
+
+app.use((err, req, res, next) => {
+  if (err.message === "CORS policy does not allow this origin") {
+    return res.status(403).json({ message: err.message });
+  }
+  next(err);
 });
 
 // Connect to the database
