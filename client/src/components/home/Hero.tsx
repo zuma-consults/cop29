@@ -51,8 +51,9 @@ const Hero: React.FC = () => {
             data-aos="fade-left"
             data-aos-duration="500"
           /> */}
-          <h1 className="md:text-[44px] text-[25px] mt-20 md:mt-0 text-white font-bold leading-tight">
-            WELCOME TO THE NIGERIA UNFCCC COP29 REGISTRATION PORTAL
+          <h1 className="md:text-[40px] text-[25px] mt-20 md:mt-0 text-white font-bold leading-tight">
+            <span className="md:text-[80px] text-[40px]">WELCOME</span> TO THE
+            NIGERIA UNFCCC COP29 REGISTRATION PORTAL
           </h1>
           <p
             className="leading-7 text-white md:inline text-[20px]"
