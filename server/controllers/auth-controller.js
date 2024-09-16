@@ -129,7 +129,7 @@ module.exports = {
             password,
             email,
             phone,
-            // reasonForAttendance,
+            preferredDateTime,
             contactDesignation,
             contactName,
           } = req.body;
@@ -139,7 +139,7 @@ module.exports = {
             !email ||
             !phone ||
             !contactDesignation ||
-            // !reasonForAttendance ||
+            !preferredDateTime ||
             !contactName
           ) {
             return errorHandler(
