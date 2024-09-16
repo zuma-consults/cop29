@@ -1,17 +1,25 @@
 import React from "react";
-import {
-  FaCalendarAlt,
-  FaInfoCircle,
-  FaQuestionCircle,
-} from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaCalendarAlt, FaInfoCircle, FaQuestionCircle } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import CountdownTimer from "../ui/CountDown";
 import { HashLink } from "react-router-hash-link";
 
 const Hero: React.FC = () => {
+  const navigate = useNavigate();
   const handleOpenPDF = () => {
     const pdfUrl = "/images/overview.pdf"; // Replace with the actual PDF URL
     window.open(pdfUrl, "_blank");
+  };
+
+  const handleNavigate = (type: string) => {
+    if (type === "delegates") {
+      localStorage.setItem("accreditationType", "delegates");
+      navigate("/profile");
+    }
+    if (type === "negotiators") {
+      localStorage.setItem("accreditationType", "negotiators");
+      navigate("/profile");
+    }
   };
 
   return (
@@ -54,26 +62,24 @@ const Hero: React.FC = () => {
             Action.
           </p>
           <div className="grid md:grid-cols-2 md:justify-start justify-center items-center gap-4 mt-10 md:mt-0 w-full">
-            <Link
-              to="/profile"
+            <div
+              onClick={() => handleNavigate("delegates")}
               className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
-              state={{ type: "delegate" }}
             >
               <FaCalendarAlt className="text-2xl mr-2" />
               Request Accreditation (Delegates)
-            </Link>
-            <Link
-              to="/profile"
+            </div>
+            <div
+              onClick={() => handleNavigate("negotiators")}
               className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-blue-800 hover:bg-green-700 transition"
               data-aos="fade-up"
               data-aos-duration="1000"
-              state={{ type: "negotiators" }}
             >
               <FaCalendarAlt className="text-2xl mr-2" />
               Request Accreditation (Negotiators)
-            </Link>
+            </div>
             {/* <Link
               to="/create-event"
               className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-pink-800 hover:bg-green-700 transition"

@@ -18,7 +18,7 @@ const validationSchema = Yup.object({
 });
 
 const Login: React.FC = () => {
-  const { mutate: login, isLoading, data } = useLogin();
+  const { mutate: login, isLoading } = useLogin();
   const navigate = useNavigate();
 
   if (isLoading) {
@@ -75,11 +75,17 @@ const Login: React.FC = () => {
               showPassword: false,
             }}
             validationSchema={validationSchema}
-            onSubmit={async ({ showPassword, rememberMe, ...values }, { resetForm }) => {
+            onSubmit={async (
+              { showPassword, rememberMe, ...values },
+              { resetForm }
+            ) => {
               await login(values, {
                 onSuccess: (response) => {
                   if (response?.status) {
-                    localStorage.setItem("userProfile", JSON.stringify(response?.data));
+                    localStorage.setItem(
+                      "userProfile",
+                      JSON.stringify(response?.data)
+                    );
                     navigate("/"); // Redirect to the home page after successful login
                   }
                 },
