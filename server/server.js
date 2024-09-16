@@ -10,7 +10,7 @@ const rateLimit = require("express-rate-limit");
 const port = process.env.PORT || 7070;
 const { logRequestDuration } = require("./middlewares/middleware");
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 25 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
 });
 const helmet = require("helmet");
