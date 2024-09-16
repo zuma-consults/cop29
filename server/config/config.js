@@ -3,10 +3,68 @@ const Role = require("../models/role");
 const Slot = require("../models/slot");
 
 const roles = [
-  { name: "Admin" },
-  { name: "Officer" },
-  { name: "Super Admin" },
-  { name: "Reception" },
+  {
+    name: "Admin",
+    modules: [
+      "meetings",
+      "organizations",
+      "negotiators",
+      "calendar",
+      "applicants",
+    ],
+  },
+  {
+    name: "Officer",
+    modules: ["contacts", "international"],
+  },
+  {
+    name: "Super Admin",
+    modules: [
+      "meetings",
+      "organizations",
+      "negotiators",
+      "calendar",
+      "applicants",
+      "contacts",
+      "international",
+      "attendance",
+      "export",
+    ],
+  },
+  {
+    name: "Reception",
+    modules: ["meetings", "attendance", "calendar"],
+  },
+  {
+    name: "Support",
+    modules: [
+      "meetings",
+      "organizations",
+      "negotiators",
+      "calendar",
+      "applicants",
+      "contacts",
+      "international",
+      "attendance",
+      "export",
+    ],
+  },
+  {
+    name: "Ghost",
+    modules: [
+      "meetings",
+      "organizations",
+      "negotiators",
+      "calendar",
+      "applicants",
+      "contacts",
+      "international",
+      "attendance",
+      "audit",
+      "export",
+      "users",
+    ],
+  },
 ];
 
 const timeSlots = [
@@ -73,39 +131,45 @@ const connectDb = async () => {
     await mongoose.connect(process.env.DB_URL);
     console.log("MongoDB connected.");
 
-    const [existingRoles, existingSlots] = await Promise.all([
-      Role.find({ name: { $in: roles.map((role) => role.name) } }),
-      Slot.find(),
-    ]);
-
-    const missingRoles = roles.filter(
-      (role) =>
-        !existingRoles.some((existingRole) => existingRole.name === role.name)
-    );
-
+    const existingRoles = await Role.find({
+      name: { $in: roles.map((role) => role.name) },
+    });
     const slotsToInsert = generateSlots();
+    const existingSlots = await Slot.find();
+
+    // Update roles or insert them if they don't exist
+    for (const role of roles) {
+      const existingRole = existingRoles.find((r) => r.name === role.name);
+
+      if (existingRole) {
+        // Update the role's modules if necessary
+        if (
+          JSON.stringify(existingRole.modules) !== JSON.stringify(role.modules)
+        ) {
+          existingRole.modules = role.modules;
+          await existingRole.save();
+          console.log(`Updated role: ${role.name}`);
+        }
+      } else {
+        // If the role doesn't exist, create it
+        await Role.create(role);
+        console.log(`Created new role: ${role.name}`);
+      }
+    }
+
+    // Check for missing slots and insert if needed
     const missingSlots = slotsToInsert.filter((slot) => {
-      const existingSlot = existingSlots.find(
+      return !existingSlots.some(
         (existingSlot) =>
-          existingSlot.date && // Check if existingSlot.date exists
           existingSlot.date.toISOString() === slot.date.toISOString() &&
           existingSlot.timeSpan === slot.timeSpan
       );
-
-      if (!existingSlot) {
-        console.log(`Missing Slot: ${slot.title}`);
-      }
-      return !existingSlot;
     });
-
-    if (missingRoles.length > 0) {
-      await Role.deleteMany({});
-      await Role.insertMany(roles);
-    }
 
     if (missingSlots.length > 0) {
       await Slot.deleteMany({});
       await Slot.insertMany(slotsToInsert);
+      console.log(`Inserted ${missingSlots.length} new slots.`);
     }
 
     console.log(
