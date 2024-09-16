@@ -45,9 +45,9 @@ const Hero: React.FC = () => {
           data-aos-duration="1000"
         >
           <img
-            src="/images/seal-bg.png" // Replace with the path to your first image
-            alt="Nigeria's coat of arm image"
-            className="h-[100px] md:h-[150px] object-contain bg-white lg:ms-10 m-auto md:m-0 rounded-full"
+            src="/images/new.png" // Replace with the path to your first image
+            alt="N"
+            className="h-[100px] md:h-[150px] object-contain bg-white lg:ms-0 m-auto md:m-0 rounded-lg"
             data-aos="fade-left"
             data-aos-duration="500"
           />
