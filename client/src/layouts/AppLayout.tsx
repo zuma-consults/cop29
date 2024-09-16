@@ -6,7 +6,7 @@ import Footer from "../components/ui/Footer";
 
 function AppLayout() {
   return (
-    <div className="w-[100vw] text-[12px] h-full overflow-x-hidden">
+    <div className="w-[100vw] text-[12px] h-full overflow-x-hidden mt-10">
       <Navbar />
       <div>
         <Outlet />
