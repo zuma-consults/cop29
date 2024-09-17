@@ -60,7 +60,7 @@ const Hero: React.FC = () => {
             className="leading-7 text-white md:inline text-[20px]"
             style={{ width: "100%", fontStyle: "italic" }}
           >
-            NIGERIA THEME : Actualizing Financial Commitments For Climate
+            NIGERIA'S FOCUS : Actualizing Financial Commitments For Climate
             Action
           </p>
           <div className="grid md:grid-cols-2 md:justify-start justify-center items-center gap-4 mt-10 md:mt-0 w-full">
