@@ -147,7 +147,7 @@ const OrganizationForm: React.FC = () => {
         {({ values, setFieldValue }) => (
           <Form className="p-2 shadow bg-green-50 mt-5">
             <h1 className="text-2xl font-semibold mb-6 text-center text-green-800">
-              Create an Account for your Organisation
+              Create an Account for your Organization
             </h1>
             {/* Organization Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -435,7 +435,7 @@ const OrganizationForm: React.FC = () => {
                   htmlFor="files"
                   className="block text-gray-700 font-semibold mb-2"
                 >
-                  Letter Approving Organisation Participation to include Names
+                  Letter Approving Organization Participation to include Names
                   of Delegates (pdf file max 2mb)*
                 </label>
                 <input
@@ -542,7 +542,7 @@ const OrganizationForm: React.FC = () => {
                 as="textarea"
                 id="reasonForAttendance"
                 name="reasonForAttendance"
-                placeholder="Confirmed Bilateral, Organisation Mandate etc"
+                placeholder="Confirmed Bilateral, Organization Mandate etc"
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
               />
               <ErrorMessage

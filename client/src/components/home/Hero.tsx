@@ -110,7 +110,7 @@ const Hero: React.FC = () => {
               className="text-center w-full rounded py-4 px-2 flex justify-center items-center text-white bg-orange-500 hover:bg-orange-400 transition"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
-              International Organisation Meeting Request
+              International Organization Meeting Request
             </Link>
             <button
               onClick={handleOpenPDF}

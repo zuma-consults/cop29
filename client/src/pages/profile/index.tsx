@@ -79,7 +79,7 @@ const Profile: React.FC = () => {
                   to="/signup"
                   className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
                 >
-                  Create Account as Organisation
+                  Create Account as Organization
                 </Link>
               ) : (
                 <Link
