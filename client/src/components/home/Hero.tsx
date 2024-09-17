@@ -1,5 +1,6 @@
 import React from "react";
 import { FaCalendarAlt, FaInfoCircle, FaQuestionCircle } from "react-icons/fa";
+import { AiOutlineFolderView } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import CountdownTimer from "../ui/CountDown";
 import { HashLink } from "react-router-hash-link";
@@ -59,8 +60,8 @@ const Hero: React.FC = () => {
             className="leading-7 text-white md:inline text-[20px]"
             style={{ width: "100%", fontStyle: "italic" }}
           >
-            NIGERIA THEME : Actualizing financial commitments for Climate
-            Action.
+            NIGERIA THEME : Actualizing Financial Commitments For Climate
+            Action
           </p>
           <div className="grid md:grid-cols-2 md:justify-start justify-center items-center gap-4 mt-10 md:mt-0 w-full">
             <div
@@ -106,7 +107,7 @@ const Hero: React.FC = () => {
             </HashLink>
             <Link
               to="/intl-org"
-              className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-orange-500 hover:bg-orange-400 transition"
+              className="text-center w-full rounded py-4 px-2 flex justify-center items-center text-white bg-orange-500 hover:bg-orange-400 transition"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
               International Organisation Meeting Request
@@ -115,6 +116,8 @@ const Hero: React.FC = () => {
               onClick={handleOpenPDF}
               className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-pink-800 hover:bg-green-700 transition"
             >
+               <AiOutlineFolderView className="text-2xl mr-2" />
+              
               View COP29 Overview Schedule{" "}
             </button>
           </div>
