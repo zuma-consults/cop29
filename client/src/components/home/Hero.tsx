@@ -44,22 +44,28 @@ const Hero: React.FC = () => {
           data-aos="fade-right"
           data-aos-duration="1000"
         >
-          {/* <img
-            src="/images/new.png" // Replace with the path to your first image
-            alt="N"
-            className="h-[100px] md:h-[150px] object-contain bg-white lg:ms-0 m-auto md:m-0 rounded-lg"
-            data-aos="fade-left"
-            data-aos-duration="500"
-          /> */}
-          <h1 className="md:text-[40px] text-[25px] mt-20 md:mt-0 text-white font-bold leading-tight">
-            <span className="md:text-[80px] text-[40px]">WELCOME</span> TO THE
-            NIGERIA UNFCCC COP29 REGISTRATION PORTAL
+          <div className="w-full flex justify-center">
+            <img
+              src="/images/ncc.png"
+              alt="N"
+              className="h-[100px] w-[100px] md:h-[150px] md:w-[150px] object-contain bg-white lg:ms-0 m-auto md:m-0 rounded-full"
+              data-aos="fade-left"
+              data-aos-duration="500"
+            />
+          </div>
+
+          <h1 className="md:text-[40px] text-[25px] mt-20 md:mt-0 text-white font-bold leading-tight text-center w-full">
+            WELCOME TO THE NIGERIA <br />
+            <span className="text-[#d3e8d7] md:text-[40px] text-[25px]">
+              UNFCCC COP29
+            </span>
+            <br /> REGISTRATION PORTAL
           </h1>
           <p
             className="leading-7 text-white md:inline text-[20px]"
             style={{ width: "100%", fontStyle: "italic" }}
           >
-            NIGERIA THEME : Actualizing financial commitments for Climate
+            NIGERIA'S FOCUS: Actualizing financial commitments for Climate
             Action.
           </p>
           <div className="grid md:grid-cols-2 md:justify-start justify-center items-center gap-4 mt-10 md:mt-0 w-full">
