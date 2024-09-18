@@ -17,7 +17,6 @@ const Nav: React.FC<{
   const navigate = useNavigate();
 
   const { data } = useGetProfile();
-
   const userProfile = useMemo(() => data?.data, [data]);
 
   return (
@@ -134,29 +133,36 @@ const Nav: React.FC<{
               height: "80%",
             }}
           >
-            {navConfig.map((item: any) => (
-              <Box
-                key={item.title}
-                sx={{
-                  mb: { xs: "0px", md: "20px" },
-                  mr: { xs: "0px", md: "20px" },
-                }}
-              >
-                <Box onClick={() => navigate(item.path)}>
-                  <NavItem
-                    key={item.title}
-                    icon={item.icon}
-                    title={item.title}
-                    isActive={
-                      item.path === "/"
-                        ? location.pathname === "/" ||
-                          location.pathname.startsWith("/event")
-                        : location.pathname.startsWith(item.path)
-                    }
-                  />
+            {navConfig
+              .filter((item) =>
+                userProfile?.role?.modules.some((module: string) =>
+                  item.path.includes(module)
+                )
+              )
+              .map((item: any) => (
+                <Box
+                  key={item.title}
+                  sx={{
+                    mb: { xs: "0px", md: "20px" },
+                    mr: { xs: "0px", md: "20px" },
+                  }}
+                >
+                  <Box onClick={() => navigate(item.path)}>
+                    <NavItem
+                      key={item.title}
+                      icon={item.icon}
+                      title={item.title}
+                      isActive={
+                        item.path === "/"
+                          ? location.pathname === "/" ||
+                            location.pathname.startsWith("/event")
+                          : location.pathname.startsWith(item.path)
+                      }
+                    />
+                  </Box>
                 </Box>
-              </Box>
-            ))}
+              ))}
+
             <UserAccount
               name={userProfile?.name}
               role={userProfile?.role?.name}
