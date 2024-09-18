@@ -107,13 +107,13 @@ const Login: React.FC = () => {
                 ),
               }}
             />
-            <Button
+            {/* <Button
               color="primary"
               onClick={() => navigate("/forgot-password")}
               className="mt-2 w-full"
             >
               Forgot Password?
-            </Button>
+            </Button> */}
 
             <Button
               type="submit"
