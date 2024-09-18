@@ -147,7 +147,7 @@ const OrganisationTable: React.FC = () => {
       cell: (row) => (
         <div className="flex justify-end cursor-pointer">
           <Link
-            to={`/organization/${row?.id}`}
+            to={`/organizations/${row?.id}`}
             state={{ ...row }}
             className="w-[150px] cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
           >
