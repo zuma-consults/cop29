@@ -1,6 +1,7 @@
 import { useQuery, useMutation, QueryClient } from "react-query";
 import { Cookies } from "react-cookie";
 import {
+  changePassword,
   getAllProfile,
   getAllRoles,
   getProfile,
@@ -10,6 +11,12 @@ import { toast } from "react-toastify";
 
 const queryClient = new QueryClient();
 const cookies = new Cookies();
+
+interface ChangePasswordPayload {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
 
 export const useAddAmin = ({
   refetchAllProfile,
@@ -68,5 +75,25 @@ export const useGetAllRoles = () => {
     refetchInterval: false,
     cacheTime: 30 * 60 * 1000,
     retry: 1,
+  });
+};
+
+export const useChangePassword = ({
+  setOpenModal,
+}: {
+  setOpenModal: (value: boolean) => void;
+}) => {
+  return useMutation<unknown, unknown, ChangePasswordPayload>(changePassword, {
+    onSuccess: (result) => {
+      if (result) {
+        setOpenModal(false);
+        toast.success("Password changed successfully.");
+        queryClient.invalidateQueries("profile");
+      }
+    },
+    onError: (_error) => {
+      toast.error("Password change failed. Please try again.");
+      queryClient.invalidateQueries("profile");
+    },
   });
 };

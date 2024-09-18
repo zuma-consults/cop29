@@ -1,4 +1,12 @@
-import { Box, Skeleton, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  Modal,
+  Skeleton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
@@ -8,17 +16,42 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Cookies } from "react-cookie";
 import { logout } from "../../../services/auth";
+import { useForm } from "react-hook-form";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useChangePassword } from "../../../hooks/useAuth";
 
 const cookies = new Cookies();
+
+interface UserFormInputs {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
 
 const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
   name,
   role,
 }) => {
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirm, setShowConfirm] = React.useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm<UserFormInputs>();
+
+  const { mutate, isLoading: loader } = useChangePassword({ setOpenModal });
 
   const handleClickOpen = () => {
     setOpenDialog(true);
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword((prev) => !prev);
   };
 
   const handleClickClose = () => {
@@ -65,6 +98,19 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+
+  const handleChangePassword = (data: UserFormInputs) => {
+    const oldPassword = getValues("oldPassword");
+    const newPassword = getValues("newPassword");
+    const confirmPassword = getValues("confirmPassword");
+
+    const payload = {
+      oldPassword,
+      newPassword,
+      confirmPassword,
+    };
+    mutate(payload);
+  };
 
   return (
     <>
@@ -128,6 +174,28 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
           <Button onClick={handleClickOpen} color="success">
             Logout
           </Button>
+          <Button
+            onClick={() => setOpenModal(true)}
+            sx={{
+              backgroundColor: "green",
+              color: "white",
+              width: "fit-content",
+              paddingY: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              mt: "10px",
+              textAlign: "center",
+              fontSize: "13px",
+              gap: "8px",
+              "&:hover": {
+                backgroundColor: "#e8f5e9",
+                color: "black",
+              },
+            }}
+          >
+            Change Password
+          </Button>
         </Box>
         <Box
           sx={{
@@ -161,6 +229,136 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
             agreeText={"Yes, continue"}
           />
         </Box>
+
+        <Modal open={openModal} onClose={() => setOpenModal(false)}>
+          <>
+            {loader && <Loader />}
+
+            <Box
+              component="form"
+              onSubmit={handleSubmit(handleChangePassword)}
+              sx={{
+                position: "absolute" as "absolute",
+                top: "50%",
+                left: "50%",
+                maxHeight: "90vh",
+                overflowY: "auto",
+                transform: "translate(-50%, -50%)",
+                width: { xs: "90%", sm: "80%", md: "60%" },
+                bgcolor: "background.paper",
+                boxShadow: 24,
+                p: 4,
+                borderRadius: "8px",
+              }}
+            >
+              <h1 className="text-green-700 font-bold text-[26px] text-center md:text-left">
+                Change Password
+              </h1>
+              <TextField
+                label="Old Password"
+                type={showPassword ? "text" : "password"}
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                {...register("oldPassword", {
+                  required: "Old Password is required",
+                })}
+                error={!!errors.oldPassword}
+                helperText={errors.oldPassword?.message}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        edge="end"
+                        onClick={handleClickShowPassword}
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <TextField
+                label="New Password"
+                type={showPassword ? "text" : "password"}
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                {...register("newPassword", {
+                  required: "New Password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters",
+                  },
+                })}
+                error={!!errors.newPassword}
+                helperText={errors.newPassword?.message}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        edge="end"
+                        onClick={handleClickShowPassword}
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <TextField
+                label="Confirm Password"
+                type={showConfirm ? "text" : "password"}
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                {...register("confirmPassword", {
+                  required: "Confirm Password is required",
+                  validate: (value) =>
+                    value === getValues("newPassword") ||
+                    "Passwords do not match",
+                })}
+                error={!!errors.confirmPassword}
+                helperText={errors.confirmPassword?.message}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        edge="end"
+                        onClick={() => setShowConfirm(!showConfirm)}
+                        aria-label={
+                          showConfirm ? "Hide password" : "Show password"
+                        }
+                      >
+                        {showConfirm ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <Box mt={3} display="flex" justifyContent="space-between">
+                <Button variant="contained" color="success" type="submit">
+                  Submit
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="info"
+                  onClick={() => setOpenModal(false)}
+                >
+                  Cancel
+                </Button>
+              </Box>
+            </Box>
+          </>
+        </Modal>
       </Box>
     </>
   );

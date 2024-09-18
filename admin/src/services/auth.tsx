@@ -19,7 +19,7 @@ export const login = async (data: any) => {
 export const logout = async () => {
   const config = {
     method: "post",
-    url: `${BASE_URL}/logout/staff`, 
+    url: `${BASE_URL}/logout/staff`,
   };
 
   const response = await axios(config);
@@ -100,6 +100,22 @@ export const getAllRoles = () => {
   const config = {
     method: "get",
     url: `${BASE_URL}/roles`, // Use BASE_URL here
+  };
+
+  return request(config)
+    .then((responseData) => {
+      return responseData;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const changePassword = (data: any) => {
+  const config = {
+    method: "put",
+    url: `${BASE_URL}/password/staff`,
+    data
   };
 
   return request(config)
