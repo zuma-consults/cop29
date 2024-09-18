@@ -226,6 +226,7 @@ const UserTable: React.FC = () => {
                   value={selectedEvent?.role?.id || ""} // Ensure `value` is the role ID
                   fullWidth
                   margin="normal"
+                  disabled
                   onChange={(e) =>
                     setSelectedEvent({
                       ...selectedEvent!,
@@ -238,7 +239,6 @@ const UserTable: React.FC = () => {
                       },
                     })
                   }
-                  disabled:true
                 >
                   {roleData?.data?.map((role: any) => (
                     <MenuItem key={role?.id} value={role?.id}>
