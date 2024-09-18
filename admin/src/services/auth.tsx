@@ -110,3 +110,18 @@ export const getAllRoles = () => {
       console.log(error);
     });
 };
+
+export const changePassword= () => {
+  const config = {
+    method: "post",
+    url: `${BASE_URL}/password/staff`, 
+  };
+
+  return request(config)
+    .then((responseData) => {
+      return responseData;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
