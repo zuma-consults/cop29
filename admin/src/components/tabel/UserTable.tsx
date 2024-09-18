@@ -238,6 +238,7 @@ const UserTable: React.FC = () => {
                       },
                     })
                   }
+                  disabled:true
                 >
                   {roleData?.data?.map((role: any) => (
                     <MenuItem key={role?.id} value={role?.id}>
@@ -247,19 +248,19 @@ const UserTable: React.FC = () => {
                 </TextField>
 
                 <Box className="flex justify-between mt-4">
-                  <Button
+                  {/* <Button
                     variant="contained"
                     color="success"
                     onClick={handleAccept}
                   >
                     Save Changes
-                  </Button>
+                  </Button> */}
                   <Button
                     variant="contained"
                     color="info"
                     onClick={() => setSelectedEvent(null)}
                   >
-                    Cancel
+                    Close
                   </Button>
                 </Box>
               </form>
