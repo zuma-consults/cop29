@@ -12,6 +12,12 @@ import { toast } from "react-toastify";
 const queryClient = new QueryClient();
 const cookies = new Cookies();
 
+interface ChangePasswordPayload {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export const useAddAmin = ({
   refetchAllProfile,
   setOpen,
@@ -77,16 +83,16 @@ export const useChangePassword = ({
 }: {
   setOpenModal: (value: boolean) => void;
 }) => {
-  return useMutation(changePassword, {
+  return useMutation<unknown, unknown, ChangePasswordPayload>(changePassword, {
     onSuccess: (result) => {
-      if (result?.status) {
+      if (result) {
         setOpenModal(false);
-        toast.success("Password chnages successfully ");
+        toast.success("Password changed successfully.");
         queryClient.invalidateQueries("profile");
       }
     },
     onError: (_error) => {
-      toast.error("Password chnagesfailed. Please try again.");
+      toast.error("Password change failed. Please try again.");
       queryClient.invalidateQueries("profile");
     },
   });

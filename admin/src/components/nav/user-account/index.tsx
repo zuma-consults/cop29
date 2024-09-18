@@ -99,17 +99,17 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  const handleChangePassword = (data: UserFormInputs) => {  
-
+  const handleChangePassword = (data: UserFormInputs) => {
     const oldPassword = getValues("oldPassword");
     const newPassword = getValues("newPassword");
     const confirmPassword = getValues("confirmPassword");
 
-    console.log("Old Password:", oldPassword);
-    console.log("New Password:", newPassword);
-    console.log("Confirm Password:", confirmPassword);
-
-    // Add your API call or further logic here
+    const payload = {
+      oldPassword,
+      newPassword,
+      confirmPassword,
+    };
+    mutate(payload);
   };
 
   return (
@@ -177,8 +177,8 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
           <Button
             onClick={() => setOpenModal(true)}
             sx={{
-              backgroundColor: "yellow",
-              color: "black",
+              backgroundColor: "green",
+              color: "white",
               width: "fit-content",
               paddingY: "8px",
               display: "flex",

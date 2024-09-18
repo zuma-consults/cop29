@@ -19,7 +19,7 @@ export const login = async (data: any) => {
 export const logout = async () => {
   const config = {
     method: "post",
-    url: `${BASE_URL}/logout/staff`, 
+    url: `${BASE_URL}/logout/staff`,
   };
 
   const response = await axios(config);
@@ -111,10 +111,11 @@ export const getAllRoles = () => {
     });
 };
 
-export const changePassword= () => {
+export const changePassword = (data: any) => {
   const config = {
-    method: "post",
-    url: `${BASE_URL}/password/staff`, 
+    method: "put",
+    url: `${BASE_URL}/password/staff`,
+    data
   };
 
   return request(config)
