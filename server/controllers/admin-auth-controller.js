@@ -72,17 +72,19 @@ module.exports = {
   getAllAdmins: async (req, res) => {
     try {
       const { page = 1, limit = 50 } = req.query;
-  
+
       const excludedRoleId = "66e98036056837ca119e6868"; // The roleId to exclude
-  
+
       const admins = await Admin.find({ role: { $ne: excludedRoleId } }) // Exclude users with this roleId
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
         .limit(parseInt(limit))
         .populate("role", "name");
-  
-      const totalAdmins = await Admin.countDocuments({ role: { $ne: excludedRoleId } });
-  
+
+      const totalAdmins = await Admin.countDocuments({
+        role: { $ne: excludedRoleId },
+      });
+
       // Prepare the response with pagination info
       const response = {
         totalPages: Math.ceil(totalAdmins / limit),
@@ -90,9 +92,9 @@ module.exports = {
         totalAdmins,
         admins,
       };
-  
+
       const message = `All Admins Found`;
-  
+
       return successHandler(res, message, response);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
@@ -111,7 +113,10 @@ module.exports = {
   getAdminByToken: async (req, res) => {
     try {
       let id = req.admin;
-      let admin = await Admin.findOne({ _id: id }).populate("role", "name modules");
+      let admin = await Admin.findOne({ _id: id }).populate(
+        "role",
+        "name modules"
+      );
       if (!admin) return errorHandler(res, "No Admin found", 404);
       return successHandler(res, "Admin Found", admin);
     } catch (error) {
@@ -221,7 +226,9 @@ module.exports = {
   },
   getAllRoles: async (req, res) => {
     try {
-      const roles = await Role.find().sort({ name: 1 });
+      const roles = await Role.find({ name: { $ne: "Ghost" } }).sort({
+        name: 1,
+      });
 
       const message = `All Roles Found`;
 
