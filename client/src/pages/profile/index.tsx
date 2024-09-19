@@ -108,11 +108,8 @@ const Profile: React.FC = () => {
             </h1>
           </div>
 
-          <div className="w-full flex items-start justify-between bg-green-50 shadow rounded-lg p-6">
+          <div className="w-full flex items-start md:justify-between flex-wrap gap-5 bg-green-50 shadow rounded-lg p-6">
             <div>
-              {/* <h2 className="text-xl md:text-2xl font-bold text-gray-800 capitalize">
-              Email: {organizationData.email}
-              </h2> */}
               <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
                 Email:{" "}
                 <span className="lowercase">{organizationData.email}</span>
@@ -145,11 +142,6 @@ const Profile: React.FC = () => {
                 </span>
               </p>
             </div>
-            {/* <img
-              src={organizationData.image}
-              alt="Organization"
-              className="w-32 h-32 object-cover rounded-full shadow-lg"
-            /> */}
 
             {organizationData.userType === "organization" &&
               organizationData.category !== "Negotiator" && (
