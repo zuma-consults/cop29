@@ -615,9 +615,9 @@ module.exports = {
             "Thank you for your participation, and we look forward to welcoming you to the event.";
         } else if (update.status === "rejected") {
           message =
-            "We regret to inform you that your accreditation request has not been approved. Unfortunately, you will not be able to be part of Nigeria's delegation at COP29 at this time.";
+            "We regret to inform you that your accreditation request has been declined.";
           emailFooter =
-            "Should you have any questions or require further clarification, please do not hesitate to contact us.";
+            "Should you have any questions or require further clarification, please use the contact us button on the resgistration portal.";
         } else if (update.status === "suspended") {
           message =
             "Your account has been suspended. Please contact support for assistance.";
@@ -811,7 +811,7 @@ module.exports = {
           delegate.name,
           url,
           "COP 29 DELEGATE STATUS",
-          "We regret to inform you that your application has not been approved. Unfortunately, you will not be able to attend COP 29 at this time. Should you have any questions or require further clarification, please do not hesitate to contact us.",
+          "We regret to inform you that your application has not been approved. Unfortunately, you will not be able to attend COP 29 at this time. Should you have any questions or require further clarification, please use the contact us button on the resgistration portal.",
           "Thank you for your interest."
         );
       }
