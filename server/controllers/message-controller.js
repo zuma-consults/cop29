@@ -23,11 +23,11 @@ module.exports = {
         );
       }
       let dateTime = formattedDateTime(preferredDateTime);
-      const findMessage = await Message.findOne({ email });
+      // const findMessage = await Message.findOne({ email });
 
-      if (findMessage) {
-        return errorHandler(res, "Organization has sent a Message.", 409);
-      }
+      // if (findMessage) {
+      //   return errorHandler(res, "Organization has sent a Message.", 409);
+      // }
 
       const newMessage = new Message({
         name,
@@ -38,7 +38,8 @@ module.exports = {
         preferredDateTime,
       });
       await newMessage.save();
-      sendMessageEmail(name, phone, reasonForMeeting, email, dateTime);
+      let subject = "International Organization Meeting Request";
+      sendMessageEmail(name, phone, reasonForMeeting, email, subject, dateTime);
       return successHandler(res, "Meeting Request Sent.");
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
@@ -55,11 +56,11 @@ module.exports = {
         );
       }
 
-      const findMessage = await Message.findOne({ email });
+      // const findMessage = await Message.findOne({ email });
 
-      if (findMessage) {
-        return errorHandler(res, "Message Sent.", 409);
-      }
+      // if (findMessage) {
+      //   return errorHandler(res, "Message Sent.", 409);
+      // }
 
       const newMessage = new Message({
         name,
@@ -69,6 +70,8 @@ module.exports = {
         reasonForMeeting: message,
       });
       await newMessage.save();
+      let subject = "Contact Us Message";
+      sendMessageEmail(name, phone, message, email, subject);
       return successHandler(res, "Message Sent.");
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
@@ -83,7 +86,9 @@ module.exports = {
         .skip((page - 1) * limit)
         .limit(parseInt(limit));
 
-      const totalMessages = await Message.countDocuments({ messageType: messageType });
+      const totalMessages = await Message.countDocuments({
+        messageType: messageType,
+      });
 
       // Prepare the response with pagination info
       const response = {
