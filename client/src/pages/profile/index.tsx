@@ -10,7 +10,7 @@ interface Delegate {
   email: string;
   passport: string;
   delegatedBy: string;
-  copApproved: boolean;
+  copApproved: string;
   _id: string;
 }
 
@@ -38,7 +38,7 @@ const delegateColumns = [
           row.copApproved ? "bg-green-500" : "bg-yellow-500"
         }`}
       >
-        {row.copApproved ? "Approved" : "Pending"}
+        {row.copApproved.toUpperCase()}
       </span>
     ),
     sortable: true,
