@@ -568,6 +568,8 @@ module.exports = {
       const id = req.params.id;
       const update = req.body;
       const _user = req.user;
+
+      // Ensure the status is part of the request body
       if (update.status === "suspended") {
         try {
           if (_user.toString() === id.toString()) {
@@ -577,24 +579,134 @@ module.exports = {
               403
             );
           }
+
+          // Delete the user's token when status is suspended
           await UserToken.findOneAndDelete({ userId: id });
         } catch (error) {
           return errorHandler(res, "Request Not Completed", 500);
         }
       }
 
+      // Prevent updating the password directly
       delete update.password;
 
+      // Find and update the user by ID
       const user = await User.findByIdAndUpdate(id, update, {
-        new: true,
+        new: true, // Returns the updated document
       });
-      if (!user) return errorHandler(res, "No Organization Found.", 404);
 
-      return successHandler(res, "Organization Updated", user);
+      // If the user is not found, throw an error
+      if (!user) return errorHandler(res, "No User Found.", 404);
+
+      // Check if status is present and handle sending the email
+      if (
+        update.status === "approved" ||
+        update.status === "rejected" ||
+        update.status === "suspended"
+      ) {
+        let subject = "COP 29 ORGANIZATION REQUEST STATUS";
+        let message;
+        let emailFooter;
+
+        if (update.status === "approved") {
+          message =
+            "We are pleased to inform you that your accreditation request has been successfully processed and approved. Kindly notify your delegates to check their emails for further instructions regarding the next steps.";
+          emailFooter =
+            "Thank you for your participation, and we look forward to welcoming you to the event.";
+        } else if (update.status === "rejected") {
+          message =
+            "We regret to inform you that your accreditation request has not been approved. Unfortunately, you will not be able to be part of Nigeria's delegation at COP29 at this time.";
+          emailFooter =
+            "Should you have any questions or require further clarification, please do not hesitate to contact us.";
+        } else if (update.status === "suspended") {
+          message =
+            "Your account has been suspended. Please contact support for assistance.";
+          emailFooter =
+            "We appreciate your cooperation in resolving this matter.";
+        }
+
+        // Send the email with the appropriate message
+        sendEmail(user.email, user.name, "", subject, message, emailFooter);
+      }
+
+      // Success handler if no status or just updating the user
+      return successHandler(res, "User Updated", user);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
     }
   },
+  // updateUserById: async (req, res) => {
+  //   try {
+  //     const id = req.params.id;
+  //     const update = req.body;
+  //     const _user = req.user;
+
+  //     // Check if status is available in the request body
+  //     if (update.status) {
+  //       // Handle different statuses
+  //       if (update.status === "suspended") {
+  //         // Prevent user from suspending their own account
+  //         if (_user.toString() === id.toString()) {
+  //           return errorHandler(
+  //             res,
+  //             "You cannot deactivate your own account. Please contact admin.",
+  //             403
+  //           );
+  //         }
+
+  //         // Remove user's token when account is suspended
+  //         try {
+  //           await UserToken.findOneAndDelete({ userId: id });
+  //         } catch (error) {
+  //           return errorHandler(res, "Request Not Completed", 500);
+  //         }
+  //       }
+
+  //       // Prepare email content based on the status
+  //       let emailSubject = "COP 29 ORGANIZATION REQUEST STATUS";
+  //       let emailMessage = "";
+  //       let emailFooter = "Thank you for your interest.";
+
+  //       if (update.status === "approved") {
+  //         emailMessage =
+  //           "We are pleased to inform you that your accreditation request has been successfully processed and approved. Kindly notify your delegates to check their emails for further instructions regarding the next steps.";
+  //         emailFooter =
+  //           "Thank you for your participation, and we look forward to welcoming you to the event.";
+  //       } else if (update.status === "rejected") {
+  //         emailMessage =
+  //           "We regret to inform you that your accreditation request has not been approved. Unfortunately, you will not be able to be part of Nigeria's delegation at COP29 at this time.";
+  //         emailFooter =
+  //           "Should you have any questions or require further clarification, please do not hesitate to contact us.";
+  //       } else if (update.status === "suspended") {
+  //         emailMessage =
+  //           "Your account has been suspended. Please contact support for further assistance.";
+  //         emailFooter =
+  //           "We appreciate your cooperation in resolving this matter.";
+  //       }
+
+  //       // Send email
+  //       sendEmail(
+  //         "nuhuahmed365@gmail.com",
+  //         user.name,
+  //         "",
+  //         emailSubject,
+  //         emailMessage,
+  //         emailFooter
+  //       );
+  //     }
+
+  //     // Remove password field from update object if present
+  //     delete update.password;
+
+  //     // Update the user in the database
+  //     const user = await User.findByIdAndUpdate(id, update, { new: true });
+  //     if (!user) return errorHandler(res, "No Organization Found.", 404);
+
+  //     return successHandler(res, "Organization Updated", user);
+  //   } catch (error) {
+  //     return errorHandler(res, error.message, error.statusCode);
+  //   }
+  // },
   changeUserPasswordById: async (req, res) => {
     try {
       const id = req.user;
@@ -754,10 +866,26 @@ module.exports = {
 
         try {
           let url = await QRCode.toDataURL(code);
-          sendEmail(delegate.email, delegate.name, url);
+          sendEmail(
+            delegate.email,
+            delegate.name,
+            url,
+            "COP 29 DELEGATE STATUS",
+            "We are pleased to inform you that your application has been successfully processed and approved. Please find your unique QR code as an attachment, which you are required to keep securely. This QR code will be essential for marking your attendance at COP 29.",
+            "Thank you for your participation, and we look forward to welcoming you to the event."
+          );
         } catch (err) {
           console.error("Error generating or uploading QR Code:", err);
         }
+      } else {
+        sendEmail(
+          delegate.email,
+          delegate.name,
+          url,
+          "COP 29 DELEGATE STATUS",
+          "We regret to inform you that your application has not been approved. Unfortunately, you will not be able to attend COP 29 at this time. Should you have any questions or require further clarification, please do not hesitate to contact us.",
+          "Thank you for your interest."
+        );
       }
 
       delegate.copApproved = copApproved;
