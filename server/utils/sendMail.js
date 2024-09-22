@@ -95,13 +95,6 @@ const sendEmail = async (to, name, code, subject, message1, message2) => {
     </div>
   </div>
     `,
-    // attachments: [
-    //   code ? {
-    //     filename: `${name}-code.png`,
-    //     path: code, // The QR code URL that was generated
-    //     cid: "qrCodeImage", // A unique identifier for embedding inline images if needed
-    //   },
-    // ],
     attachments: code
       ? [
           {
