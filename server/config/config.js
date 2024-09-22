@@ -131,46 +131,46 @@ const connectDb = async () => {
     await mongoose.connect(process.env.DB_URL);
     console.log("MongoDB connected.");
 
-    const existingRoles = await Role.find({
-      name: { $in: roles.map((role) => role.name) },
-    });
-    const slotsToInsert = generateSlots();
-    const existingSlots = await Slot.find();
+    // const existingRoles = await Role.find({
+    //   name: { $in: roles.map((role) => role.name) },
+    // });
+    // const slotsToInsert = generateSlots();
+    // const existingSlots = await Slot.find();
 
-    // Update roles or insert them if they don't exist
-    for (const role of roles) {
-      const existingRole = existingRoles.find((r) => r.name === role.name);
+    // // Update roles or insert them if they don't exist
+    // for (const role of roles) {
+    //   const existingRole = existingRoles.find((r) => r.name === role.name);
 
-      if (existingRole) {
-        // Update the role's modules if necessary
-        if (
-          JSON.stringify(existingRole.modules) !== JSON.stringify(role.modules)
-        ) {
-          existingRole.modules = role.modules;
-          await existingRole.save();
-          console.log(`Updated role: ${role.name}`);
-        }
-      } else {
-        // If the role doesn't exist, create it
-        await Role.create(role);
-        console.log(`Created new role: ${role.name}`);
-      }
-    }
+    //   if (existingRole) {
+    //     // Update the role's modules if necessary
+    //     if (
+    //       JSON.stringify(existingRole.modules) !== JSON.stringify(role.modules)
+    //     ) {
+    //       existingRole.modules = role.modules;
+    //       await existingRole.save();
+    //       console.log(`Updated role: ${role.name}`);
+    //     }
+    //   } else {
+    //     // If the role doesn't exist, create it
+    //     await Role.create(role);
+    //     console.log(`Created new role: ${role.name}`);
+    //   }
+    // }
 
-    // Check for missing slots and insert if needed
-    const missingSlots = slotsToInsert.filter((slot) => {
-      return !existingSlots.some(
-        (existingSlot) =>
-          existingSlot.date.toISOString() === slot.date.toISOString() &&
-          existingSlot.timeSpan === slot.timeSpan
-      );
-    });
+    // // Check for missing slots and insert if needed
+    // const missingSlots = slotsToInsert.filter((slot) => {
+    //   return !existingSlots.some(
+    //     (existingSlot) =>
+    //       existingSlot.date.toISOString() === slot.date.toISOString() &&
+    //       existingSlot.timeSpan === slot.timeSpan
+    //   );
+    // });
 
-    if (missingSlots.length > 0) {
-      await Slot.deleteMany({});
-      await Slot.insertMany(slotsToInsert);
-      console.log(`Inserted ${missingSlots.length} new slots.`);
-    }
+    // if (missingSlots.length > 0) {
+    //   await Slot.deleteMany({});
+    //   await Slot.insertMany(slotsToInsert);
+    //   console.log(`Inserted ${missingSlots.length} new slots.`);
+    // }
 
     console.log(
       `${

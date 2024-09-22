@@ -92,7 +92,7 @@ const sendResetPassword = async (to, url, txt, name) => {
       "
     >
       <p style="color: whitesmoke; font-size: 11px">
-       Nigeria COP29 Theme: Actualizing financial commitments for Climate Action.
+       Nigeria COP29 Focus: Actualizing Financial Commitments for Climate Action.
       </p>
       <p style="color: whitesmoke; font-size: 11px; margin-top: 15px">
         <a

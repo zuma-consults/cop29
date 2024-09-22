@@ -74,7 +74,7 @@ const sendEmail = async (to, name, code) => {
         "
       >
         <p style="color: whitesmoke; font-size: 11px; margin: 15px 0">
-          Nigeria COP29 Theme: Actualizing financial commitments for Climate
+          Nigeria COP29 Focus: Actualizing Financial Commitments for Climate
           Action.
         </p>
         <p

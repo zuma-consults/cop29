@@ -1,5 +1,5 @@
 import { Box, Button, Modal, TextField } from "@mui/material";
-import React, { useState, ChangeEvent, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight } from "react-icons/go";
 import { useForm, Controller } from "react-hook-form";
@@ -27,7 +27,7 @@ const ContactUsTable: React.FC = () => {
 
   const memoizedFilters = useMemo(
     () => ({
-      userType: filters.messageType,
+      messageType: filters.messageType,
     }),
     [filters.messageType, page]
   );
