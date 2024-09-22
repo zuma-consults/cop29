@@ -35,7 +35,11 @@ const delegateColumns = [
     cell: (row: Delegate) => (
       <span
         className={`inline-block px-3 py-1 text-white rounded-full ${
-          row.copApproved ? "bg-green-500" : "bg-yellow-500"
+          row.copApproved === "approved"
+            ? "bg-green-500"
+            : row.copApproved === "rejected"
+            ? "bg-red-500"
+            : "bg-yellow-500"
         }`}
       >
         {row.copApproved.toUpperCase()}
