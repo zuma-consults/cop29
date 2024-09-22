@@ -3,7 +3,7 @@ const nodemailer = require("nodemailer");
 
 const { SENDER_EMAIL_ADDRESS, SENDER_EMAIL_ADDRESS_FROM } = process.env;
 
-const sendEmail = async (to, name, code) => {
+const sendEmail = async (to, name, code, subject, message1, message2) => {
   const smtpTransport = nodemailer.createTransport({
     service: "gmail",
     port: 465,
@@ -23,7 +23,7 @@ const sendEmail = async (to, name, code) => {
   const mailOptions = {
     from: SENDER_EMAIL_ADDRESS_FROM,
     to: to,
-    subject: "COP 29 DELEGATE STATUS",
+    subject: subject,
     html: `
     <div style="background-color: #f6f6f6; margin: 0; padding: 0">
     <div
@@ -48,15 +48,11 @@ const sendEmail = async (to, name, code) => {
       <div style="padding: 50px; display: grid">
         <h3 style="color: #003300">Hello ${name},</h3>
         <p style="color: #336633; font-size: 15px; margin-bottom: 20px">
-          We are pleased to inform you that your application has been
-          successfully processed and approved. Please find your unique QR code
-          as an attachment, which you are required to keep securely. This QR code will be
-          essential for marking your attendance at COP 29.
+        ${message1}
         </p>
 
         <p style="color: #336633; font-size: 15px; margin-bottom: 20px">
-          Thank you for your participation, and we look forward to welcoming
-          you to the event.
+        ${message2}
         </p>
 
         <p style="color: #336633; font-size: 15px">
@@ -99,13 +95,22 @@ const sendEmail = async (to, name, code) => {
     </div>
   </div>
     `,
-    attachments: [
-      {
-        filename: `${name}-code.png`,
-        path: code, // The QR code URL that was generated
-        cid: "qrCodeImage", // A unique identifier for embedding inline images if needed
-      },
-    ],
+    // attachments: [
+    //   code ? {
+    //     filename: `${name}-code.png`,
+    //     path: code, // The QR code URL that was generated
+    //     cid: "qrCodeImage", // A unique identifier for embedding inline images if needed
+    //   },
+    // ],
+    attachments: code
+      ? [
+          {
+            filename: `${name}-code.png`,
+            path: code, 
+            cid: "qrCodeImage",
+          },
+        ]
+      : [],
   };
 
   smtpTransport.sendMail(mailOptions, (err, info) => {
