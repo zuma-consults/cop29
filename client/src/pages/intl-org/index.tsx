@@ -159,7 +159,6 @@ const InternationalOrg: React.FC = () => {
                 <button
                   type="submit"
                   className="bg-green-600 text-white py-2 px-4 rounded-lg"
-                  disabled
                 >
                   Submit
                 </button>
