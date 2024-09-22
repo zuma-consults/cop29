@@ -445,7 +445,11 @@ module.exports = {
         findUser.delegates.push(delegate);
         await findUser.save();
 
-        return successHandler(res, "Delegate successfully added", findUser);
+        return successHandler(
+          res,
+          "Delegate added successfully. Please await an email with the status of your request.",
+          findUser
+        );
       } catch (error) {
         return errorHandler(res, error.message, error.statusCode || 500);
       }
@@ -910,11 +914,7 @@ module.exports = {
       // Check if overview data is in cache
       if (myCache.has("overview")) {
         const cachedOverview = myCache.get("overview");
-        return successHandler(
-          res,
-          "Data Overview",
-          cachedOverview
-        );
+        return successHandler(res, "Data Overview", cachedOverview);
       }
 
       // Create a query object for filtering verified users with approved status
