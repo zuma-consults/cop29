@@ -27,7 +27,7 @@ const ContactUsTable: React.FC = () => {
 
   const memoizedFilters = useMemo(
     () => ({
-      userType: filters.messageType,
+      messageType: filters.messageType,
     }),
     [filters.messageType, page]
   );
