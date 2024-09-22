@@ -8,6 +8,7 @@ const sendMessageEmail = async (
   phone,
   reasonForMeeting,
   email,
+  subject,
   preferredDateTime
 ) => {
   const smtpTransport = nodemailer.createTransport({
@@ -29,7 +30,7 @@ const sendMessageEmail = async (
   const mailOptions = {
     from: SENDER_EMAIL_ADDRESS_FROM,
     to: "copregistration@natccc.gov.ng",
-    subject: "International Organization Meeting Request",
+    subject: subject,
     html: `
     <div style="background-color: #f6f6f6; margin: 0; padding: 0;">
   <div
@@ -68,7 +69,13 @@ const sendMessageEmail = async (
       <br></br>
       <br></br>
 
-      <h3 style="color: #003300;">Preferred Date and Time: ${preferredDateTime}</h3> 
+      <h3 style="color: #003300;">
+      ${
+        preferredDateTime
+          ? `<h3 style="color: #003300;">Preferred Date and Time: ${preferredDateTime}</h3>`
+          : ""
+      }
+      </h3> 
       <br></br>
       <br></br>
     </div>
