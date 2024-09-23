@@ -37,8 +37,8 @@ const corsOptions = {
   // credentials: true, // Allow credentials (cookies, authorization headers)
   // optionsSuccessStatus: 200, // Response status for preflight requests
   // maxAge: 86400, // Cache preflight response for 24 hours
-  optionsSuccessStatus: 200, // Response for preflight requests
-  credentials: true,
+  // optionsSuccessStatus: 200, // Response for preflight requests
+  // credentials: true,
 };
 
 app.use(helmet());
@@ -52,7 +52,7 @@ app.use(helmet());
 //   })
 // );
 
-app.use(limiter);
+// app.use(limiter);
 // app.disable("x-powered-by");
 // Middleware setup
 app.use(cors(corsOptions)); // Enable CORS for all routes
