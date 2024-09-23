@@ -66,7 +66,7 @@ export const organizationTypes = [
 export const thematicAreas = [
   "Agriculture and Food Security",
   "Biodiversity",
-  "Ecosystems and Water Resourses",
+  "Ecosystems and Water Resources",
   "Human Settlements",
   "Oceans",
   "Health",
