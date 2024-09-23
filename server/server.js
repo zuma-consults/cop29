@@ -19,11 +19,11 @@ const { errorHandler, systemError } = require("./utils/errorHandler");
 const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
-      // "http://localhost:5173",
-      // "http://localhost:5174",
-      "https://admin-cop29.vercel.app",
+      "http://localhost:5173",
+      "http://localhost:5174",
+      // "https://admin-cop29.vercel.app",
       // "https://cop29-okike.vercel.app",
-      "https://nigccdelegation.natccc.gov.ng",
+      // "https://nigccdelegation.natccc.gov.ng",
     ];
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
@@ -37,8 +37,8 @@ const corsOptions = {
   // credentials: true, // Allow credentials (cookies, authorization headers)
   // optionsSuccessStatus: 200, // Response status for preflight requests
   // maxAge: 86400, // Cache preflight response for 24 hours
-  optionsSuccessStatus: 200, // Response for preflight requests
-  credentials: true,
+  // optionsSuccessStatus: 200, // Response for preflight requests
+  // credentials: true,
 };
 
 app.use(helmet());
@@ -52,7 +52,7 @@ app.use(helmet());
 //   })
 // );
 
-app.use(limiter);
+// app.use(limiter);
 // app.disable("x-powered-by");
 // Middleware setup
 app.use(cors(corsOptions)); // Enable CORS for all routes
