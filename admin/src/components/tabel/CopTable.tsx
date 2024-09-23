@@ -27,6 +27,7 @@ import {
   useDeclineCopEvent,
   useGetAllCopApplicants,
 } from "../../hooks/useEvent";
+import { useGetProfile } from "../../hooks/useAuth";
 
 interface TableRow {
   _id: any;
@@ -172,34 +173,43 @@ const CopTable: React.FC = () => {
     },
   ];
 
+  const { data: userData } = useGetProfile();
+  const userProfile = useMemo(() => userData?.data, [userData]);
+  const hasExportModule = useMemo(
+    () => userProfile?.role?.modules?.includes("export"),
+    [userProfile]
+  );
+  
   return (
     <>
       {(isFetching || loadingApproval || loadingDecline) && <Loader />}
 
       <div className="rounded-[.5rem] px-2 bg-white shadow">
         <div className="flex items-center md:flex-row flex-col justify-between py-2">
-          <Button
-            sx={{
-              backgroundColor: "green",
-              color: "white",
-              width: "fit-content",
-              paddingY: "8px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              textAlign: "center",
-              fontSize: "13px",
-              gap: "8px",
-              "&:hover": {
-                backgroundColor: "#e8f5e9",
-                color: "black",
-              },
-            }}
-            onClick={handleDownloadCSV}
-          >
-            Export to Excel
-            <GoDownload size={20} />
-          </Button>
+          {hasExportModule && (
+            <Button
+              sx={{
+                backgroundColor: "green",
+                color: "white",
+                width: "fit-content",
+                paddingY: "8px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+                fontSize: "13px",
+                gap: "8px",
+                "&:hover": {
+                  backgroundColor: "#e8f5e9",
+                  color: "black",
+                },
+              }}
+              onClick={handleDownloadCSV}
+            >
+              Export to Excel
+              <GoDownload size={20} />
+            </Button>
+          )}
           <Box sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1 }}>
             <Select
               color="success"

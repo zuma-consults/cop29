@@ -9,7 +9,7 @@ const PublicRoute: React.FC = () => {
 
   // If the user is authenticated, redirect them to the home page (or any other page)
   if (access) {
-    return <Navigate to="/scheduled-meetings" replace />;
+    return <Navigate to="/meetings" replace />;
   }
 
   return <Outlet />;

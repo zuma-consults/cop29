@@ -53,6 +53,8 @@ const Profile: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const { data: user, isLoading, refetch } = useGetProfile();
   const accreditationType = localStorage.getItem("accreditationType");
+  const allow = localStorage.getItem("allow");
+  // localStorage.setItem("allow", "profile");
 
   if (isLoading) {
     return <Loader />;
@@ -62,7 +64,7 @@ const Profile: React.FC = () => {
 
   return (
     <div className="pb-[5%] md:pb-[2%] flex items-center justify-center flex-col gap-10 px-5 md:px-20 relative">
-      {!organizationData ? (
+      {allow !== "profile" ? (
         <div className="flex items-center w-full justify-center text-center p-[50px] border-2 border-orange-600 my-20 bg-orange-100 mx-10 h-[50vh]">
           <div>
             <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">

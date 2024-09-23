@@ -1,10 +1,8 @@
 import { CgOrganisation } from "react-icons/cg";
-import { IoIosPeople } from "react-icons/io";
 import { MdEvent } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
 import { FaPersonBreastfeeding } from "react-icons/fa6";
 import { FaCalendarAlt } from "react-icons/fa";
-import { GrAnnounce } from "react-icons/gr";
 import { TbSquareLetterC } from "react-icons/tb";
 import { RiContactsBook3Fill } from "react-icons/ri";
 import { TiWorldOutline } from "react-icons/ti";
@@ -13,7 +11,7 @@ export const navConfig = [
   {
     title: "Scheduled meetings",
     icon: <MdEvent size={24} />,
-    path: "/scheduled-meetings",
+    path: "/meetings",
   },
   // {
   //   title: "Delegates",
@@ -23,7 +21,7 @@ export const navConfig = [
   {
     title: "Organizations",
     icon: <CgOrganisation size={24} />,
-    path: "/organization",
+    path: "/organizations",
   },
   {
     title: "Negotiators",
@@ -39,7 +37,7 @@ export const navConfig = [
   {
     title: "Calendar",
     icon: <FaCalendarAlt size={24} />,
-    path: "/calender",
+    path: "/calendar",
   },
   {
     title: "Users",
@@ -54,12 +52,12 @@ export const navConfig = [
   {
     title: "COP Applicants",
     icon: <TbSquareLetterC size={24} />,
-    path: "/cop",
+    path: "/applicants",
   },
   {
     title: "Contact us Messages",
     icon: <RiContactsBook3Fill size={24} />,
-    path: "/contact-us",
+    path: "/contacts",
   },
   {
     title: "International Requests",

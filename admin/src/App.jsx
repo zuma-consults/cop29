@@ -64,7 +64,7 @@ function App() {
             }
           /> */}
           <Route
-            path="/organization"
+            path="/organizations"
             element={
               <motion.div
                 variants={pageVariants}
@@ -78,7 +78,7 @@ function App() {
             }
           />
           <Route
-            path="/calender"
+            path="/calendar"
             element={
               <motion.div
                 variants={pageVariants}
@@ -92,7 +92,7 @@ function App() {
             }
           />
           <Route
-            path="/scheduled-meetings"
+            path="/meetings"
             element={
               <motion.div
                 variants={pageVariants}
@@ -134,7 +134,7 @@ function App() {
             }
           />
           <Route
-            path="/contact-us"
+            path="/contacts"
             element={
               <motion.div
                 variants={pageVariants}
@@ -190,7 +190,7 @@ function App() {
             }
           />
           <Route
-            path="/scheduled-meetings/:id"
+            path="/meetings/:id"
             element={
               <motion.div
                 variants={pageVariants}
@@ -204,7 +204,7 @@ function App() {
             }
           />
           <Route
-            path="/organization/:id"
+            path="/organizations/:id"
             element={
               <motion.div
                 variants={pageVariants}
@@ -233,7 +233,7 @@ function App() {
           />
 
           <Route
-            path="/cop"
+            path="/applicants"
             element={
               <motion.div
                 variants={pageVariants}

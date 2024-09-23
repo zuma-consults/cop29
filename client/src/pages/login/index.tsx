@@ -86,6 +86,7 @@ const Login: React.FC = () => {
                       "userProfile",
                       JSON.stringify(response?.data)
                     );
+                    localStorage.setItem("allow", "profile");
                     navigate("/"); // Redirect to the home page after successful login
                   }
                 },
