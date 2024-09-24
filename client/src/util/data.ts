@@ -22,6 +22,7 @@ export const states = [
   "Kaduna",
   "Kano",
   "Katsina",
+  "Kebbi",
   "Kogi",
   "Kwara",
   "Lagos",
