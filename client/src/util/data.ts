@@ -21,6 +21,7 @@ export const states = [
   "Jigawa",
   "Kaduna",
   "Kano",
+  "Katsina",
   "Kogi",
   "Kwara",
   "Lagos",
@@ -36,8 +37,9 @@ export const states = [
   "Taraba",
   "Yobe",
   "Zamfara",
-  "FCT",
+  "FCT"
 ];
+
 
 export const categories = [
   "Energy",
