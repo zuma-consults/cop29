@@ -14,6 +14,7 @@ import saveAsCSV from "json-to-csv-export";
 import { useGetAllDelegates } from "../../hooks/useDelegate";
 import Loader from "../ui/Loader";
 import ColumnFilter from "../columnFilter";
+import { useGetProfile } from "../../hooks/useAuth";
 
 interface TableRow {
   id: number;
@@ -66,12 +67,10 @@ const DelegateTable: React.FC = () => {
   }, []);
 
   const handleAccept = useCallback(() => {
-    console.log("Accepted");
     setSelectedEvent(null);
   }, []);
 
   const handleReject = useCallback(() => {
-    console.log("Rejected");
     setSelectedEvent(null);
   }, []);
 
@@ -98,11 +97,11 @@ const DelegateTable: React.FC = () => {
     {
       name: "Name",
 
-      selector: (row: { name: any }) => row.name ?? "N/A",
+      selector: (row: { name: any }) => row?.name ?? "N/A",
     },
     {
       name: "Email",
-      selector: (row: { email: any }) => row.email ?? "N/A",
+      selector: (row: { email: any }) => row?.email ?? "N/A",
     },
     {
       name: (
@@ -115,16 +114,16 @@ const DelegateTable: React.FC = () => {
           />
         </Box>
       ),
-      selector: (row: { userType: any }) => row.userType ?? "N/A",
+      selector: (row: { userType: any }) => row?.userType ?? "N/A",
     },
     {
       name: "Phone",
-      selector: (row: { phone: any }) => row.phone ?? "N/A",
+      selector: (row: { phone: any }) => row?.phone ?? "N/A",
     },
 
     {
       name: "Status",
-      selector: (row: { status: any }) => row.status ?? "N/A",
+      selector: (row: { status: any }) => row?.status ?? "N/A",
       cell: (row: {
         status:
           | string
@@ -178,34 +177,43 @@ const DelegateTable: React.FC = () => {
       width: "15rem",
     },
   ];
+  
+  const { data: userData } = useGetProfile();
+  const userProfile = useMemo(() => userData?.data, [userData]);
+  const hasExportModule = useMemo(
+    () => userProfile?.role?.modules?.includes("export"),
+    [userProfile]
+  );
 
   return (
     <>
       {isFetching && <Loader />}
       <div className="rounded-[.5rem] px-2 bg-white shadow">
         <div className="flex items-center md:flex-row flex-col justify-between py-2">
-          <Button
-            sx={{
-              backgroundColor: "green",
-              color: "white",
-              width: "fit-content",
-              paddingY: "8px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              textAlign: "center",
-              fontSize: "13px",
-              gap: "8px",
-              "&:hover": {
-                backgroundColor: "#e8f5e9",
-                color: "black",
-              },
-            }}
-            onClick={handleDownloadCSV}
-          >
-            Export to Excel
-            <GoDownload size={20} />
-          </Button>
+          {hasExportModule && (
+            <Button
+              sx={{
+                backgroundColor: "green",
+                color: "white",
+                width: "fit-content",
+                paddingY: "8px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+                fontSize: "13px",
+                gap: "8px",
+                "&:hover": {
+                  backgroundColor: "#e8f5e9",
+                  color: "black",
+                },
+              }}
+              onClick={handleDownloadCSV}
+            >
+              Export to Excel
+              <GoDownload size={20} />
+            </Button>
+          )}
         </div>
         <DataTable
           highlightOnHover={true}
@@ -240,23 +248,23 @@ const DelegateTable: React.FC = () => {
               <Card>
                 <CardContent className="flex flex-col justify-center items-center gap-3">
                   <Typography variant="h5" component="div">
-                    {selectedEvent.name}
+                    {selectedEvent?.name}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {selectedEvent.phone}
+                    {selectedEvent?.phone}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {selectedEvent.email}
+                    {selectedEvent?.email}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {selectedEvent.userType}
+                    {selectedEvent?.userType}
                   </Typography>
 
                   <div className="mb-4">
-                    {selectedEvent.status == "approved" ? (
-                      <Chip label={selectedEvent.status} color="success" />
+                    {selectedEvent?.status == "approved" ? (
+                      <Chip label={selectedEvent?.status} color="success" />
                     ) : (
-                      <Chip label={selectedEvent.status} color="error" />
+                      <Chip label={selectedEvent?.status} color="error" />
                     )}
                   </div>
 

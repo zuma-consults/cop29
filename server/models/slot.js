@@ -22,6 +22,10 @@ const SlotSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
     },
+    adminBookingBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Staff",
+    },
   },
   {
     toJSON: {
@@ -37,4 +41,4 @@ const SlotSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Slotsssss", SlotSchema);
+module.exports = mongoose.model("Slots", SlotSchema);

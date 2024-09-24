@@ -23,7 +23,6 @@ function AccountActivation() {
   }, [id, setCookie, activate, navigate]);
 
   useEffect(() => {
-    console.log(data,'data')
     if (data?.response?.status === 403) {
       toast.error("Activation link has expired.");
       setIsExpired(true);

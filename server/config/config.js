@@ -2,18 +2,80 @@ const mongoose = require("mongoose");
 const Role = require("../models/role");
 const Slot = require("../models/slot");
 
-const roles = [{ name: "Admin" }, { name: "Officer" }, { name: "Super Admin" }];
+const roles = [
+  {
+    name: "Admin",
+    modules: [
+      "meetings",
+      "organizations",
+      "negotiators",
+      "calendar",
+      "applicants",
+    ],
+  },
+  {
+    name: "Officer",
+    modules: ["contacts", "international"],
+  },
+  {
+    name: "Super Admin",
+    modules: [
+      "meetings",
+      "organizations",
+      "negotiators",
+      "calendar",
+      "applicants",
+      "contacts",
+      "international",
+      "attendance",
+      "export",
+    ],
+  },
+  {
+    name: "Reception",
+    modules: ["meetings", "attendance", "calendar"],
+  },
+  {
+    name: "Support",
+    modules: [
+      "meetings",
+      "organizations",
+      "negotiators",
+      "calendar",
+      "applicants",
+      "contacts",
+      "international",
+      "attendance",
+      "export",
+    ],
+  },
+  {
+    name: "Ghost",
+    modules: [
+      "meetings",
+      "organizations",
+      "negotiators",
+      "calendar",
+      "applicants",
+      "contacts",
+      "international",
+      "attendance",
+      "audit",
+      "export",
+      "users",
+    ],
+  },
+];
+
 const timeSlots = [
-  { timeSpan: "9:00am to 9:45am" },
-  { timeSpan: "10:00am to 10:45am" },
-  { timeSpan: "11:00am to 11:45am" },
-  { timeSpan: "12:00pm to 12:45pm" },
-  { timeSpan: "1:00pm to 1:45pm" },
-  { timeSpan: "2:00pm to 2:45pm" },
-  { timeSpan: "3:00pm to 3:45pm" },
-  { timeSpan: "4:00pm to 4:45pm" },
-  { timeSpan: "5:00pm to 5:45pm" },
-  // { timeSpan: "6:00pm to 6:45pm" },
+  { timeSpan: "9:00am to 10:20am" },
+  { timeSpan: "10:20am to 11:40am" },
+  { timeSpan: "11:40am to 1:00pm" },
+  { timeSpan: "1:00pm to 2:20pm" },
+  { timeSpan: "2:20pm to 3:40pm" },
+  { timeSpan: "3:40pm to 5:00pm" },
+  { timeSpan: "5:00pm to 6:20pm" },
+  { timeSpan: "6:20pm to 7:40pm" },
 ];
 
 const generateSlots = () => {
@@ -69,40 +131,46 @@ const connectDb = async () => {
     await mongoose.connect(process.env.DB_URL);
     console.log("MongoDB connected.");
 
-    const [existingRoles, existingSlots] = await Promise.all([
-      Role.find({ name: { $in: roles.map((role) => role.name) } }),
-      Slot.find(),
-    ]);
-    
-    const missingRoles = roles.filter(
-      (role) =>
-        !existingRoles.some((existingRole) => existingRole.name === role.name)
-    );
+    // const existingRoles = await Role.find({
+    //   name: { $in: roles.map((role) => role.name) },
+    // });
+    // const slotsToInsert = generateSlots();
+    // const existingSlots = await Slot.find();
 
-    const slotsToInsert = generateSlots();
-    const missingSlots = slotsToInsert.filter((slot) => {
-      const existingSlot = existingSlots.find(
-        (existingSlot) =>
-          existingSlot.date && // Check if existingSlot.date exists
-          existingSlot.date.toISOString() === slot.date.toISOString() &&
-          existingSlot.timeSpan === slot.timeSpan
-      );
+    // // Update roles or insert them if they don't exist
+    // for (const role of roles) {
+    //   const existingRole = existingRoles.find((r) => r.name === role.name);
 
-      if (!existingSlot) {
-        console.log(`Missing Slot: ${slot.title}`);
-      }
-      return !existingSlot;
-    });
+    //   if (existingRole) {
+    //     // Update the role's modules if necessary
+    //     if (
+    //       JSON.stringify(existingRole.modules) !== JSON.stringify(role.modules)
+    //     ) {
+    //       existingRole.modules = role.modules;
+    //       await existingRole.save();
+    //       console.log(`Updated role: ${role.name}`);
+    //     }
+    //   } else {
+    //     // If the role doesn't exist, create it
+    //     await Role.create(role);
+    //     console.log(`Created new role: ${role.name}`);
+    //   }
+    // }
 
-    if (missingRoles.length > 0) {
-      await Role.deleteMany({});
-      await Role.insertMany(roles);
-    }
+    // // Check for missing slots and insert if needed
+    // const missingSlots = slotsToInsert.filter((slot) => {
+    //   return !existingSlots.some(
+    //     (existingSlot) =>
+    //       existingSlot.date.toISOString() === slot.date.toISOString() &&
+    //       existingSlot.timeSpan === slot.timeSpan
+    //   );
+    // });
 
-    if (missingSlots.length > 0) {
-      await Slot.deleteMany({});
-      await Slot.insertMany(slotsToInsert);
-    }
+    // if (missingSlots.length > 0) {
+    //   await Slot.deleteMany({});
+    //   await Slot.insertMany(slotsToInsert);
+    //   console.log(`Inserted ${missingSlots.length} new slots.`);
+    // }
 
     console.log(
       `${

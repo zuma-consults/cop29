@@ -17,7 +17,6 @@ const Nav: React.FC<{
   const navigate = useNavigate();
 
   const { data } = useGetProfile();
-
   const userProfile = useMemo(() => data?.data, [data]);
 
   return (
@@ -107,27 +106,9 @@ const Nav: React.FC<{
             className="flex gap-2 items-center"
             onClick={() => navigate("/events")}
           >
-            <img
-              src="/images/logo.svg"
-              alt="Logo"
-              className="rounded-lg"
-              width={50}
-              height={10}
-            />
+            <img src="/images/seal.png" alt="Logo" className="h-[40px]" />
             <div className="gap-1 items-center hidden md:block">
-              <div className="flex items-center">
-                <span className="text-green-800 text-[30px] font-bold">C</span>
-                <img
-                  src="/images/flagicon.svg"
-                  alt="Icon"
-                  className="inline-block"
-                  width={33}
-                  height={20}
-                />
-                <span className="text-green-800 text-[30px] font-bold">
-                  P29
-                </span>
-              </div>
+              <img src="/images/new.png" alt="Logo" className="h-[40px]" />
             </div>
           </div>
           <Box
@@ -152,29 +133,36 @@ const Nav: React.FC<{
               height: "80%",
             }}
           >
-            {navConfig.map((item: any) => (
-              <Box
-                key={item.title}
-                sx={{
-                  mb: { xs: "0px", md: "20px" },
-                  mr: { xs: "0px", md: "20px" },
-                }}
-              >
-                <Box onClick={() => navigate(item.path)}>
-                  <NavItem
-                    key={item.title}
-                    icon={item.icon}
-                    title={item.title}
-                    isActive={
-                      item.path === "/"
-                        ? location.pathname === "/" ||
-                          location.pathname.startsWith("/event")
-                        : location.pathname.startsWith(item.path)
-                    }
-                  />
+            {navConfig
+              .filter((item) =>
+                userProfile?.role?.modules.some((module: string) =>
+                  item.path.includes(module)
+                )
+              )
+              .map((item: any) => (
+                <Box
+                  key={item.title}
+                  sx={{
+                    mb: { xs: "0px", md: "20px" },
+                    mr: { xs: "0px", md: "20px" },
+                  }}
+                >
+                  <Box onClick={() => navigate(item.path)}>
+                    <NavItem
+                      key={item.title}
+                      icon={item.icon}
+                      title={item.title}
+                      isActive={
+                        item.path === "/"
+                          ? location.pathname === "/" ||
+                            location.pathname.startsWith("/event")
+                          : location.pathname.startsWith(item.path)
+                      }
+                    />
+                  </Box>
                 </Box>
-              </Box>
-            ))}
+              ))}
+
             <UserAccount
               name={userProfile?.name}
               role={userProfile?.role?.name}

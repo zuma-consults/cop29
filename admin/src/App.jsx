@@ -10,13 +10,17 @@ import PublicRoute from "./layouts/PublicRoute";
 import ScrollToTop from "./layouts/ScrollToTop";
 import Delegate from "./pages/delegate";
 import Organization from "./pages/organization";
+import Negotiators from "./pages/negotiators";
 import Calender from "./pages/calender";
 import PaCalender from "./pages/pacalender";
 import Event from "./pages/sideEvent";
 import Invoice from "./pages/invoice";
 import User from "./pages/user";
-import Announcement from "./pages/announcement";
+import ContactUs from "./pages/contact-us";
+import International from "./pages/international";
 import EventDetails from "./pages/eventDetails";
+import OrganisationDetails from "./pages/organisationDetails";
+import NegotiatorsDetails from "./pages/negotiatorsDetails";
 import Cop from "./pages/cop";
 
 const pageVariants = {
@@ -45,7 +49,7 @@ function App() {
           <Route path="/reset-password/:id" element={<ResetPassword />} />
         </Route>
         <Route path="/" element={<AppLayout />}>
-          <Route
+          {/* <Route
             path="/delegate"
             element={
               <motion.div
@@ -58,9 +62,9 @@ function App() {
                 <Delegate />
               </motion.div>
             }
-          />
+          /> */}
           <Route
-            path="/organization"
+            path="/organizations"
             element={
               <motion.div
                 variants={pageVariants}
@@ -74,7 +78,7 @@ function App() {
             }
           />
           <Route
-            path="/calender"
+            path="/calendar"
             element={
               <motion.div
                 variants={pageVariants}
@@ -88,7 +92,7 @@ function App() {
             }
           />
           <Route
-            path="/events"
+            path="/meetings"
             element={
               <motion.div
                 variants={pageVariants}
@@ -130,7 +134,7 @@ function App() {
             }
           />
           <Route
-            path="/announcement"
+            path="/contacts"
             element={
               <motion.div
                 variants={pageVariants}
@@ -139,7 +143,21 @@ function App() {
                 animate="animate"
                 exit="exit"
               >
-                <Announcement />
+                <ContactUs />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/international"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                key={location.pathname}
+                animate="animate"
+                exit="exit"
+              >
+                <International />
               </motion.div>
             }
           />
@@ -158,7 +176,21 @@ function App() {
             }
           />
           <Route
-            path="/event/:id"
+            path="/negotiators"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                key={location.pathname}
+                animate="animate"
+                exit="exit"
+              >
+                <Negotiators />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/meetings/:id"
             element={
               <motion.div
                 variants={pageVariants}
@@ -171,9 +203,37 @@ function App() {
               </motion.div>
             }
           />
+          <Route
+            path="/organizations/:id"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                key={location.pathname}
+                animate="animate"
+                exit="exit"
+              >
+                <OrganisationDetails />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/negotiators/:id"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                key={location.pathname}
+                animate="animate"
+                exit="exit"
+              >
+                <NegotiatorsDetails />
+              </motion.div>
+            }
+          />
 
           <Route
-            path="/cop"
+            path="/applicants"
             element={
               <motion.div
                 variants={pageVariants}

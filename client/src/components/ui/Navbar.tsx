@@ -2,40 +2,34 @@ import React, { useState } from "react";
 import Links from "./Links";
 import { IoClose, IoMenu } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import Dropdown from "./Dropdown"; // Import the Dropdown component
 
 const Navbar: React.FC = () => {
   const [toggle, setToggle] = useState<boolean>(false);
 
+  // Define dropdown items for the main dropdown
+  const accreditationItems = [
+    { title: "Request Accreditation as Participant", path: "/signup" },
+    { title: "Request Accreditation as Negotiator", path: "/negotiator" },
+  ];
+
+  // // Define links for the rest of the navbar
+  // const otherLinks = [
+  //   { title: "FAQs", path: "/faq" },
+  //   { title: "Contact Us", path: "/contact-us" },
+  // ];
+
   return (
-    <nav className="w-full flex items-center justify-between md:p-4 bg-white shadow-sm h-[70px]">
+    <nav className="w-full flex items-center justify-between md:p-4 bg-white shadow-sm h-[70px] fixed top-0 right-0 left-0 z-[3000]">
       <div className="flex items-center justify-between w-full">
-      <Link to="/" className="flex items-center gap-3">
-          <img
-            src="/images/seal.png"
-            alt="Logo"
-            className="h-[40px]"
-          />
-           {/* <img
-            src="/images/unfccc_.png"
-            alt="Logo"
-            className="h-[40px]"
-          /> */}
-           <img
-            src="/images/new.png"
-            alt="Logo"
-            className="h-[40px]"
-          />
-          {/* <div className="flex flex-col items-start">
-            <div className="flex items-center">
-              <span className="text-black text-[20px] font-bold">COP</span>
-              <span className="text-cyan-800 text-[20px] font-bold">29</span>
-            </div>
-            <span className="text-sm text-gray-600">Baku Azerbaijan</span>
-          </div> */}
+        <Link to="/" className="flex items-center gap-3">
+          {/* <img src="/images/seal.png" alt="Logo" className="h-[40px]" /> */}
+          <img src="/images/new.png" alt="Logo" className="h-[40px]" />
         </Link>
 
         <ul className="flex-row sm:flex hidden justify-end items-center flex-1 font-semibold">
           <Links direction="row" toggle={toggle} />
+          {/* <Dropdown title="Create Account" items={accreditationItems} /> */}
         </ul>
 
         <div className="sm:hidden flex justify-end items-center hover:bg-gray-100 px-3 py-2 rounded-full w-max">

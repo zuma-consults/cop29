@@ -16,6 +16,7 @@ const userSchema = mongoose.Schema(
     },
     phone: {
       type: String,
+      required: true,
     },
     category: {
       type: String,
@@ -23,21 +24,43 @@ const userSchema = mongoose.Schema(
     state: {
       type: String,
     },
-    image: {
+    contactIdCard: {
+      type: String,
+      required: true,
+    },
+    workStream: {
+      type: String,
+    },
+    thematicArea: {
+      type: String,
+      required: true,
+    },
+    reasonForAttendance: {
+      type: String,
+    },
+    documentSupportingAttendance: {
       type: String,
     },
     status: {
       type: String,
-      enum: ["pending", "approved", "suspended"],
-      default: "approved",
+      enum: ["pending", "approved", "suspended", "rejected"],
+      default: "pending",
     },
     userType: {
       type: String,
-      enum: ["delegate", "organization"],
-      default: "delegate",
+      enum: ["organization"],
+      default: "organization",
     },
     organizationType: {
       type: String,
+    },
+    contactDesignation: {
+      type: String,
+      required: true,
+    },
+    contactName: {
+      type: String,
+      required: true,
     },
     delegates: {
       type: [
@@ -48,11 +71,15 @@ const userSchema = mongoose.Schema(
           },
           email: {
             type: String,
-            // required: true,
+            required: true,
+          },
+          phone: {
+            type: String,
+            required: true,
           },
           designation: {
             type: String,
-            // required: true,
+            required: true,
           },
           passport: {
             type: String,
@@ -62,13 +89,19 @@ const userSchema = mongoose.Schema(
             type: String,
             required: true,
           },
-          copApproved: {
-            type: Boolean,
-            default: false,
+          code: {
+            type: String,
           },
-          copRejected: {
-            type: Boolean,
-            default: false,
+          state: {
+            type: String,
+          },
+          department: {
+            type: String,
+          },
+          copApproved: {
+            type: String,
+            enum: ["pending", "approved", "rejected"],
+            default: "pending",
           },
         },
       ],
@@ -84,6 +117,7 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    preferredDateTime: { type: Date,},
   },
   {
     toJSON: {
@@ -98,6 +132,6 @@ const userSchema = mongoose.Schema(
   }
 );
 
-const User = mongoose.model("Userss", userSchema);
+const User = mongoose.model("Users", userSchema);
 
 module.exports = User;

@@ -42,6 +42,25 @@ export const orgRegister = async (data: any) => {
   }
 };
 
+export const negotiatorRegister = async (data: any) => {
+  try {
+    const config = {
+      method: "post",
+      url: "negotiator/register",
+      data,
+    };
+    const responseData = await request(config);
+    if (responseData) {
+      toast.success("User Registered!");
+    }
+    return responseData;
+  } catch (error: any) {
+    console.error(error);
+    toast.error(`${error?.response?.data?.message || error?.message}`);
+    return error
+  }
+};
+
 // Login function
 export const login = async (data: any) => {
   try {

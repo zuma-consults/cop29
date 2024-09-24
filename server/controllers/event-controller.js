@@ -111,6 +111,7 @@ module.exports = {
     });
   },
   createEventByAdmin: async (req, res) => {
+    let adminBookingBy = req.admin;
     upload(req, res, async (err) => {
       if (err) {
         return errorHandler(res, err.message || "File upload error", 400);
@@ -118,7 +119,7 @@ module.exports = {
 
       try {
         const { body, files } = req;
-        const { title, slotId, organizerId } = body;
+        const { title, slotId, organizer } = body;
 
         // Check if required fields are provided
         if (!title || !slotId) {
@@ -129,14 +130,14 @@ module.exports = {
           );
         }
 
-        const organizer = await User.findById(organizerId);
-        if (!organizer || organizer.userType !== "organization") {
-          return errorHandler(
-            res,
-            "Only organizations can create an Event.",
-            403
-          );
-        }
+        // const organizer_ = await User.findById(organizerId);
+        // if (!organizer_ || organizer_.userType !== "organization") {
+        //   return errorHandler(
+        //     res,
+        //     "Only organizations can create an Event.",
+        //     403
+        //   );
+        // }
 
         const slot = await Slot.findById(slotId);
         if (!slot) {
@@ -169,11 +170,10 @@ module.exports = {
         // Create new Event entry
         const newEvent = new Event({
           title,
-          organizerId,
-          organizer: `${organizer.name}  ${organizer.state}`,
+          organizer,
+          // organizer: `${organizer.name}  ${organizer.state}`,
           start,
           end,
-          image,
           slotId,
           ...body, // Spread remaining fields from the body, excluding the slotId
         });
@@ -182,13 +182,13 @@ module.exports = {
         await newEvent.save();
 
         // Update slot with booking details
-        slot.bookingStatus = "pending";
-        slot.bookingBy = organizerId;
+        slot.bookingStatus = "booked";
+        slot.adminBookingBy = adminBookingBy;
         slot.title = title;
         await slot.save();
 
         // Send success response
-        return successHandler(res, "Event Successfully Added.", newEvent);
+        return successHandler(res, "Meeting Successfully Scheduled.", newEvent);
       } catch (error) {
         return errorHandler(res, error.message, error.statusCode || 500);
       }
@@ -414,7 +414,7 @@ module.exports = {
       if (event.status !== "processing") {
         return errorHandler(
           res,
-          `Event status is not in processing state. Event has be ${event.status}.`,
+          `Event status is not in processing state. Event has been ${event.status}. already`,
           400
         );
       }
@@ -490,20 +490,21 @@ module.exports = {
   getAllInvoices: async (req, res) => {
     const page = parseInt(req.query.page, 10) || 1;
     const paid = req.query.paid || "";
-    const startDate = req.query.startDate ? new Date(req.query.startDate) : null;
+    const startDate = req.query.startDate
+      ? new Date(req.query.startDate)
+      : null;
     const endDate = req.query.endDate ? new Date(req.query.endDate) : null;
-  
+
     try {
       // Construct the cache key
       let cacheKey = `allInvoices-${paid}-${startDate}-${endDate}-${page}`;
       let query = {};
-  
-  
+
       // Add paid status filtering
       if (paid) {
         query.paid = { $eq: paid === "true" };
       }
-  
+
       // Add date range filtering
       if (startDate && endDate) {
         query.createdAt = { $gte: startDate, $lte: endDate };
@@ -512,7 +513,7 @@ module.exports = {
       } else if (endDate) {
         query.createdAt = { $lte: endDate };
       }
-  
+
       let invoices;
       if (myCache.has(cacheKey)) {
         invoices = myCache.get(cacheKey).invoices;
@@ -523,14 +524,14 @@ module.exports = {
           .sort({ createdAt: -1 })
           .skip((page - 1) * PAGE_SIZE)
           .limit(PAGE_SIZE);
-  
+
         const totalItems = await Invoice.countDocuments(query);
         myCache.set(cacheKey, { invoices, totalItems }, 10);
       }
-  
+
       const totalItems = myCache.get(cacheKey).totalItems;
       const totalPages = Math.ceil(totalItems / PAGE_SIZE);
-  
+
       const response = {
         currentPage: page,
         totalPages,
@@ -543,5 +544,4 @@ module.exports = {
       return errorHandler(res, error.message, error.statusCode || 500);
     }
   },
-  
 };

@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 // import { UserSummaryCardData } from "../../utils/datas/summary-card";
 // import { SummaryCard } from "../../components/custom";
-import { IoCreateSharp } from "react-icons/io5";
+
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   useAddAmin,
@@ -24,7 +24,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 interface UserFormInputs {
   firstName: string;
   lastName: string;
-  email: string;
+  username: string;
   password: string;
   phone: string;
   role: string;
@@ -56,7 +56,7 @@ const User: React.FC = () => {
     const userPayload = {
       firstName: data.firstName,
       lastName: data.lastName,
-      email: data.email,
+      username: data.username,
       password: data.password,
       phone: data.phone,
       role: data.role,
@@ -87,7 +87,7 @@ const User: React.FC = () => {
             <span className="text-sm font-extrabold text-[#2E7D31]">
               All Users
             </span>
-            <Button
+            {/* <Button
               onClick={() => setOpen(true)}
               sx={{
                 backgroundColor: "green",
@@ -108,7 +108,7 @@ const User: React.FC = () => {
             >
               Create a new user
               <IoCreateSharp size={20} />
-            </Button>
+            </Button> */}
           </div>
           <div className="">
             <div className="w-[103px] h-[8px] bg-[#2E7D31]"></div>
@@ -183,19 +183,13 @@ const User: React.FC = () => {
               ))}
             </TextField>
             <TextField
-              label="Email"
+              label="Username"
               variant="outlined"
               fullWidth
               margin="normal"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                  message: "Enter a valid email address",
-                },
-              })}
-              error={!!errors.email}
-              helperText={errors.email?.message}
+              {...register("username")}
+              error={!!errors.username}
+              helperText={errors.username?.message}
             />
             <TextField
               label="Phone"

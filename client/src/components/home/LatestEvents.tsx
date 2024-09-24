@@ -70,7 +70,7 @@ const LatestEvents: React.FC = () => {
     <section className="flex flex-wrap justify-center gap-4 py-10">
       <div className="w-[40%] h-[40%] md:w-[30%] md:h-[30%] lg:w-[20%] lg:h-[20%] overflow-hidden rounded-full">
         <img
-          src="/images/seal.png"
+          src="/images/coat.png"
           alt="seal of the president of Nigeria."
           className="object-cover w-full h-full rounded-full"
           loading="lazy"

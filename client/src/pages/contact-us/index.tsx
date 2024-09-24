@@ -1,30 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
-// Validation schema
+import { useContact } from "../../components/custom-hooks/usecontact";
+import { toast } from "react-toastify";
+import Loader from "../../components/ui/Loader";
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
-  email: Yup.string().email("Invalid email address").required("Email is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
   phone: Yup.string()
-    .matches(/^[0-9]{10}$/, "Phone number must be 10 digits")
-    .required("Phone number is required"),
-  message: Yup.string().required("Message is required"),
+    .required("Email is required"),
+  message: Yup.string()
+    .max(300, "Message must be 300 words or less")
+    .required("Message is required"),
 });
 
 const Contact: React.FC = () => {
+  const { mutate, isLoading, data } = useContact();
+
+  useEffect(() => {
+    if (data && data?.status) {
+      toast.success("Contact sent successfully", {
+        toastId: "contact us toast"
+      });
+    } 
+  }, [data]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <div className="flex flex-col md:flex-row h-screen bg-green-800">
-      <div className="flex-1 flex items-center justify-center ">
-
+      <div className="flex-1 flex items-center justify-center">
         <div
           className="bg-white w-full md:w-[480px] p-5 m-10 md:m-0 grid gap-3 rounded-lg"
           data-aos="zoom-in-right"
         >
           <div className="w-full h-max flex flex-col items-center justify-center gap-1">
             <img
-              src="/images/coat.svg"
-              alt="Description of image"
+              src="/images/coat.png"
+              alt="Logo"
               width={100}
               height={100}
               className="rounded-lg cursor-pointer"
@@ -40,8 +57,14 @@ const Contact: React.FC = () => {
             initialValues={{ name: "", email: "", phone: "", message: "" }}
             validationSchema={validationSchema}
             onSubmit={(values, { resetForm }) => {
-              console.log(values);
-              // Add your form submission logic here
+              const formattedData = {
+                name: values.name,
+                email: values.email,
+                phone: values.phone,
+                message: values.message,
+              };
+
+              mutate(formattedData)
               resetForm();
             }}
           >
@@ -124,7 +147,7 @@ const Contact: React.FC = () => {
         <div className="absolute inset-0 bg-co-primary opacity-50"></div>
         <img
           src="/images/globe.jpg"
-          alt="Image description"
+          alt="Background"
           className="w-full h-full object-cover"
         />
       </div>
@@ -134,7 +157,7 @@ const Contact: React.FC = () => {
         <div className="absolute inset-0 bg-co-primary opacity-50"></div>
         <img
           src="/images/globe.jpg"
-          alt="Image description"
+          alt="Mobile Background"
           className="absolute inset-0 w-full h-full object-cover"
         />
       </div>

@@ -1,20 +1,16 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Chip,
-  Modal,
-  Typography,
-} from "@mui/material";
+import { Button, Chip } from "@mui/material";
 import React, { useState, useMemo, useEffect, useCallback } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
-import { useOrganisation } from "../../hooks/useOrganisation";
+import {
+  useApproveOrganisation,
+  useDeclineOrganisation,
+  useOrganisation,
+} from "../../hooks/useOrganisation";
 import Loader from "../ui/Loader";
-import ColumnFilter from "../columnFilter";
+import { Link } from "react-router-dom";
+import { useGetProfile } from "../../hooks/useAuth";
 
 interface TableRow {
   id: number;
@@ -24,15 +20,13 @@ interface TableRow {
   category: string;
   state: string;
   status: string;
-  userType: string;
   organizationType: string;
   image: string;
 }
 
 const OrganisationTable: React.FC = () => {
   const [_, setPage] = useState(1);
-  const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
-
+  const [selectedOrgnisation, setSelectedOrgnisation] = useState<any>(null);
   const [filters, setFilters] = useState({
     userType: "organization",
   });
@@ -43,6 +37,11 @@ const OrganisationTable: React.FC = () => {
     }),
     [filters.userType]
   );
+
+  const { mutate: mutateApproval, isLoading: loadingOrganisation } =
+    useApproveOrganisation();
+  const { mutate: mutateDecline, isLoading: loadingDecline } =
+    useDeclineOrganisation();
 
   const { data, isFetching, refetch } = useOrganisation(memoizedFilters);
 
@@ -73,15 +72,15 @@ const OrganisationTable: React.FC = () => {
     setPage(page);
   }, []);
 
-  const handleAccept = useCallback(() => {
-    console.log("Accepted");
-    setSelectedEvent(null);
-  }, []);
-
-  const handleReject = useCallback(() => {
-    console.log("Rejected");
-    setSelectedEvent(null);
-  }, []);
+  const handelActionEvent = async (type: string) => {
+    if (type === "approve") {
+      mutateApproval(selectedOrgnisation?.id);
+      setSelectedOrgnisation(null);
+    } else {
+      mutateDecline(selectedOrgnisation?.d);
+      setSelectedOrgnisation(null);
+    }
+  };
 
   useEffect(() => {
     refetch();
@@ -105,28 +104,15 @@ const OrganisationTable: React.FC = () => {
   const columns: TableColumn<TableRow>[] = [
     {
       name: "Name",
-      selector: (row: { name: any }) => row.name ?? "N/A",
+      selector: (row: { name: any }) => row?.name ?? "N/A",
     },
     {
       name: "Email",
-      selector: (row: { email: any }) => row.email ?? "N/A",
+      selector: (row: { email: any }) => row?.email ?? "N/A",
     },
     {
       name: "Phone",
-      selector: (row: { phone: any }) => row.phone ?? "N/A",
-    },
-    {
-      name: (
-        <Box style={{ display: "flex", alignItems: "center" }}>
-          <Typography className="capitalize">Type</Typography>
-          <ColumnFilter
-            columnKey="userType"
-            onFilterChange={handleFilterChange}
-            onResetFilter={handleResetFilter}
-          />
-        </Box>
-      ),
-      selector: (row: { userType: any }) => row.userType ?? "N/A",
+      selector: (row: { phone: any }) => row?.phone ?? "N/A",
     },
     {
       name: "Organization Type",
@@ -136,7 +122,7 @@ const OrganisationTable: React.FC = () => {
 
     {
       name: "Status",
-      selector: (row: { status: any }) => row.status ?? "N/A",
+      selector: (row: { status: any }) => row?.status ?? "N/A",
       cell: (row: {
         status:
           | string
@@ -158,30 +144,35 @@ const OrganisationTable: React.FC = () => {
     },
     {
       name: "Action",
-      cell: (row: React.SetStateAction<TableRow | null>) => (
+      cell: (row) => (
         <div className="flex justify-end cursor-pointer">
-          <Button
-            sx={{
-              backgroundColor: "green",
-              color: "white",
-              width: "100px",
-              paddingY: "8px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              textAlign: "center",
-              fontSize: "13px",
-              gap: "8px",
-              "&:hover": {
-                backgroundColor: "#e8f5e9",
-                color: "black",
-              },
-            }}
-            onClick={() => setSelectedEvent(row)}
+          <Link
+            to={`/organizations/${row?.id}`}
+            state={{ ...row }}
+            className="w-[150px] cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
           >
-            View
-            <GoArrowRight size={19} />
-          </Button>
+            <Button
+              sx={{
+                backgroundColor: "green",
+                color: "white",
+                width: "100%",
+                paddingY: "8px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+                fontSize: "13px",
+                gap: "8px",
+                "&:hover": {
+                  backgroundColor: "#e8f5e9",
+                  color: "black",
+                },
+              }}
+            >
+              View Details
+              <GoArrowRight size={19} />
+            </Button>
+          </Link>
         </div>
       ),
       ignoreRowClick: true,
@@ -191,33 +182,42 @@ const OrganisationTable: React.FC = () => {
     },
   ];
 
+  const { data: userData } = useGetProfile();
+  const userProfile = useMemo(() => userData?.data, [userData]);
+  const hasExportModule = useMemo(
+    () => userProfile?.role?.modules?.includes("export"),
+    [userProfile]
+  );
+
   return (
     <>
       {isFetching && <Loader />}
       <div className="rounded-[.5rem] px-2 bg-white shadow">
         <div className="flex items-center md:flex-row flex-col justify-start py-2">
-          <Button
-            sx={{
-              backgroundColor: "green",
-              color: "white",
-              width: "fit-content",
-              paddingY: "8px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              textAlign: "center",
-              fontSize: "13px",
-              gap: "8px",
-              "&:hover": {
-                backgroundColor: "#e8f5e9",
-                color: "black",
-              },
-            }}
-            onClick={handleDownloadCSV}
-          >
-            Export to Excel
-            <GoDownload size={20} />
-          </Button>
+          {hasExportModule && (
+            <Button
+              sx={{
+                backgroundColor: "green",
+                color: "white",
+                width: "fit-content",
+                paddingY: "8px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+                fontSize: "13px",
+                gap: "8px",
+                "&:hover": {
+                  backgroundColor: "#e8f5e9",
+                  color: "black",
+                },
+              }}
+              onClick={handleDownloadCSV}
+            >
+              Export to Excel
+              <GoDownload size={20} />
+            </Button>
+          )}
         </div>
         <DataTable
           highlightOnHover={true}
@@ -230,116 +230,6 @@ const OrganisationTable: React.FC = () => {
           fixedHeaderScrollHeight="600px"
           onChangePage={handlePageChange}
         />
-
-        <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>
-          <Box
-            sx={{
-              position: "absolute" as "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: { xs: "90%", sm: "80%", md: "60%" },
-              maxHeight: "90vh",
-              overflowY: "auto",
-              bgcolor: "background.paper",
-              boxShadow: 24,
-              p: 4,
-              outline: "none",
-              borderRadius: "8px",
-            }}
-          >
-            {selectedEvent && (
-              <Card>
-                {/* Render the Organization Logo */}
-                <div className="flex justify-center items-center">
-                  <CardMedia
-                    component="img"
-                    height="200" // You can adjust this value as needed
-                    image={selectedEvent.image}
-                    alt={`${selectedEvent.name} Logo`}
-                    sx={{
-                      objectFit: "contain",
-                      marginBottom: "16px",
-                      // Optional: Set a maximum width to prevent stretching
-                      maxWidth: "20%",
-                    }}
-                  />
-                </div>
-
-                <CardContent className="flex flex-col justify-center items-center gap-5">
-                  {/* Render Name */}
-                  <Typography variant="body1" component="div">
-                    <strong>Name: </strong> {selectedEvent.name}
-                  </Typography>
-
-                  {/* Render Email */}
-                  <Typography variant="body1" component="div">
-                    <strong>Email: </strong> {selectedEvent.email}
-                  </Typography>
-
-                  {/* Render Phone */}
-                  <Typography variant="body1" component="div">
-                    <strong>Phone: </strong> {selectedEvent.phone}
-                  </Typography>
-
-                  {/* Render State */}
-                  <Typography
-                    variant="body1"
-                    component="div"
-                    className="capitalize"
-                  >
-                    <strong>State: </strong> {selectedEvent.state}
-                  </Typography>
-
-                  {/* Render Category */}
-                  <Typography variant="body1" component="div">
-                    <strong>Category: </strong> {selectedEvent.category}
-                  </Typography>
-
-                  {/* Render Organization Type */}
-                  <Typography variant="body1" component="div">
-                    <strong>Organization Type: </strong>{" "}
-                    {selectedEvent.organizationType}
-                  </Typography>
-
-                  {/* Render Status */}
-                  <Typography variant="body1" component="div">
-                    <strong>Status: </strong>
-                    {selectedEvent.status === "approved" ? (
-                      <Chip
-                        label={selectedEvent.status}
-                        color="success"
-                        className="capitalize"
-                      />
-                    ) : (
-                      <Chip label={selectedEvent.status} color="error" />
-                    )}
-                  </Typography>
-
-                  {/* Action Buttons for Pending Status */}
-                  {selectedEvent.status === "Pending" && (
-                    <Box className="flex justify-between gap-5 mt-4">
-                      <Button
-                        variant="contained"
-                        color="success"
-                        onClick={handleAccept}
-                      >
-                        Accept
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={handleReject}
-                      >
-                        Reject
-                      </Button>
-                    </Box>
-                  )}
-                </CardContent>
-              </Card>
-            )}
-          </Box>
-        </Modal>
       </div>
     </>
   );

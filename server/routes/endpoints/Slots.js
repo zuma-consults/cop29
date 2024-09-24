@@ -1,7 +1,7 @@
 const { getAllSlots } = require("../../controllers/slot-controller");
-const { auth } = require("../../middlewares/middleware");
+const { auth, authRole } = require("../../middlewares/middleware");
 let routes = (app) => {
-  app.get("/slots",  getAllSlots);
+  app.get("/slots", getAllSlots);
 };
 
 module.exports = routes;

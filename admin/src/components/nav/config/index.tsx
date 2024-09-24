@@ -1,26 +1,32 @@
 import { CgOrganisation } from "react-icons/cg";
-import { IoIosPeople } from "react-icons/io";
 import { MdEvent } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
+import { FaPersonBreastfeeding } from "react-icons/fa6";
 import { FaCalendarAlt } from "react-icons/fa";
-// import { GrAnnounce } from "react-icons/gr";
 import { TbSquareLetterC } from "react-icons/tb";
+import { RiContactsBook3Fill } from "react-icons/ri";
+import { TiWorldOutline } from "react-icons/ti";
 
 export const navConfig = [
   {
-    title: "Events",
+    title: "Scheduled meetings",
     icon: <MdEvent size={24} />,
-    path: "/events",
+    path: "/meetings",
   },
-  {
-    title: "Delegates",
-    icon: <IoIosPeople size={24} />,
-    path: "/delegate",
-  },
+  // {
+  //   title: "Delegates",
+  //   icon: <IoIosPeople size={24} />,
+  //   path: "/delegate",
+  // },
   {
     title: "Organizations",
     icon: <CgOrganisation size={24} />,
-    path: "/organization",
+    path: "/organizations",
+  },
+  {
+    title: "Negotiators",
+    icon: <FaPersonBreastfeeding size={24} />,
+    path: "/negotiators",
   },
 
   // {
@@ -31,26 +37,31 @@ export const navConfig = [
   {
     title: "Calendar",
     icon: <FaCalendarAlt size={24} />,
-    path: "/calender",
+    path: "/calendar",
   },
   {
     title: "Users",
     icon: <RiAdminFill size={24} />,
     path: "/user",
   },
-  {
-    title: "PA Calender",
-    icon: <FaCalendarAlt size={24} />,
-    path: "/pacalender",
-  },
+  // {
+  //   title: "PA Calendar",
+  //   icon: <FaCalendarAlt size={24} />,
+  //   path: "/pacalender",
+  // },
   {
     title: "COP Applicants",
     icon: <TbSquareLetterC size={24} />,
-    path: "/cop",
+    path: "/applicants",
   },
-  // {
-  //   title: "Announcements",
-  //   icon: <GrAnnounce size={24} />,
-  //   path: "/announcement",
-  // },
+  {
+    title: "Contact us Messages",
+    icon: <RiContactsBook3Fill size={24} />,
+    path: "/contacts",
+  },
+  {
+    title: "International Requests",
+    icon: <TiWorldOutline size={24} />,
+    path: "/international",
+  },
 ];

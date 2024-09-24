@@ -11,33 +11,52 @@ import {
   Select,
   Typography,
 } from "@mui/material";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
 import Loader from "../ui/Loader";
 import {
   useApproveCopEvent,
+  useDeclineCopEvent,
   useGetAllCopApplicants,
 } from "../../hooks/useEvent";
+import { useGetProfile } from "../../hooks/useAuth";
 
 interface TableRow {
-  _id: string;
+  _id: any;
   name: string;
   email: string;
   passport: string;
   delegatedBy: string;
-  copApproved: boolean;
+  copApproved: string;
 }
 
 const CopTable: React.FC = () => {
   const [_, setPage] = useState(1);
 
-  const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
+  const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
+  const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
+  // const [status, setStatus] = useState(event.status);
+  const handleApproveClick = () => setOpenApproveDialog(true);
+  const handleDeclineClick = () => setOpenDeclineDialog(true);
+  const handleClose = () => {
+    setOpenApproveDialog(false);
+    setOpenDeclineDialog(false);
+  };
+
+  const [selectedCop, setSelectedCop] = useState<TableRow | null>(null);
   const [filters, setFilters] = useState({
-    copApproved: true,
+    copApproved: "",
   });
 
-  const handleFilterChange = (key: string, value: boolean) => {
+  const handleFilterChange = (key: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [key]: value,
@@ -46,20 +65,18 @@ const CopTable: React.FC = () => {
 
   const memoizedFilters = useMemo(() => filters, [filters]);
 
-  const { data, isFetching, refetch } = useGetAllCopApplicants(memoizedFilters);
-  const { mutate: mutateApproval } = useApproveCopEvent();
+  const { data, refetch, isFetching } = useGetAllCopApplicants(memoizedFilters);
+  const { mutate: mutateApproval, isLoading: loadingApproval } =
+    useApproveCopEvent();
+  const { mutate: mutateDecline, isLoading: loadingDecline } =
+    useDeclineCopEvent();
 
-  const handleApprove = (id: any) => {
-    setSelectedEvent(null);
-
-    mutateApproval(id, {
-      onSuccess: () => {
-        refetch();
-      },
-      onError: () => {
-        refetch();
-      },
-    });
+  const handelActionCop = async (type: string) => {
+    if (type === "approved") {
+      mutateApproval(selectedCop?._id);
+    } else {
+      mutateDecline(selectedCop?._id);
+    }
   };
 
   const handleDownloadCSV = () => {
@@ -92,15 +109,15 @@ const CopTable: React.FC = () => {
   const columns: TableColumn<TableRow>[] = [
     {
       name: "Name",
-      selector: (row) => row.name ?? "N/A",
+      selector: (row) => row?.name ?? "N/A",
     },
     {
       name: "Email",
-      selector: (row) => row.email ?? "N/A",
+      selector: (row) => row?.email ?? "N/A",
     },
     {
       name: "Delegated By",
-      selector: (row) => row.delegatedBy ?? "N/A",
+      selector: (row) => row?.delegatedBy ?? "N/A",
     },
 
     {
@@ -109,12 +126,16 @@ const CopTable: React.FC = () => {
           <Typography className="capitalize">COP Approved</Typography>
         </Box>
       ),
-      cell: (row) =>
-        row.copApproved ? (
+      cell: (row) => {
+        // Check if copApproved is a string and compare its value
+        return row?.copApproved === "approved" ? (
           <Chip label="Approved" color="success" className="capitalize" />
+        ) : row?.copApproved === "pending" ? (
+          <Chip label="Pending" color="warning" />
         ) : (
-          <Chip label="Pending" color="error" />
-        ),
+          <Chip label="Rejected" color="error" />
+        );
+      },
     },
 
     {
@@ -138,7 +159,7 @@ const CopTable: React.FC = () => {
                 color: "black",
               },
             }}
-            onClick={() => setSelectedEvent(row)}
+            onClick={() => setSelectedCop(row)}
           >
             View
             <GoArrowRight size={19} />
@@ -152,52 +173,65 @@ const CopTable: React.FC = () => {
     },
   ];
 
+  const { data: userData } = useGetProfile();
+  const userProfile = useMemo(() => userData?.data, [userData]);
+  const hasExportModule = useMemo(
+    () => userProfile?.role?.modules?.includes("export"),
+    [userProfile]
+  );
+  
   return (
     <>
-      {isFetching && <Loader />}
+      {(isFetching || loadingApproval || loadingDecline) && <Loader />}
+
       <div className="rounded-[.5rem] px-2 bg-white shadow">
         <div className="flex items-center md:flex-row flex-col justify-between py-2">
-          <Button
-            sx={{
-              backgroundColor: "green",
-              color: "white",
-              width: "fit-content",
-              paddingY: "8px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              textAlign: "center",
-              fontSize: "13px",
-              gap: "8px",
-              "&:hover": {
-                backgroundColor: "#e8f5e9",
-                color: "black",
-              },
-            }}
-            onClick={handleDownloadCSV}
-          >
-            Export to Excel
-            <GoDownload size={20} />
-          </Button>
+          {hasExportModule && (
+            <Button
+              sx={{
+                backgroundColor: "green",
+                color: "white",
+                width: "fit-content",
+                paddingY: "8px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+                fontSize: "13px",
+                gap: "8px",
+                "&:hover": {
+                  backgroundColor: "#e8f5e9",
+                  color: "black",
+                },
+              }}
+              onClick={handleDownloadCSV}
+            >
+              Export to Excel
+              <GoDownload size={20} />
+            </Button>
+          )}
           <Box sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1 }}>
             <Select
               color="success"
-              value={filters.copApproved ? "Approved" : "Pending"}
-              onChange={(event) =>
-                handleFilterChange(
-                  "copApproved",
-                  event.target.value === "Approved"
-                )
+              value={filters.copApproved}
+              onChange={(e) =>
+                handleFilterChange("copApproved", e.target.value)
               }
               displayEmpty
               inputProps={{ "aria-label": "Filter by COP Approved" }}
               style={{ minWidth: "120px" }}
             >
-              <MenuItem color="success" value="Approved">
+              <MenuItem color="success" value="">
+                All
+              </MenuItem>
+              <MenuItem color="success" value="approved">
                 Approved List
               </MenuItem>
-              <MenuItem color="success" value="Pending">
+              <MenuItem color="success" value="pending">
                 Pending List
+              </MenuItem>
+              <MenuItem color="success" value="rejected">
+                Rejected List
               </MenuItem>
             </Select>
           </Box>
@@ -214,7 +248,7 @@ const CopTable: React.FC = () => {
           onChangePage={handlePageChange}
         />
 
-        <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>
+        <Modal open={!!selectedCop} onClose={() => setSelectedCop(null)}>
           <Box
             sx={{
               position: "absolute" as "absolute",
@@ -231,15 +265,15 @@ const CopTable: React.FC = () => {
               borderRadius: "8px",
             }}
           >
-            {selectedEvent && (
+            {selectedCop && (
               <Card>
                 {/* Render the Organization Logo */}
                 <div className="flex justify-center items-center">
                   <CardMedia
                     component="img"
                     height="200"
-                    image={selectedEvent.passport}
-                    alt={`${selectedEvent.name} Logo`}
+                    image={selectedCop?.passport}
+                    alt={`${selectedCop?.name} Logo`}
                     sx={{
                       objectFit: "contain",
                       marginBottom: "16px",
@@ -252,40 +286,53 @@ const CopTable: React.FC = () => {
                 <CardContent className="flex flex-col justify-center items-center gap-5">
                   {/* Render Name */}
                   <Typography variant="body1" component="div">
-                    <strong>Name: </strong> {selectedEvent.name}
+                    <strong>Name: </strong> {selectedCop?.name}
                   </Typography>
 
                   {/* Render Email */}
                   <Typography variant="body1" component="div">
-                    <strong>Email: </strong> {selectedEvent.email}
+                    <strong>Email: </strong> {selectedCop?.email}
                   </Typography>
 
                   {/* Render Organization Type */}
                   <Typography variant="body1" component="div">
-                    <strong>Type: </strong> {selectedEvent.delegatedBy}
+                    <strong>Organization: </strong> {selectedCop?.delegatedBy}
                   </Typography>
 
                   {/* Render Status */}
                   <Typography variant="body1" component="div">
                     <strong>Status: </strong>
-                    {selectedEvent.copApproved ? (
+                    {selectedCop?.copApproved === "approved" ? (
                       <Chip
                         label="Approved"
                         color="success"
                         className="capitalize"
                       />
                     ) : (
-                      <Chip label="Pending" color="error" />
+                      <Chip label="Pending" color="warning" />
                     )}
                   </Typography>
-                  {!selectedEvent.copApproved && (
-                    <Button
-                      variant="contained"
-                      color="success"
-                      onClick={() => handleApprove(selectedEvent._id)}
-                    >
-                      Click to Approve
-                    </Button>
+                  {selectedCop?.copApproved == "pending" && (
+                    <div className="flex items-center justify-end gap-10">
+                      <Button
+                        variant="contained"
+                        color="success"
+                        className="absolute bottom-0 right-0"
+                        onClick={handleApproveClick}
+                        disabled={loadingApproval}
+                      >
+                        Approve
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        className="absolute bottom-0 right-0"
+                        onClick={handleDeclineClick}
+                        disabled={loadingDecline}
+                      >
+                        Reject
+                      </Button>
+                    </div>
                   )}
                 </CardContent>
               </Card>
@@ -293,6 +340,51 @@ const CopTable: React.FC = () => {
           </Box>
         </Modal>
       </div>
+      <Dialog open={openApproveDialog} onClose={handleClose}>
+        <DialogTitle>Confirm Approval</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to approve this Delegate
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleClose();
+              handelActionCop("approved");
+            }}
+            color="success"
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openDeclineDialog} onClose={handleClose}>
+        <DialogTitle>Confirm reject</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to reject this Delegate
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleClose();
+              handelActionCop("rejected");
+            }}
+            color="error"
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

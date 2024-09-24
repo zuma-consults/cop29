@@ -4,15 +4,15 @@ import { useGetProfile } from "../../components/custom-hooks/useAuth";
 import Loader from "../../components/ui/Loader";
 import { Link } from "react-router-dom";
 import AddDelegateModal from "./add-delegate-modal";
+
 interface Delegate {
   name: string;
   email: string;
   passport: string;
   delegatedBy: string;
-  copApproved: boolean;
+  copApproved: string;
   _id: string;
 }
-
 
 const delegateColumns = [
   {
@@ -35,20 +35,26 @@ const delegateColumns = [
     cell: (row: Delegate) => (
       <span
         className={`inline-block px-3 py-1 text-white rounded-full ${
-          row.copApproved ? "bg-green-500" : "bg-yellow-500"
+          row.copApproved === "approved"
+            ? "bg-green-500"
+            : row.copApproved === "rejected"
+            ? "bg-red-500"
+            : "bg-yellow-500"
         }`}
       >
-        {row.copApproved ? "Approved" : "Pending"}
+        {row.copApproved.toUpperCase()}
       </span>
     ),
     sortable: true,
   },
 ];
 
-
 const Profile: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const { data: user, isLoading, refetch } = useGetProfile();
+  const accreditationType = localStorage.getItem("accreditationType");
+  const allow = localStorage.getItem("allow");
+  // localStorage.setItem("allow", "profile");
 
   if (isLoading) {
     return <Loader />;
@@ -58,27 +64,38 @@ const Profile: React.FC = () => {
 
   return (
     <div className="pb-[5%] md:pb-[2%] flex items-center justify-center flex-col gap-10 px-5 md:px-20 relative">
-      {!organizationData ? (
-        <div className="text-center py-[50px] border-2 border-orange-600 w-full my-20 bg-orange-100">
-          <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
-            You need to log in to view your activities.
-          </h1>
-          <p className="text-gray-600 mb-6">
-            Please log in or register to access your profile and view events.
-          </p>
-          <div className="flex flex-col md:flex-row justify-center gap-4">
-            <Link
-              to="/login"
-              className="bg-co-primary text-white py-2 px-4 rounded hover:bg-green-800 transition"
-            >
-              Log In
-            </Link>
-            <Link
-              to="/signup"
-              className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
-            >
-              Register
-            </Link>
+      {allow !== "profile" ? (
+        <div className="flex items-center w-full justify-center text-center p-[50px] border-2 border-orange-600 my-20 bg-orange-100 mx-10 h-[50vh]">
+          <div>
+            <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
+              You need to create an account to request for accreditation
+            </h1>
+            <p className="text-gray-600 mb-6">
+              Please log in or create account.
+            </p>
+            <div className="flex flex-col md:flex-row justify-center gap-4">
+              <Link
+                to="/login"
+                className="bg-co-primary text-white py-2 px-4 rounded hover:bg-green-800 transition"
+              >
+                Log In
+              </Link>
+              {accreditationType === "delegates" ? (
+                <Link
+                  to="/signup"
+                  className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+                >
+                  Create Account as Organization
+                </Link>
+              ) : (
+                <Link
+                  to="/negotiator"
+                  className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+                >
+                  Create Account as Negotiator
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       ) : (
@@ -92,55 +109,80 @@ const Profile: React.FC = () => {
             className="rounded-lg w-[100%] md:w-full flex justify-center items-center md:items-start py-20 mt-10 relative"
           >
             <div className="absolute inset-0 bg-co-primary opacity-50 rounded-lg"></div>
-            <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold opacity-90">
+            <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold opacity-90 capitalize">
               Welcome {organizationData.name}!
             </h1>
           </div>
 
-          <div className="w-full flex items-start justify-between bg-green-50 shadow rounded-lg p-6">
+          <div className="w-full flex items-start md:justify-between flex-wrap gap-5 bg-green-50 shadow rounded-lg p-6">
             <div>
-              <h2 className="text-xl md:text-2xl font-bold text-gray-800 capitalize">
-                {organizationData.name}
-              </h2>
               <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
-                {organizationData.email}
+                Email:{" "}
+                <span className="lowercase">{organizationData.email}</span>
               </p>
               <p className="text-sm md:text-base text-gray-600 mt-2">
-                {organizationData.phone}
+                Phone: {organizationData.phone}
               </p>
               <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
-                {organizationData.userType}
+                User Type: {organizationData.userType}
               </p>
               <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
-                {organizationData.organizationType}
+                Organization Type: {organizationData.organizationType}
+              </p>
+              <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
+                State: {organizationData.state}
+              </p>
+              <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
+                Category: {organizationData.category}
+              </p>
+              <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
+                Status:{" "}
+                <span
+                  className={`inline-block px-3 py-1 text-white rounded-full ${
+                    organizationData.status === "approved"
+                      ? "bg-green-500"
+                      : "bg-yellow-500"
+                  }`}
+                >
+                  {organizationData.status}
+                </span>
               </p>
             </div>
-            {organizationData.userType === "organization" && (
-              <button
-                onClick={() => setModalOpen(true)}
-                className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
-              >
-                Add Organization Delegates
-              </button>
-            )}
+
+            {organizationData.userType === "organization" &&
+              organizationData.category !== "Negotiator" && (
+                <button
+                  onClick={() => setModalOpen(true)}
+                  className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+                >
+                  Add Delegate(s) / Nominee(s) for your Organization
+                </button>
+              )}
           </div>
 
-          <div className="w-full bg-gray-100 rounded-lg p-6 mt-4">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
-              Status Info
-            </h2>
-            <DataTable
-              columns={delegateColumns}
-              data={organizationData.delegates || []}
-              pagination
-              highlightOnHover
-              pointerOnHover
-              responsive
-            />
-          </div>
+          {organizationData.category !== "Negotiator" && (
+            <div className="w-full bg-gray-100 rounded-lg p-6 mt-4">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
+                Delegates
+              </h2>
+              <DataTable
+                columns={delegateColumns}
+                data={organizationData.delegates || []}
+                pagination
+                highlightOnHover
+                pointerOnHover
+                responsive
+              />
+            </div>
+          )}
 
           {/* Custom Modal Component */}
-          <AddDelegateModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} refetch={refetch} id={user?.data?.id} />
+          <AddDelegateModal
+            isOpen={isModalOpen}
+            onClose={() => setModalOpen(false)}
+            refetch={refetch}
+            id={user?.data?.id}
+          />
         </>
       )}
     </div>

@@ -14,8 +14,6 @@ function ResetPassword() {
   const [, setCookie] = useCookies(["accessToken"]);
   const { id } = useParams();
 
-  console.log(id, 'id')
-
   if(!id) {
     return
   }

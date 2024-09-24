@@ -17,6 +17,24 @@ body {
 .alice-carousel__wrapper .alice-carousel__next-btn {
   display: none !important;
 }
+/* Prevent text selection */
+/* Prevent text selection */
+* {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE10+/Edge */
+  user-select: none;         /* Standard */
+}
+
+
+/* Prevent dragging images or elements */
+img, a {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
 
 .react-player {
   background: #000;
@@ -25,4 +43,12 @@ body {
   border: 5px solid #6bee99;
   border-radius: 20px !important;
   overflow: hidden;
+}
+:root {
+  color-scheme: light; /* Force light mode */
+}
+
+body {
+  background-color: #ffffff; /* Ensure background is white */
+  color: #000000; /* Ensure text is black */
 }

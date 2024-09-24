@@ -57,12 +57,36 @@ export const categories = [
 ];
 
 export const organizationTypes = [
-  "  Ministries, Departments, and Agencies (MDA)",
-  " Civil Society Organization (CSO)",
-  "  Non-Governmental Organization (NGO)",
-  "State",
+  "Ministries, Departments, and Agencies (MDA)",
+  "National Assembly",
+  "House of Assembly",
+  "State Government",
+  "State Assembly",
   "Private Sector",
-  "International Organization",
+  "Others",
+];
+
+export const thematicAreas = [
+  "Agriculture and Food Security",
+  "Biodiversity",
+  "Ecosystems and Water Resources",
+  "Human Settlements",
+  "Oceans",
+  "Health",
+  "Private Sector Initiative",
+  "Gender Sensitive Aproaches",
+  "Local Indigenous and Traditional Knowledge",
+  "Mountains",
+  "Climate Adaptation and Resilience",
+  "Energy Transition",
+  "Sustainable Agriculture",
+  "Climate Finance",
+  "Youth and Gender Inclusion",
+  "Loss and Damage",
+  "International Cooperation and Partnerships ",
+  "Disaster Risk Reduction ",
+  "Climate Education and Awareness",
+  "Others",
 ];
 
 export const faqs = [
@@ -93,8 +117,7 @@ export const faqs = [
   },
   {
     title: "I want to be part of Nigeria’s delegation; what are the criteria?",
-    content:
-      "Please visit the NCCC website for details on the criteria: www.nccc.gov.ng",
+    content: "Please check the important notice section of this portal.",
   },
   // {
   //   title: "Is Nigeria planning to have a pavilion at COP29?",
@@ -161,39 +184,41 @@ export const links = [
 export const howItWorks = [
   {
     icons: [IoPersonSharp],
-    title: "Register as a Delegate",
+    title: "Request Accreditation (Delegates)",
     description:
-      "Provide your Name, Email Address, and Phone Number. All fields are required.",
-    confirmation: "Confirm your email address.",
+      "An account must be created by an authorized contact person on behalf of the organization., Please review the important notice thoroughly., Proceed to complete the form as the designated contact person ensuring all required documents are submitted for account creation.",
+    confirmation: "Please confirm your email address., Then proceed to log in.",
     desHeader:
-      "Ensure all information matches your official photo ID, which you will present at the registration desk.",
-    buttonText: "Register",
+      "A contact person can also be a delegate, An email of approval of accreditation request is awaited with the time slot attached and approved delegates sent email containing their details.",
+    buttonText: "Create Account",
     link: "/signup",
-    login: "Upload your delegate credentials and await approval.",
-  },
-  {
-    icons: [IoCreateOutline],
-    title: "Book a Slot",
-    description:
-      "Provide the Event Name, Email Address, and Phone Number. All fields are required.",
-    confirmation: "Confirm your email address.",
-    desHeader:
-      "Ensure all information matches your official photo ID, which you will present at the registration desk.",
-    buttonText: "Book a Slot",
-    link: "/create-event",
     login:
-      "Select a date and time slot for your event. Await approval and invoice. Make the payment and upload proof of payment.",
+      "Visit your profile page., Add delegates from your organization with accurate data matching their official ID and passport data page.",
   },
+  // {
+  //   icons: [IoCreateOutline],
+  //   title: "Book a Slot",
+  //   description:
+  //     "Provide the Event Name, Email Address, and Phone Number. All fields are required.",
+  //   confirmation: "Confirm your email address.",
+  //   desHeader:
+  //     "Ensure all information matches your official photo ID, which you will present at the registration desk.",
+  //   buttonText: "Book a Slot",
+  //   link: "/create-event",
+  //   login:
+  //     "Select a date and time slot for your event. Await approval and invoice. Make the payment and upload proof of payment.",
+  // },
   {
     icons: [CgOrganisation],
-    title: "Register as an Organization",
+    title: "Request Accreditation (Negotiators)",
     description:
-      "Provide your Organization's Name, Email Address, Phone Number, and a Letter of Approval from your Organization.",
-    confirmation: "Confirm your email address.",
+      "Please review the important notice thoroughly., Proceed to complete the form ensuring all required documents are submitted for account creation.",
+    confirmation:
+      "Confirm your email address to complete your request., Then proceed to log in., Visit your profile page to check your application status.",
     desHeader:
       "Ensure all information matches your official photo ID, which you will present at the registration desk.",
-    buttonText: "Register",
-    link: "/signup",
-    login: "Upload your organization's credentials and await approval.",
+    buttonText: "Create Account",
+    link: "/negotiator",
+    // login: "Upload your organization's credentials and await approval.",
   },
 ];

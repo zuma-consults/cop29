@@ -9,8 +9,8 @@ const Role = require("../models/role");
 module.exports = {
   createAdmin: async (req, res) => {
     try {
-      const { firstName, lastName, password, email } = req.body;
-      if (!firstName || !lastName || !email || !password) {
+      const { firstName, lastName, password, username } = req.body;
+      if (!firstName || !lastName || !username || !password) {
         return errorHandler(
           res,
           "Please fill in all fields, one or more fields are empty!",
@@ -18,7 +18,7 @@ module.exports = {
         );
       }
 
-      const findAdmin = await Admin.findOne({ email });
+      const findAdmin = await Admin.findOne({ username });
 
       if (findAdmin) {
         return errorHandler(res, "The admin already has an account", 409);
@@ -34,7 +34,7 @@ module.exports = {
       const passwordHash = await bcrypt.hash(password, 12);
       const newAdmin = new Admin({
         name: `${firstName} ${lastName}`,
-        email,
+        username,
         ...req.body,
         password: passwordHash,
       });
@@ -46,10 +46,10 @@ module.exports = {
   },
   login: async (req, res) => {
     try {
-      const { email, password } = req.body;
-      const admin = await Admin.findOne({ email });
+      const { username, password } = req.body;
+      const admin = await Admin.findOne({ username });
       if (!admin) {
-        return errorHandler(res, "Email or Password is incorrect.", 404);
+        return errorHandler(res, "Username or Password is incorrect.", 400);
       }
       if (admin.suspended) {
         return errorHandler(
@@ -60,7 +60,7 @@ module.exports = {
       }
       const isMatch = await bcrypt.compare(password, admin.password);
       if (!isMatch) {
-        return errorHandler(res, "Email or Password is incorrect.", 404);
+        return errorHandler(res, "Username or Password is incorrect.", 400);
       }
       const accessToken = await generateTokens(admin);
 
@@ -73,12 +73,17 @@ module.exports = {
     try {
       const { page = 1, limit = 50 } = req.query;
 
-      const admins = await Admin.find()
+      const excludedRoleId = "66e98036056837ca119e6868"; // The roleId to exclude
+
+      const admins = await Admin.find({ role: { $ne: excludedRoleId } }) // Exclude users with this roleId
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
-        .limit(parseInt(limit)).populate("role", "name");
+        .limit(parseInt(limit))
+        .populate("role", "name");
 
-      const totalAdmins = await Admin.countDocuments();
+      const totalAdmins = await Admin.countDocuments({
+        role: { $ne: excludedRoleId },
+      });
 
       // Prepare the response with pagination info
       const response = {
@@ -108,7 +113,10 @@ module.exports = {
   getAdminByToken: async (req, res) => {
     try {
       let id = req.admin;
-      let admin = await Admin.findOne({ _id: id }).populate("role", "name");
+      let admin = await Admin.findOne({ _id: id }).populate(
+        "role",
+        "name modules"
+      );
       if (!admin) return errorHandler(res, "No Admin found", 404);
       return successHandler(res, "Admin Found", admin);
     } catch (error) {
@@ -218,7 +226,9 @@ module.exports = {
   },
   getAllRoles: async (req, res) => {
     try {
-      const roles = await Role.find().sort({ name: 1 });
+      const roles = await Role.find({ name: { $ne: "Ghost" } }).sort({
+        name: 1,
+      });
 
       const message = `All Roles Found`;
 
@@ -232,9 +242,4 @@ module.exports = {
 function validatePassword(password) {
   const re = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$/;
   return re.test(password);
-}
-function validateEmail(email) {
-  // Regular expression for validating an Email
-  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return re.test(email);
 }

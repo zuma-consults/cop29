@@ -1,5 +1,5 @@
 import { useQuery, useMutation, QueryClient } from "react-query";
-import { login, logout, getProfile, register, orgRegister, activate, reset, forgot, resendActivation } from "../../services/auth";
+import { login, logout, getProfile, register, orgRegister, activate, reset, forgot, resendActivation, negotiatorRegister } from "../../services/auth";
 
 // Create instances of QueryClient and Cookies
 const queryClient = new QueryClient();
@@ -19,8 +19,16 @@ export const useRegister = () => {
     },
   });
 };
+
 export const useOrgRegister = () => {
   return useMutation(orgRegister, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("profile");
+    },
+  });
+};
+export const useNegotiatorRegister = () => {
+  return useMutation(negotiatorRegister, {
     onSuccess: () => {
       queryClient.invalidateQueries("profile");
     },

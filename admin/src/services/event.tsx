@@ -74,7 +74,7 @@ export const declineEvent = async (id: number) => {
     const config = {
       method: "put",
       url: `status/event/${id}`,
-      data: { status: "decline" },
+      data: { status: "rejected" },
     };
     const responseData = await request(config);
     return responseData;
@@ -116,6 +116,21 @@ export const approveCopEvent = async (id: number) => {
     const config = {
       method: "put",
       url: `approve/${id}`,
+      data: { copApproved: "approved" },
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const declineCopEvent = async (id: number) => {
+  try {
+    const config = {
+      method: "put",
+      url: `approve/${id}`,
+      data: { copApproved: "rejected" },
     };
     const responseData = await request(config);
     return responseData;

@@ -30,7 +30,7 @@ const Login: React.FC = () => {
         toast.success("Login Successful");
         const accessToken = result?.data;
         cookies.set("accessToken", accessToken, { path: "/" });
-        navigate("/events", { replace: true });
+        navigate("/scheduled-meetings", { replace: true });
       }
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || "Error occurred";
@@ -47,54 +47,37 @@ const Login: React.FC = () => {
         <div className="flex-1 flex items-center justify-center px-2 md:px-0">
           <div className="bg-white w-full h-max md:w-[480px] p-5 grid gap-3 rounded-lg">
             <div className="w-full h-max flex flex-col items-center justify-center gap-1">
-              <div className="flex gap-1 items-center">
+              <div className="w-full h-max flex flex-col items-center justify-center gap-1">
                 <img
-                  src="/images/logo.svg"
-                  alt="Logo"
-                  className="rounded-lg"
-                  width={50}
-                  height={10}
+                  src="/images/seal.png"
+                  alt="Description of image"
+                  width={100}
+                  height={100}
+                  className="rounded-lg cursor-pointer"
                 />
-                <div className="flex items-center">
-                  <span className="text-green-800 text-[30px] font-bold">
-                    C
-                  </span>
-                  <img
-                    src="/images/flagicon.svg"
-                    alt="Icon"
-                    className="inline-block"
-                    width={33}
-                    height={20}
-                  />
-                  <span className="text-green-800 text-[30px] font-bold">
-                    P29
-                  </span>
-                </div>
               </div>
             </div>
             <p className="text-[22px] font-semibold">Log into your account</p>
 
             <TextField
-              type="email"
-              label="Email Address*"
+              type="username"
+              label="Username"
               variant="outlined"
               fullWidth
               margin="normal"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                  message: "Enter a valid email address",
-                },
+              {...register("username", {
+                required: "Username is required",
               })}
-              error={!!errors.email}
+              error={!!errors.username}
               helperText={
-                errors.email ? (errors.email.message as string) : undefined
+                errors.username
+                  ? (errors.username.message as string)
+                  : undefined
               }
             />
             <TextField
               type={showPassword ? "text" : "password"}
-              label="Password*"
+              label="Password"
               variant="outlined"
               fullWidth
               margin="normal"
@@ -124,13 +107,13 @@ const Login: React.FC = () => {
                 ),
               }}
             />
-            <Button
+            {/* <Button
               color="primary"
               onClick={() => navigate("/forgot-password")}
               className="mt-2 w-full"
             >
               Forgot Password?
-            </Button>
+            </Button> */}
 
             <Button
               type="submit"

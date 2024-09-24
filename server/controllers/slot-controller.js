@@ -1,10 +1,4 @@
-const { successHandler } = require("../utils/core");
-const { errorHandler } = require("../utils/errorHandler");
-const Event = require("../models/events");
 const Slot = require("../models/slot");
-const PAGE_SIZE = 12;
-const NodeCache = require("node-cache");
-const myCache = new NodeCache();
 
 module.exports = {
   getAllSlots: async (req, res) => {
@@ -34,12 +28,12 @@ module.exports = {
       const slots = await Slot.find(query).sort({ date: 1 });
 
       if (!slots || slots.length === 0) {
-        return res.status(404).json({ message: "No slots found." });
+        return errorHandler(res, "No slots found.", 404);
       }
 
-      return res.status(200).json({ message: "Slots found", slots });
+      return successHandler(res, "Slots found", slots);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return errorHandler(res, error.message, error.statusCode);
     }
   },
 };

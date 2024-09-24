@@ -11,12 +11,6 @@ export const addDelegatestoOrg = async ({id, data}: {id: string; data:any}) => {
       data,
     };
     const responseData = await request(config);
-    console.log(responseData, 'responseData')
-    if (responseData.data){
-        toast.success('Delegate added successfully',
-               {toastId: "customId"}
-        );
-    }
     return responseData;
   } catch (error: any) {
     toast.error(`${error?.response?.data?.message || error?.message}`)

@@ -1,5 +1,5 @@
 import { Box, Button, MenuItem, Modal, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
@@ -7,6 +7,7 @@ import {
   useAddAmin,
   useGetAllProfile,
   useGetAllRoles,
+  useGetProfile,
 } from "../../hooks/useAuth";
 import Loader from "../ui/Loader";
 
@@ -20,7 +21,7 @@ interface TableRow {
     name: string;
   };
   name: string;
-  email: string;
+  username: string;
   status: string;
   phone: string;
   createdAt: string;
@@ -59,7 +60,7 @@ const UserTable: React.FC = () => {
       const userPayload = {
         firstName: selectedEvent.firstName,
         lastName: selectedEvent.lastName,
-        email: selectedEvent.email,
+        username: selectedEvent.username,
         password: selectedEvent.password,
         phone: selectedEvent.phone,
         role: selectedEvent.role.name,
@@ -87,16 +88,16 @@ const UserTable: React.FC = () => {
   const columns: TableColumn<TableRow>[] = [
     {
       name: "Name",
-      selector: (row: { name: any }) => row.name ?? "N/A",
+      selector: (row: { name: any }) => row?.name ?? "N/A",
     },
 
     {
-      name: "Email",
-      selector: (row: { email: any }) => row.email ?? "N/A",
+      name: "username",
+      selector: (row: { username: any }) => row?.username ?? "N/A",
     },
     {
       name: "Role",
-      selector: (row) => row.role.name ?? "N/A",
+      selector: (row) => row?.role?.name ?? "N/A",
     },
 
     {
@@ -134,33 +135,42 @@ const UserTable: React.FC = () => {
     },
   ];
 
+  const { data: userData } = useGetProfile();
+  const userProfile = useMemo(() => userData?.data, [userData]);
+  const hasExportModule = useMemo(
+    () => userProfile?.role?.modules?.includes("export"),
+    [userProfile]
+  );
+
   return (
     <>
       {isFetching || isLoading ? <Loader /> : null}
       <div className="rounded-[.5rem] px-2 bg-white shadow">
         <div className="flex items-center md:flex-row flex-col justify-between py-2">
-          <Button
-            sx={{
-              backgroundColor: "green",
-              color: "white",
-              width: "fit-content",
-              paddingY: "8px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              textAlign: "center",
-              fontSize: "13px",
-              gap: "8px",
-              "&:hover": {
-                backgroundColor: "#e8f5e9",
-                color: "black",
-              },
-            }}
-            onClick={handleDownloadCSV}
-          >
-            Export to Excel
-            <GoDownload size={20} />
-          </Button>
+          {hasExportModule && (
+            <Button
+              sx={{
+                backgroundColor: "green",
+                color: "white",
+                width: "fit-content",
+                paddingY: "8px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center",
+                fontSize: "13px",
+                gap: "8px",
+                "&:hover": {
+                  backgroundColor: "#e8f5e9",
+                  color: "black",
+                },
+              }}
+              onClick={handleDownloadCSV}
+            >
+              Export to Excel
+              <GoDownload size={20} />
+            </Button>
+          )}
         </div>
         <DataTable
           highlightOnHover={true}
@@ -207,15 +217,15 @@ const UserTable: React.FC = () => {
                   }
                 />
                 <TextField
-                  label="Email"
-                  value={selectedEvent.email}
+                  label="Username"
+                  value={selectedEvent.username}
                   fullWidth
                   margin="normal"
                   variant="outlined"
                   onChange={(e) =>
                     setSelectedEvent({
                       ...selectedEvent,
-                      email: e.target.value,
+                      username: e.target.value,
                     })
                   }
                 />
@@ -226,6 +236,7 @@ const UserTable: React.FC = () => {
                   value={selectedEvent?.role?.id || ""} // Ensure `value` is the role ID
                   fullWidth
                   margin="normal"
+                  disabled
                   onChange={(e) =>
                     setSelectedEvent({
                       ...selectedEvent!,
@@ -247,19 +258,19 @@ const UserTable: React.FC = () => {
                 </TextField>
 
                 <Box className="flex justify-between mt-4">
-                  <Button
+                  {/* <Button
                     variant="contained"
                     color="success"
                     onClick={handleAccept}
                   >
                     Save Changes
-                  </Button>
+                  </Button> */}
                   <Button
                     variant="contained"
                     color="info"
                     onClick={() => setSelectedEvent(null)}
                   >
-                    Cancel
+                    Close
                   </Button>
                 </Box>
               </form>

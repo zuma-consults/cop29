@@ -48,29 +48,14 @@ const ForgotPassword: React.FC = () => {
         <div className="flex-1 flex items-center justify-center px-2 md:px-0">
           <div className="bg-white w-full h-max md:w-[480px] p-5 grid gap-3 rounded-lg">
             <div className="w-full h-max flex flex-col items-center justify-center gap-1">
-              <div className="flex gap-1 items-center">
+              <div className="w-full h-max flex flex-col items-center justify-center gap-1">
                 <img
-                  src="/images/logo.svg"
-                  alt="Logo"
-                  className="rounded-lg"
-                  width={50}
-                  height={10}
+                  src="/images/seal.png"
+                  alt="Description of image"
+                  width={100}
+                  height={100}
+                  className="rounded-lg cursor-pointer"
                 />
-                <div className="flex items-center">
-                  <span className="text-green-800 text-[30px] font-bold">
-                    C
-                  </span>
-                  <img
-                    src="/images/flagicon.svg"
-                    alt="Icon"
-                    className="inline-block"
-                    width={33}
-                    height={20}
-                  />
-                  <span className="text-green-800 text-[30px] font-bold">
-                    P29
-                  </span>
-                </div>
               </div>
             </div>
             <p className="text-[22px] font-semibold">Forgot Password</p>

@@ -13,26 +13,12 @@ const eventSchema = mongoose.Schema(
     end: {
       type: String,
     },
-    externalLink: {
-      type: String,
-    },
     description: {
       type: String,
     },
     slotId: { type: mongoose.Schema.Types.ObjectId, ref: "Slots" },
     image: {
       type: String,
-    },
-    invoiceUrl: {
-      type: String,
-    },
-    invoiceAmount: {
-      type: String,
-    },
-    invoiceStatus: {
-      type: String,
-      enum: ["Not Received", "Received"],
-      default: "Not Received",
     },
     status: {
       type: String,
@@ -41,7 +27,7 @@ const eventSchema = mongoose.Schema(
     },
     organizerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Userss",
+      ref: "Users",
     },
     organizer: {
       type: String,
@@ -62,10 +48,6 @@ const eventSchema = mongoose.Schema(
         },
       },
     ],
-    tags: {
-      type: [String],
-      default: [],
-    },
     countId: {
       type: Number,
       default: 1,

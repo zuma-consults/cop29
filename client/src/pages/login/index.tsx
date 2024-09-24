@@ -18,17 +18,15 @@ const validationSchema = Yup.object({
 });
 
 const Login: React.FC = () => {
-  const { mutate: login, isLoading, data } = useLogin();
+  const { mutate: login, isLoading } = useLogin();
   const navigate = useNavigate();
-
-  console.log(data, "login data");
 
   if (isLoading) {
     return <Loader />;
   }
-  if (data && data.status) {
-    navigate("/");
-  }
+  // if (data && data.status) {
+  //   navigate("/");
+  // }
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-green-800">
@@ -50,7 +48,7 @@ const Login: React.FC = () => {
         >
           <div className="w-full h-max flex flex-col items-center justify-center gap-1">
             <img
-              src="/images/coat.svg"
+              src="/images/coat.png"
               alt="Description of image"
               width={100}
               height={100}
@@ -77,11 +75,22 @@ const Login: React.FC = () => {
               showPassword: false,
             }}
             validationSchema={validationSchema}
-            onSubmit={(
+            onSubmit={async (
               { showPassword, rememberMe, ...values },
               { resetForm }
             ) => {
-              login(values);
+              await login(values, {
+                onSuccess: (response) => {
+                  if (response?.status) {
+                    localStorage.setItem(
+                      "userProfile",
+                      JSON.stringify(response?.data)
+                    );
+                    localStorage.setItem("allow", "profile");
+                    navigate("/"); // Redirect to the home page after successful login
+                  }
+                },
+              });
               resetForm();
             }}
           >
@@ -140,6 +149,7 @@ const Login: React.FC = () => {
                   type="submit"
                   className="bg-green-600 text-white py-2 px-4 rounded-lg"
                   disabled={isLoading}
+                  // disabled
                 >
                   {isLoading ? "Logging in..." : "Log In"}
                 </button>

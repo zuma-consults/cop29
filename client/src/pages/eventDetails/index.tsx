@@ -7,7 +7,6 @@ import { formatDate1 } from "../../util/formattedDate";
 const EventDetails: React.FC = () => {
   const location = useLocation();
 
-  console.log(location);
   const event = location.state as {
     image: string;
     status: string;

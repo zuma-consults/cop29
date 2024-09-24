@@ -5,13 +5,58 @@ const express = require("express");
 const app = express();
 const connectDb = require("./config/config");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 
 const port = process.env.PORT || 7070;
 const { logRequestDuration } = require("./middlewares/middleware");
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+const helmet = require("helmet");
+const { errorHandler, systemError } = require("./utils/errorHandler");
 
-app.disable('x-powered-by');
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      // "http://localhost:5173",
+      // "http://localhost:5174",
+      "https://admin-cop29.vercel.app",
+      // "https://cop29-okike.vercel.app",
+      "https://nigccdelegation.natccc.gov.ng",
+    ];
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS Error"), false);
+    }
+  },
+  // methods: ['GET','POST'], // Only allow GET and POST requests
+  // allowedHeaders: ['Content-Type', 'Authorization'], // Only allow specific headers
+  // exposedHeaders: ['Content-Length', 'X-Response-Time'], // Headers you want the client to see
+  // credentials: true, // Allow credentials (cookies, authorization headers)
+  // optionsSuccessStatus: 200, // Response status for preflight requests
+  // maxAge: 86400, // Cache preflight response for 24 hours
+  // optionsSuccessStatus: 200, // Response for preflight requests
+  // credentials: true,
+};
+
+app.use(helmet());
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       scriptSrc: ["'self'", "trusted-cdn.com"],
+//       // Additional policies...
+//     },
+//   })
+// );
+
+// app.use(limiter);
+// app.disable("x-powered-by");
 // Middleware setup
-app.use(cors()); // Enable CORS for all routes
+app.use(cors(corsOptions)); // Enable CORS for all routes
+// app.use(cors()); // Enable CORS for all routes
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(logRequestDuration);
@@ -24,6 +69,13 @@ app.get("/", (req, res) => {
   res.send(
     "Welcome to the index route for endpoints of the COP29 App project."
   );
+});
+
+app.use((err, req, res, next) => {
+  if (err.message === "CORS Error") {
+    return res.status(403).json({ message: err.message });
+  }
+  next(err);
 });
 
 // Connect to the database
