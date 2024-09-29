@@ -18,6 +18,7 @@ import ForgotPassword from "./pages/verifications/forgot-password";
 import ResetPassword from "./pages/verifications/reset-password";
 import AccountActivation from "./pages/verifications/account-activation";
 import Contact from "./pages/contact-us";
+import NotFound from "./pages/NotFound";
 import ForgotPasswordConfirmation from "./pages/verifications/forgot-password-confirmation";
 import ActivationSuccess from "./pages/verifications/activation-success";
 import VerificationConfirmation from "./pages/verifications/verify-confirm";
@@ -27,6 +28,7 @@ import NegotiatorForm from "./pages/signup/negotiator-form";
 import { MdBuild } from "react-icons/md";
 import { FaTools } from "react-icons/fa";
 import { detectDevTools } from "./components/custom-hooks/detectDevtools";
+import ResendActivation from "./pages/verifications/resend-activation";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -161,6 +163,7 @@ function App() {
       />
       <Route path="/reset-password/:id" element={<ResetPassword />} />
       <Route path="/verify/:id" element={<AccountActivation />} />
+      <Route path="/verify/resend" element={<ResendActivation />} />
       <Route path="/verify/success" element={<ActivationSuccess />} />
 
       <Route path="/" element={<AppLayout />}>
@@ -173,7 +176,7 @@ function App() {
         <Route path="/event/:id" element={<EventDetails />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/faq" element={<FAQ />} />
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );
