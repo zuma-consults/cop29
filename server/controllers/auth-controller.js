@@ -105,7 +105,7 @@ module.exports = {
           sendVerifyEmail(
             email,
             url,
-            "Click to complete your application",
+            "Click to verify your email",
             name
           );
           return successHandler(
@@ -250,7 +250,7 @@ module.exports = {
           sendVerifyEmail(
             email,
             url,
-            "Click to complete your application",
+            "Click to verify your email",
             name
           );
 
@@ -352,7 +352,7 @@ module.exports = {
           sendVerifyEmail(
             email,
             url,
-            "Click to complete your application",
+            "Click to verify your email",
             name
           );
 
@@ -954,7 +954,7 @@ module.exports = {
       sendVerifyEmail(
         email,
         url,
-        "Click to complete your application",
+        "Click to verify your email",
         user.name
       );
       return successHandler(
