@@ -130,15 +130,6 @@ module.exports = {
           );
         }
 
-        // const organizer_ = await User.findById(organizerId);
-        // if (!organizer_ || organizer_.userType !== "organization") {
-        //   return errorHandler(
-        //     res,
-        //     "Only organizations can create an Event.",
-        //     403
-        //   );
-        // }
-
         const slot = await Slot.findById(slotId);
         if (!slot) {
           return errorHandler(res, "Slot not found.", 404);
