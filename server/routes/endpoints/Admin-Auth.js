@@ -21,7 +21,7 @@ let routes = (app) => {
   app.delete("/staff/:id", deleteAdminById);
   app.post("/login/staff", login);
   app.post("/logout/staff", authAdmin, logout);
-  app.get("/roles", getAllRoles);
+  app.get("/roles", authAdmin, getAllRoles);
 };
 
 module.exports = routes;
