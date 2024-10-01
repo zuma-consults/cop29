@@ -16,7 +16,11 @@ const eventSchema = mongoose.Schema(
     description: {
       type: String,
     },
-    slotId: { type: mongoose.Schema.Types.ObjectId, ref: "Slots" },
+    slotId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Slots",
+      required: true,
+    },
     image: {
       type: String,
     },
