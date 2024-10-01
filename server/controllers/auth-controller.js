@@ -1003,7 +1003,7 @@ module.exports = {
         status: "approved",
       };
 
-      const organizations = await User.find(query).sort({ name: -1 });
+      const organizations = await User.find(query).sort({ name: 1 });
 
       const totalOrganizations = await User.countDocuments(query);
 
