@@ -116,14 +116,14 @@ const CopTable: React.FC = () => {
       selector: (row) => row?.email ?? "N/A",
     },
     {
-      name: "Delegated By",
+      name: "Organization",
       selector: (row) => row?.delegatedBy ?? "N/A",
     },
 
     {
       name: (
         <Box style={{ display: "flex", alignItems: "center" }}>
-          <Typography className="capitalize">COP Approved</Typography>
+          <Typography>Status</Typography>
         </Box>
       ),
       cell: (row) => {
