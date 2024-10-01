@@ -89,6 +89,14 @@ const EventTable: React.FC = () => {
     {
       name: (
         <Box style={{ display: "flex", alignItems: "center" }}>
+          <Typography className="capitalize">Organization</Typography>
+        </Box>
+      ),
+      selector: (row) => row?.organizer ?? "N/A",
+    },
+    {
+      name: (
+        <Box style={{ display: "flex", alignItems: "center" }}>
           <Typography className="capitalize">Title</Typography>
           <ColumnFilter
             columnKey="search"
@@ -117,39 +125,31 @@ const EventTable: React.FC = () => {
         </Typography>
       ),
     },
-    {
-      name: (
-        <Box style={{ display: "flex", alignItems: "center" }}>
-          <Typography className="capitalize">Organization</Typography>
-        </Box>
-      ),
-      selector: (row) => row?.organizer ?? "N/A",
-    },
-    {
-      name: "Status",
-      selector: (row) => row?.status ?? "N/A",
-      cell: (row) => (
-        <div className="text-left capitalize flex items-center">
-          {row.status === "approved" ? (
-            <Chip
-              label={row.status}
-              color="success"
-              sx={{
-                textTransform: "capitalize",
-              }}
-            />
-          ) : (
-            <Chip
-              label={row?.status}
-              color="warning"
-              sx={{
-                textTransform: "capitalize",
-              }}
-            />
-          )}
-        </div>
-      ),
-    },
+    // {
+    //   name: "Status",
+    //   selector: (row) => row?.status ?? "N/A",
+    //   cell: (row) => (
+    //     <div className="text-left capitalize flex items-center">
+    //       {row.status === "approved" ? (
+    //         <Chip
+    //           label={row.status}
+    //           color="success"
+    //           sx={{
+    //             textTransform: "capitalize",
+    //           }}
+    //         />
+    //       ) : (
+    //         <Chip
+    //           label={row?.status}
+    //           color="warning"
+    //           sx={{
+    //             textTransform: "capitalize",
+    //           }}
+    //         />
+    //       )}
+    //     </div>
+    //   ),
+    // },
     {
       name: "Action",
       cell: (row) => (
