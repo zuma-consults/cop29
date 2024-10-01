@@ -473,8 +473,8 @@ module.exports = {
       const { page = 1, limit = 50, userType } = req.query;
 
       const query = userType
-        ? { userType, verifiedEmail: true }
-        : { verifiedEmail: true };
+        ? { userType, verifiedEmail: true, category: { $ne: "Negotiator" } }
+        : { verifiedEmail: true, category: { $ne: "Negotiator" } };
 
       const users = await User.find(query)
         .sort({ createdAt: -1 })
