@@ -20,7 +20,8 @@ const {
   updateCopApproval,
   createOrganisationAsNegotiator,
   getAllNegotiators,
-  getDataOverview
+  getDataOverview,
+  getAllApprovedOrganizations,
 } = require("../../controllers/auth-controller");
 const {
   auth,
@@ -54,7 +55,8 @@ let routes = (app) => {
     adminVerifyPasswordToken,
     resetAdminPassword
   );
-  app.get("/overview", getDataOverview)
+  app.get("/overview", getDataOverview);
+  app.get("/organizations", authAdmin, getAllApprovedOrganizations);
 };
 
 module.exports = routes;
