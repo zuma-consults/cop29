@@ -27,7 +27,7 @@ const eventSchema = mongoose.Schema(
     status: {
       type: String,
       enum: ["processing", "approved", "declined"],
-      default: "processing",
+      default: "approved",
     },
     organizerId: {
       type: mongoose.Schema.Types.ObjectId,
