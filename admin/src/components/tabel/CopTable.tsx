@@ -36,6 +36,9 @@ interface TableRow {
   passport: string;
   delegatedBy: string;
   copApproved: string;
+  state: string;
+  designation: string;
+  department: string;
 }
 
 const CopTable: React.FC = () => {
@@ -179,7 +182,7 @@ const CopTable: React.FC = () => {
     () => userProfile?.role?.modules?.includes("export"),
     [userProfile]
   );
-  
+
   return (
     <>
       {(isFetching || loadingApproval || loadingDecline) && <Loader />}
@@ -297,6 +300,21 @@ const CopTable: React.FC = () => {
                   {/* Render Organization Type */}
                   <Typography variant="body1" component="div">
                     <strong>Organization: </strong> {selectedCop?.delegatedBy}
+                  </Typography>
+
+                  {/* Render Designation */}
+                  <Typography variant="body1" component="div">
+                    <strong>Designation: </strong> {selectedCop?.designation}
+                  </Typography>
+
+                  {/* Render department*/}
+                  <Typography variant="body1" component="div">
+                    <strong>Department: </strong> {selectedCop?.department}
+                  </Typography>
+
+                  {/* Render state */}
+                  <Typography variant="body1" component="div">
+                    <strong>state: </strong> {selectedCop?.state}
                   </Typography>
 
                   {/* Render Status */}
