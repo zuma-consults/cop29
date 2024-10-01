@@ -744,22 +744,22 @@ module.exports = {
         return errorHandler(res, "Delegate not found", 404);
       }
 
-      let event = await Event.findOne({ organizerId: user._id });
-      if (!event) {
-        return errorHandler(
-          res,
-          "Organization is yet to schedule a meeting",
-          404
-        );
-      }
+      // let event = await Event.findOne({ organizerId: user._id });
+      // if (!event) {
+      //   return errorHandler(
+      //     res,
+      //     "Organization is yet to schedule a meeting",
+      //     404
+      //   );
+      // }
 
-      if (event.status !== "approved") {
-        return errorHandler(
-          res,
-          "Organization does not appear to have an approved meeting.",
-          403
-        );
-      }
+      // if (event.status !== "approved") {
+      //   return errorHandler(
+      //     res,
+      //     "Organization does not appear to have an approved meeting.",
+      //     403
+      //   );
+      // }
 
       // // Find the specific delegate and update their copApproved status
       const delegate = user.delegates.id(id);
@@ -795,7 +795,7 @@ module.exports = {
         sendEmail(
           delegate.email,
           delegate.name,
-          url,
+          "",
           "COP 29 DELEGATE STATUS",
           "We regret to inform you that your application has not been approved. Unfortunately, you will not be able to attend COP 29 at this time. Should you have any questions or require further clarification, please use the contact us button on the resgistration portal.",
           "Thank you for your interest."
