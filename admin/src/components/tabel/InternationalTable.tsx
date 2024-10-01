@@ -238,6 +238,7 @@ const InternationalTable: React.FC = () => {
                 />
                 <Controller
                   name="reasonForMeeting"
+                  disabled
                   control={control}
                   render={({ field }) => (
                     <TextField
