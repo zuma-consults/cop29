@@ -102,12 +102,7 @@ module.exports = {
           // Send success response
           const access_token = await createAccessToken({ id: newUser._id });
           const url = `${CLIENT_URL}/verify/${access_token}`;
-          sendVerifyEmail(
-            email,
-            url,
-            "Click to verify your email",
-            name
-          );
+          sendVerifyEmail(email, url, "Click to verify your email", name);
           return successHandler(
             res,
             "Your account has been created. Please check your email to verify your email address and complete your application for COP 29.",
@@ -247,12 +242,7 @@ module.exports = {
 
           const access_token = await createAccessToken({ id: newUser._id });
           const url = `${CLIENT_URL}/verify/${access_token}`;
-          sendVerifyEmail(
-            email,
-            url,
-            "Click to verify your email",
-            name
-          );
+          sendVerifyEmail(email, url, "Click to verify your email", name);
 
           return successHandler(
             res,
@@ -349,12 +339,7 @@ module.exports = {
 
           const access_token = await createAccessToken({ id: newUser._id });
           const url = `${CLIENT_URL}/verify/${access_token}`;
-          sendVerifyEmail(
-            email,
-            url,
-            "Click to verify your email",
-            name
-          );
+          sendVerifyEmail(email, url, "Click to verify your email", name);
 
           return successHandler(
             res,
@@ -951,12 +936,7 @@ module.exports = {
       }
       const access_token = await createAccessToken({ id: user._id });
       const url = `${CLIENT_URL}/verify/${access_token}`;
-      sendVerifyEmail(
-        email,
-        url,
-        "Click to verify your email",
-        user.name
-      );
+      sendVerifyEmail(email, url, "Click to verify your email", user.name);
       return successHandler(
         res,
         "Please check your inbox and spam to complete your application."
@@ -1013,6 +993,30 @@ module.exports = {
       return successHandler(res, "Data Overview", result);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode || 500);
+    }
+  },
+  getAllApprovedOrganizations: async (req, res) => {
+    try {
+      const query = {
+        verifiedEmail: true,
+        category: { $ne: "Negotiator" },
+        status: "approved",
+      };
+
+      const organizations = await User.find(query).sort({ name: -1 });
+
+      const totalOrganizations = await User.countDocuments(query);
+
+      const response = {
+        totalOrganizations,
+        organizations,
+      };
+
+      const message = `All Approved Organizations`;
+
+      return successHandler(res, message, response);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode);
     }
   },
 };
