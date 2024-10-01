@@ -111,14 +111,14 @@ const EventDetails: React.FC = () => {
               </p>
             </div>
             <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
-              About this meeting
+              Objective
               <div className="w-full text-[12px] sm:text-[14px] text-gray-600 font-normal">
                 {description}
               </div>
             </div>
 
             <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
-              Organized by
+              Organization
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
                 {organizer ? organizer : "N/A"}
               </p>
