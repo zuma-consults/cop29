@@ -21,7 +21,7 @@ const CreateEvent: React.FC<{
 
   const { data: timslotsData, isLoading: loadingTimeSlots } =
     useGetAllTimeSlots();
-  const extratedTimeSlots = timslotsData?.slots || [];
+  const extratedTimeSlots = timslotsData?.data || [];
   const openSlots = extratedTimeSlots.filter(
     (slot: { bookingStatus: any }) => slot.bookingStatus
   );
@@ -127,11 +127,28 @@ const CreateEvent: React.FC<{
                       id: string;
                       timeSpan: any;
                       date: string | number | Date;
+                      bookingStatus: string;
                     }) => (
-                      <MenuItem key={slot.id} value={slot.id}>
-                        {`${slot.timeSpan} - ${new Date(
-                          slot.date
-                        ).toLocaleDateString()}`}
+                      <MenuItem
+                        key={slot.id}
+                        value={slot.id}
+                        disabled={slot.bookingStatus === "booked"}
+                      >
+                        <div
+                          className={`flex justify-between w-full ${
+                            slot.bookingStatus === "booked"
+                              ? "opacity-50 cursor-not-allowed"
+                              : ""
+                          }`}
+                        >
+                          <span className="w-[30%]">{slot.timeSpan}</span>
+                          <span>---</span>
+                          <span className="w-[30%]">
+                            {new Date(slot.date).toLocaleDateString()}
+                          </span>
+                          <span>---</span>
+                          <span>{slot.bookingStatus}</span>
+                        </div>
                       </MenuItem>
                     )
                   )}
