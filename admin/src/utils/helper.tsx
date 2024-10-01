@@ -38,3 +38,13 @@ export function formatDate1(dateString: any) {
 
   return formattedDate;
 }
+
+export function formatTime(dateString: any) {
+  // Parse the input date string
+  const parsedDate = DateTime.fromJSDate(new Date(dateString));
+
+  // Format the time in a user-friendly way
+  const formattedTime = parsedDate.toFormat("hh:mm a"); // 'a' gives AM/PM
+
+  return formattedTime;
+}
