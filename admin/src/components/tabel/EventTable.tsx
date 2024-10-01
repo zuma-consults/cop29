@@ -1,11 +1,11 @@
-import { Box, Button, Chip, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
 import { useGetAllEvents } from "../../hooks/useEvent";
 import ColumnFilter from "../columnFilter";
-import { formatDuration } from "../../utils/helper";
+import { formatTime } from "../../utils/helper";
 import Loader from "../ui/Loader";
 import { Link } from "react-router-dom";
 import { useGetProfile } from "../../hooks/useAuth";
@@ -57,7 +57,6 @@ const EventTable: React.FC = () => {
   }, []);
 
   const extratedData = useMemo(() => data?.data, [data]);
-
   const handleDownloadCSV = useCallback(() => {
     saveAsCSV({ data: extratedData?.events, filename: "COP29 Events List" });
   }, [extratedData?.events]);
@@ -121,7 +120,7 @@ const EventTable: React.FC = () => {
       selector: (row) => row?.start,
       format: (row) => (
         <Typography variant="body2" color="text.secondary">
-          {formatDuration(row?.start, row?.end)}
+          {formatTime(row?.start)} - {formatTime(row?.end)}
         </Typography>
       ),
     },
