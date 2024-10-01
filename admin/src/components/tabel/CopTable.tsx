@@ -314,7 +314,7 @@ const CopTable: React.FC = () => {
 
                   {/* Render state */}
                   <Typography variant="body1" component="div">
-                    <strong>state: </strong> {selectedCop?.state}
+                    <strong>State: </strong> {selectedCop?.state}
                   </Typography>
 
                   {/* Render Status */}
