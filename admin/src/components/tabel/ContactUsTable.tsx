@@ -239,6 +239,7 @@ const ContactUsTable: React.FC = () => {
                 <Controller
                   name="reasonForMeeting"
                   control={control}
+                  disabled
                   render={({ field }) => (
                     <TextField
                       {...field}
