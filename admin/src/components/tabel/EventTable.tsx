@@ -120,7 +120,7 @@ const EventTable: React.FC = () => {
     {
       name: (
         <Box style={{ display: "flex", alignItems: "center" }}>
-          <Typography className="capitalize">Organizer</Typography>
+          <Typography className="capitalize">Organization</Typography>
         </Box>
       ),
       selector: (row) => row?.organizer ?? "N/A",
