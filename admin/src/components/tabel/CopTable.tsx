@@ -307,15 +307,19 @@ const CopTable: React.FC = () => {
                     <strong>Designation: </strong> {selectedCop?.designation}
                   </Typography>
 
-                  {/* Render department*/}
-                  <Typography variant="body1" component="div">
-                    <strong>Department: </strong> {selectedCop?.department}
-                  </Typography>
+                  {/* Render department if available */}
+                  {selectedCop?.department && (
+                    <Typography variant="body1" component="div">
+                      <strong>Department: </strong> {selectedCop.department}
+                    </Typography>
+                  )}
 
-                  {/* Render state */}
-                  <Typography variant="body1" component="div">
-                    <strong>State: </strong> {selectedCop?.state}
-                  </Typography>
+                  {/* Render state if available */}
+                  {selectedCop?.state && (
+                    <Typography variant="body1" component="div">
+                      <strong>State: </strong> {selectedCop.state}
+                    </Typography>
+                  )}
 
                   {/* Render Status */}
                   <Typography variant="body1" component="div">
