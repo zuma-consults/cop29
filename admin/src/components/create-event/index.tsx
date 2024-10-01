@@ -36,7 +36,7 @@ const CreateEvent: React.FC<{
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Meeting title is required"),
-      organizer: Yup.string().required("Organizer is required"),
+      organizer: Yup.string().required("Organization is required"),
       description: Yup.string().required("Meeting description is required"),
       objective: Yup.string().required("Meeting objective is required"),
       timeSlot: Yup.string().required("Time slot is required"),
@@ -63,7 +63,7 @@ const CreateEvent: React.FC<{
           data-aos="Meeting-in-right"
         >
           <h1 className="text-green-700 font-bold text-[26px] text-center md:text-left">
-            Schedule a Meeting
+            Schedule a Meeting (International Organization)
           </h1>
 
           <form
@@ -92,7 +92,7 @@ const CreateEvent: React.FC<{
               <TextField
                 id="organizer"
                 name="organizer"
-                label="Organizer"
+                label="Organization"
                 color="success"
                 variant="outlined"
                 value={formik.values.organizer}
@@ -217,7 +217,7 @@ const CreateEvent: React.FC<{
                 {isLoading ? (
                   <CircularProgress size={24} color="success" />
                 ) : (
-                  "Submit Meeting"
+                  "Submit"
                 )}
               </Button>
             </div>
