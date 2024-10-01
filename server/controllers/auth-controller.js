@@ -425,6 +425,7 @@ module.exports = {
           passport,
           designation,
           phone,
+          ...body,
         };
 
         findUser.delegates.push(delegate);
