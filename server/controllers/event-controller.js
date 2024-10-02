@@ -535,4 +535,54 @@ module.exports = {
       return errorHandler(res, error.message, error.statusCode || 500);
     }
   },
+  getDelegateAndEventByCode: async (req, res) => {
+    try {
+      const { code } = req.query;
+
+      // Step 1: Search for a delegate with the specified code
+      const user = await User.findOne({
+        "delegates.code": code,
+      }).select(
+        "name category state reasonForAttendance contactName contactDesignation phone delegates"
+      );
+
+      if (!user) {
+        return errorHandler(res, "Delegate not found", 404);
+      }
+
+      // Find the matching delegate within the user's delegates array
+      const delegate = user.delegates.find((del) => del.code === code);
+
+      // Step 2: Get the event(s) by the organizerId (Main User's ID)
+      const events = await Event.find({ organizerId: user._id }).select(
+        "title start end description status"
+      );
+
+      // Prepare the response
+      const response = {
+        organization: {
+          name: user.name,
+          category: user.category,
+          state: user.state,
+          contactName: user.contactName,
+          contactDesignation: user.contactDesignation,
+          phone: user.phone,
+        },
+        delegate: {
+          name: delegate.name,
+          email: delegate.email,
+          phone: delegate.phone,
+          designation: delegate.designation,
+          passport: delegate.passport,
+          state: delegate.state,
+          department: delegate.department,
+        },
+        events, // Return the found events
+      };
+
+      return successHandler(res, "Delegate and Events Found", response);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode);
+    }
+  },
 };
