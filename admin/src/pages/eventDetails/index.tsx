@@ -82,7 +82,7 @@ const EventDetails: React.FC = () => {
         <div className="relative  border-green-200 pb-6 sm:pb-8 md:pb-10">
           <div className="mt-6 sm:mt-8 md:mt-10 grid gap-4 sm:gap-6 md:gap-8">
             <div>
-              {status === "approved" ? (
+              {/* {status === "approved" ? (
                 <Chip
                   label={status}
                   color="success"
@@ -98,27 +98,27 @@ const EventDetails: React.FC = () => {
                     textTransform: "capitalize",
                   }}
                 />
-              )}
+              )} */}
 
               <div className="text-gray-900 text-[24px] sm:text-[32px] md:text-[40px] w-full md:w-[50%] font-bold">
-                {title}
+               Title: {title}
               </div>
             </div>
             <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-1 sm:gap-2 md:gap-3">
-              Date and Time
+              Date and Time:
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
                 {`From ${formatDate1(start)} to ${formatDate1(end)}`}
               </p>
             </div>
             <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
-              Objective
+              Objective:
               <div className="w-full text-[12px] sm:text-[14px] text-gray-600 font-normal">
                 {description}
               </div>
             </div>
 
             <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
-              Organization
+              Organization:
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
                 {organizer ? organizer : "N/A"}
               </p>
