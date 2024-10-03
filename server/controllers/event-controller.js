@@ -27,11 +27,7 @@ module.exports = {
 
       const organizer = await User.findById(organizerId);
       if (!organizer) {
-        return errorHandler(
-          res,
-          "Organizations Not Found.",
-          404
-        );
+        return errorHandler(res, "Organizations Not Found.", 404);
       }
 
       // Check if the organization already has 2 events
@@ -81,11 +77,7 @@ module.exports = {
       await slot.save();
 
       // Send success response
-      return successHandler(
-        res,
-        "Meeting Successfully Scheduled",
-        newEvent
-      );
+      return successHandler(res, "Meeting Successfully Scheduled", newEvent);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode || 500);
     }
@@ -269,54 +261,58 @@ module.exports = {
     }
   },
   updateEventById: async (req, res) => {
-    upload(req, res, async (err) => {
-      if (err) {
-        return errorHandler(res, err.code, 400);
-      } else {
-        try {
-          const id = req.params.id;
-          const { body, files } = req;
+    try {
+      const { id } = req.params;
+      const { slotId } = req.body;
 
-          // Handle file uploads
-          let reqFiles = [];
-          if (files) {
-            reqFiles = await Promise.all(
-              files.map(async (file) => {
-                const localFilePath = file.path;
-                const localFileName = file.filename;
-                const result = await uploadToCloudinary(
-                  localFilePath,
-                  localFileName,
-                  "COP29 Events"
-                );
-                return result.url;
-              })
-            );
-          }
-
-          // Add uploaded file URLs to req.body
-          body.image = reqFiles[0] || [process.env.DEFAULT_IMAGE];
-          // reqFiles.length > 0 ? reqFiles : [process.env.DEFAULT_IMAGE];
-
-          let update = {
-            features: featureArray,
-            landmarks: landmarksArray,
-            ...body,
-          };
-
-          const event = await Event.findOneAndUpdate({ _id: id }, update, {
-            new: true,
-          });
-
-          if (!event)
-            return errorHandler(res, "No Event found with the ID", 404);
-
-          return successHandler(res, "Event Updated", event);
-        } catch (error) {
-          return errorHandler(res, error.message, error.statusCode || 500);
-        }
+      // Check if the new slotId is provided
+      if (!slotId) {
+        return errorHandler(
+          res,
+          "slotId is required to update the event.",
+          400
+        );
       }
-    });
+
+      // Fetch the existing event by its ID
+      const event = await Event.findById(id);
+      if (!event) return errorHandler(res, "No Event found with the ID", 404);
+
+      // Fetch the current slot associated with the event
+      const currentSlot = await Slot.findById(event.slotId);
+      if (!currentSlot) return errorHandler(res, "Current slot not found", 404);
+
+      // Revert current slot details (set to open and clear booking details)
+      currentSlot.bookingStatus = "open";
+      currentSlot.adminBookingBy = "";
+      currentSlot.title = "";
+
+      // Fetch the new slot to be assigned
+      const newSlot = await Slot.findById(slotId);
+      if (!newSlot) return errorHandler(res, "New slot not found", 404);
+
+      // Check if the new slot is open for booking
+      if (newSlot.bookingStatus !== "open") {
+        return errorHandler(res, "New slot is not open for booking", 409);
+      }
+
+      // Update event with the new slotId
+      event.slotId = slotId;
+      event.start = newSlot.start;
+      event.end = newSlot.end;
+
+      // Update the new slot with booking details
+      newSlot.bookingStatus = "booked";
+      newSlot.adminBookingBy = req.admin; // Assuming req.admin holds the admin ID
+      newSlot.title = event.title;
+      await newSlot.save();
+      await currentSlot.save();
+      await event.save();
+
+      return successHandler(res, "Meeting Successfully Rescheduled", event);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode || 500);
+    }
   },
   addCommentToEventById: async (req, res) => {
     try {
