@@ -12,103 +12,83 @@ const myCache = new NodeCache();
 
 module.exports = {
   createEventByOrganization: async (req, res) => {
-    upload(req, res, async (err) => {
-      if (err) {
-        return errorHandler(res, err.message || "File upload error", 400);
-      }
+    try {
+      let id = req.admin;
+      const { organizerId, slotId } = req.body;
 
-      try {
-        const { body, files } = req;
-        const { title, slotId } = body;
-        const organizerId = req.user;
-
-        // Check if required fields are provided
-        if (!title || !slotId) {
-          return errorHandler(
-            res,
-            "Some fields are still blank. Could you please provide the missing details?",
-            400
-          );
-        }
-
-        const organizer = await User.findById(organizerId);
-        if (!organizer || organizer.userType !== "organization") {
-          return errorHandler(
-            res,
-            "Only organizations can create an Event.",
-            403
-          );
-        }
-
-        // Check if the organization already has 2 events
-        const eventCount = await Event.countDocuments({ organizerId });
-        if (eventCount >= 2) {
-          return errorHandler(
-            res,
-            "An organization can only have a maximum of 2 slots.",
-            403
-          );
-        }
-
-        const slot = await Slot.findById(slotId);
-        if (!slot) {
-          return errorHandler(res, "Slot not found.", 404);
-        }
-
-        // Check if the slot is open
-        if (slot.bookingStatus !== "open") {
-          return errorHandler(
-            res,
-            "Slot is not open. Please select a different slot.",
-            409
-          );
-        }
-
-        const { start, end } = slot;
-
-        // Handle image uploads
-        let image = "";
-        if (files && files.length > 0) {
-          const file = files[0];
-          const uploadResult = await uploadToCloudinary(
-            file.path,
-            file.filename,
-            "COP29 Events"
-          );
-          image = uploadResult.url;
-        }
-
-        // Create new Event entry
-        const newEvent = new Event({
-          title,
-          organizerId,
-          organizer: organizer.name,
-          start,
-          end,
-          image,
-          slotId,
-          ...body, // Spread remaining fields from the body, excluding the slotId
-        });
-
-        // Save newEvent
-        await newEvent.save();
-
-        // Update slot with booking details
-        slot.bookingStatus = "pending";
-        slot.bookingBy = organizerId;
-        slot.title = title;
-        await slot.save();
-
-        // Send success response
-        return successHandler(
+      // Check if required fields are provided
+      if (!organizerId || !slotId) {
+        return errorHandler(
           res,
-          "Application for Side Event Successfully Submitted. An invoice would be sent to your mail.",
-          newEvent
+          "Some fields are still blank. Could you please provide the missing details?",
+          400
         );
-      } catch (error) {
-        return errorHandler(res, error.message, error.statusCode || 500);
       }
-    });
+
+      const organizer = await User.findById(organizerId);
+      if (!organizer) {
+        return errorHandler(
+          res,
+          "Organizations Not Found.",
+          404
+        );
+      }
+
+      // Check if the organization already has 2 events
+      const eventCount = await Event.countDocuments({ organizerId });
+      if (eventCount >= 2) {
+        return errorHandler(
+          res,
+          "An organization can only have a maximum of 2 slots.",
+          400
+        );
+      }
+
+      const slot = await Slot.findById(slotId);
+      if (!slot) {
+        return errorHandler(res, "Slot not found.", 404);
+      }
+
+      // Check if the slot is open
+      if (slot.bookingStatus !== "open") {
+        return errorHandler(
+          res,
+          "Slot is not open. Please select a different slot.",
+          409
+        );
+      }
+
+      const { start, end } = slot;
+
+      // Create new Event entry
+      const newEvent = new Event({
+        title,
+        organizerId,
+        organizer: organizer.name,
+        start,
+        end,
+        slotId,
+        ...body, // Spread remaining fields from the body, excluding the slotId
+      });
+
+      // Save newEvent
+      await newEvent.save();
+
+      // Update slot with booking details
+      slot.bookingStatus = "booked";
+      slot.adminBookingBy = id;
+      slot.title = title;
+      await slot.save();
+
+      // Send success response
+      return successHandler(
+        res,
+        "Meeting Successfully Scheduled",
+        newEvent
+      );
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode || 500);
+    }
   },
   createEventByAdmin: async (req, res) => {
     let adminBookingBy = req.admin;
