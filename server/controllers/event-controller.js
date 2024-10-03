@@ -262,6 +262,27 @@ module.exports = {
   },
   updateEventById: async (req, res) => {
     try {
+      const id = req.params.id;
+      const { body } = req;
+      let update = {
+        features: featureArray,
+        landmarks: landmarksArray,
+        ...body,
+      };
+
+      const event = await Event.findOneAndUpdate({ _id: id }, update, {
+        new: true,
+      });
+
+      if (!event) return errorHandler(res, "No Event found with the ID", 404);
+
+      return successHandler(res, "Event Updated", event);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode || 500);
+    }
+  },
+  rescheduleEventById: async (req, res) => {
+    try {
       const { id } = req.params;
       const { slotId } = req.body;
 
