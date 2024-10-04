@@ -42,7 +42,7 @@ interface TableRow {
 }
 
 const CopTable: React.FC = () => {
-  const [_, setPage] = useState(1);
+  const [page, setPage] = useState(1);
 
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
   const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
@@ -57,6 +57,7 @@ const CopTable: React.FC = () => {
   const [selectedCop, setSelectedCop] = useState<TableRow | null>(null);
   const [filters, setFilters] = useState({
     copApproved: "",
+    page,
   });
 
   const handleFilterChange = (key: string, value: string) => {
@@ -66,7 +67,13 @@ const CopTable: React.FC = () => {
     }));
   };
 
-  const memoizedFilters = useMemo(() => filters, [filters]);
+  const memoizedFilters = useMemo(
+    () => ({
+      page: filters?.page,
+      copApproved: filters?.copApproved,
+    }),
+    [filters.copApproved, filters.page]
+  );
 
   const { data, refetch, isFetching } = useGetAllCopApplicants(memoizedFilters);
   const { mutate: mutateApproval, isLoading: loadingApproval } =
@@ -88,6 +95,10 @@ const CopTable: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
   };
 
   const customStyles = {
@@ -245,9 +256,14 @@ const CopTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={data?.data ?? []}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
+          pagination
+          paginationPerPage={5}
+          paginationIconNext
+          paginationIconPrevious
+          paginationServer
+          paginationTotalRows={data?.totalRows}
           onChangePage={handlePageChange}
         />
 

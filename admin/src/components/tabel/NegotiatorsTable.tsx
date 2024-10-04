@@ -29,12 +29,12 @@ const NegotiatorsTable: React.FC = () => {
   const [selectedNegotiators, setSelectedNegotiators] = useState<any>(null);
   const [filters, setFilters] = useState({
     userType: "organization",
+    page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
-      // userType: filters.userType,
-      page,
+      page: filters?.page,
     }),
     [filters.userType, page]
   );
@@ -60,6 +60,14 @@ const NegotiatorsTable: React.FC = () => {
     });
   }, []);
 
+  const handlePageChange = (page: number) => {
+    setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
   const extratedData = useMemo(() => data?.data, [data]);
 
   const handleDownloadCSV = useCallback(() => {
@@ -68,10 +76,6 @@ const NegotiatorsTable: React.FC = () => {
       filename: "Organisation/Members List",
     });
   }, [extratedData?.events]);
-
-  const handlePageChange = useCallback((page: number) => {
-    setPage(page);
-  }, []);
 
   const handelActionEvent = async (type: string) => {
     if (type === "approve") {
@@ -226,9 +230,14 @@ const NegotiatorsTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={extratedData?.users}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
+          pagination
+          paginationPerPage={5}
+          paginationIconNext
+          paginationIconPrevious
+          paginationServer
+          paginationTotalRows={data?.totalRows}
           onChangePage={handlePageChange}
         />
       </div>

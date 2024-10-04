@@ -25,19 +25,21 @@ interface TableRow {
 }
 
 const EventTable: React.FC = () => {
-  const [_, setPage] = useState(1);
+  const [page, setPage] = useState(1);
 
   const [filters, setFilters] = useState({
     search: "",
     tags: "",
+    page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
       search: filters?.search,
       tag: filters?.tags,
+      page: filters?.page,
     }),
-    [filters.search, filters.tags]
+    [filters.search, filters.tags, page]
   );
 
   const { data, isFetching, refetch } = useGetAllEvents(memoizedFilters);
@@ -56,14 +58,18 @@ const EventTable: React.FC = () => {
     });
   }, []);
 
+  const handlePageChange = (page: number) => {
+    setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
   const extratedData = useMemo(() => data?.data, [data]);
   const handleDownloadCSV = useCallback(() => {
     saveAsCSV({ data: extratedData?.events, filename: "COP29 Events List" });
   }, [extratedData?.events]);
-
-  const handlePageChange = useCallback((page: number) => {
-    setPage(page);
-  }, []);
 
   useEffect(() => {
     refetch();
@@ -232,9 +238,14 @@ const EventTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={extratedData?.events}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
+          pagination
+          paginationPerPage={5}
+          paginationIconNext
+          paginationIconPrevious
+          paginationServer
+          paginationTotalRows={data?.totalRows}
           onChangePage={handlePageChange}
         />
       </div>

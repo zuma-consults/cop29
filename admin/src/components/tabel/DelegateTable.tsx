@@ -26,18 +26,20 @@ interface TableRow {
 }
 
 const DelegateTable: React.FC = () => {
-  const [_, setPage] = useState(1);
+  const [page, setPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
 
   const [filters, setFilters] = useState({
     userType: "delegate",
+    page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
       userType: filters.userType,
+      page: filters?.page,
     }),
-    [filters.userType]
+    [filters.userType, page]
   );
 
   const { data, isFetching, refetch } = useGetAllDelegates(memoizedFilters);
@@ -62,9 +64,13 @@ const DelegateTable: React.FC = () => {
     saveAsCSV({ data: extratedData?.users, filename: "Delegates List" });
   }, [extratedData?.events]);
 
-  const handlePageChange = useCallback((page: number) => {
+  const handlePageChange = (page: number) => {
     setPage(page);
-  }, []);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
 
   const handleAccept = useCallback(() => {
     setSelectedEvent(null);
@@ -177,7 +183,7 @@ const DelegateTable: React.FC = () => {
       width: "15rem",
     },
   ];
-  
+
   const { data: userData } = useGetProfile();
   const userProfile = useMemo(() => userData?.data, [userData]);
   const hasExportModule = useMemo(
@@ -221,10 +227,15 @@ const DelegateTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={extratedData?.users}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
           onChangePage={handlePageChange}
+          pagination
+          paginationPerPage={5}
+          paginationIconNext
+          paginationIconPrevious
+          paginationServer
+          paginationTotalRows={data?.totalRows}
         />
 
         <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>
