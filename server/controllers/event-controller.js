@@ -14,10 +14,10 @@ module.exports = {
   createEventByOrganization: async (req, res) => {
     try {
       let id = req.admin;
-      const { organizerId, slotId } = req.body;
+      const { organizerId, slotId, title } = req.body;
 
       // Check if required fields are provided
-      if (!organizerId || !slotId) {
+      if (!organizerId || !slotId || !title) {
         return errorHandler(
           res,
           "Some fields are still blank. Could you please provide the missing details?",
@@ -54,7 +54,7 @@ module.exports = {
         );
       }
 
-      const { start, end } = slot;
+      const { start, end, date } = slot;
 
       // Create new Event entry
       const newEvent = new Event({
@@ -64,7 +64,7 @@ module.exports = {
         start,
         end,
         slotId,
-        ...body, // Spread remaining fields from the body, excluding the slotId
+        ...req.body, // Spread remaining fields from the body, excluding the slotId
       });
 
       // Save newEvent
@@ -75,6 +75,27 @@ module.exports = {
       slot.adminBookingBy = id;
       slot.title = title;
       await slot.save();
+
+      // Send email to all delegates of the organizer
+      const { delegates } = organizer;
+      const subject = "Meeting Scheduled";
+      const message1 = `Dear Delegate, we are pleased to inform you that a meeting has been scheduled on behalf of ${organizer.name}. Your presence is kindly requested.`;
+      const message2 = `The meeting is scheduled for ${slot.timeSpan} on ${slot.date}. Kindly ensure your timely arrival for accreditation prior to the meeting. We look forward to your participation.`;
+
+      const approvedDelegates = delegates.filter(
+        (delegate) => delegate.copApproved === "approved"
+      );
+
+      for (let delegate of approvedDelegates) {
+        await sendEmail(
+          delegate.email,
+          delegate.name,
+          "",
+          subject,
+          message1,
+          message2
+        );
+      }
 
       // Send success response
       return successHandler(res, "Meeting Successfully Scheduled", newEvent);
@@ -329,6 +350,27 @@ module.exports = {
       await newSlot.save();
       await currentSlot.save();
       await event.save();
+
+      const organizer = await User.findById(event.organizerId);
+      const { delegates } = organizer;
+      const subject = "Meeting Rescheduled.";
+      const message1 = `Dear Delegate, we would like to inform you that the meeting for ${organizer.name} has been rescheduled. Sorry for the inconvenience.`;
+      const message2 = `The updated meeting is scheduled for ${newSlot.timeSpan} on ${newSlot.date}. Kindly ensure your timely arrival for accreditation prior to the meeting. We look forward to your participation.`;
+
+      const approvedDelegates = delegates.filter(
+        (delegate) => delegate.copApproved === "approved"
+      );
+
+      for (let delegate of approvedDelegates) {
+        await sendEmail(
+          delegate.email,
+          delegate.name,
+          "",
+          subject,
+          message1,
+          message2
+        );
+      }
 
       return successHandler(res, "Meeting Successfully Rescheduled", event);
     } catch (error) {
