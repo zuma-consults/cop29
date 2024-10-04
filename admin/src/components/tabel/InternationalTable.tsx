@@ -105,13 +105,13 @@ const InternationalTable: React.FC = () => {
       selector: (row) => row.phone,
       sortable: true,
     },
+    // {
+    //   name: "Message Type",
+    //   selector: (row) => row.messageType,
+    //   sortable: true,
+    // },
     {
-      name: "Message Type",
-      selector: (row) => row.messageType,
-      sortable: true,
-    },
-    {
-      name: "Reason For Meeting",
+      name: "Subject",
       selector: (row) => row.reasonForMeeting,
       sortable: true,
     },

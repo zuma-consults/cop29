@@ -10,6 +10,7 @@ const {
   approveOrRejectEventById,
   sendEventInvoiceById,
   getAllInvoices,
+  getDelegateAndEventByCode,
 } = require("../../controllers/event-controller");
 const { auth, authAdmin, authRole } = require("../../middlewares/middleware");
 let routes = (app) => {
@@ -24,6 +25,7 @@ let routes = (app) => {
   app.post("/invoice/event/:id", authAdmin, sendEventInvoiceById);
   app.delete("/event/:id", authAdmin, deleteEventById);
   app.get("/invoices", authAdmin, getAllInvoices);
+  app.get("/code", authAdmin, getDelegateAndEventByCode);
 };
 
 module.exports = routes;
