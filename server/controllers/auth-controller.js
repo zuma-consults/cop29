@@ -15,6 +15,7 @@ const QRCode = require("qrcode");
 const Slot = require("../models/slot");
 const sendEmail = require("../utils/sendMail");
 const NodeCache = require("node-cache");
+const sendEmailNoDelegates = require("../utils/sendMailNoDelegates");
 const myCache = new NodeCache();
 
 module.exports = {
@@ -1018,6 +1019,61 @@ module.exports = {
       return successHandler(res, message, response);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode);
+    }
+  },
+  getAllUsersNoDelegates: async (req, res) => {
+    try {
+      const query = {
+        verifiedEmail: true,
+        category: { $ne: "Negotiator" },
+        delegates: [],
+      };
+
+      // Fetch users matching the query
+      const users = await User.find(query).sort({ createdAt: -1 });
+      console.log(users.length);
+
+      const msg1 = `Congratulations on successfully creating an account for your organization on our platform. 
+          <br></br>
+          <br></br>
+          We observed that your organisation is yet to add delegates. Kindly proceed to complete the process by:
+          <ol>
+          <li style="color: #336633; font-size: 15px;">Logging into your account and visiting your profile page.</li>
+          <li style="color: #336633; font-size: 15px;">Click the 'add delegate(s)/nominee(s)' button.</li>
+          <li style="color: #336633; font-size: 15px;">Fill out the form and upload the required documents for each delegate.</li>
+          </ol>
+          `;
+      const msg2 = `For more information on how to add delegates and manage your organization’s profile,
+           visit the 'How it Works' section of the portal.  <br></br> <br></br> If you have any questions or need further assistance, reach out to us using the 'contact us' form on the portal.`;
+
+      // Send emails concurrently
+      await Promise.all(
+        users.map(async (element) => {
+          try {
+            await sendEmailNoDelegates(
+              element.email,
+              element.name,
+              "Reminder",
+              msg1,
+              msg2
+            );
+          } catch (emailError) {
+            console.error(
+              `Failed to send email to ${element.email}:`,
+              emailError
+            );
+          }
+        })
+      );
+
+      // Return success response
+      return successHandler(
+        res,
+        "Verified email users with no delegates",
+        users
+      );
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode || 500);
     }
   },
 };
