@@ -194,7 +194,7 @@ const ContactUsTable: React.FC = () => {
           data={rows}
           fixedHeader
           fixedHeaderScrollHeight="500px"
-          pagination={totalRows > iteamsPerPage}
+          pagination
           paginationServer
           paginationPerPage={iteamsPerPage}
           paginationTotalRows={totalRows}

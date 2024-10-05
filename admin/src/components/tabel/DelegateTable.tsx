@@ -246,7 +246,7 @@ const DelegateTable: React.FC = () => {
           data={extratedData?.users}
           fixedHeader
           fixedHeaderScrollHeight="600px"
-          pagination={totalRows > iteamsPerPage}
+          pagination
           paginationServer
           paginationPerPage={iteamsPerPage}
           paginationTotalRows={totalRows}
