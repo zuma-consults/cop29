@@ -490,7 +490,7 @@ module.exports = {
         // Define a helper function to replace file extensions
         const replaceFileExtension = (filePath) => {
           if (filePath) {
-            return filePath.replace(/\.(pdf|doc|docx)$/i, ".jpg");
+            return filePath.replace(/\.(pdf)$/i, ".jpg");
           }
           return filePath;
         };
@@ -538,7 +538,7 @@ module.exports = {
         // Define a helper function to replace file extensions
         const replaceFileExtension = (filePath) => {
           if (filePath) {
-            return filePath.replace(/\.(pdf|doc|docx)$/i, ".jpg");
+            return filePath.replace(/\.(pdf)$/i, ".jpg");
           }
           return filePath;
         };
@@ -748,7 +748,7 @@ module.exports = {
       // Define a helper function to replace file extensions
       const replaceFileExtension = (filePath) => {
         if (filePath) {
-          return filePath.replace(/\.(pdf|doc|docx)$/i, '.jpg');
+          return filePath.replace(/\.(pdf)$/i, '.jpg');
         }
         return filePath;
       };
