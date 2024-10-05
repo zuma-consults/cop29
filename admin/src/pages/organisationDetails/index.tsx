@@ -31,6 +31,7 @@ const OrganisationDetails: React.FC = () => {
     thematicArea: string;
     reasonForAttendance: string;
     status: string;
+    contactName: string;
     delegates: Array<{
       name: string;
       email: string;
@@ -57,6 +58,7 @@ const OrganisationDetails: React.FC = () => {
     thematicArea,
     reasonForAttendance,
     id,
+    contactName,
   } = organization;
 
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
@@ -142,6 +144,10 @@ const OrganisationDetails: React.FC = () => {
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
                 <strong>Category:</strong>
                 {category}
+              </p>
+              <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
+                <strong>Contact Name:</strong> {contactName}
+                {/* Add contactName */}
               </p>
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
                 <strong>Contact Designation:</strong> {contactDesignation}
