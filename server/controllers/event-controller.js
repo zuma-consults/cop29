@@ -326,7 +326,7 @@ module.exports = {
 
       // Revert current slot details (set to open and clear booking details)
       currentSlot.bookingStatus = "open";
-      currentSlot.adminBookingBy = "";
+      currentSlot.adminBookingBy = null;
       currentSlot.title = "";
 
       // Fetch the new slot to be assigned
@@ -361,16 +361,25 @@ module.exports = {
         (delegate) => delegate.copApproved === "approved"
       );
 
-      for (let delegate of approvedDelegates) {
-        await sendEmail(
-          delegate.email,
-          delegate.name,
-          "",
-          subject,
-          message1,
-          message2
-        );
-      }
+      await Promise.all(
+        approvedDelegates.map(async (delegate) => {
+          try {
+            await sendEmail(
+              delegate.email,
+              delegate.name,
+              "",
+              subject,
+              message1,
+              message2
+            );
+          } catch (emailError) {
+            console.error(
+              `Failed to send email to ${element.email}:`,
+              emailError
+            );
+          }
+        })
+      );
 
       return successHandler(res, "Meeting Successfully Rescheduled", event);
     } catch (error) {
