@@ -37,7 +37,7 @@ const Event: React.FC = () => {
               All Scheduled Meetings
             </span>
             <div className="flex flex-row gap-5">
-              {/* <Button
+              <Button
                 onClick={() => setOpenSchedule(true)}
                 sx={{
                   backgroundColor: "green",
@@ -58,7 +58,7 @@ const Event: React.FC = () => {
               >
                 Schedule Meeting
                 <IoCreateSharp size={20} />
-              </Button> */}
+              </Button>
               <Button
                 onClick={() => setOpen(true)}
                 sx={{

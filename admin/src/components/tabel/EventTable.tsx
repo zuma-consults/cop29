@@ -40,9 +40,9 @@ const EventTable: React.FC = () => {
       search: filters?.search,
       tag: filters?.tags,
       page: filters?.page,
-      perPage: iteamsPerPage, 
+      perPage: iteamsPerPage,
     }),
-    [filters.search, filters.tags, filters.page , iteamsPerPage]
+    [filters.search, filters.tags, page, iteamsPerPage]
   );
 
   const { data, isFetching, refetch } = useGetAllEvents(memoizedFilters);
@@ -258,7 +258,7 @@ const EventTable: React.FC = () => {
           data={extratedData?.events}
           fixedHeader
           fixedHeaderScrollHeight="600px"
-          pagination
+          pagination={totalRows > iteamsPerPage}
           paginationServer
           paginationPerPage={iteamsPerPage}
           paginationTotalRows={totalRows}
