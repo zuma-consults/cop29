@@ -26,7 +26,10 @@ interface TableRow {
 
 const NegotiatorsTable: React.FC = () => {
   const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [iteamsPerPage, setIteamsPerPage] = useState<number>(50);
   const [selectedNegotiators, setSelectedNegotiators] = useState<any>(null);
+
   const [filters, setFilters] = useState({
     userType: "organization",
     page,
@@ -34,9 +37,11 @@ const NegotiatorsTable: React.FC = () => {
 
   const memoizedFilters = useMemo(
     () => ({
+      userType: filters?.userType,
       page: filters?.page,
+      perPage: iteamsPerPage,
     }),
-    [filters.userType, page]
+    [filters.userType, filters.page, iteamsPerPage]
   );
 
   const { mutate: mutateApproval, isLoading: loadingOrganisation } =
@@ -45,6 +50,13 @@ const NegotiatorsTable: React.FC = () => {
     useDeclineOrganisation();
 
   const { data, isFetching, refetch } = useNegotiators(memoizedFilters);
+
+  useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalItems);
+      setIteamsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -62,6 +74,14 @@ const NegotiatorsTable: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setIteamsPerPage(newPerPage);
     setFilters((prevFilters) => ({
       ...prevFilters,
       page,
@@ -232,13 +252,12 @@ const NegotiatorsTable: React.FC = () => {
           data={extratedData?.users}
           fixedHeader
           fixedHeaderScrollHeight="600px"
-          pagination
-          paginationPerPage={5}
-          paginationIconNext
-          paginationIconPrevious
+          pagination={totalRows > iteamsPerPage}
           paginationServer
-          paginationTotalRows={data?.totalRows}
+          paginationPerPage={iteamsPerPage}
+          paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
         />
       </div>
     </>

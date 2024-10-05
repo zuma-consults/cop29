@@ -27,6 +27,8 @@ interface TableRow {
 
 const DelegateTable: React.FC = () => {
   const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [iteamsPerPage, setIteamsPerPage] = useState<number>(50);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
 
   const [filters, setFilters] = useState({
@@ -39,10 +41,17 @@ const DelegateTable: React.FC = () => {
       userType: filters.userType,
       page: filters?.page,
     }),
-    [filters.userType, page]
+    [filters.userType, filters.page, iteamsPerPage]
   );
 
   const { data, isFetching, refetch } = useGetAllDelegates(memoizedFilters);
+
+  useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalItems);
+      setIteamsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -66,6 +75,14 @@ const DelegateTable: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setIteamsPerPage(newPerPage);
     setFilters((prevFilters) => ({
       ...prevFilters,
       page,
@@ -229,13 +246,12 @@ const DelegateTable: React.FC = () => {
           data={extratedData?.users}
           fixedHeader
           fixedHeaderScrollHeight="600px"
-          onChangePage={handlePageChange}
-          pagination
-          paginationPerPage={5}
-          paginationIconNext
-          paginationIconPrevious
+          pagination={totalRows > iteamsPerPage}
           paginationServer
-          paginationTotalRows={data?.totalRows}
+          paginationPerPage={iteamsPerPage}
+          paginationTotalRows={totalRows}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
         />
 
         <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>

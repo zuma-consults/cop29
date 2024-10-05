@@ -43,6 +43,8 @@ interface TableRow {
 
 const CopTable: React.FC = () => {
   const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [iteamsPerPage, setIteamsPerPage] = useState<number>(50);
 
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
   const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
@@ -60,6 +62,24 @@ const CopTable: React.FC = () => {
     page,
   });
 
+  const memoizedFilters = useMemo(
+    () => ({
+      page: filters?.page,
+      perPage: iteamsPerPage,
+      copApproved: filters?.copApproved,
+    }),
+    [filters.copApproved, filters.page]
+  );
+
+  const { data, refetch, isFetching } = useGetAllCopApplicants(memoizedFilters);
+
+  useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalItems);
+      setIteamsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
+
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -67,17 +87,29 @@ const CopTable: React.FC = () => {
     }));
   };
 
-  const memoizedFilters = useMemo(
-    () => ({
-      page: filters?.page,
-      copApproved: filters?.copApproved,
-    }),
-    [filters.copApproved, filters.page]
-  );
+  const handlePageChange = (page: number) => {
+    setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
 
-  const { data, refetch, isFetching } = useGetAllCopApplicants(memoizedFilters);
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setIteamsPerPage(newPerPage);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [memoizedFilters]);
+
   const { mutate: mutateApproval, isLoading: loadingApproval } =
     useApproveCopEvent();
+
   const { mutate: mutateDecline, isLoading: loadingDecline } =
     useDeclineCopEvent();
 
@@ -91,14 +123,6 @@ const CopTable: React.FC = () => {
 
   const handleDownloadCSV = () => {
     saveAsCSV({ data, filename: "COP 29 List" });
-  };
-
-  const handlePageChange = (page: number) => {
-    setPage(page);
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      page,
-    }));
   };
 
   const customStyles = {
@@ -115,10 +139,6 @@ const CopTable: React.FC = () => {
       },
     },
   };
-
-  useEffect(() => {
-    refetch();
-  }, [memoizedFilters]);
 
   const columns: TableColumn<TableRow>[] = [
     {
@@ -258,13 +278,12 @@ const CopTable: React.FC = () => {
           data={data?.data ?? []}
           fixedHeader
           fixedHeaderScrollHeight="600px"
-          pagination
-          paginationPerPage={5}
-          paginationIconNext
-          paginationIconPrevious
+          pagination={totalRows > iteamsPerPage}
           paginationServer
-          paginationTotalRows={data?.totalRows}
+          paginationPerPage={iteamsPerPage}
+          paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
         />
 
         <Modal open={!!selectedCop} onClose={() => setSelectedCop(null)}>

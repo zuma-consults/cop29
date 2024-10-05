@@ -67,10 +67,10 @@ const CreateMeeting: React.FC<{
             <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
               <FormControl variant="outlined" color="success" fullWidth>
                 <InputLabel id="organisation-label">
-                  Select organisation name & preffered time slot
+                  Select organisation name & Prefer time slot
                 </InputLabel>
                 <Select
-                  labelId="timeSlot-label"
+                  labelId="Select organisation name & Prefer time slot"
                   id="timeSlot"
                   name="timeSlot"
                   value={formik.values.timeSlot}

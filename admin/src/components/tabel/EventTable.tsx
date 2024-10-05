@@ -26,6 +26,8 @@ interface TableRow {
 
 const EventTable: React.FC = () => {
   const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [iteamsPerPage, setIteamsPerPage] = useState<number>(50);
 
   const [filters, setFilters] = useState({
     search: "",
@@ -38,11 +40,19 @@ const EventTable: React.FC = () => {
       search: filters?.search,
       tag: filters?.tags,
       page: filters?.page,
+      perPage: iteamsPerPage, 
     }),
-    [filters.search, filters.tags, page]
+    [filters.search, filters.tags, filters.page , iteamsPerPage]
   );
 
   const { data, isFetching, refetch } = useGetAllEvents(memoizedFilters);
+
+  useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalItems);
+      setIteamsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -60,6 +70,14 @@ const EventTable: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setIteamsPerPage(newPerPage);
     setFilters((prevFilters) => ({
       ...prevFilters,
       page,
@@ -240,13 +258,12 @@ const EventTable: React.FC = () => {
           data={extratedData?.events}
           fixedHeader
           fixedHeaderScrollHeight="600px"
-          pagination
-          paginationPerPage={5}
-          paginationIconNext
-          paginationIconPrevious
+          pagination={totalRows > iteamsPerPage}
           paginationServer
-          paginationTotalRows={data?.totalRows}
+          paginationPerPage={iteamsPerPage}
+          paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
         />
       </div>
     </>

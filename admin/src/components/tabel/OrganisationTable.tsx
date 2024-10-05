@@ -25,17 +25,23 @@ interface TableRow {
 }
 
 const OrganisationTable: React.FC = () => {
-  const [_, setPage] = useState(1);
+  const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [iteamsPerPage, setIteamsPerPage] = useState<number>(50);
   const [selectedOrgnisation, setSelectedOrgnisation] = useState<any>(null);
+
   const [filters, setFilters] = useState({
     userType: "organization",
+    page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
       userType: filters.userType,
+      page: filters?.page,
+      perPage: iteamsPerPage,
     }),
-    [filters.userType]
+    [filters.userType, filters.page, iteamsPerPage]
   );
 
   const { mutate: mutateApproval, isLoading: loadingOrganisation } =
@@ -44,6 +50,13 @@ const OrganisationTable: React.FC = () => {
     useDeclineOrganisation();
 
   const { data, isFetching, refetch } = useOrganisation(memoizedFilters);
+
+  useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalItems);
+      setIteamsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -68,9 +81,21 @@ const OrganisationTable: React.FC = () => {
     });
   }, [extratedData?.events]);
 
-  const handlePageChange = useCallback((page: number) => {
+  const handlePageChange = (page: number) => {
     setPage(page);
-  }, []);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setIteamsPerPage(newPerPage);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
 
   const handelActionEvent = async (type: string) => {
     if (type === "approve") {
@@ -225,10 +250,14 @@ const OrganisationTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={extratedData?.users}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
+          pagination={totalRows > iteamsPerPage}
+          paginationServer
+          paginationPerPage={iteamsPerPage}
+          paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
         />
       </div>
     </>
