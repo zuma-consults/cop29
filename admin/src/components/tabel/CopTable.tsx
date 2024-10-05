@@ -39,6 +39,7 @@ interface TableRow {
   state: string;
   designation: string;
   department: string;
+  phone: string;
 }
 
 const CopTable: React.FC = () => {
@@ -340,6 +341,11 @@ const CopTable: React.FC = () => {
                   {/* Render Designation */}
                   <Typography variant="body1" component="div">
                     <strong>Designation: </strong> {selectedCop?.designation}
+                  </Typography>
+
+                  {/* Render Designation */}
+                  <Typography variant="body1" component="div">
+                    <strong>Phone: </strong> {selectedCop?.phone}
                   </Typography>
 
                   {/* Render department if available */}
