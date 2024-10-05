@@ -27,7 +27,7 @@ interface TableRow {
 const OrganisationTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [iteamsPerPage, setIteamsPerPage] = useState<number>(50);
+  const [iteamsPerPage, setIteamsPerPage] = useState<number>(0);
   const [selectedOrgnisation, setSelectedOrgnisation] = useState<any>(null);
 
   const [filters, setFilters] = useState({
@@ -258,6 +258,9 @@ const OrganisationTable: React.FC = () => {
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
+          paginationComponentOptions={{
+            noRowsPerPage: false,
+          }}
         />
       </div>
     </>

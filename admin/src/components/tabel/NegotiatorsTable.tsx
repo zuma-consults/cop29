@@ -252,7 +252,7 @@ const NegotiatorsTable: React.FC = () => {
           data={extratedData?.users}
           fixedHeader
           fixedHeaderScrollHeight="600px"
-          pagination
+          pagination={totalRows > iteamsPerPage}
           paginationServer
           paginationPerPage={iteamsPerPage}
           paginationTotalRows={totalRows}
