@@ -485,12 +485,32 @@ module.exports = {
 
       const totalUsers = await User.countDocuments(query);
 
+      // Iterate over users and check file extensions
+      const updatedUsers = users.map((user) => {
+        // Define a helper function to replace file extensions
+        const replaceFileExtension = (filePath) => {
+          if (filePath) {
+            return filePath.replace(/\.(pdf|doc|docx)$/i, ".jpg");
+          }
+          return filePath;
+        };
+
+        // Update the fields if they end with .pdf, .doc, or .docx
+        user.documentSupportingAttendance = replaceFileExtension(
+          user.documentSupportingAttendance
+        );
+        user.letterProof = replaceFileExtension(user.letterProof);
+        user.contactIdCard = replaceFileExtension(user.contactIdCard);
+
+        return user;
+      });
+
       // Prepare the response with pagination info
       const response = {
         totalPages: Math.ceil(totalUsers / limit),
         currentPage: parseInt(page),
         totalUsers,
-        users,
+        users: updatedUsers, // Use the updated users here
       };
 
       const message = `All ${userType ? userType : "Users"} Found`;
@@ -513,12 +533,32 @@ module.exports = {
 
       const totalUsers = await User.countDocuments(query);
 
+      // Iterate over users and check file extensions
+      const updatedUsers = users.map((user) => {
+        // Define a helper function to replace file extensions
+        const replaceFileExtension = (filePath) => {
+          if (filePath) {
+            return filePath.replace(/\.(pdf|doc|docx)$/i, ".jpg");
+          }
+          return filePath;
+        };
+
+        // Update the fields if they end with .pdf, .doc, or .docx
+        user.documentSupportingAttendance = replaceFileExtension(
+          user.documentSupportingAttendance
+        );
+        user.letterProof = replaceFileExtension(user.letterProof);
+        user.contactIdCard = replaceFileExtension(user.contactIdCard);
+
+        return user;
+      });
+
       // Prepare the response with pagination info
       const response = {
         totalPages: Math.ceil(totalUsers / limit),
         currentPage: parseInt(page),
         totalUsers,
-        users,
+        users: updatedUsers, // Use the updated users here
       };
 
       const message = `All Negotiators Found`;
@@ -693,35 +733,47 @@ module.exports = {
   getAllCopApplicants: async (req, res) => {
     try {
       const { copApproved } = req.query;
-
+  
       // Create a query object for filtering based on copApproved
       const query = { verifiedEmail: true, status: "approved" };
-
+  
       // If copApproved is provided in the query parameters, add it to the query object
       if (copApproved !== undefined) {
         query["delegates.copApproved"] = copApproved;
       }
+  
       // Find all users sorted by creation date
       const users = await User.find(query).sort({ createdAt: -1 });
-
+  
+      // Define a helper function to replace file extensions
+      const replaceFileExtension = (filePath) => {
+        if (filePath) {
+          return filePath.replace(/\.(pdf|doc|docx)$/i, '.jpg');
+        }
+        return filePath;
+      };
+  
       // Extract delegates from each user and combine them into one array
       const delegates = users.reduce((acc, user) => {
         if (user.delegates && user.delegates.length > 0) {
-          if (copApproved !== undefined) {
-            // Only push delegates with matching copApproved status
-            acc.push(
-              ...user.delegates.filter(
-                (delegate) => String(delegate.copApproved) === copApproved
-              )
-            );
-          } else {
-            // If copApproved is not provided, push all delegates
-            acc.push(...user.delegates);
-          }
+          // Filter delegates based on copApproved status, if provided
+          const filteredDelegates = user.delegates.filter((delegate) => {
+            if (copApproved !== undefined) {
+              return String(delegate.copApproved) === copApproved;
+            }
+            return true;
+          });
+  
+          // Replace passport file extensions for each delegate
+          filteredDelegates.forEach((delegate) => {
+            delegate.passport = replaceFileExtension(delegate.passport);
+          });
+  
+          acc.push(...filteredDelegates);
         }
         return acc;
       }, []);
-
+  
       // Set the message based on the copApproved filter
       let message;
       if (copApproved !== undefined) {
@@ -729,7 +781,7 @@ module.exports = {
       } else {
         message = "All COP 29 Applicants";
       }
-
+  
       return successHandler(res, message, delegates);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode || 500);
