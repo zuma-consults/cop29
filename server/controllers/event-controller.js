@@ -232,7 +232,7 @@ module.exports = {
         events = myCache.get(cacheKey).events;
       } else {
         events = await Event.find(query)
-          .sort({ createdAt: -1 })
+          .sort({ createdAt: 1 })
           .skip((page - 1) * PAGE_SIZE)
           .limit(PAGE_SIZE);
         const totalItems = await Event.countDocuments(query);
@@ -260,7 +260,7 @@ module.exports = {
       if (myCache.has("allEvents3")) {
         event = myCache.get("allEvents3");
       } else {
-        event = await Event.find().sort({ createdAt: -1 }).limit(3);
+        event = await Event.find().sort({ createdAt: 1 }).limit(3);
         myCache.set("allEvents3", event, 10);
       }
       const response = {
@@ -560,7 +560,7 @@ module.exports = {
         invoices = await Invoice.find(query)
           .populate("eventId")
           .populate("generatedBy")
-          .sort({ createdAt: -1 })
+          .sort({ createdAt: 1 })
           .skip((page - 1) * PAGE_SIZE)
           .limit(PAGE_SIZE);
 
