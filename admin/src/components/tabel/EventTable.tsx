@@ -25,22 +25,34 @@ interface TableRow {
 }
 
 const EventTable: React.FC = () => {
-  const [_, setPage] = useState(1);
+  const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [iteamsPerPage, setIteamsPerPage] = useState<number>(50);
 
   const [filters, setFilters] = useState({
     search: "",
     tags: "",
+    page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
       search: filters?.search,
       tag: filters?.tags,
+      page: filters?.page,
+      perPage: iteamsPerPage, 
     }),
-    [filters.search, filters.tags]
+    [filters.search, filters.tags, filters.page , iteamsPerPage]
   );
 
   const { data, isFetching, refetch } = useGetAllEvents(memoizedFilters);
+
+  useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalItems);
+      setIteamsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -56,14 +68,26 @@ const EventTable: React.FC = () => {
     });
   }, []);
 
+  const handlePageChange = (page: number) => {
+    setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setIteamsPerPage(newPerPage);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
   const extratedData = useMemo(() => data?.data, [data]);
   const handleDownloadCSV = useCallback(() => {
     saveAsCSV({ data: extratedData?.events, filename: "COP29 Events List" });
   }, [extratedData?.events]);
-
-  const handlePageChange = useCallback((page: number) => {
-    setPage(page);
-  }, []);
 
   useEffect(() => {
     refetch();
@@ -232,10 +256,14 @@ const EventTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={extratedData?.events}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
+          pagination={totalRows > iteamsPerPage}
+          paginationServer
+          paginationPerPage={iteamsPerPage}
+          paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
         />
       </div>
     </>

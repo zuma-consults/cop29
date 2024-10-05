@@ -3,7 +3,7 @@ import React, { useState, useMemo } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight } from "react-icons/go";
 import { useForm, Controller } from "react-hook-form";
-import { useAllInternational,} from "../../hooks/useContactUs";
+import { useAllInternational } from "../../hooks/useContactUs";
 import Loader from "../ui/Loader";
 
 interface TableRow {
@@ -20,20 +20,54 @@ interface TableRow {
 
 const InternationalTable: React.FC = () => {
   const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [iteamsPerPage, setIteamsPerPage] = useState<number>(50);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
+
   const [filters, setFilters] = useState({
     messageType: "international",
+    page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
       messageType: filters.messageType,
+      page: filters?.page,
+      perPage: iteamsPerPage,
     }),
-    [filters.messageType, page]
+    [filters.messageType, filters.page, iteamsPerPage]
   );
 
   const { data, isFetching, refetch } = useAllInternational(memoizedFilters);
+
+  React.useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalItems);
+      setIteamsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setIteamsPerPage(newPerPage);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
   const [rows, setRows] = useState<TableRow[]>([]);
+
+  React.useEffect(() => {
+    refetch();
+  }, [memoizedFilters]);
 
   React.useEffect(() => {
     if (data && data.status) {
@@ -160,9 +194,14 @@ const InternationalTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={rows}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="500px"
+          pagination={totalRows > iteamsPerPage}
+          paginationServer
+          paginationPerPage={iteamsPerPage}
+          paginationTotalRows={totalRows}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
         />
 
         <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>

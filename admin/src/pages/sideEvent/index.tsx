@@ -7,9 +7,11 @@ import { IoCreateSharp } from "react-icons/io5";
 import CreateEvent from "../../components/create-event";
 import { useGetAllEvents } from "../../hooks/useEvent";
 import Loader from "../../components/ui/Loader";
+import CreateMeeting from "../../components/create-meeting";
 
 const Event: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const [openSchedule, setOpenSchedule] = useState(false);
   const { refetch, isFetching } = useGetAllEvents();
 
   return (
@@ -34,28 +36,52 @@ const Event: React.FC = () => {
             <span className="text-sm  font-extrabold text-[#2E7D31]">
               All Scheduled Meetings
             </span>
-            <Button
-              onClick={() => setOpen(true)}
-              sx={{
-                backgroundColor: "green",
-                color: "white",
-                width: "fit-content",
-                paddingY: "8px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center",
-                fontSize: "13px",
-                gap: "8px",
-                "&:hover": {
-                  backgroundColor: "#e8f5e9",
-                  color: "black",
-                },
-              }}
-            >
-              Schedule Meeting
-              <IoCreateSharp size={20} />
-            </Button>
+            <div className="flex flex-row gap-5">
+              {/* <Button
+                onClick={() => setOpenSchedule(true)}
+                sx={{
+                  backgroundColor: "green",
+                  color: "white",
+                  width: "fit-content",
+                  paddingY: "8px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                  fontSize: "13px",
+                  gap: "8px",
+                  "&:hover": {
+                    backgroundColor: "#e8f5e9",
+                    color: "black",
+                  },
+                }}
+              >
+                Schedule Meeting
+                <IoCreateSharp size={20} />
+              </Button> */}
+              <Button
+                onClick={() => setOpen(true)}
+                sx={{
+                  backgroundColor: "green",
+                  color: "white",
+                  width: "fit-content",
+                  paddingY: "8px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                  fontSize: "13px",
+                  gap: "8px",
+                  "&:hover": {
+                    backgroundColor: "#e8f5e9",
+                    color: "black",
+                  },
+                }}
+              >
+                Schedule internation request
+                <IoCreateSharp size={20} />
+              </Button>
+            </div>
           </div>
 
           <div>
@@ -97,6 +123,36 @@ const Event: React.FC = () => {
             }}
           >
             <CreateEvent setOpen={setOpen} refetchAllEvents={refetch} />
+          </Box>
+        </Modal>
+        <Modal
+          open={openSchedule}
+          onClose={() => setOpenSchedule(false)}
+          aria-labelledby="create-event-modal"
+          aria-describedby="create-event-form"
+        >
+          <Box
+            sx={{
+              position: "absolute" as "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: { xs: "90%", sm: "80%", md: "60%" },
+              my: 10,
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: 4,
+              maxHeight: "90vh",
+              overflowY: "auto",
+              margin: "auto",
+              outline: "none",
+              borderRadius: "8px",
+            }}
+          >
+            <CreateMeeting
+              setOpenSchedule={setOpenSchedule}
+              refetchAllEvents={refetch}
+            />
           </Box>
         </Modal>
       </div>

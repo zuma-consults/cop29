@@ -20,20 +20,50 @@ interface TableRow {
 
 const ContactUsTable: React.FC = () => {
   const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [iteamsPerPage, setIteamsPerPage] = useState<number>(50);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
+
   const [filters, setFilters] = useState({
     messageType: "contact",
+    page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
       messageType: filters.messageType,
+      page: filters?.page,
+      perPage: iteamsPerPage,
     }),
-    [filters.messageType, page]
+    [filters.messageType, filters.page, iteamsPerPage]
   );
 
   const { data, isFetching, refetch } = useContactUs(memoizedFilters);
+
+  React.useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalItems);
+      setIteamsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
+
   const [rows, setRows] = useState<TableRow[]>([]);
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setIteamsPerPage(newPerPage);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
 
   React.useEffect(() => {
     if (data && data.status) {
@@ -66,11 +96,13 @@ const ContactUsTable: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: TableRow) => {
-    console.log("User details updated:", data);
-    // Handle form submission here, e.g., update state or make an API call
+  React.useEffect(() => {
+    refetch();
+  }, [memoizedFilters]);
+
+  const onSubmit = () => {
     setSelectedEvent(null);
-    reset(); // Reset form after submission
+    reset();
   };
 
   React.useEffect(() => {
@@ -160,9 +192,14 @@ const ContactUsTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={rows}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="500px"
+          pagination={totalRows > iteamsPerPage}
+          paginationServer
+          paginationPerPage={iteamsPerPage}
+          paginationTotalRows={totalRows}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
         />
 
         <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>
