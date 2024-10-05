@@ -479,7 +479,7 @@ module.exports = {
         : { verifiedEmail: true, category: { $ne: "Negotiator" } };
 
       const users = await User.find(query)
-        .sort({ createdAt: -1 })
+        .sort({ createdAt: 1 })
         .skip((page - 1) * limit)
         .limit(parseInt(limit));
 
@@ -527,7 +527,7 @@ module.exports = {
       const query = { verifiedEmail: true, category: "Negotiator" };
 
       const users = await User.find(query)
-        .sort({ createdAt: -1 })
+        .sort({ createdAt: 1 })
         .skip((page - 1) * limit)
         .limit(parseInt(limit));
 
@@ -743,7 +743,7 @@ module.exports = {
       }
   
       // Find all users sorted by creation date
-      const users = await User.find(query).sort({ createdAt: -1 });
+      const users = await User.find(query).sort({ createdAt: 1 });
   
       // Define a helper function to replace file extensions
       const replaceFileExtension = (filePath) => {
@@ -1011,7 +1011,7 @@ module.exports = {
       const query = { verifiedEmail: true, status: "approved" };
 
       // Find all users sorted by creation date
-      const users = await User.find(query).sort({ createdAt: -1 });
+      const users = await User.find(query).sort({ createdAt: 1 });
 
       // Initialize counts for users and delegates
       let totalOrganizations = 0;
@@ -1082,7 +1082,7 @@ module.exports = {
       };
 
       // Fetch users matching the query
-      const users = await User.find(query).sort({ createdAt: -1 });
+      const users = await User.find(query).sort({ createdAt: 1 });
       console.log(users.length);
 
       const msg1 = `Congratulations on successfully creating an account for your organization on our platform. 
