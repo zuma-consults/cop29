@@ -510,6 +510,7 @@ module.exports = {
         totalPages: Math.ceil(totalUsers / limit),
         currentPage: parseInt(page),
         totalUsers,
+        itemsPerPage: 50,
         users: updatedUsers, // Use the updated users here
       };
 
@@ -733,26 +734,26 @@ module.exports = {
   getAllCopApplicants: async (req, res) => {
     try {
       const { copApproved } = req.query;
-  
+
       // Create a query object for filtering based on copApproved
       const query = { verifiedEmail: true, status: "approved" };
-  
+
       // If copApproved is provided in the query parameters, add it to the query object
       if (copApproved !== undefined) {
         query["delegates.copApproved"] = copApproved;
       }
-  
+
       // Find all users sorted by creation date
       const users = await User.find(query).sort({ createdAt: 1 });
-  
+
       // Define a helper function to replace file extensions
       const replaceFileExtension = (filePath) => {
         if (filePath) {
-          return filePath.replace(/\.(pdf)$/i, '.jpg');
+          return filePath.replace(/\.(pdf)$/i, ".jpg");
         }
         return filePath;
       };
-  
+
       // Extract delegates from each user and combine them into one array
       const delegates = users.reduce((acc, user) => {
         if (user.delegates && user.delegates.length > 0) {
@@ -763,17 +764,17 @@ module.exports = {
             }
             return true;
           });
-  
+
           // Replace passport file extensions for each delegate
           filteredDelegates.forEach((delegate) => {
             delegate.passport = replaceFileExtension(delegate.passport);
           });
-  
+
           acc.push(...filteredDelegates);
         }
         return acc;
       }, []);
-  
+
       // Set the message based on the copApproved filter
       let message;
       if (copApproved !== undefined) {
@@ -781,7 +782,7 @@ module.exports = {
       } else {
         message = "All COP 29 Applicants";
       }
-  
+
       return successHandler(res, message, delegates);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode || 500);
