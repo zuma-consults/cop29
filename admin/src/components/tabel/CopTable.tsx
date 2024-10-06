@@ -44,8 +44,7 @@ interface TableRow {
 const CopTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [iteamsPerPage, setIteamsPerPage] = useState<number>(50);
-
+  const [itemsPerPage, setItemsPerPage] = useState<number>(50);
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
   const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
   // const [status, setStatus] = useState(event.status);
@@ -65,7 +64,7 @@ const CopTable: React.FC = () => {
   const memoizedFilters = useMemo(
     () => ({
       page: filters?.page,
-      perPage: iteamsPerPage,
+      perPage: itemsPerPage,
       copApproved: filters?.copApproved,
     }),
     [filters.copApproved, filters.page]
@@ -75,8 +74,8 @@ const CopTable: React.FC = () => {
 
   useEffect(() => {
     if (data?.data) {
-      setTotalRows(data.data.totalItems);
-      setIteamsPerPage(data.data.itemsPerPage);
+      setTotalRows(data.data.totalUsers);
+      setItemsPerPage(data.data.itemsPerPage);
     }
   }, [data]);
 
@@ -96,7 +95,7 @@ const CopTable: React.FC = () => {
   };
 
   const handlePerRowsChange = (newPerPage: number, page: number) => {
-    setIteamsPerPage(newPerPage);
+    setItemsPerPage(newPerPage);
     setFilters((prevFilters) => ({
       ...prevFilters,
       page,
@@ -280,7 +279,7 @@ const CopTable: React.FC = () => {
           fixedHeaderScrollHeight="600px"
           pagination
           paginationServer
-          paginationPerPage={iteamsPerPage}
+          paginationPerPage={itemsPerPage}
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
