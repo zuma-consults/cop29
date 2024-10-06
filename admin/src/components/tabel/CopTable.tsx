@@ -284,6 +284,9 @@ const CopTable: React.FC = () => {
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
         />
 
         <Modal open={!!selectedCop} onClose={() => setSelectedCop(null)}>

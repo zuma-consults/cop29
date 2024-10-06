@@ -258,12 +258,15 @@ const EventTable: React.FC = () => {
           data={extratedData?.events}
           fixedHeader
           fixedHeaderScrollHeight="600px"
-          pagination={totalRows > iteamsPerPage}
+          pagination
           paginationServer
           paginationPerPage={iteamsPerPage}
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
         />
       </div>
     </>
