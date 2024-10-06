@@ -92,6 +92,7 @@ module.exports = {
 
       // Prepare the response with pagination info
       const response = {
+        itemsPerPage: 5,
         totalPages: Math.ceil(totalMessages / limit),
         currentPage: parseInt(page),
         totalMessages,
