@@ -126,16 +126,20 @@ const CreateMeeting: React.FC<{
                   {openOrganizations?.map(
                     (organizer: {
                       id: string;
-                      email: string;
+                      thematicArea: string;
                       date: string | number | Date;
                       name: string;
-                      category: string;
+                      state: string;
+                      organizationType: string;
                     }) => (
                       <MenuItem key={organizer.id} value={organizer.id}>
                         <div className={`flex justify-start w-full `}>
                           <span className="w-[30%]">{organizer.name}</span>
-                          <span className="w-[30%]">{organizer.category}</span>
-                          <span>{organizer.email}</span>
+                          <span className="w-[30%]">{organizer.state}</span>
+                          <span className="w-[30%]">
+                            {organizer.organizationType}
+                          </span>
+                          <span>{organizer.thematicArea}</span>
                         </div>
                       </MenuItem>
                     )
@@ -152,9 +156,7 @@ const CreateMeeting: React.FC<{
             {/* time slot */}
             <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
               <FormControl variant="outlined" color="success" fullWidth>
-                <InputLabel id="slotId">
-                  Select Organisation preferred time
-                </InputLabel>
+                <InputLabel id="slotId">Select Time Slot</InputLabel>
                 <Select
                   labelId="slotId"
                   id="slotId"
@@ -163,7 +165,7 @@ const CreateMeeting: React.FC<{
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   error={formik.touched.slotId && Boolean(formik.errors.slotId)}
-                  label="Select Organisation preferred time"
+                  label="Time Slot"
                 >
                   {openSlots?.map(
                     (slot: {
