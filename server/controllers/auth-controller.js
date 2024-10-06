@@ -507,6 +507,7 @@ module.exports = {
 
       // Prepare the response with pagination info
       const response = {
+        itemsPerPage: 5,
         totalPages: Math.ceil(totalUsers / limit),
         currentPage: parseInt(page),
         totalUsers,
@@ -556,6 +557,7 @@ module.exports = {
 
       // Prepare the response with pagination info
       const response = {
+        itemsPerPage: 5,
         totalPages: Math.ceil(totalUsers / limit),
         currentPage: parseInt(page),
         totalUsers,

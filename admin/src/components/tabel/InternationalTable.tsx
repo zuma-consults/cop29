@@ -21,7 +21,7 @@ interface TableRow {
 const InternationalTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [iteamsPerPage, setIteamsPerPage] = useState<number>(50);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(50);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
 
   const [filters, setFilters] = useState({
@@ -33,17 +33,17 @@ const InternationalTable: React.FC = () => {
     () => ({
       messageType: filters.messageType,
       page: filters?.page,
-      perPage: iteamsPerPage,
+      perPage: itemsPerPage,
     }),
-    [filters.messageType, filters.page, iteamsPerPage]
+    [filters.messageType, filters.page, itemsPerPage]
   );
 
   const { data, isFetching, refetch } = useAllInternational(memoizedFilters);
 
   React.useEffect(() => {
     if (data?.data) {
-      setTotalRows(data.data.totalItems);
-      setIteamsPerPage(data.data.itemsPerPage);
+      setTotalRows(data.data.totalUsers);
+      setItemsPerPage(data.data.itemsPerPage);
     }
   }, [data]);
 
@@ -56,7 +56,7 @@ const InternationalTable: React.FC = () => {
   };
 
   const handlePerRowsChange = (newPerPage: number, page: number) => {
-    setIteamsPerPage(newPerPage);
+    setItemsPerPage(newPerPage);
     setFilters((prevFilters) => ({
       ...prevFilters,
       page,
@@ -198,7 +198,7 @@ const InternationalTable: React.FC = () => {
           fixedHeaderScrollHeight="500px"
           pagination
           paginationServer
-          paginationPerPage={iteamsPerPage}
+          paginationPerPage={itemsPerPage}
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}

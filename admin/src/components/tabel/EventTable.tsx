@@ -27,8 +27,7 @@ interface TableRow {
 const EventTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [iteamsPerPage, setIteamsPerPage] = useState<number>(50);
-
+  const [itemsPerPage, setItemsPerPage] = useState<number>(50);
   const [filters, setFilters] = useState({
     search: "",
     tags: "",
@@ -40,17 +39,17 @@ const EventTable: React.FC = () => {
       search: filters?.search,
       tag: filters?.tags,
       page: filters?.page,
-      perPage: iteamsPerPage,
+      perPage: itemsPerPage,
     }),
-    [filters.search, filters.tags, page, iteamsPerPage]
+    [filters.search, filters.tags, page, itemsPerPage]
   );
 
   const { data, isFetching, refetch } = useGetAllEvents(memoizedFilters);
 
   useEffect(() => {
     if (data?.data) {
-      setTotalRows(data.data.totalItems);
-      setIteamsPerPage(data.data.itemsPerPage);
+      setTotalRows(data.data.totalUsers);
+      setItemsPerPage(data.data.itemsPerPage);
     }
   }, [data]);
 
@@ -77,7 +76,7 @@ const EventTable: React.FC = () => {
   };
 
   const handlePerRowsChange = (newPerPage: number, page: number) => {
-    setIteamsPerPage(newPerPage);
+    setItemsPerPage(newPerPage);
     setFilters((prevFilters) => ({
       ...prevFilters,
       page,
@@ -260,7 +259,7 @@ const EventTable: React.FC = () => {
           fixedHeaderScrollHeight="600px"
           pagination
           paginationServer
-          paginationPerPage={iteamsPerPage}
+          paginationPerPage={itemsPerPage}
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}

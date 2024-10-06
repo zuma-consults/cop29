@@ -27,7 +27,7 @@ interface TableRow {
 const OrganisationTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [iteamsPerPage, setIteamsPerPage] = useState<number>(0);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(50);
   const [selectedOrgnisation, setSelectedOrgnisation] = useState<any>(null);
 
   const [filters, setFilters] = useState({
@@ -39,9 +39,9 @@ const OrganisationTable: React.FC = () => {
     () => ({
       userType: filters.userType,
       page: filters?.page,
-      perPage: iteamsPerPage,
+      perPage: itemsPerPage,
     }),
-    [filters.userType, filters.page, iteamsPerPage]
+    [filters.userType, filters.page, itemsPerPage]
   );
 
   const { mutate: mutateApproval, isLoading: loadingOrganisation } =
@@ -53,8 +53,8 @@ const OrganisationTable: React.FC = () => {
 
   useEffect(() => {
     if (data?.data) {
-      setTotalRows(data.data.totalItems);
-      setIteamsPerPage(data.data.itemsPerPage);
+      setTotalRows(data.data.totalUsers);
+      setItemsPerPage(data.data.itemsPerPage);
     }
   }, [data]);
 
@@ -90,7 +90,7 @@ const OrganisationTable: React.FC = () => {
   };
 
   const handlePerRowsChange = (newPerPage: number, page: number) => {
-    setIteamsPerPage(newPerPage);
+    setItemsPerPage(newPerPage);
     setFilters((prevFilters) => ({
       ...prevFilters,
       page,
@@ -254,7 +254,7 @@ const OrganisationTable: React.FC = () => {
           fixedHeaderScrollHeight="600px"
           pagination
           paginationServer
-          paginationPerPage={iteamsPerPage}
+          paginationPerPage={itemsPerPage}
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
