@@ -200,6 +200,9 @@ const ContactUsTable: React.FC = () => {
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
         />
 
         <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>

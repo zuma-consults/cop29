@@ -259,7 +259,7 @@ const OrganisationTable: React.FC = () => {
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
           paginationComponentOptions={{
-            noRowsPerPage: false,
+            noRowsPerPage: true,
           }}
         />
       </div>
