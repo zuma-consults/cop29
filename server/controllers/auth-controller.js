@@ -472,7 +472,7 @@ module.exports = {
   },
   getAllUsers: async (req, res) => {
     try {
-      const { page = 1, limit = 50, userType } = req.query;
+      const { page = 1, limit = 150, userType } = req.query;
 
       const query = userType
         ? { userType, verifiedEmail: true, category: { $ne: "Negotiator" } }
@@ -524,7 +524,7 @@ module.exports = {
   },
   getAllNegotiators: async (req, res) => {
     try {
-      const { page = 1, limit = 50 } = req.query;
+      const { page = 1, limit = 150 } = req.query;
 
       const query = { verifiedEmail: true, category: "Negotiator" };
 
