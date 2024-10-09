@@ -71,7 +71,7 @@ module.exports = {
   },
   getAllAdmins: async (req, res) => {
     try {
-      const { page = 1, limit = 150 } = req.query;
+      const { page = 1, limit = 200 } = req.query;
 
       const excludedRoleId = "66e98036056837ca119e6868"; // The roleId to exclude
 
