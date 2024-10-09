@@ -487,20 +487,28 @@ module.exports = {
 
       // Iterate over users and check file extensions
       const updatedUsers = users.map((user) => {
-        // Define a helper function to replace file extensions
-        const replaceFileExtension = (filePath) => {
+        // Define a helper function to replace file extensions and update the protocol
+        const processFilePath = (filePath) => {
           if (filePath) {
-            return filePath.replace(/\.(pdf)$/i, ".jpg");
+            // Replace .pdf with .jpg
+            filePath = filePath.replace(/\.(pdf)$/i, ".jpg");
+
+            // Check if the file ends with .doc or .docx and update protocol if needed
+            if (/\.(doc|docx)$/i.test(filePath)) {
+              if (filePath.startsWith("http:")) {
+                filePath = filePath.replace(/^http:/i, "https:");
+              }
+            }
           }
           return filePath;
         };
 
-        // Update the fields if they end with .pdf, .doc, or .docx
-        user.documentSupportingAttendance = replaceFileExtension(
+        // Update the fields
+        user.documentSupportingAttendance = processFilePath(
           user.documentSupportingAttendance
         );
-        user.letterProof = replaceFileExtension(user.letterProof);
-        user.contactIdCard = replaceFileExtension(user.contactIdCard);
+        user.letterProof = processFilePath(user.letterProof);
+        user.contactIdCard = processFilePath(user.contactIdCard);
 
         return user;
       });
