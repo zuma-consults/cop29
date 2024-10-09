@@ -93,9 +93,9 @@ const NegotiatorsTable: React.FC = () => {
   const handleDownloadCSV = useCallback(() => {
     saveAsCSV({
       data: extratedData?.users,
-      filename: "Organisation/Members List",
+      filename: "Negotiator List",
     });
-  }, [extratedData?.events]);
+  }, [data]);
 
   const handelActionEvent = async (type: string) => {
     if (type === "approve") {
@@ -159,10 +159,12 @@ const NegotiatorsTable: React.FC = () => {
           | undefined;
       }) => (
         <div className="text-left capitalize flex items-center">
-          {row.status == "approved" ? (
+          {row.status === "approved" ? (
             <Chip label={row?.status} color="success" />
-          ) : (
+          ) : row.status === "pending" ? (
             <Chip label={row?.status} color="warning" />
+          ) : (
+            <Chip label={row?.status} color="error" />
           )}
         </div>
       ),

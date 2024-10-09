@@ -86,7 +86,7 @@ const EventTable: React.FC = () => {
   const extratedData = useMemo(() => data?.data, [data]);
   const handleDownloadCSV = useCallback(() => {
     saveAsCSV({ data: extratedData?.events, filename: "COP29 Events List" });
-  }, [extratedData?.events]);
+  }, [data]);
 
   useEffect(() => {
     refetch();

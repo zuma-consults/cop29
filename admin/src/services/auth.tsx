@@ -22,8 +22,8 @@ export const logout = async () => {
     url: `${BASE_URL}/logout/staff`,
   };
 
-  const response = await axios(config);
-  return response.data;
+  const response = await request(config);
+  return response;
 };
 
 export const forgotPassword = async (data: any) => {
@@ -115,7 +115,7 @@ export const changePassword = (data: any) => {
   const config = {
     method: "put",
     url: `${BASE_URL}/password/staff`,
-    data
+    data,
   };
 
   return request(config)

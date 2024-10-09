@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -121,9 +121,12 @@ const CopTable: React.FC = () => {
     }
   };
 
-  const handleDownloadCSV = () => {
-    saveAsCSV({ data, filename: "COP 29 List" });
-  };
+  const handleDownloadCSV = useCallback(() => {
+    saveAsCSV({
+      data: data?.data ?? [],
+      filename: "COP 29 List",
+    });
+  }, [data]);
 
   const customStyles = {
     headCells: {
@@ -312,13 +315,12 @@ const CopTable: React.FC = () => {
                 <div className="flex justify-center items-center">
                   <CardMedia
                     component="img"
-                    height="200"
+                    height="400"
                     image={selectedCop?.passport}
-                    alt={`${selectedCop?.name} Logo`}
+                    alt={`${selectedCop?.name} Passport`}
                     sx={{
-                      objectFit: "contain",
                       marginBottom: "16px",
-                      maxWidth: "20%",
+                      maxWidth: "80%",
                     }}
                     loading="lazy"
                   />
