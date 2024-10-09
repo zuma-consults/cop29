@@ -314,13 +314,12 @@ const CopTable: React.FC = () => {
                 <div className="flex justify-center items-center">
                   <CardMedia
                     component="img"
-                    height="200"
+                    height="400"
                     image={selectedCop?.passport}
-                    alt={`${selectedCop?.name} Logo`}
+                    alt={`${selectedCop?.name} Passport`}
                     sx={{
-                      objectFit: "contain",
                       marginBottom: "16px",
-                      maxWidth: "20%",
+                      maxWidth: "80%",
                     }}
                     loading="lazy"
                   />
