@@ -14,6 +14,7 @@ import {
   useApproveOrganisation,
   useDeclineOrganisation,
 } from "../../hooks/useOrganisation";
+import { useQueryClient } from "react-query";
 
 const OrganisationDetails: React.FC = () => {
   const location = useLocation();
@@ -39,6 +40,8 @@ const OrganisationDetails: React.FC = () => {
     }>;
   };
 
+  console.log("xxx ", organization);
+
   if (!organization) {
     return <div>Organization not found</div>;
   }
@@ -52,7 +55,6 @@ const OrganisationDetails: React.FC = () => {
     documentSupportingAttendance,
     contactIdCard,
     letterProof,
-    delegates,
     state,
     thematicArea,
     reasonForAttendance,
@@ -69,25 +71,26 @@ const OrganisationDetails: React.FC = () => {
     setOpenDeclineDialog(false);
   };
 
+  const queryClient = useQueryClient();
+
   const { mutate: mutateApproval, isLoading: loadingOrganisation } =
     useApproveOrganisation();
   const { mutate: mutateDecline, isLoading: loadingDecline } =
     useDeclineOrganisation();
 
-  const handelActionOrganisation = async (type: string) => {
-    if (type === "approved") {
-      mutateApproval(id, {
-        onSuccess: () => {
-          setStatus("approved");
-        },
-      });
-    } else {
-      mutateDecline(id, {
-        onSuccess: () => {
-          setStatus("rejected");
-        },
-      });
-    }
+  const handleActionOrganisation = async (type: string) => {
+    const mutationFn = type === "approved" ? mutateApproval : mutateDecline;
+    const newStatus = type === "approved" ? "approved" : "rejected";
+
+    mutationFn(id, {
+      onSuccess: () => {
+        setStatus(newStatus);
+        queryClient.invalidateQueries("AllOrganisation");
+      },
+      onError: (error) => {
+        console.error(`${type} failed:`, error);
+      },
+    });
   };
 
   return (
@@ -116,10 +119,18 @@ const OrganisationDetails: React.FC = () => {
                     textTransform: "capitalize",
                   }}
                 />
-              ) : (
+              ) : status === "pending" ? (
                 <Chip
                   label={status}
                   color="warning"
+                  sx={{
+                    textTransform: "capitalize",
+                  }}
+                />
+              ) : (
+                <Chip
+                  label={status}
+                  color="error"
                   sx={{
                     textTransform: "capitalize",
                   }}
@@ -266,7 +277,7 @@ const OrganisationDetails: React.FC = () => {
           <Button
             onClick={() => {
               handleClose();
-              handelActionOrganisation("approved");
+              handleActionOrganisation("approved");
             }}
             color="success"
           >
@@ -289,7 +300,7 @@ const OrganisationDetails: React.FC = () => {
           <Button
             onClick={() => {
               handleClose();
-              handelActionOrganisation("rejected");
+              handleActionOrganisation("rejected");
             }}
             color="error"
           >

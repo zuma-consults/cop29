@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -120,9 +120,12 @@ const CopTable: React.FC = () => {
     }
   };
 
-  const handleDownloadCSV = () => {
-    saveAsCSV({ data, filename: "COP 29 List" });
-  };
+  const handleDownloadCSV = useCallback(() => {
+    saveAsCSV({
+      data: data?.data ?? [],
+      filename: "COP 29 List",
+    });
+  }, [data]);
 
   const customStyles = {
     headCells: {

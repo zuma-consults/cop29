@@ -101,7 +101,7 @@ const EventDetails: React.FC = () => {
               )} */}
 
               <div className="text-gray-900 text-[24px] sm:text-[32px] md:text-[40px] w-full md:w-[50%] font-bold">
-               Title: {title}
+                Title: {title}
               </div>
             </div>
             <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-1 sm:gap-2 md:gap-3">

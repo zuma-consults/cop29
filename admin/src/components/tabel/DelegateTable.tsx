@@ -71,7 +71,7 @@ const DelegateTable: React.FC = () => {
 
   const handleDownloadCSV = useCallback(() => {
     saveAsCSV({ data: extratedData?.users, filename: "Delegates List" });
-  }, [extratedData?.events]);
+  }, [data]);
 
   const handlePageChange = (page: number) => {
     setPage(page);
