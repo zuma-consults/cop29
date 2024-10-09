@@ -178,20 +178,39 @@ const OrganisationDetails: React.FC = () => {
                 </a>
               </div>
               <div className="text-[12px] sm:text-[14px] text-gray-600 font-normal">
-                <a
+                {/* <a
                   href={documentSupportingAttendance}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 underline"
                 >
                   Supporting Attendance Document
+                </a> */}
+
+                <a
+                  href={documentSupportingAttendance}
+                  target={documentSupportingAttendance.endsWith(".jpg") ? "_blank" : "_self"} // Open in new tab if .jpg
+                  rel={
+                    documentSupportingAttendance.endsWith(".jpg")
+                      ? "noopener noreferrer"
+                      : undefined
+                  } // Add security only for new tab
+                  download={!documentSupportingAttendance.endsWith(".jpg")} // Download if not .jpg
+                  className="text-blue-500 underline"
+                >
+                  Supporting Attendance Document
                 </a>
               </div>
-              <div className="text-[12px] sm:text-[14px] text-gray-600 font-normal">
+              <div className="text-[12px] sm:text-[14px] text-gray-600 font-normal">               
                 <a
                   href={letterProof}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={letterProof.endsWith(".jpg") ? "_blank" : "_self"} // Open in new tab if .jpg
+                  rel={
+                    letterProof.endsWith(".jpg")
+                      ? "noopener noreferrer"
+                      : undefined
+                  } // Add security only for new tab
+                  download={!letterProof.endsWith(".jpg")} // Download if not .jpg
                   className="text-blue-500 underline"
                 >
                   Proof of Letter
