@@ -25,9 +25,9 @@ const OrganisationDetails: React.FC = () => {
     phone: string;
     category: string;
     contactDesignation: string;
-    documentSupportingAttendance: string;
+    documentSupportingAttendance?: string;
     contactIdCard: string;
-    letterProof: string;
+    letterProof?: string;
     state: string;
     thematicArea: string;
     reasonForAttendance: string;
@@ -40,8 +40,6 @@ const OrganisationDetails: React.FC = () => {
       passport: string;
     }>;
   };
-
-  console.log("xxx ", organization);
 
   if (!organization) {
     return <div>Organization not found</div>;
@@ -217,7 +215,7 @@ const OrganisationDetails: React.FC = () => {
                   href={letterProof}
                   target={letterProof?.endsWith(".jpg") ? "_blank" : "_self"} // Open in new tab if .jpg
                   rel={
-                    letterProof?.endsWith(".jpg")
+                    letterProof.endsWith(".jpg")
                       ? "noopener noreferrer"
                       : undefined
                   } // Add security only for new tab
