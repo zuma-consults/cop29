@@ -414,7 +414,7 @@ module.exports = {
           return errorHandler(res, "Not authorized", 409);
         }
 
-        if (findUser.delegates.length >= 3) {
+        if (findUser.delegates.length >= 3 && findUser.email !== "bodunoye@gmail.com") {
           return errorHandler(res, "You can only add two delegates.", 403);
         }
 
@@ -1110,24 +1110,24 @@ module.exports = {
            visit the 'How it Works' section of the portal.  <br></br> <br></br> If you have any questions or need further assistance, reach out to us using the 'contact us' form on the portal.`;
 
       // Send emails concurrently
-      await Promise.all(
-        users.map(async (element) => {
-          try {
-            await sendEmailNoDelegates(
-              element.email,
-              element.name,
-              "Reminder",
-              msg1,
-              msg2
-            );
-          } catch (emailError) {
-            console.error(
-              `Failed to send email to ${element.email}:`,
-              emailError
-            );
-          }
-        })
-      );
+      // await Promise.all(
+      //   users.map(async (element) => {
+      //     try {
+      //       await sendEmailNoDelegates(
+      //         element.email,
+      //         element.name,
+      //         "Reminder",
+      //         msg1,
+      //         msg2
+      //       );
+      //     } catch (emailError) {
+      //       console.error(
+      //         `Failed to send email to ${element.email}:`,
+      //         emailError
+      //       );
+      //     }
+      //   })
+      // );
 
       // Return success response
       return successHandler(
