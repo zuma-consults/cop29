@@ -7,15 +7,14 @@ const client = axios.create({
 });
 
 // State to track shown errors
-const shownErrors = new Set<string>();
+const shownErrors = new Set();
 
-interface ErrorResponse {
-  message?: string;
-  error?: string;
+function navigateToLogin() {
+  // Redirect the user to the login page
+  window.location.href = "/login"; // Change to your login page URL
 }
 
-// Define the function with type annotation
-export const request = async (config: AxiosRequestConfig): Promise<any> => {
+export const request = async (config: AxiosRequestConfig) => {
   try {
     const cookies = new Cookies();
     let access = "";
@@ -30,11 +29,11 @@ export const request = async (config: AxiosRequestConfig): Promise<any> => {
       };
     }
 
-    const response: AxiosResponse<any> = await client(config);
+    const response = await client(config);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ErrorResponse>;
+      const axiosError = error;
       const { status, data } = axiosError.response || {};
       // Generate a unique key for the error message
       const errorKey = `${status}-${data?.message || "Network Error"}`;
@@ -45,21 +44,18 @@ export const request = async (config: AxiosRequestConfig): Promise<any> => {
 
         // Show the error toast with user-friendly messages
         if (status === 401 || status === 403) {
-          return;
-          // toast.error("It seems you're not authorized to perform this action. Please log in and try again.");
-          // navigateToLogin();
+          toast.error("It seems you're not authorized to perform this action. Please log in and try again.");
+          navigateToLogin(); // Redirect to the login page
         }
         if (status && status >= 400 && status < 500) {
-          // toast.error("There was an issue with your request. Please check the information and try again.");
+          toast.error("There was an issue with your request. Please check the information and try again.");
         }
         if (status && status >= 500) {
-          toast.error(
-            "Oops! Something went wrong on our end. Please try again later."
-          );
+          toast.error("Oops! Something went wrong on our end. Please try again later.");
         }
       }
     } else {
-      // toast.error("An unexpected error occurred. Please try again later.");
+      toast.error("An unexpected error occurred. Please try again later.");
     }
 
     throw error;
