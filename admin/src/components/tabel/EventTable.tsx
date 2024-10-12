@@ -27,7 +27,7 @@ interface TableRow {
 const EventTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(50);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
   const [filters, setFilters] = useState({
     search: "",
     tags: "",
