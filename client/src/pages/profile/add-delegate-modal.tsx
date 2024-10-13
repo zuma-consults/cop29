@@ -35,7 +35,8 @@ const AddDelegateModal: React.FC<AddDelegateModalProps> = ({
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
       designation: Yup.string().required("Designation is required"),
-      phone: Yup.string().required("Phone is required"),
+      // phone: Yup.string().required("Phone is required"),
+      phone: Yup.string(),
       email: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
