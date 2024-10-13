@@ -430,7 +430,7 @@ module.exports = {
           delegatedBy: findUser.name,
           passport,
           designation,
-          phone,
+          // phone,
           ...body,
         };
 
