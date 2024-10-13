@@ -361,12 +361,10 @@ module.exports = {
 
       try {
         const { body, files, user } = req;
-        // const { name, email, designation, phone } = body;
-        const { name, email, designation } = body;
+        const { name, email, designation, phone } = body;
         const { id } = req.params;
         // Validate required fields
-        // if (!name || !email || !designation || !phone) {
-        if (!name || !email || !designation) {
+        if (!name || !email || !designation || !phone) {
           return errorHandler(
             res,
             "Please fill in all fields, one or more fields are empty!",
@@ -430,7 +428,7 @@ module.exports = {
           delegatedBy: findUser.name,
           passport,
           designation,
-          // phone,
+          phone,
           ...body,
         };
 
