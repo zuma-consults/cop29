@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
@@ -27,7 +27,9 @@ interface TableRow {
 const EventTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
+  const [iteamsPerPage, setIteamsPerPage] = useState<number>(200);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [filters, setFilters] = useState({
     search: "",
     tags: "",
@@ -39,19 +41,32 @@ const EventTable: React.FC = () => {
       search: filters?.search,
       tag: filters?.tags,
       page: filters?.page,
-      perPage: itemsPerPage,
+      perPage: iteamsPerPage,
     }),
-    [filters.search, filters.tags, page, itemsPerPage]
+    [filters.search, filters.tags, filters.page, iteamsPerPage]
   );
 
   const { data, isFetching, refetch } = useGetAllEvents(memoizedFilters);
 
   useEffect(() => {
     if (data?.data) {
-      setTotalRows(data.data.totalUsers);
-      setItemsPerPage(data.data.itemsPerPage);
+      setTotalRows(data.data.totalItems);
+      setIteamsPerPage(data.data.itemsPerPage);
     }
   }, [data]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredData = useMemo(() => {
+    if (!searchTerm) return data?.data?.events || [];
+    return data?.data?.events.filter(
+      (event: TableRow) =>
+        event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        event.organizer.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm, data]);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -76,17 +91,16 @@ const EventTable: React.FC = () => {
   };
 
   const handlePerRowsChange = (newPerPage: number, page: number) => {
-    setItemsPerPage(newPerPage);
+    setIteamsPerPage(newPerPage);
     setFilters((prevFilters) => ({
       ...prevFilters,
       page,
     }));
   };
 
-  const extratedData = useMemo(() => data?.data, [data]);
   const handleDownloadCSV = useCallback(() => {
-    saveAsCSV({ data: extratedData?.events, filename: "COP29 Events List" });
-  }, [data]);
+    saveAsCSV({ data: filteredData, filename: "COP29 Events List" });
+  }, [filteredData]);
 
   useEffect(() => {
     refetch();
@@ -223,7 +237,7 @@ const EventTable: React.FC = () => {
     <>
       {isFetching && <Loader />}
       <div className="rounded-[.5rem] px-2 bg-white shadow">
-        <div className="flex items-center md:flex-row flex-col justify-start py-2">
+        <div className="flex items-center md:flex-row flex-col justify-betwwen py-2">
           {hasExportModule && (
             <Button
               sx={{
@@ -248,24 +262,30 @@ const EventTable: React.FC = () => {
               <GoDownload size={20} />
             </Button>
           )}
+          <div className="my-4">
+            <TextField
+              label="Search"
+              variant="outlined"
+              fullWidth
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          </div>
         </div>
         <DataTable
           highlightOnHover={true}
           responsive={true}
           customStyles={customStyles}
           columns={columns}
-          data={extratedData?.events}
+          data={filteredData}
           fixedHeader
           fixedHeaderScrollHeight="600px"
           pagination
           paginationServer
-          paginationPerPage={itemsPerPage}
+          paginationPerPage={iteamsPerPage}
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
-          paginationComponentOptions={{
-            noRowsPerPage: true,
-          }}
         />
       </div>
     </>

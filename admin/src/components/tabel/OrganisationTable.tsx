@@ -1,4 +1,4 @@
-import { Button, Chip } from "@mui/material";
+import { Button, Chip, TextField } from "@mui/material";
 import React, { useState, useMemo, useEffect, useCallback } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
@@ -23,6 +23,7 @@ interface TableRow {
 const OrganisationTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState<number>(200);
 
   const [filters, setFilters] = useState({
@@ -48,28 +49,26 @@ const OrganisationTable: React.FC = () => {
     }
   }, [data]);
 
-  const handleFilterChange = useCallback((key: string, value: string) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [key]: value,
-    }));
-  }, []);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
-  const handleResetFilter = useCallback((key: string) => {
-    setFilters((prevFilters: any) => {
-      const { [key]: removedFilter, ...rest } = prevFilters;
-      return rest;
-    });
-  }, []);
-
-  const extratedData = useMemo(() => data?.data, [data]);
+  const filteredData = useMemo(() => {
+    if (!searchTerm) return data?.data?.users || [];
+    return data?.data?.users.filter(
+      (user: TableRow) =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.phone.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm, data]);
 
   const handleDownloadCSV = useCallback(() => {
     saveAsCSV({
-      data: extratedData?.users,
+      data: filteredData,
       filename: "Organisation/Members List",
     });
-  }, [data]);
+  }, [filteredData]);
 
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -200,7 +199,7 @@ const OrganisationTable: React.FC = () => {
     <>
       {isFetching && <Loader />}
       <div className="rounded-[.5rem] px-2 bg-white shadow">
-        <div className="flex items-center md:flex-row flex-col justify-start py-2">
+        <div className="flex items-center md:flex-row flex-col justify-between py-2">
           {hasExportModule && (
             <Button
               sx={{
@@ -225,13 +224,23 @@ const OrganisationTable: React.FC = () => {
               <GoDownload size={20} />
             </Button>
           )}
+          <div className="my-4">
+            <TextField
+              label="Search"
+              variant="outlined"
+              fullWidth
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          </div>
         </div>
+
         <DataTable
           highlightOnHover={true}
           responsive={true}
           customStyles={customStyles}
           columns={columns}
-          data={extratedData?.users}
+          data={filteredData}
           fixedHeader
           fixedHeaderScrollHeight="600px"
           pagination
