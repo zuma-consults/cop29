@@ -1,4 +1,4 @@
-import { Button, Chip } from "@mui/material";
+import { Button, Chip, TextField } from "@mui/material";
 import React, { useState, useMemo, useEffect, useCallback } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
@@ -29,6 +29,7 @@ const NegotiatorsTable: React.FC = () => {
   const [totalRows, setTotalRows] = useState<number>(0);
   const [itemsPerPage, setItemsPerPage] = useState<number>(50);
   const [selectedNegotiators, setSelectedNegotiators] = useState<any>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [filters, setFilters] = useState({
     userType: "organization",
@@ -57,6 +58,20 @@ const NegotiatorsTable: React.FC = () => {
       setItemsPerPage(data.data.itemsPerPage);
     }
   }, [data]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredData = useMemo(() => {
+    if (!searchTerm) return data?.data?.users || [];
+    return data?.data?.users.filter(
+      (user: TableRow) =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.phone.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm, data]);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -88,11 +103,9 @@ const NegotiatorsTable: React.FC = () => {
     }));
   };
 
-  const extratedData = useMemo(() => data?.data, [data]);
-
   const handleDownloadCSV = useCallback(() => {
     saveAsCSV({
-      data: extratedData?.users,
+      data: filteredData,
       filename: "Negotiator List",
     });
   }, [data]);
@@ -220,7 +233,7 @@ const NegotiatorsTable: React.FC = () => {
     <>
       {isFetching && <Loader />}
       <div className="rounded-[.5rem] px-2 bg-white shadow">
-        <div className="flex items-center md:flex-row flex-col justify-start py-2">
+        <div className="flex items-center md:flex-row flex-col justify-between py-2">
           {hasExportModule && (
             <Button
               sx={{
@@ -245,13 +258,22 @@ const NegotiatorsTable: React.FC = () => {
               <GoDownload size={20} />
             </Button>
           )}
+          <div className="my-4">
+            <TextField
+              label="Search"
+              variant="outlined"
+              fullWidth
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          </div>
         </div>
         <DataTable
           highlightOnHover={true}
           responsive={true}
           customStyles={customStyles}
           columns={columns}
-          data={extratedData?.users}
+          data={filteredData}
           fixedHeader
           fixedHeaderScrollHeight="600px"
           pagination
