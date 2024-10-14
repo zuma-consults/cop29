@@ -14,9 +14,10 @@ function navigateToLogin() {
   window.location.href = "/login"; // Change to your login page URL
 }
 
-export const request = async (config: AxiosRequestConfig) => {
+// Define the function with type annotation
+export const request = async (config: AxiosRequestConfig): Promise<any> => {
+  const cookies = new Cookies();
   try {
-    const cookies = new Cookies();
     let access = "";
     if (typeof window !== "undefined") {
       access = cookies.get("accessToken") || "";
@@ -44,8 +45,11 @@ export const request = async (config: AxiosRequestConfig) => {
 
         // Show the error toast with user-friendly messages
         if (status === 401 || status === 403) {
-          toast.error("It seems you're not authorized to perform this action. Please log in and try again.");
-          navigateToLogin(); // Redirect to the login page
+          // cookies.remove('accessToken', { path: '/' });
+          cookies.remove("accessToken")
+          return;
+          // toast.error("It seems you're not authorized to perform this action. Please log in and try again.");
+          // navigateToLogin();
         }
         if (status && status >= 400 && status < 500) {
           toast.error("There was an issue with your request. Please check the information and try again.");
