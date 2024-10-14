@@ -3,9 +3,9 @@ import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import { Cookies } from "react-cookie";
 
 const client = axios.create({
-  baseURL: "https://cop29.onrender.com/api/v1/",
+  baseURL: "https://cop29-dev.onrender.com/api/v1/",
 });
-
+const cookies = new Cookies();
 // State to track shown errors
 const shownErrors = new Set();
 
@@ -16,7 +16,7 @@ function navigateToLogin() {
 
 export const request = async (config: AxiosRequestConfig) => {
   try {
-    const cookies = new Cookies();
+  
     let access = "";
     if (typeof window !== "undefined") {
       access = cookies.get("accessToken") || "";
@@ -44,8 +44,7 @@ export const request = async (config: AxiosRequestConfig) => {
 
         // Show the error toast with user-friendly messages
         if (status === 401 || status === 403) {
-          toast.error("It seems you're not authorized to perform this action. Please log in and try again.");
-          navigateToLogin(); // Redirect to the login page
+          cookies.remove('accessToken');
         }
         if (status && status >= 400 && status < 500) {
           toast.error("There was an issue with your request. Please check the information and try again.");
