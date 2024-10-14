@@ -3,11 +3,7 @@ import React, { useState, useMemo, useEffect, useCallback } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
-import {
-  useApproveOrganisation,
-  useDeclineOrganisation,
-  useOrganisation,
-} from "../../hooks/useOrganisation";
+import { useOrganisation } from "../../hooks/useOrganisation";
 import Loader from "../ui/Loader";
 import { Link } from "react-router-dom";
 import { useGetProfile } from "../../hooks/useAuth";
@@ -25,25 +21,32 @@ interface TableRow {
 }
 
 const OrganisationTable: React.FC = () => {
-  const [_, setPage] = useState(1);
-  const [selectedOrgnisation, setSelectedOrgnisation] = useState<any>(null);
+  const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
+
   const [filters, setFilters] = useState({
     userType: "organization",
+    page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
       userType: filters.userType,
+      page: filters?.page,
+      perPage: itemsPerPage,
     }),
-    [filters.userType]
+    [filters.userType, filters.page, itemsPerPage]
   );
 
-  const { mutate: mutateApproval, isLoading: loadingOrganisation } =
-    useApproveOrganisation();
-  const { mutate: mutateDecline, isLoading: loadingDecline } =
-    useDeclineOrganisation();
-
   const { data, isFetching, refetch } = useOrganisation(memoizedFilters);
+
+  useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalUsers);
+      setItemsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -66,20 +69,22 @@ const OrganisationTable: React.FC = () => {
       data: extratedData?.users,
       filename: "Organisation/Members List",
     });
-  }, [extratedData?.events]);
+  }, [data]);
 
-  const handlePageChange = useCallback((page: number) => {
+  const handlePageChange = (page: number) => {
     setPage(page);
-  }, []);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
 
-  const handelActionEvent = async (type: string) => {
-    if (type === "approve") {
-      mutateApproval(selectedOrgnisation?.id);
-      setSelectedOrgnisation(null);
-    } else {
-      mutateDecline(selectedOrgnisation?.d);
-      setSelectedOrgnisation(null);
-    }
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setItemsPerPage(newPerPage);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
   };
 
   useEffect(() => {
@@ -134,10 +139,12 @@ const OrganisationTable: React.FC = () => {
           | undefined;
       }) => (
         <div className="text-left capitalize flex items-center">
-          {row.status == "approved" ? (
+          {row.status === "approved" ? (
             <Chip label={row?.status} color="success" />
-          ) : (
+          ) : row.status === "pending" ? (
             <Chip label={row?.status} color="warning" />
+          ) : (
+            <Chip label={row?.status} color="error" />
           )}
         </div>
       ),
@@ -225,10 +232,17 @@ const OrganisationTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={extratedData?.users}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
+          pagination
+          paginationServer
+          paginationPerPage={itemsPerPage}
+          paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
         />
       </div>
     </>

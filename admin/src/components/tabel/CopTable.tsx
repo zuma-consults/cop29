@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -36,11 +36,16 @@ interface TableRow {
   passport: string;
   delegatedBy: string;
   copApproved: string;
+  state: string;
+  designation: string;
+  department: string;
+  phone: string;
 }
 
 const CopTable: React.FC = () => {
-  const [_, setPage] = useState(1);
-
+  const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
   const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
   // const [status, setStatus] = useState(event.status);
@@ -54,7 +59,26 @@ const CopTable: React.FC = () => {
   const [selectedCop, setSelectedCop] = useState<TableRow | null>(null);
   const [filters, setFilters] = useState({
     copApproved: "",
+    page,
   });
+
+  const memoizedFilters = useMemo(
+    () => ({
+      page: filters?.page,
+      perPage: itemsPerPage,
+      copApproved: filters?.copApproved,
+    }),
+    [filters.copApproved, filters.page]
+  );
+
+  const { data, refetch, isFetching } = useGetAllCopApplicants(memoizedFilters);
+
+  useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalUsers);
+      setItemsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -63,11 +87,29 @@ const CopTable: React.FC = () => {
     }));
   };
 
-  const memoizedFilters = useMemo(() => filters, [filters]);
+  const handlePageChange = (page: number) => {
+    setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
 
-  const { data, refetch, isFetching } = useGetAllCopApplicants(memoizedFilters);
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setItemsPerPage(newPerPage);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [memoizedFilters]);
+
   const { mutate: mutateApproval, isLoading: loadingApproval } =
     useApproveCopEvent();
+
   const { mutate: mutateDecline, isLoading: loadingDecline } =
     useDeclineCopEvent();
 
@@ -79,13 +121,12 @@ const CopTable: React.FC = () => {
     }
   };
 
-  const handleDownloadCSV = () => {
-    saveAsCSV({ data, filename: "COP 29 List" });
-  };
-
-  const handlePageChange = (page: number) => {
-    setPage(page);
-  };
+  const handleDownloadCSV = useCallback(() => {
+    saveAsCSV({
+      data: data?.data ?? [],
+      filename: "COP 29 List",
+    });
+  }, [data]);
 
   const customStyles = {
     headCells: {
@@ -102,10 +143,6 @@ const CopTable: React.FC = () => {
     },
   };
 
-  useEffect(() => {
-    refetch();
-  }, [memoizedFilters]);
-
   const columns: TableColumn<TableRow>[] = [
     {
       name: "Name",
@@ -116,14 +153,14 @@ const CopTable: React.FC = () => {
       selector: (row) => row?.email ?? "N/A",
     },
     {
-      name: "Delegated By",
+      name: "Organization",
       selector: (row) => row?.delegatedBy ?? "N/A",
     },
 
     {
       name: (
         <Box style={{ display: "flex", alignItems: "center" }}>
-          <Typography className="capitalize">COP Approved</Typography>
+          <Typography>Status</Typography>
         </Box>
       ),
       cell: (row) => {
@@ -179,7 +216,7 @@ const CopTable: React.FC = () => {
     () => userProfile?.role?.modules?.includes("export"),
     [userProfile]
   );
-  
+
   return (
     <>
       {(isFetching || loadingApproval || loadingDecline) && <Loader />}
@@ -242,10 +279,17 @@ const CopTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={data?.data ?? []}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
+          pagination
+          paginationServer
+          paginationPerPage={itemsPerPage}
+          paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
         />
 
         <Modal open={!!selectedCop} onClose={() => setSelectedCop(null)}>
@@ -271,13 +315,12 @@ const CopTable: React.FC = () => {
                 <div className="flex justify-center items-center">
                   <CardMedia
                     component="img"
-                    height="200"
+                    height="400"
                     image={selectedCop?.passport}
-                    alt={`${selectedCop?.name} Logo`}
+                    alt={`${selectedCop?.name} Passport`}
                     sx={{
-                      objectFit: "contain",
                       marginBottom: "16px",
-                      maxWidth: "20%",
+                      maxWidth: "80%",
                     }}
                     loading="lazy"
                   />
@@ -298,6 +341,30 @@ const CopTable: React.FC = () => {
                   <Typography variant="body1" component="div">
                     <strong>Organization: </strong> {selectedCop?.delegatedBy}
                   </Typography>
+
+                  {/* Render Designation */}
+                  <Typography variant="body1" component="div">
+                    <strong>Designation: </strong> {selectedCop?.designation}
+                  </Typography>
+
+                  {/* Render Designation */}
+                  <Typography variant="body1" component="div">
+                    <strong>Phone: </strong> {selectedCop?.phone}
+                  </Typography>
+
+                  {/* Render department if available */}
+                  {selectedCop?.department && (
+                    <Typography variant="body1" component="div">
+                      <strong>Department: </strong> {selectedCop.department}
+                    </Typography>
+                  )}
+
+                  {/* Render state if available */}
+                  {selectedCop?.state && (
+                    <Typography variant="body1" component="div">
+                      <strong>State: </strong> {selectedCop.state}
+                    </Typography>
+                  )}
 
                   {/* Render Status */}
                   <Typography variant="body1" component="div">

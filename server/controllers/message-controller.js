@@ -79,7 +79,7 @@ module.exports = {
   },
   getAllMessages: async (req, res) => {
     try {
-      const { page = 1, limit = 50, messageType } = req.query;
+      const { page = 1, limit = 200, messageType } = req.query;
 
       const messages = await Message.find({ messageType: messageType })
         .sort({ createdAt: -1 })
@@ -92,6 +92,7 @@ module.exports = {
 
       // Prepare the response with pagination info
       const response = {
+        itemsPerPage: 5,
         totalPages: Math.ceil(totalMessages / limit),
         currentPage: parseInt(page),
         totalMessages,

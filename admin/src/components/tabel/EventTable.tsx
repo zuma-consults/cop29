@@ -1,11 +1,11 @@
-import { Box, Button, Chip, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
 import { useGetAllEvents } from "../../hooks/useEvent";
 import ColumnFilter from "../columnFilter";
-import { formatDuration } from "../../utils/helper";
+import { formatTime } from "../../utils/helper";
 import Loader from "../ui/Loader";
 import { Link } from "react-router-dom";
 import { useGetProfile } from "../../hooks/useAuth";
@@ -25,22 +25,33 @@ interface TableRow {
 }
 
 const EventTable: React.FC = () => {
-  const [_, setPage] = useState(1);
-
+  const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
   const [filters, setFilters] = useState({
     search: "",
     tags: "",
+    page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
       search: filters?.search,
       tag: filters?.tags,
+      page: filters?.page,
+      perPage: itemsPerPage,
     }),
-    [filters.search, filters.tags]
+    [filters.search, filters.tags, page, itemsPerPage]
   );
 
   const { data, isFetching, refetch } = useGetAllEvents(memoizedFilters);
+
+  useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalUsers);
+      setItemsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -56,15 +67,26 @@ const EventTable: React.FC = () => {
     });
   }, []);
 
-  const extratedData = useMemo(() => data?.data, [data]);
+  const handlePageChange = (page: number) => {
+    setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
 
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setItemsPerPage(newPerPage);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  const extratedData = useMemo(() => data?.data, [data]);
   const handleDownloadCSV = useCallback(() => {
     saveAsCSV({ data: extratedData?.events, filename: "COP29 Events List" });
-  }, [extratedData?.events]);
-
-  const handlePageChange = useCallback((page: number) => {
-    setPage(page);
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     refetch();
@@ -86,6 +108,14 @@ const EventTable: React.FC = () => {
   };
 
   const columns: TableColumn<TableRow>[] = [
+    {
+      name: (
+        <Box style={{ display: "flex", alignItems: "center" }}>
+          <Typography className="capitalize">Organization</Typography>
+        </Box>
+      ),
+      selector: (row) => row?.organizer ?? "N/A",
+    },
     {
       name: (
         <Box style={{ display: "flex", alignItems: "center" }}>
@@ -113,43 +143,35 @@ const EventTable: React.FC = () => {
       selector: (row) => row?.start,
       format: (row) => (
         <Typography variant="body2" color="text.secondary">
-          {formatDuration(row?.start, row?.end)}
+          {formatTime(row?.start)} - {formatTime(row?.end)}
         </Typography>
       ),
     },
-    {
-      name: (
-        <Box style={{ display: "flex", alignItems: "center" }}>
-          <Typography className="capitalize">Organizer</Typography>
-        </Box>
-      ),
-      selector: (row) => row?.organizer ?? "N/A",
-    },
-    {
-      name: "Status",
-      selector: (row) => row?.status ?? "N/A",
-      cell: (row) => (
-        <div className="text-left capitalize flex items-center">
-          {row.status === "approved" ? (
-            <Chip
-              label={row.status}
-              color="success"
-              sx={{
-                textTransform: "capitalize",
-              }}
-            />
-          ) : (
-            <Chip
-              label={row?.status}
-              color="warning"
-              sx={{
-                textTransform: "capitalize",
-              }}
-            />
-          )}
-        </div>
-      ),
-    },
+    // {
+    //   name: "Status",
+    //   selector: (row) => row?.status ?? "N/A",
+    //   cell: (row) => (
+    //     <div className="text-left capitalize flex items-center">
+    //       {row.status === "approved" ? (
+    //         <Chip
+    //           label={row.status}
+    //           color="success"
+    //           sx={{
+    //             textTransform: "capitalize",
+    //           }}
+    //         />
+    //       ) : (
+    //         <Chip
+    //           label={row?.status}
+    //           color="warning"
+    //           sx={{
+    //             textTransform: "capitalize",
+    //           }}
+    //         />
+    //       )}
+    //     </div>
+    //   ),
+    // },
     {
       name: "Action",
       cell: (row) => (
@@ -233,10 +255,17 @@ const EventTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={extratedData?.events}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
+          pagination
+          paginationServer
+          paginationPerPage={itemsPerPage}
+          paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
         />
       </div>
     </>

@@ -14,6 +14,20 @@ export const createEvent = async (data: any) => {
   }
 };
 
+export const scheduleMeeting = async (data: any) => {
+  try {
+    const config = {
+      method: "post",
+      url: "schedule",
+      data,
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getAllEvents = async (params?: Record<string, any>) => {
   try {
     const config = {
@@ -46,6 +60,19 @@ export const getAllTimeSlots = async () => {
     const config = {
       method: "get",
       url: "slots",
+    };
+
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getAllApprovedOrganizations = async () => {
+  try {
+    const config = {
+      method: "get",
+      url: "organizations",
     };
 
     const responseData = await request(config);

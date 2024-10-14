@@ -10,21 +10,39 @@ import {
   MenuItem,
   CircularProgress,
 } from "@mui/material";
-import { useCreateEvent, useGetAllTimeSlots } from "../../hooks/useEvent";
+import {
+  useGetAllTimeSlots,
+  useScheduleMeeting,
+  useGetAllApprovedOrganizations,
+} from "../../hooks/useEvent";
 import Loader from "../ui/Loader";
 
-const CreateEvent: React.FC<{
-  setOpen: (value: boolean) => void;
+const CreateMeeting: React.FC<{
+  setOpenSchedule: (value: boolean) => void;
   refetchAllEvents: () => void;
-}> = ({ setOpen, refetchAllEvents }) => {
-  const { mutate, isLoading } = useCreateEvent({ setOpen, refetchAllEvents });
+}> = ({ refetchAllEvents }) => {
+  const setOpen = (value: boolean) => {};
+  const { mutate, isLoading } = useScheduleMeeting({
+    setOpen,
+    refetchAllEvents,
+  });
 
   const { data: timslotsData, isLoading: loadingTimeSlots } =
     useGetAllTimeSlots();
+
+  const {
+    data: approvedOrganisationData,
+    isLoading: loadingApprovedOrganisation,
+  } = useGetAllApprovedOrganizations();
+  console.log("approvedOrganisationData", approvedOrganisationData);
+
   const extratedTimeSlots = timslotsData?.data || [];
+
   const openSlots = extratedTimeSlots.filter(
     (slot: { bookingStatus: any }) => slot.bookingStatus
   );
+
+  const openOrganizations = approvedOrganisationData?.data?.organizations || [];
 
   const formik = useFormik({
     initialValues: {
@@ -32,38 +50,40 @@ const CreateEvent: React.FC<{
       organizer: "",
       description: "",
       objective: "",
-      timeSlot: "",
+      slotId: "",
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Meeting title is required"),
       organizer: Yup.string().required("Organization is required"),
       description: Yup.string().required("Meeting description is required"),
       objective: Yup.string().required("Meeting objective is required"),
-      timeSlot: Yup.string().required("Time slot is required"),
+      slotId: Yup.string().required("Time slot is required"),
     }),
     onSubmit: async (values) => {
-      const formData = new FormData();
+      const formData = {
+        title: values.title,
+        organizerId: values.organizer,
+        description: values.description,
+        objective: values.objective,
+        slotId: values.slotId,
+      };
 
-      formData.append("title", values.title);
-      formData.append("description", values.description);
-      formData.append("objectives", values.objective);
-      formData.append("slotId", values.timeSlot);
-      formData.append("organizer", values.organizer);
-      // formData.append("status", "approved");
       mutate(formData);
     },
   });
 
   return (
     <>
-      {isLoading || (loadingTimeSlots && <Loader />)}
+      {isLoading ||
+        loadingTimeSlots ||
+        (loadingApprovedOrganisation && <Loader />)}
       <div className="flex items-center justify-center p-4 md:p-0">
         <div
           className="w-full max-w-4xl bg-white p-5 rounded-lg shadow-lg"
           data-aos="Meeting-in-right"
         >
           <h1 className="text-green-700 font-bold text-[26px] text-center md:text-left">
-            Schedule a Meeting (International Organization)
+            Schedule a Meeting
           </h1>
 
           <form
@@ -71,7 +91,7 @@ const CreateEvent: React.FC<{
             className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6"
           >
             {/* Meeting Title */}
-            <div className="flex flex-col gap-2">
+            <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
               <TextField
                 id="title"
                 name="title"
@@ -87,39 +107,64 @@ const CreateEvent: React.FC<{
               />
             </div>
 
-            {/* Organizer */}
-            <div className="flex flex-col gap-2">
-              <TextField
-                id="organizer"
-                name="organizer"
-                label="Organization"
-                color="success"
-                variant="outlined"
-                value={formik.values.organizer}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.organizer && Boolean(formik.errors.organizer)
-                }
-                helperText={formik.touched.organizer && formik.errors.organizer}
-                fullWidth
-              />
+            {/* organizer slot */}
+            <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
+              <FormControl variant="outlined" color="success" fullWidth>
+                <InputLabel id="organizer">Select Organisation</InputLabel>
+                <Select
+                  labelId="organizer"
+                  id="organizer"
+                  name="organizer"
+                  value={formik.values.organizer}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.organizer && Boolean(formik.errors.organizer)
+                  }
+                  label="Select Organisation"
+                >
+                  {openOrganizations?.map(
+                    (organizer: {
+                      id: string;
+                      thematicArea: string;
+                      date: string | number | Date;
+                      name: string;
+                      state: string;
+                      organizationType: string;
+                    }) => (
+                      <MenuItem key={organizer.id} value={organizer.id}>
+                        <div className={`flex justify-start w-full `}>
+                          <span className="w-[30%]">{organizer.name}</span>
+                          <span className="w-[30%]">{organizer.state}</span>
+                          <span className="w-[30%]">
+                            {organizer.organizationType}
+                          </span>
+                          <span>{organizer.thematicArea}</span>
+                        </div>
+                      </MenuItem>
+                    )
+                  )}
+                </Select>
+                {formik.touched.organizer && formik.errors.organizer && (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.organizer}
+                  </div>
+                )}
+              </FormControl>
             </div>
 
             {/* time slot */}
             <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
               <FormControl variant="outlined" color="success" fullWidth>
-                <InputLabel id="timeSlot-label">Time Slot</InputLabel>
+                <InputLabel id="slotId">Select Time Slot</InputLabel>
                 <Select
-                  labelId="timeSlot-label"
-                  id="timeSlot"
-                  name="timeSlot"
-                  value={formik.values.timeSlot}
+                  labelId="slotId"
+                  id="slotId"
+                  name="slotId"
+                  value={formik.values.slotId}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.timeSlot && Boolean(formik.errors.timeSlot)
-                  }
+                  error={formik.touched.slotId && Boolean(formik.errors.slotId)}
                   label="Time Slot"
                 >
                   {openSlots?.map(
@@ -153,9 +198,9 @@ const CreateEvent: React.FC<{
                     )
                   )}
                 </Select>
-                {formik.touched.timeSlot && formik.errors.timeSlot && (
+                {formik.touched.slotId && formik.errors.slotId && (
                   <div className="text-red-500 text-sm">
-                    {formik.errors.timeSlot}
+                    {formik.errors.slotId}
                   </div>
                 )}
               </FormControl>
@@ -228,4 +273,4 @@ const CreateEvent: React.FC<{
   );
 };
 
-export default CreateEvent;
+export default CreateMeeting;

@@ -20,20 +20,50 @@ interface TableRow {
 
 const ContactUsTable: React.FC = () => {
   const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
+
   const [filters, setFilters] = useState({
     messageType: "contact",
+    page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
       messageType: filters.messageType,
+      page: filters?.page,
+      perPage: itemsPerPage,
     }),
-    [filters.messageType, page]
+    [filters.messageType, filters.page, itemsPerPage]
   );
 
   const { data, isFetching, refetch } = useContactUs(memoizedFilters);
+
+  React.useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalUsers);
+      setItemsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
+
   const [rows, setRows] = useState<TableRow[]>([]);
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setItemsPerPage(newPerPage);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
 
   React.useEffect(() => {
     if (data && data.status) {
@@ -66,11 +96,13 @@ const ContactUsTable: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: TableRow) => {
-    console.log("User details updated:", data);
-    // Handle form submission here, e.g., update state or make an API call
+  React.useEffect(() => {
+    refetch();
+  }, [memoizedFilters]);
+
+  const onSubmit = () => {
     setSelectedEvent(null);
-    reset(); // Reset form after submission
+    reset();
   };
 
   React.useEffect(() => {
@@ -105,13 +137,13 @@ const ContactUsTable: React.FC = () => {
       selector: (row) => row.phone,
       sortable: true,
     },
+    // {
+    //   name: "Message Type",
+    //   selector: (row) => row.messageType,
+    //   sortable: true,
+    // },
     {
-      name: "Message Type",
-      selector: (row) => row.messageType,
-      sortable: true,
-    },
-    {
-      name: "Reason For Meeting",
+      name: "Subject",
       selector: (row) => row.reasonForMeeting,
       sortable: true,
     },
@@ -160,9 +192,17 @@ const ContactUsTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={rows}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="500px"
+          pagination
+          paginationServer
+          paginationPerPage={itemsPerPage}
+          paginationTotalRows={totalRows}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
         />
 
         <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>
@@ -239,6 +279,7 @@ const ContactUsTable: React.FC = () => {
                 <Controller
                   name="reasonForMeeting"
                   control={control}
+                  disabled
                   render={({ field }) => (
                     <TextField
                       {...field}

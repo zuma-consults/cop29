@@ -26,17 +26,22 @@ interface TableRow {
 
 const NegotiatorsTable: React.FC = () => {
   const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
   const [selectedNegotiators, setSelectedNegotiators] = useState<any>(null);
+
   const [filters, setFilters] = useState({
     userType: "organization",
+    page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
-      // userType: filters.userType,
-      page,
+      userType: filters?.userType,
+      page: filters?.page,
+      perPage: itemsPerPage,
     }),
-    [filters.userType, page]
+    [filters.userType, filters.page, itemsPerPage]
   );
 
   const { mutate: mutateApproval, isLoading: loadingOrganisation } =
@@ -45,6 +50,13 @@ const NegotiatorsTable: React.FC = () => {
     useDeclineOrganisation();
 
   const { data, isFetching, refetch } = useNegotiators(memoizedFilters);
+
+  useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalUsers);
+      setItemsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -60,18 +72,30 @@ const NegotiatorsTable: React.FC = () => {
     });
   }, []);
 
+  const handlePageChange = (page: number) => {
+    setPage(page);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setItemsPerPage(newPerPage);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
   const extratedData = useMemo(() => data?.data, [data]);
 
   const handleDownloadCSV = useCallback(() => {
     saveAsCSV({
       data: extratedData?.users,
-      filename: "Organisation/Members List",
+      filename: "Negotiator List",
     });
-  }, [extratedData?.events]);
-
-  const handlePageChange = useCallback((page: number) => {
-    setPage(page);
-  }, []);
+  }, [data]);
 
   const handelActionEvent = async (type: string) => {
     if (type === "approve") {
@@ -135,10 +159,12 @@ const NegotiatorsTable: React.FC = () => {
           | undefined;
       }) => (
         <div className="text-left capitalize flex items-center">
-          {row.status == "approved" ? (
+          {row.status === "approved" ? (
             <Chip label={row?.status} color="success" />
-          ) : (
+          ) : row.status === "pending" ? (
             <Chip label={row?.status} color="warning" />
+          ) : (
+            <Chip label={row?.status} color="error" />
           )}
         </div>
       ),
@@ -226,10 +252,17 @@ const NegotiatorsTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={extratedData?.users}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
+          pagination
+          paginationServer
+          paginationPerPage={itemsPerPage}
+          paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
         />
       </div>
     </>

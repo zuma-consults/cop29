@@ -15,6 +15,7 @@ const QRCode = require("qrcode");
 const Slot = require("../models/slot");
 const sendEmail = require("../utils/sendMail");
 const NodeCache = require("node-cache");
+const sendEmailNoDelegates = require("../utils/sendMailNoDelegates");
 const myCache = new NodeCache();
 
 module.exports = {
@@ -102,12 +103,7 @@ module.exports = {
           // Send success response
           const access_token = await createAccessToken({ id: newUser._id });
           const url = `${CLIENT_URL}/verify/${access_token}`;
-          sendVerifyEmail(
-            email,
-            url,
-            "Click to verify your email",
-            name
-          );
+          sendVerifyEmail(email, url, "Click to verify your email", name);
           return successHandler(
             res,
             "Your account has been created. Please check your email to verify your email address and complete your application for COP 29.",
@@ -247,12 +243,7 @@ module.exports = {
 
           const access_token = await createAccessToken({ id: newUser._id });
           const url = `${CLIENT_URL}/verify/${access_token}`;
-          sendVerifyEmail(
-            email,
-            url,
-            "Click to verify your email",
-            name
-          );
+          sendVerifyEmail(email, url, "Click to verify your email", name);
 
           return successHandler(
             res,
@@ -349,12 +340,7 @@ module.exports = {
 
           const access_token = await createAccessToken({ id: newUser._id });
           const url = `${CLIENT_URL}/verify/${access_token}`;
-          sendVerifyEmail(
-            email,
-            url,
-            "Click to verify your email",
-            name
-          );
+          sendVerifyEmail(email, url, "Click to verify your email", name);
 
           return successHandler(
             res,
@@ -428,7 +414,7 @@ module.exports = {
           return errorHandler(res, "Not authorized", 409);
         }
 
-        if (findUser.delegates.length >= 3) {
+        if (findUser.delegates.length >= 3 && findUser.email !== "bodunoye@gmail.com") {
           return errorHandler(res, "You can only add two delegates.", 403);
         }
 
@@ -440,6 +426,7 @@ module.exports = {
           passport,
           designation,
           phone,
+          ...body,
         };
 
         findUser.delegates.push(delegate);
@@ -485,25 +472,55 @@ module.exports = {
   },
   getAllUsers: async (req, res) => {
     try {
-      const { page = 1, limit = 50, userType } = req.query;
+      const { page = 1, limit = 200, userType } = req.query;
 
       const query = userType
-        ? { userType, verifiedEmail: true }
-        : { verifiedEmail: true };
+        ? { userType, verifiedEmail: true, category: { $ne: "Negotiator" } }
+        : { verifiedEmail: true, category: { $ne: "Negotiator" } };
 
       const users = await User.find(query)
-        .sort({ createdAt: -1 })
+        .sort({ createdAt: 1 })
         .skip((page - 1) * limit)
         .limit(parseInt(limit));
 
       const totalUsers = await User.countDocuments(query);
 
+      // Iterate over users and check file extensions
+      const updatedUsers = users.map((user) => {
+        // Define a helper function to replace file extensions and update the protocol
+        const processFilePath = (filePath) => {
+          if (filePath) {
+            // Replace .pdf with .jpg
+            filePath = filePath.replace(/\.(pdf)$/i, ".jpg");
+
+            // Check if the file ends with .doc or .docx and update protocol if needed
+            if (/\.(doc|docx)$/i.test(filePath)) {
+              if (filePath.startsWith("http:")) {
+                filePath = filePath.replace(/^http:/i, "https:");
+              }
+            }
+          }
+          return filePath;
+        };
+
+        // Update the fields
+        user.documentSupportingAttendance = processFilePath(
+          user.documentSupportingAttendance
+        );
+        user.letterProof = processFilePath(user.letterProof);
+        user.contactIdCard = processFilePath(user.contactIdCard);
+
+        return user;
+      });
+
       // Prepare the response with pagination info
       const response = {
+        itemsPerPage: 5,
         totalPages: Math.ceil(totalUsers / limit),
         currentPage: parseInt(page),
         totalUsers,
-        users,
+        itemsPerPage: 50,
+        users: updatedUsers, // Use the updated users here
       };
 
       const message = `All ${userType ? userType : "Users"} Found`;
@@ -515,23 +532,44 @@ module.exports = {
   },
   getAllNegotiators: async (req, res) => {
     try {
-      const { page = 1, limit = 50 } = req.query;
+      const { page = 1, limit = 200 } = req.query;
 
       const query = { verifiedEmail: true, category: "Negotiator" };
 
       const users = await User.find(query)
-        .sort({ createdAt: -1 })
+        .sort({ createdAt: 1 })
         .skip((page - 1) * limit)
         .limit(parseInt(limit));
 
       const totalUsers = await User.countDocuments(query);
 
+      // Iterate over users and check file extensions
+      const updatedUsers = users.map((user) => {
+        // Define a helper function to replace file extensions
+        const replaceFileExtension = (filePath) => {
+          if (filePath) {
+            return filePath.replace(/\.(pdf)$/i, ".jpg");
+          }
+          return filePath;
+        };
+
+        // Update the fields if they end with .pdf, .doc, or .docx
+        user.documentSupportingAttendance = replaceFileExtension(
+          user.documentSupportingAttendance
+        );
+        user.letterProof = replaceFileExtension(user.letterProof);
+        user.contactIdCard = replaceFileExtension(user.contactIdCard);
+
+        return user;
+      });
+
       // Prepare the response with pagination info
       const response = {
+        itemsPerPage: 5,
         totalPages: Math.ceil(totalUsers / limit),
         currentPage: parseInt(page),
         totalUsers,
-        users,
+        users: updatedUsers, // Use the updated users here
       };
 
       const message = `All Negotiators Found`;
@@ -714,23 +752,35 @@ module.exports = {
       if (copApproved !== undefined) {
         query["delegates.copApproved"] = copApproved;
       }
+
       // Find all users sorted by creation date
-      const users = await User.find(query).sort({ createdAt: -1 });
+      const users = await User.find(query).sort({ createdAt: 1 });
+
+      // Define a helper function to replace file extensions
+      const replaceFileExtension = (filePath) => {
+        if (filePath) {
+          return filePath.replace(/\.(pdf)$/i, ".jpg");
+        }
+        return filePath;
+      };
 
       // Extract delegates from each user and combine them into one array
       const delegates = users.reduce((acc, user) => {
         if (user.delegates && user.delegates.length > 0) {
-          if (copApproved !== undefined) {
-            // Only push delegates with matching copApproved status
-            acc.push(
-              ...user.delegates.filter(
-                (delegate) => String(delegate.copApproved) === copApproved
-              )
-            );
-          } else {
-            // If copApproved is not provided, push all delegates
-            acc.push(...user.delegates);
-          }
+          // Filter delegates based on copApproved status, if provided
+          const filteredDelegates = user.delegates.filter((delegate) => {
+            if (copApproved !== undefined) {
+              return String(delegate.copApproved) === copApproved;
+            }
+            return true;
+          });
+
+          // Replace passport file extensions for each delegate
+          filteredDelegates.forEach((delegate) => {
+            delegate.passport = replaceFileExtension(delegate.passport);
+          });
+
+          acc.push(...filteredDelegates);
         }
         return acc;
       }, []);
@@ -758,22 +808,22 @@ module.exports = {
         return errorHandler(res, "Delegate not found", 404);
       }
 
-      let event = await Event.findOne({ organizerId: user._id });
-      if (!event) {
-        return errorHandler(
-          res,
-          "Organization is yet to schedule a meeting",
-          404
-        );
-      }
+      // let event = await Event.findOne({ organizerId: user._id });
+      // if (!event) {
+      //   return errorHandler(
+      //     res,
+      //     "Organization is yet to schedule a meeting",
+      //     404
+      //   );
+      // }
 
-      if (event.status !== "approved") {
-        return errorHandler(
-          res,
-          "Organization does not appear to have an approved meeting.",
-          403
-        );
-      }
+      // if (event.status !== "approved") {
+      //   return errorHandler(
+      //     res,
+      //     "Organization does not appear to have an approved meeting.",
+      //     403
+      //   );
+      // }
 
       // // Find the specific delegate and update their copApproved status
       const delegate = user.delegates.id(id);
@@ -809,7 +859,7 @@ module.exports = {
         sendEmail(
           delegate.email,
           delegate.name,
-          url,
+          "",
           "COP 29 DELEGATE STATUS",
           "We regret to inform you that your application has not been approved. Unfortunately, you will not be able to attend COP 29 at this time. Should you have any questions or require further clarification, please use the contact us button on the resgistration portal.",
           "Thank you for your interest."
@@ -951,12 +1001,7 @@ module.exports = {
       }
       const access_token = await createAccessToken({ id: user._id });
       const url = `${CLIENT_URL}/verify/${access_token}`;
-      sendVerifyEmail(
-        email,
-        url,
-        "Click to verify your email",
-        user.name
-      );
+      sendVerifyEmail(email, url, "Click to verify your email", user.name);
       return successHandler(
         res,
         "Please check your inbox and spam to complete your application."
@@ -977,7 +1022,7 @@ module.exports = {
       const query = { verifiedEmail: true, status: "approved" };
 
       // Find all users sorted by creation date
-      const users = await User.find(query).sort({ createdAt: -1 });
+      const users = await User.find(query).sort({ createdAt: 1 });
 
       // Initialize counts for users and delegates
       let totalOrganizations = 0;
@@ -1011,6 +1056,85 @@ module.exports = {
 
       // Return the result
       return successHandler(res, "Data Overview", result);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode || 500);
+    }
+  },
+  getAllApprovedOrganizations: async (req, res) => {
+    try {
+      const query = {
+        verifiedEmail: true,
+        category: { $ne: "Negotiator" },
+        status: "approved",
+      };
+
+      const organizations = await User.find(query).sort({ name: 1 });
+
+      const totalOrganizations = await User.countDocuments(query);
+
+      const response = {
+        totalOrganizations,
+        organizations,
+      };
+
+      const message = `All Approved Organizations`;
+
+      return successHandler(res, message, response);
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode);
+    }
+  },
+  getAllUsersNoDelegates: async (req, res) => {
+    try {
+      const query = {
+        verifiedEmail: true,
+        category: { $ne: "Negotiator" },
+        delegates: [],
+      };
+
+      // Fetch users matching the query
+      const users = await User.find(query).sort({ createdAt: 1 });
+      console.log(users.length);
+
+      const msg1 = `Congratulations on successfully creating an account for your organization on our platform. 
+          <br></br>
+          <br></br>
+          We observed that your organisation is yet to add delegates. Kindly proceed to complete the process by:
+          <ol>
+          <li style="color: #336633; font-size: 15px;">Logging into your account and visiting your profile page.</li>
+          <li style="color: #336633; font-size: 15px;">Click the 'add delegate(s)/nominee(s)' button.</li>
+          <li style="color: #336633; font-size: 15px;">Fill out the form and upload the required documents for each delegate.</li>
+          </ol>
+          `;
+      const msg2 = `For more information on how to add delegates and manage your organization’s profile,
+           visit the 'How it Works' section of the portal.  <br></br> <br></br> If you have any questions or need further assistance, reach out to us using the 'contact us' form on the portal.`;
+
+      // Send emails concurrently
+      // await Promise.all(
+      //   users.map(async (element) => {
+      //     try {
+      //       await sendEmailNoDelegates(
+      //         element.email,
+      //         element.name,
+      //         "Reminder",
+      //         msg1,
+      //         msg2
+      //       );
+      //     } catch (emailError) {
+      //       console.error(
+      //         `Failed to send email to ${element.email}:`,
+      //         emailError
+      //       );
+      //     }
+      //   })
+      // );
+
+      // Return success response
+      return successHandler(
+        res,
+        "Verified email users with no delegates",
+        users
+      );
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode || 500);
     }

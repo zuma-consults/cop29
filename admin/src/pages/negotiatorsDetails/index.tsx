@@ -32,6 +32,7 @@ const NegotiatorsDetails: React.FC = () => {
     thematicArea: string;
     reasonForAttendance: string;
     status: string;
+    contactName: string;
     delegates: Array<{
       name: string;
       email: string;
@@ -55,6 +56,7 @@ const NegotiatorsDetails: React.FC = () => {
     state,
     thematicArea,
     id,
+    contactName,
   } = organization;
 
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
@@ -138,11 +140,15 @@ const NegotiatorsDetails: React.FC = () => {
                 <strong>Phone:</strong> {phone}
               </p>
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
-                <strong>Category:</strong>
+                <strong>Category: </strong>
                 {category}
               </p>
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
-                <strong>Contact Designation:</strong> {contactDesignation}
+                <strong>Name:</strong> {contactName}
+                {/* Add contactName */}
+              </p>
+              <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
+                <strong>Designation:</strong> {contactDesignation}
               </p>
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
                 <strong>State:</strong> {state}
@@ -166,7 +172,7 @@ const NegotiatorsDetails: React.FC = () => {
                   rel="noopener noreferrer"
                   className="text-blue-500 underline"
                 >
-                  ID Card
+                  Passport Data Page
                 </a>
               </div>
             </div>
@@ -207,7 +213,7 @@ const NegotiatorsDetails: React.FC = () => {
           </div>
           <div className="flex justify-end my-5 mx-5">
             {/* Action Buttons for Pending Status */}
-            {/* {status === "pending" && (
+            {status === "pending" && (
               <Box className="flex justify-between gap-5 mt-4">
                 <Button
                   variant="contained"
@@ -226,11 +232,11 @@ const NegotiatorsDetails: React.FC = () => {
                   Decline
                 </Button>
               </Box>
-            )} */}
+            )}
           </div>
         </div>
       </div>
-      {/* <Dialog open={openApproveDialog} onClose={handleClose}>
+      <Dialog open={openApproveDialog} onClose={handleClose}>
         <DialogTitle>Confirm Approval</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -251,9 +257,9 @@ const NegotiatorsDetails: React.FC = () => {
             Confirm
           </Button>
         </DialogActions>
-      </Dialog> */}
+      </Dialog>
 
-      {/* <Dialog open={openDeclineDialog} onClose={handleClose}>
+      <Dialog open={openDeclineDialog} onClose={handleClose}>
         <DialogTitle>Confirm Decline</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -274,7 +280,7 @@ const NegotiatorsDetails: React.FC = () => {
             Confirm
           </Button>
         </DialogActions>
-      </Dialog> */}
+      </Dialog>
     </>
   );
 };

@@ -7,8 +7,10 @@ import {
   declineEvent,
   generateInvoice,
   getAllApplicants,
+  getAllApprovedOrganizations,
   getAllEvents,
   getAllTimeSlots,
+  scheduleMeeting,
 } from "../services/event";
 import { useMemo } from "react";
 import { toast } from "react-toastify";
@@ -30,6 +32,27 @@ export const useCreateEvent = ({
     },
     onError: (_error) => {
       toast.error("Meeting Creation failed. Please try again.");
+    },
+  });
+};
+
+export const useScheduleMeeting = ({
+  setOpen,
+  refetchAllEvents,
+}: {
+  setOpen: (value: boolean) => void;
+  refetchAllEvents: () => void;
+}) => {
+  return useMutation(scheduleMeeting, {
+    onSuccess: (result) => {
+      if (result?.status) {
+        toast.success("Meeting Scheduled Successfully");
+        setOpen(false);
+        refetchAllEvents();
+      }
+    },
+    onError: (_error) => {
+      toast.error("Meeting Scheduling failed. Please try again.");
     },
   });
 };
@@ -65,6 +88,16 @@ export const useGetCalender = () => {
 
 export const useGetAllTimeSlots = () => {
   return useQuery(["time-slots"], getAllTimeSlots, {
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+    cacheTime: 30 * 60 * 1000,
+    retry: 1,
+  });
+};
+
+export const useGetAllApprovedOrganizations = () => {
+  return useQuery(["approved-organisations"], getAllApprovedOrganizations, {
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchInterval: false,

@@ -1,4 +1,6 @@
 const Slot = require("../models/slot");
+const { successHandler } = require("../utils/core");
+const { errorHandler } = require("../utils/errorHandler");
 
 module.exports = {
   getAllSlots: async (req, res) => {

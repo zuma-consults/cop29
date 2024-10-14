@@ -26,21 +26,32 @@ interface TableRow {
 }
 
 const DelegateTable: React.FC = () => {
-  const [_, setPage] = useState(1);
+  const [page, setPage] = useState(1);
+  const [totalRows, setTotalRows] = useState<number>(0);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
 
   const [filters, setFilters] = useState({
     userType: "delegate",
+    page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
       userType: filters.userType,
+      page: filters?.page,
     }),
-    [filters.userType]
+    [filters.userType, filters.page, itemsPerPage]
   );
 
   const { data, isFetching, refetch } = useGetAllDelegates(memoizedFilters);
+
+  useEffect(() => {
+    if (data?.data) {
+      setTotalRows(data.data.totalUsers);
+      setItemsPerPage(data.data.itemsPerPage);
+    }
+  }, [data]);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -60,11 +71,23 @@ const DelegateTable: React.FC = () => {
 
   const handleDownloadCSV = useCallback(() => {
     saveAsCSV({ data: extratedData?.users, filename: "Delegates List" });
-  }, [extratedData?.events]);
+  }, [data]);
 
-  const handlePageChange = useCallback((page: number) => {
+  const handlePageChange = (page: number) => {
     setPage(page);
-  }, []);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
+
+  const handlePerRowsChange = (newPerPage: number, page: number) => {
+    setItemsPerPage(newPerPage);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      page,
+    }));
+  };
 
   const handleAccept = useCallback(() => {
     setSelectedEvent(null);
@@ -177,7 +200,7 @@ const DelegateTable: React.FC = () => {
       width: "15rem",
     },
   ];
-  
+
   const { data: userData } = useGetProfile();
   const userProfile = useMemo(() => userData?.data, [userData]);
   const hasExportModule = useMemo(
@@ -221,10 +244,17 @@ const DelegateTable: React.FC = () => {
           customStyles={customStyles}
           columns={columns}
           data={extratedData?.users}
-          pagination
           fixedHeader
           fixedHeaderScrollHeight="600px"
+          pagination
+          paginationServer
+          paginationPerPage={itemsPerPage}
+          paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
         />
 
         <Modal open={!!selectedEvent} onClose={() => setSelectedEvent(null)}>

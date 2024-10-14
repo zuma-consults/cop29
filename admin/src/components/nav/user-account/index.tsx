@@ -64,25 +64,24 @@ const UserAccount: React.FC<{ image?: string; name: string; role: any }> = ({
   const handleLogout = async () => {
     setIsLoading(true);
 
-    // Remove cookies and storage items first
-    cookies.remove("accessToken");
-    cookies.remove("profile");
-    localStorage.clear(); // Optional, clear local storage if needed
-    sessionStorage.clear(); // Optional, clear session storage if needed
-    toast.success("Logout Successful");
-
-    // Ensure user cannot navigate back to the protected page
-    navigate("/login", { replace: true });
-    window.history.pushState("", "", "/login");
-    window.addEventListener("popstate", () => {
-      navigate("/login", { replace: true });
-    });
-
     try {
-      // Make the API call in the background after storage is cleared
-      await logout(); // API call to logout
+      // Make the API call to logout first
+      await logout();
+      cookies.remove("accessToken");
+      cookies.remove("profile");
+      localStorage.clear();
+      sessionStorage.clear();
+      toast.success("Logout Successful");
+
+      // Ensure user cannot navigate back to the protected page
+      navigate("/login", { replace: true });
+      window.history.pushState("", "", "/login");
+      window.addEventListener("popstate", () => {
+        navigate("/login", { replace: true });
+      });
     } catch (error) {
       console.error("Logout API call failed", error);
+      toast.error("Failed to logout, please try again.");
     } finally {
       setIsLoading(false);
     }

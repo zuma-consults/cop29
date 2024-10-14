@@ -16,14 +16,18 @@ const eventSchema = mongoose.Schema(
     description: {
       type: String,
     },
-    slotId: { type: mongoose.Schema.Types.ObjectId, ref: "Slots" },
+    slotId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Slots",
+      required: true,
+    },
     image: {
       type: String,
     },
     status: {
       type: String,
       enum: ["processing", "approved", "declined"],
-      default: "processing",
+      default: "approved",
     },
     organizerId: {
       type: mongoose.Schema.Types.ObjectId,
