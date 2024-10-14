@@ -28,7 +28,7 @@ interface TableRow {
 const DelegateTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(50);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
   const [selectedEvent, setSelectedEvent] = useState<TableRow | null>(null);
 
   const [filters, setFilters] = useState({

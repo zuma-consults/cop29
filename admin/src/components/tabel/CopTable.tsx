@@ -39,12 +39,13 @@ interface TableRow {
   state: string;
   designation: string;
   department: string;
+  phone: string;
 }
 
 const CopTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(50);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
   const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
   // const [status, setStatus] = useState(event.status);
@@ -344,6 +345,11 @@ const CopTable: React.FC = () => {
                   {/* Render Designation */}
                   <Typography variant="body1" component="div">
                     <strong>Designation: </strong> {selectedCop?.designation}
+                  </Typography>
+
+                  {/* Render Designation */}
+                  <Typography variant="body1" component="div">
+                    <strong>Phone: </strong> {selectedCop?.phone}
                   </Typography>
 
                   {/* Render department if available */}

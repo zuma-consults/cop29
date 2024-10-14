@@ -25,13 +25,14 @@ const OrganisationDetails: React.FC = () => {
     phone: string;
     category: string;
     contactDesignation: string;
-    documentSupportingAttendance: string;
+    documentSupportingAttendance?: string;
     contactIdCard: string;
-    letterProof: string;
+    letterProof?: string;
     state: string;
     thematicArea: string;
     reasonForAttendance: string;
     status: string;
+    contactName: string;
     delegates: Array<{
       name: string;
       email: string;
@@ -39,8 +40,6 @@ const OrganisationDetails: React.FC = () => {
       passport: string;
     }>;
   };
-
-  console.log("xxx ", organization);
 
   if (!organization) {
     return <div>Organization not found</div>;
@@ -59,6 +58,7 @@ const OrganisationDetails: React.FC = () => {
     thematicArea,
     reasonForAttendance,
     id,
+    contactName,
   } = organization;
 
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
@@ -155,6 +155,10 @@ const OrganisationDetails: React.FC = () => {
                 {category}
               </p>
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
+                <strong>Contact Name:</strong> {contactName}
+                {/* Add contactName */}
+              </p>
+              <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
                 <strong>Contact Designation:</strong> {contactDesignation}
               </p>
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
@@ -183,10 +187,28 @@ const OrganisationDetails: React.FC = () => {
                 </a>
               </div>
               <div className="text-[12px] sm:text-[14px] text-gray-600 font-normal">
-                <a
+                {/* <a
                   href={documentSupportingAttendance}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="text-blue-500 underline"
+                >
+                  Supporting Attendance Document
+                </a> */}
+
+                <a
+                  href={documentSupportingAttendance}
+                  target={
+                    documentSupportingAttendance?.endsWith(".jpg")
+                      ? "_blank"
+                      : "_self"
+                  } // Open in new tab if .jpg
+                  rel={
+                    documentSupportingAttendance?.endsWith(".jpg")
+                      ? "noopener noreferrer"
+                      : undefined
+                  } // Add security only for new tab
+                  download={!documentSupportingAttendance?.endsWith(".jpg")} // Download if not .jpg
                   className="text-blue-500 underline"
                 >
                   Supporting Attendance Document
@@ -195,8 +217,13 @@ const OrganisationDetails: React.FC = () => {
               <div className="text-[12px] sm:text-[14px] text-gray-600 font-normal">
                 <a
                   href={letterProof}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={letterProof?.endsWith(".jpg") ? "_blank" : "_self"} // Open in new tab if .jpg
+                  rel={
+                    letterProof?.endsWith(".jpg")
+                      ? "noopener noreferrer"
+                      : undefined
+                  } // Add security only for new tab
+                  download={!letterProof?.endsWith(".jpg")} // Download if not .jpg
                   className="text-blue-500 underline"
                 >
                   Proof of Letter

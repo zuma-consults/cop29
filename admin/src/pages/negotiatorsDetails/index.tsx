@@ -32,6 +32,7 @@ const NegotiatorsDetails: React.FC = () => {
     thematicArea: string;
     reasonForAttendance: string;
     status: string;
+    contactName: string;
     delegates: Array<{
       name: string;
       email: string;
@@ -55,6 +56,7 @@ const NegotiatorsDetails: React.FC = () => {
     state,
     thematicArea,
     id,
+    contactName,
   } = organization;
 
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
@@ -142,7 +144,11 @@ const NegotiatorsDetails: React.FC = () => {
                 {category}
               </p>
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
-                <strong>Contact Designation:</strong> {contactDesignation}
+                <strong>Name:</strong> {contactName}
+                {/* Add contactName */}
+              </p>
+              <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
+                <strong>Designation:</strong> {contactDesignation}
               </p>
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
                 <strong>State:</strong> {state}

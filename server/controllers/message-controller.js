@@ -79,7 +79,7 @@ module.exports = {
   },
   getAllMessages: async (req, res) => {
     try {
-      const { page = 1, limit = 5, messageType } = req.query;
+      const { page = 1, limit = 200, messageType } = req.query;
 
       const messages = await Message.find({ messageType: messageType })
         .sort({ createdAt: -1 })

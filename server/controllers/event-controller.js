@@ -232,7 +232,7 @@ module.exports = {
         events = myCache.get(cacheKey).events;
       } else {
         events = await Event.find(query)
-          .sort({ createdAt: -1 })
+          .sort({ createdAt: 1 })
           .skip((page - 1) * PAGE_SIZE)
           .limit(PAGE_SIZE);
         const totalItems = await Event.countDocuments(query);
@@ -260,7 +260,7 @@ module.exports = {
       if (myCache.has("allEvents3")) {
         event = myCache.get("allEvents3");
       } else {
-        event = await Event.find().sort({ createdAt: -1 }).limit(3);
+        event = await Event.find().sort({ createdAt: 1 }).limit(3);
         myCache.set("allEvents3", event, 10);
       }
       const response = {
@@ -326,7 +326,7 @@ module.exports = {
 
       // Revert current slot details (set to open and clear booking details)
       currentSlot.bookingStatus = "open";
-      currentSlot.adminBookingBy = "";
+      currentSlot.adminBookingBy = null;
       currentSlot.title = "";
 
       // Fetch the new slot to be assigned
@@ -361,16 +361,25 @@ module.exports = {
         (delegate) => delegate.copApproved === "approved"
       );
 
-      for (let delegate of approvedDelegates) {
-        await sendEmail(
-          delegate.email,
-          delegate.name,
-          "",
-          subject,
-          message1,
-          message2
-        );
-      }
+      await Promise.all(
+        approvedDelegates.map(async (delegate) => {
+          try {
+            await sendEmail(
+              delegate.email,
+              delegate.name,
+              "",
+              subject,
+              message1,
+              message2
+            );
+          } catch (emailError) {
+            console.error(
+              `Failed to send email to ${element.email}:`,
+              emailError
+            );
+          }
+        })
+      );
 
       return successHandler(res, "Meeting Successfully Rescheduled", event);
     } catch (error) {
@@ -551,7 +560,7 @@ module.exports = {
         invoices = await Invoice.find(query)
           .populate("eventId")
           .populate("generatedBy")
-          .sort({ createdAt: -1 })
+          .sort({ createdAt: 1 })
           .skip((page - 1) * PAGE_SIZE)
           .limit(PAGE_SIZE);
 
