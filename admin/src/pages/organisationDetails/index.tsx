@@ -198,7 +198,11 @@ const OrganisationDetails: React.FC = () => {
 
                 <a
                   href={documentSupportingAttendance}
-                  target={documentSupportingAttendance?.endsWith(".jpg") ? "_blank" : "_self"} // Open in new tab if .jpg
+                  target={
+                    documentSupportingAttendance?.endsWith(".jpg")
+                      ? "_blank"
+                      : "_self"
+                  } // Open in new tab if .jpg
                   rel={
                     documentSupportingAttendance?.endsWith(".jpg")
                       ? "noopener noreferrer"
@@ -210,12 +214,12 @@ const OrganisationDetails: React.FC = () => {
                   Supporting Attendance Document
                 </a>
               </div>
-              <div className="text-[12px] sm:text-[14px] text-gray-600 font-normal">               
+              <div className="text-[12px] sm:text-[14px] text-gray-600 font-normal">
                 <a
                   href={letterProof}
                   target={letterProof?.endsWith(".jpg") ? "_blank" : "_self"} // Open in new tab if .jpg
                   rel={
-                    letterProof.endsWith(".jpg")
+                    letterProof?.endsWith(".jpg")
                       ? "noopener noreferrer"
                       : undefined
                   } // Add security only for new tab

@@ -414,7 +414,10 @@ module.exports = {
           return errorHandler(res, "Not authorized", 409);
         }
 
-        if (findUser.delegates.length >= 3 && findUser.email !== "bodunoye@gmail.com") {
+        if (
+          findUser.delegates.length >= 3 &&
+          findUser.email !== "bodunoye@gmail.com"
+        ) {
           return errorHandler(res, "You can only add two delegates.", 403);
         }
 
@@ -1089,11 +1092,13 @@ module.exports = {
       const query = {
         verifiedEmail: true,
         category: { $ne: "Negotiator" },
-        delegates: [],
+        // delegates: [],
       };
 
       // Fetch users matching the query
-      const users = await User.find(query).sort({ createdAt: 1 });
+      const users = await User.find(query)
+        .sort({ createdAt: 1 })
+        .select("name email phone state");
       console.log(users.length);
 
       const msg1 = `Congratulations on successfully creating an account for your organization on our platform. 
