@@ -19,11 +19,11 @@ const { errorHandler, systemError } = require("./utils/errorHandler");
 const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      // "https://admin-cop29.vercel.app",
-      // "https://cop29-okike.vercel.app",
-      // "https://nigccdelegation.natccc.gov.ng",
+      //"http://localhost:5173",
+      //"http://localhost:5174",
+       "https://admin-cop29.vercel.app",
+       "https://cop29-okike.vercel.app",
+       "https://nigccdelegation.natccc.gov.ng",
     ];
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
