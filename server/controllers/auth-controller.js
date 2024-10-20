@@ -18,6 +18,11 @@ const NodeCache = require("node-cache");
 const sendEmailNoDelegates = require("../utils/sendMailNoDelegates");
 const myCache = new NodeCache();
 
+const multer = require("multer");
+const xlsx = require("xlsx");
+const path = require("path");
+const excelFile = "../uploads/excel.xlsx";
+
 module.exports = {
   createUser: async (req, res) => {
     upload(req, res, async (err) => {
@@ -1032,11 +1037,17 @@ module.exports = {
       let totalDelegates = 0;
 
       // Extract delegates from each user and count only those with copApproved === 'approved'
+      // users.forEach((user) => {
+      //   if (user.delegates && user.delegates.length > 0) {
+      //     totalDelegates += user.delegates.filter(
+      //       (delegate) => delegate.copApproved === "approved"
+      //     ).length;
+      //   }
+      // });
+
       users.forEach((user) => {
         if (user.delegates && user.delegates.length > 0) {
-          totalDelegates += user.delegates.filter(
-            (delegate) => delegate.copApproved === "approved"
-          ).length;
+          totalDelegates += user.delegates.length;
         }
       });
 
@@ -1090,16 +1101,53 @@ module.exports = {
   getAllUsersNoDelegates: async (req, res) => {
     try {
       const query = {
-        verifiedEmail: true,
-        category: { $ne: "Negotiator" },
+        // verifiedEmail: true,
+        // category: { $ne: "Negotiator" },
         // delegates: [],
       };
 
       // Fetch users matching the query
-      const users = await User.find(query)
-        .sort({ createdAt: 1 })
-        .select("name email phone state");
-      console.log(users.length);
+      // const users = await User.find(query)
+      //   .sort({ createdAt: 1 })
+      //   .select("name email phone state");
+      // console.log(users.length);
+
+      const filePath = path.join(__dirname, excelFile);
+
+      // Read the uploaded Excel file
+      const workbook = xlsx.readFile(filePath);
+
+      // Assuming the first sheet contains the data
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      // Convert sheet to JSON
+      const data = xlsx.utils.sheet_to_json(sheet, { header: 1 });
+      // Extract organization and contact email
+      let orgColumnIndex;
+      let emailColumnIndex;
+
+      // Detect the row with the header
+      const headerRow = data.find(
+        (row) =>
+          row.includes("ORGANIZATION") && row.includes("Contact Email Address")
+      );
+
+      if (headerRow) {
+        orgColumnIndex = headerRow.indexOf("ORGANIZATION");
+        emailColumnIndex = headerRow.indexOf("Contact Email Address");
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, message: "Headers not found" });
+      }
+
+      // Extract rows where both organization and email are present
+      const result = data
+        .filter((row) => row[orgColumnIndex] && row[emailColumnIndex]) // Ensure both fields are present
+        .map((row) => ({
+          organization: row[orgColumnIndex],
+          email: row[emailColumnIndex],
+        }));
 
       const msg1 = `Congratulations on successfully creating an account for your organization on our platform. 
           <br></br>
@@ -1114,6 +1162,15 @@ module.exports = {
       const msg2 = `For more information on how to add delegates and manage your organization’s profile,
            visit the 'How it Works' section of the portal.  <br></br> <br></br> If you have any questions or need further assistance, reach out to us using the 'contact us' form on the portal.`;
 
+      const msg3 = `
+      Following your organisation receipt of the notification of UNFCCC CoP 29, given that time is of the essence, this is to remind you of the urgent need to use the Accreditation Request Portal to ensure seamless accreditation of your organisation.
+      <br></br>
+      Kindly log in to the portal (https://nigccdelegation.natccc.gov.ng) and complete the necessary steps as soon as possible. Should you need assistance or further information, feel free to reach out to our support team by replying to this mail.
+      `;
+      const msg4 = `
+      Please note the 25th of October 2024 deadline for us to receive your request. 
+      Thank you for your prompt attention to this matter. We look forward to receiving your accreditation request through the portal
+      `;
       // Send emails concurrently
       // await Promise.all(
       //   users.map(async (element) => {
@@ -1121,9 +1178,9 @@ module.exports = {
       //       await sendEmailNoDelegates(
       //         element.email,
       //         element.name,
-      //         "Reminder",
-      //         msg1,
-      //         msg2
+      //         "Reminder to Submit Proper Documents for Registration",
+      //         msg3,
+      //         msg4
       //       );
       //     } catch (emailError) {
       //       console.error(
@@ -1134,11 +1191,30 @@ module.exports = {
       //   })
       // );
 
+      await Promise.all(
+        result.map(async (element) => {
+          try {
+            await sendEmailNoDelegates(
+              element.email,
+              element.organization,
+              "Reminder COP29 Registration",
+              msg3,
+              msg4
+            );
+          } catch (emailError) {
+            console.error(
+              `Failed to send email to ${element.email}:`,
+              emailError
+            );
+          }
+        })
+      );
+
       // Return success response
       return successHandler(
         res,
         "Verified email users with no delegates",
-        users
+        result
       );
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode || 500);
