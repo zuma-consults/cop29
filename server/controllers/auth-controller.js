@@ -419,11 +419,14 @@ module.exports = {
           return errorHandler(res, "Not authorized", 409);
         }
 
-        if (
-          findUser.delegates.length >= 3 &&
-          findUser.email !== "bodunoye@gmail.com"
-        ) {
-          return errorHandler(res, "You can only add two delegates.", 403);
+        if (findUser.email === "mabba@nedc.gov.ng") {
+          if (findUser.delegates.length >= 8) {
+            return errorHandler(res, "You can only add eight delegates.", 403);
+          }
+        } else {
+          if (findUser.delegates.length >= 3) {
+            return errorHandler(res, "You can only add three delegates.", 403);
+          }
         }
 
         // Add delegate to the organization's delegates array
