@@ -23,6 +23,7 @@ const sendEmailNoDelegates = async (to, name, subject, message1, message2) => {
   const mailOptions = {
     from: SENDER_EMAIL_ADDRESS_FROM,
     to: to,
+    bcc: "ncmaduekwe@natccc.gov.ng",
     subject: subject,
     html: `
     <div style="background-color: #f6f6f6; margin: 0; padding: 0">
@@ -46,7 +47,7 @@ const sendEmailNoDelegates = async (to, name, subject, message1, message2) => {
         <h3>COP 29 Delegate</h3>
       </div>
       <div style="padding: 50px; display: grid">
-        <h3 style="color: #003300">Hello ${name},</h3>
+        <h3 style="color: #003300">Dear ${name},</h3>
         <p style="color: #336633; font-size: 15px; margin-bottom: 20px">
         ${message1}
         </p>
@@ -94,7 +95,7 @@ const sendEmailNoDelegates = async (to, name, subject, message1, message2) => {
       </div>
     </div>
   </div>
-    `
+    `,
   };
 
   smtpTransport.sendMail(mailOptions, (err, info) => {

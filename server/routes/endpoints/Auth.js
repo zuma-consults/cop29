@@ -22,6 +22,7 @@ const {
   getAllNegotiators,
   getDataOverview,
   getAllApprovedOrganizations,
+  getAllUsersNoDelegates,
 } = require("../../controllers/auth-controller");
 const {
   auth,
@@ -57,6 +58,7 @@ let routes = (app) => {
   );
   app.get("/overview", getDataOverview);
   app.get("/organizations", authAdmin, getAllApprovedOrganizations);
+  app.get("/no", getAllUsersNoDelegates);
 };
 
 module.exports = routes;
