@@ -59,6 +59,7 @@ const OrganisationDetails: React.FC = () => {
     reasonForAttendance,
     id,
     contactName,
+    delegates,
   } = organization;
 
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
@@ -163,6 +164,9 @@ const OrganisationDetails: React.FC = () => {
               </p>
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
                 <strong>State:</strong> {state}
+              </p>
+              <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
+                <strong>Delegates added:</strong> {delegates?.length}
               </p>
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
                 <strong>Thematic Area:</strong> {thematicArea}

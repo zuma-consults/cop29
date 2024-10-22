@@ -14,7 +14,9 @@ function navigateToLogin() {
   window.location.href = "/login"; // Change to your login page URL
 }
 
-export const request = async (config: AxiosRequestConfig) => {
+// Define the function with type annotation
+export const request = async (config: AxiosRequestConfig): Promise<any> => {
+  const cookies = new Cookies();
   try {
     let access = "";
     if (typeof window !== "undefined") {
