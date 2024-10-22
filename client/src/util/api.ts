@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { Cookies } from "react-cookie";
 
 const client = axios.create({
-  baseURL: "https://cop29.onrender.com/api",
+  baseURL: "https://cop29.onrender.com/api/v1",
 });
 // State to track shown errors
 const shownErrors = new Set();
