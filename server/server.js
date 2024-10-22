@@ -55,8 +55,8 @@ app.use(helmet());
 // app.use(limiter);
 // app.disable("x-powered-by");
 // Middleware setup
-app.use(cors(corsOptions)); // Enable CORS for all routes
-// app.use(cors()); // Enable CORS for all routes
+// app.use(cors(corsOptions)); // Enable CORS for all routes
+app.use(cors()); // Enable CORS for all routes
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(logRequestDuration);
