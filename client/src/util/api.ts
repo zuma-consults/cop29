@@ -1,18 +1,17 @@
 import { toast } from "react-toastify";
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { Cookies } from "react-cookie";
 
 const client = axios.create({
-  baseURL: "https://cop29-dev.onrender.com/api/v1/",
+  baseURL: "https://cop29.onrender.com",
 });
-const cookies = new Cookies();
 // State to track shown errors
 const shownErrors = new Set();
 
-function navigateToLogin() {
-  // Redirect the user to the login page
-  window.location.href = "/login"; // Change to your login page URL
-}
+// function navigateToLogin() {
+//   // Redirect the user to the login page
+//   window.location.href = "/login"; // Change to your login page URL
+// }
 
 // Define the function with type annotation
 export const request = async (config: AxiosRequestConfig): Promise<any> => {
