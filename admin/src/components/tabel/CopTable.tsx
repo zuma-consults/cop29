@@ -375,8 +375,10 @@ const CopTable: React.FC = () => {
                         color="success"
                         className="capitalize"
                       />
-                    ) : (
+                    ) : selectedCop?.copApproved === "pending" ? (
                       <Chip label="Pending" color="warning" />
+                    ) : (
+                      <Chip label="Rejected" color="error" />
                     )}
                   </Typography>
                   {selectedCop?.copApproved == "pending" && (
