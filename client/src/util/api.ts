@@ -16,7 +16,6 @@ function navigateToLogin() {
 
 export const request = async (config: AxiosRequestConfig) => {
   try {
-  
     let access = "";
     if (typeof window !== "undefined") {
       access = cookies.get("accessToken") || "";
@@ -39,22 +38,32 @@ export const request = async (config: AxiosRequestConfig) => {
       const errorKey = `${status}-${data?.message || "Network Error"}`;
 
       // Check if the error has been shown already
+      // Check if the error has been shown already
       if (!shownErrors.has(errorKey)) {
         shownErrors.add(errorKey);
 
-        // Show the error toast with user-friendly messages
-        if (status === 401 || status === 403) {
-          cookies.remove('accessToken');
-        }
-        if (status && status >= 400 && status < 500) {
-          toast.error("There was an issue with your request. Please check the information and try again.");
-        }
-        if (status && status >= 500) {
-          toast.error("Oops! Something went wrong on our end. Please try again later.");
+        // Check if the current route is NOT the home page
+        if (window.location.pathname !== "/") {
+          // Show the error toast with user-friendly messages
+          if (status === 401 || status === 403) {
+            cookies.remove("accessToken");
+          }
+          if (status && status >= 400 && status < 500) {
+            toast.error(
+              "There was an issue with your request. Please check the information and try again."
+            );
+          }
+          if (status && status >= 500) {
+            toast.error(
+              "Oops! Something went wrong on our end. Please try again later."
+            );
+          }
         }
       }
     } else {
-      toast.error("An unexpected error occurred. Please try again later.");
+      if (window.location.pathname !== "/") {
+        toast.error("An unexpected error occurred. Please try again later.");
+      }
     }
 
     throw error;
