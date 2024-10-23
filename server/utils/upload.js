@@ -36,6 +36,7 @@ async function uploadToCloudinary(locaFilePath, localFileName, mainFolderName) {
       };
     })
     .catch((error) => {
+      console.error(error,"xxxxx")
       fs.unlinkSync(locaFilePath);
       return { message: "Fail" };
     });
