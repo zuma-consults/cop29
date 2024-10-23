@@ -123,6 +123,7 @@ module.exports = {
   createOrganisationAsUser: async (req, res) => {
     upload(req, res, async (err) => {
       if (err) {
+        console.log(err,"xxxx");
         return errorHandler(res, err.code, 400);
       } else {
         try {
