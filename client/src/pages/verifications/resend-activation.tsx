@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useResendActivation } from "../../components/custom-hooks/useAuth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -8,23 +8,19 @@ import { FaArrowLeft } from "react-icons/fa";
 function ResendActivation() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const { mutate: resendActivation, isLoading } = useResendActivation();
+  const { mutate: resendActivation, isLoading, data } = useResendActivation();
+
+  useEffect(() => {
+    if (data?.status) {
+      toast.success("A new activation link has been sent to your email.");
+      navigate("/verify-confirmation");
+    } 
+  }, [data, navigate]);
+  
   const handleResendLink = () => {
-    resendActivation(
-      { email },
-      {
-        onSuccess: () => {
-          toast.success("A new activation link has been sent to your email.");
-          navigate("/verify-confirmation");
-        },
-        onError: () => {
-          toast.error(
-            "Failed to resend the activation link, something is wrong. Please try again."
-          );
-        },
-      }
-    );
+    resendActivation({ email });
   };
+  
   return (
     <div className="flex flex-col lg:flex-row h-screen">
       {isLoading && <Loader />}
