@@ -22,19 +22,17 @@ function AccountActivation() {
   }, [id]);
 
   useEffect(() => {
-    // if (data?.response?.status === 403) {
-    //   toast.error("Activation link has expired.");
-    //   navigate("/verify/resend");
-    // }
     if (data?.status) {
       toast.success("Account activated successfully");
       navigate("/verify/success");
-    } else {
-      toast.error(
-        "There was an error activating your account, resend your registered email."
-      );
-      navigate("/verify/resend");
-    }
+    } 
+    
+    // else {
+    //   toast.error(
+    //     "There was an error activating your account, resend your registered email."
+    //   );
+    //   navigate("/verify/resend");
+    // }
   }, [data, navigate]);
 
   return (
