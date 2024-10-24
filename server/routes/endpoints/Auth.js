@@ -58,7 +58,7 @@ let routes = (app) => {
   );
   app.get("/overview", getDataOverview);
   app.get("/organizations", authAdmin, getAllApprovedOrganizations);
-  app.get("/no", getAllUsersNoDelegates);
+  // app.get("/no", getAllUsersNoDelegates);
 };
 
 module.exports = routes;
