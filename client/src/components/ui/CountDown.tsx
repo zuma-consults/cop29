@@ -12,7 +12,7 @@ type TimeLeft =
 
 const CountdownTimer: React.FC = () => {
   const calculateTimeLeft = (): TimeLeft => {
-    const registrationEndDate = new Date("2024-10-25T23:59:59"); // Set your end date and time here
+    const registrationEndDate = new Date("2024-10-30T23:59:59"); // Set your end date and time here
     const now = new Date();
     const difference = registrationEndDate.getTime() - now.getTime();
 
