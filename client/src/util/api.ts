@@ -44,7 +44,12 @@ export const request = async (config: AxiosRequestConfig): Promise<any> => {
         shownErrors.add(errorKey);
 
         // Check if the current route is NOT the home page
-        if (window.location.pathname !== "/") {
+        if (
+          window.location.pathname !== "/" &&
+          window.location.pathname !== "/negotiator" &&
+          !window.location.pathname.startsWith("/verify") &&
+          window.location.pathname !== "/signup"
+        ) {
           // Show the error toast with user-friendly messages
           if (status === 401 || status === 403) {
             cookies.remove("accessToken");
