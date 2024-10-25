@@ -419,9 +419,9 @@ module.exports = {
           return errorHandler(res, "Not authorized", 409);
         }
 
-        if (findUser.email === "mabba@nedc.gov.ng") {
-          if (findUser.delegates.length >= 8) {
-            return errorHandler(res, "You can only add eight delegates.", 403);
+        if (findUser.email === "tuneze@infracredit.ng") {
+          if (findUser.delegates.length >= 5) {
+            return errorHandler(res, "You can only add five delegates.", 403);
           }
         } else {
           if (findUser.delegates.length >= 3) {
@@ -1004,10 +1004,10 @@ module.exports = {
       }
 
       if (user.verifiedEmail === true) {
-        return errorHandler(
+        return successHandler(
           res,
           "This account has been verified. Login to proceed.",
-          403
+          201
         );
       }
       const access_token = await createAccessToken({ id: user._id });
