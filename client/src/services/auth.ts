@@ -166,9 +166,9 @@ export const resendActivation = async (data: { email: string }) => {
     };
   
    const response = await request(options);
-   if (response) {
-    toast.success("Check your email and proceed to verify account");
-  }
+  //  if (response) {
+  //   toast.success("Check your email and proceed to verify account");
+  // }
   return response;
   } catch (error: any) {
     console.error(error);
