@@ -12,15 +12,20 @@ function ResendActivation() {
 
   useEffect(() => {
     if (data?.status) {
-      toast.success("A new activation link has been sent to your email.");
-      navigate("/verify-confirmation");
-    } 
-  }, [data, navigate]);
-  
+      if (data.data === 200) {
+        toast.success(data.message);
+        navigate("/verify-confirmation");
+      } else if (data.data === 201) {
+        toast.success(data.message);
+        setEmail("")
+      }
+    }
+  }, [data, navigate]);  
+
   const handleResendLink = () => {
     resendActivation({ email });
   };
-  
+
   return (
     <div className="flex flex-col lg:flex-row h-screen">
       {isLoading && <Loader />}
