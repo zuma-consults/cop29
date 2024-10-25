@@ -123,9 +123,9 @@ const Profile: React.FC = () => {
               <p className="text-sm md:text-base text-gray-600 mt-2">
                 Phone: {organizationData.phone}
               </p>
-              <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
+              {/* <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
                 User Type: {organizationData.userType}
-              </p>
+              </p> */}
               <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
                 Organization Type: {organizationData.organizationType}
               </p>
