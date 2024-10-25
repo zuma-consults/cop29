@@ -12,15 +12,15 @@ function ResendActivation() {
 
   useEffect(() => {
     if (data?.status) {
-      if (data.data === 200) {
+      if (data.data === 201) {
+        toast.success(data.message);
+        setEmail("");
+      } else {
         toast.success(data.message);
         navigate("/verify-confirmation");
-      } else if (data.data === 201) {
-        toast.success(data.message);
-        setEmail("")
       }
     }
-  }, [data, navigate]);  
+  }, [data, navigate]);
 
   const handleResendLink = () => {
     resendActivation({ email });
