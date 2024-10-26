@@ -64,7 +64,7 @@ const Profile: React.FC = () => {
   const { mutate: logout } = useLogout();
 
   useEffect(() => {
-    if (accreditationType === null || allow === null) {
+    if ( allow === null) {
       cookies.remove("accessToken");
       cookies.remove("profile");
       localStorage.clear();
