@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { useGetProfile } from "../../components/custom-hooks/useAuth";
+import {
+  useGetProfile,
+  useLogout,
+} from "../../components/custom-hooks/useAuth";
 import Loader from "../../components/ui/Loader";
 import { Link } from "react-router-dom";
 import AddDelegateModal from "./add-delegate-modal";
+import { Cookies } from "react-cookie";
+import SideEvent from "./sideEvent";
 
 interface Delegate {
   name: string;
@@ -51,11 +56,21 @@ const delegateColumns = [
 
 const Profile: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isSideModalOpen, setSideModalOpen] = useState(false);
   const { data: user, isLoading, refetch } = useGetProfile();
   const accreditationType = localStorage.getItem("accreditationType");
   const allow = localStorage.getItem("allow");
-  // localStorage.setItem("allow", "profile");
+  const cookies = new Cookies();
+  const { mutate: logout } = useLogout();
 
+  useEffect(() => {
+    if (accreditationType === null || allow === null) {
+      cookies.remove("accessToken");
+      cookies.remove("profile");
+      localStorage.clear();
+      logout();
+    }
+  }, []);
   if (isLoading) {
     return <Loader />;
   }
@@ -113,7 +128,6 @@ const Profile: React.FC = () => {
               Welcome {organizationData.name}!
             </h1>
           </div>
-
           <div className="w-full flex items-start md:justify-between flex-wrap gap-5 bg-green-50 shadow rounded-lg p-6">
             <div>
               <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
@@ -159,7 +173,6 @@ const Profile: React.FC = () => {
                 </button>
               )}
           </div>
-
           {organizationData.category !== "Negotiator" && (
             <div className="w-full bg-gray-100 rounded-lg p-6 mt-4">
               <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
@@ -175,7 +188,6 @@ const Profile: React.FC = () => {
               />
             </div>
           )}
-
           {/* Custom Modal Component */}
           <AddDelegateModal
             isOpen={isModalOpen}
