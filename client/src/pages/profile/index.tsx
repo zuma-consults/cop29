@@ -8,7 +8,7 @@ import Loader from "../../components/ui/Loader";
 import { Link } from "react-router-dom";
 import AddDelegateModal from "./add-delegate-modal";
 import { Cookies } from "react-cookie";
-import SideEvent from "./sideEvent";
+// import SideEvent from "./sideEvent";
 
 interface Delegate {
   name: string;
@@ -63,14 +63,14 @@ const Profile: React.FC = () => {
   const cookies = new Cookies();
   const { mutate: logout } = useLogout();
 
-  // useEffect(() => {
-  //   if (accreditationType === null || allow === null) {
-  //     cookies.remove("accessToken");
-  //     cookies.remove("profile");
-  //     localStorage.clear();
-  //     logout();
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (accreditationType === null || allow === null) {
+      cookies.remove("accessToken");
+      cookies.remove("profile");
+      localStorage.clear();
+      logout();
+    }
+  }, []);
   if (isLoading) {
     return <Loader />;
   }
@@ -204,12 +204,12 @@ const Profile: React.FC = () => {
             refetch={refetch}
             id={user?.data?.id}
           />
-          <SideEvent
+          {/* <SideEvent
             isOpen={isSideModalOpen}
             onClose={() => setSideModalOpen(false)}
             refetch={refetch}
             id={user?.data?.id}
-          />
+          /> */}
         </>
       )}
     </div>
