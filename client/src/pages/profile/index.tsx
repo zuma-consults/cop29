@@ -63,14 +63,14 @@ const Profile: React.FC = () => {
   const cookies = new Cookies();
   const { mutate: logout } = useLogout();
 
-  useEffect(() => {
-    if (accreditationType === null || allow === null) {
-      cookies.remove("accessToken");
-      cookies.remove("profile");
-      localStorage.clear();
-      logout();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (accreditationType === null || allow === null) {
+  //     cookies.remove("accessToken");
+  //     cookies.remove("profile");
+  //     localStorage.clear();
+  //     logout();
+  //   }
+  // }, []);
   if (isLoading) {
     return <Loader />;
   }
@@ -128,6 +128,15 @@ const Profile: React.FC = () => {
               Welcome {organizationData.name}!
             </h1>
           </div>
+          {/* {organizationData.userType === "organization" &&
+            organizationData.category !== "Negotiator" && (
+              <button
+                onClick={() => setSideModalOpen(true)}
+                className="bg-green-800 text-white py-2 px-4 rounded hover:bg-green-700 transition"
+              >
+                Apply for Side Event
+              </button>
+            )} */}
           <div className="w-full flex items-start md:justify-between flex-wrap gap-5 bg-green-50 shadow rounded-lg p-6">
             <div>
               <p className="text-sm md:text-base text-gray-600 mt-2 capitalize">
@@ -192,6 +201,12 @@ const Profile: React.FC = () => {
           <AddDelegateModal
             isOpen={isModalOpen}
             onClose={() => setModalOpen(false)}
+            refetch={refetch}
+            id={user?.data?.id}
+          />
+          <SideEvent
+            isOpen={isSideModalOpen}
+            onClose={() => setSideModalOpen(false)}
             refetch={refetch}
             id={user?.data?.id}
           />
