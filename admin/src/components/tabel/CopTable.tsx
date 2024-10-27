@@ -75,7 +75,7 @@ const CopTable: React.FC = () => {
 
   useEffect(() => {
     if (data?.data) {
-      setTotalRows(data.data.totalUsers);
+      setTotalRows(data.data.length);
       setItemsPerPage(data.data.length);
     }
   }, [data]);
