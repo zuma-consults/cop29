@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Role = require("../models/role");
 const Slot = require("../models/slot");
+const PavillionSlot = require("../models/pavillion-slot");
 
 const roles = [
   {
@@ -78,6 +79,18 @@ const timeSlots = [
   { timeSpan: "6:20pm to 7:40pm" },
 ];
 
+const pavillionTimeSlots = [
+  { timeSpan: "9:00am to 9:45am" },
+  { timeSpan: "10:00am to 10:45am" },
+  { timeSpan: "11:00am to 11:45am" },
+  { timeSpan: "12:00pm to 12:45pm" },
+  { timeSpan: "1:00pm to 1:45pm" },
+  { timeSpan: "2:00pm to 2:45pm" },
+  { timeSpan: "3:00pm to 3:45pm" },
+  { timeSpan: "4:00pm to 4:45pm" },
+  { timeSpan: "5:00pm to 5:45pm" },
+];
+
 const generateSlots = () => {
   const slots = [];
   const startDate = new Date("2024-11-11");
@@ -88,7 +101,7 @@ const generateSlots = () => {
     date <= endDate;
     date.setDate(date.getDate() + 1)
   ) {
-    timeSlots.forEach((slot) => {
+    pavillionTimeSlots.forEach((slot) => {
       const [startHour, startMinute, startPeriod] = slot.timeSpan
         .split(" to ")[0]
         .match(/(\d+):(\d+)(am|pm)/i)
@@ -135,7 +148,9 @@ const connectDb = async () => {
     //   name: { $in: roles.map((role) => role.name) },
     // });
     // const slotsToInsert = generateSlots();
+    // const pavillionSlotsToInsert = generateSlots();
     // const existingSlots = await Slot.find();
+    // const existingPavillionSlots = await PavillionSlot.find();
 
     // // Update roles or insert them if they don't exist
     // for (const role of roles) {
@@ -170,6 +185,22 @@ const connectDb = async () => {
     //   await Slot.deleteMany({});
     //   await Slot.insertMany(slotsToInsert);
     //   console.log(`Inserted ${missingSlots.length} new slots.`);
+    // }
+
+    // const missingPavillionSlots = pavillionSlotsToInsert.filter((slot) => {
+    //   return !existingPavillionSlots.some(
+    //     (existingSlot) =>
+    //       existingSlot.date.toISOString() === slot.date.toISOString() &&
+    //       existingSlot.timeSpan === slot.timeSpan
+    //   );
+    // });
+
+    // if (missingPavillionSlots.length > 0) {
+    //   await PavillionSlot.deleteMany({});
+    //   await PavillionSlot.insertMany(pavillionSlotsToInsert);
+    //   console.log(
+    //     `Inserted ${missingPavillionSlots.length} new pavillion slots.`
+    //   );
     // }
 
     console.log(
