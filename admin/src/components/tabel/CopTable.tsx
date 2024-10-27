@@ -285,7 +285,7 @@ const CopTable: React.FC = () => {
           fixedHeaderScrollHeight="600px"
           pagination
           paginationServer
-          paginationPerPage={data?.data.length || itemsPerPage}
+          paginationPerPage={data?.data?.length || itemsPerPage}
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
