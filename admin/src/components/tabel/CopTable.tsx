@@ -81,6 +81,7 @@ const CopTable: React.FC = () => {
   }, [data]);
   console.log("data", data?.data);
   console.log("data", data?.data?.length());
+  console.log("data", data?.data?.totalUsers);
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
