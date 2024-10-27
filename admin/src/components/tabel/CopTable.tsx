@@ -216,8 +216,7 @@ const CopTable: React.FC = () => {
     () => userProfile?.role?.modules?.includes("export"),
     [userProfile]
   );
-console.log(data?.data)
-console.log(data)
+
   return (
     <>
       {(isFetching || loadingApproval || loadingDecline) && <Loader />}
@@ -284,7 +283,7 @@ console.log(data)
           fixedHeaderScrollHeight="600px"
           pagination
           paginationServer
-          paginationPerPage={data?.data.length}
+          paginationPerPage={data?.data.length || itemsPerPage}
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
