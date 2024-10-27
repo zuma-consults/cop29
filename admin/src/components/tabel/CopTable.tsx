@@ -79,9 +79,9 @@ const CopTable: React.FC = () => {
       setItemsPerPage(data.data.totalUsers);
     }
   }, [data]);
-  console.log("data", data?.data);
-  console.log("data", data?.data?.length);
-  console.log("data", data?.data?.totalUsers);
+  console.log("data1", data?.data);
+  console.log("data2", data?.data?.length);
+  console.log("data3", data?.data?.totalUsers);
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
