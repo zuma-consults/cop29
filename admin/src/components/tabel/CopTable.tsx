@@ -217,6 +217,8 @@ const CopTable: React.FC = () => {
     [userProfile]
   );
 
+  console.log(data?.data)
+  console.log(data)
   return (
     <>
       {(isFetching || loadingApproval || loadingDecline) && <Loader />}
