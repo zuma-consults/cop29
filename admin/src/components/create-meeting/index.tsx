@@ -20,10 +20,9 @@ import Loader from "../ui/Loader";
 const CreateMeeting: React.FC<{
   setOpenSchedule: (value: boolean) => void;
   refetchAllEvents: () => void;
-}> = ({ refetchAllEvents }) => {
-  const setOpen = (value: boolean) => {};
+}> = ({ setOpenSchedule, refetchAllEvents }) => {
   const { mutate, isLoading } = useScheduleMeeting({
-    setOpen,
+    setOpenSchedule,
     refetchAllEvents,
   });
 
@@ -135,11 +134,6 @@ const CreateMeeting: React.FC<{
                       <MenuItem key={organizer.id} value={organizer.id}>
                         <div className={`flex justify-start w-full `}>
                           <span className="w-[30%]">{organizer.name}</span>
-                          <span className="w-[30%]">{organizer.state}</span>
-                          <span className="w-[30%]">
-                            {organizer.organizationType}
-                          </span>
-                          <span>{organizer.thematicArea}</span>
                         </div>
                       </MenuItem>
                     )

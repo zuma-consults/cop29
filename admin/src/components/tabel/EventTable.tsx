@@ -237,7 +237,7 @@ const EventTable: React.FC = () => {
     <>
       {isFetching && <Loader />}
       <div className="rounded-[.5rem] px-2 bg-white shadow">
-        <div className="flex items-center md:flex-row flex-col justify-betwwen py-2">
+        <div className="flex items-center md:flex-row flex-col justify-between py-2">
           {hasExportModule && (
             <Button
               sx={{
@@ -264,7 +264,7 @@ const EventTable: React.FC = () => {
           )}
           <div className="my-4">
             <TextField
-              label="Search"
+              label="Search by title or organizer"
               variant="outlined"
               fullWidth
               value={searchTerm}
@@ -286,6 +286,9 @@ const EventTable: React.FC = () => {
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
+          paginationComponentOptions={{
+            noRowsPerPage: true,
+          }}
         />
       </div>
     </>

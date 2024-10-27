@@ -45,7 +45,7 @@ interface TableRow {
 const CopTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(500);
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
   const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
   // const [status, setStatus] = useState(event.status);
