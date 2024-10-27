@@ -526,7 +526,6 @@ module.exports = {
 
       // Prepare the response with pagination info
       const response = {
-        itemsPerPage: 5,
         totalPages: Math.ceil(totalUsers / limit),
         currentPage: parseInt(page),
         totalUsers,
@@ -754,29 +753,29 @@ module.exports = {
   },
   getAllCopApplicants: async (req, res) => {
     try {
-      const { copApproved } = req.query;
-
+      const { copApproved, page = 1, limit = 200 } = req.query;
+  
       // Create a query object for filtering based on copApproved
       const query = { verifiedEmail: true, status: "approved" };
-
+  
       // If copApproved is provided in the query parameters, add it to the query object
       if (copApproved !== undefined) {
         query["delegates.copApproved"] = copApproved;
       }
-
+  
       // Find all users sorted by creation date
       const users = await User.find(query).sort({ updatedAt: -1 });
-
-      // Define a helper function to replace file extensions
+  
+      // Helper function to replace file extensions
       const replaceFileExtension = (filePath) => {
         if (filePath) {
           return filePath.replace(/\.(pdf)$/i, ".jpg");
         }
         return filePath;
       };
-
+  
       // Extract delegates from each user and combine them into one array
-      const delegates = users.reduce((acc, user) => {
+      const totalDelegates = users.reduce((acc, user) => {
         if (user.delegates && user.delegates.length > 0) {
           // Filter delegates based on copApproved status, if provided
           const filteredDelegates = user.delegates.filter((delegate) => {
@@ -785,17 +784,33 @@ module.exports = {
             }
             return true;
           });
-
+  
           // Replace passport file extensions for each delegate
           filteredDelegates.forEach((delegate) => {
             delegate.passport = replaceFileExtension(delegate.passport);
           });
-
+  
           acc.push(...filteredDelegates);
         }
         return acc;
       }, []);
-
+  
+      // Pagination logic
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + parseInt(limit);
+      const paginatedDelegates = totalDelegates.slice(startIndex, endIndex);
+  
+      // Calculate the total number of pages
+      const totalPages = Math.ceil(totalDelegates.length / limit);
+  
+      const response = {
+        totalPages,
+        currentPage: parseInt(page),
+        totalUsers: totalDelegates.length,
+        itemsPerPage: parseInt(limit),
+        delegates: paginatedDelegates,
+      };
+  
       // Set the message based on the copApproved filter
       let message;
       if (copApproved !== undefined) {
@@ -803,12 +818,12 @@ module.exports = {
       } else {
         message = "All COP 29 Applicants";
       }
-
-      return successHandler(res, message, delegates);
+  
+      return successHandler(res, message, response.delegates);
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode || 500);
     }
-  },
+  },  
   updateCopApproval: async (req, res) => {
     try {
       const { id } = req.params;
