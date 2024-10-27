@@ -45,7 +45,7 @@ interface TableRow {
 const CopTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(300);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
   const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
   // const [status, setStatus] = useState(event.status);
@@ -75,10 +75,10 @@ const CopTable: React.FC = () => {
 
   useEffect(() => {
     if (data?.data) {
-      setTotalRows(data?.data);
-      setItemsPerPage(data?.data?.length);
+      setTotalRows(data.data.totalUsers);
+      setItemsPerPage(data.data.itemsPerPage);
     }
-  }, [data.data]);
+  }, [data]);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -217,8 +217,6 @@ const CopTable: React.FC = () => {
     [userProfile]
   );
 
-  console.log(data?.data)
-  console.log(data)
   return (
     <>
       {(isFetching || loadingApproval || loadingDecline) && <Loader />}
