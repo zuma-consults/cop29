@@ -56,7 +56,7 @@ const sendEmail = async (to, name, code, subject, message1, message2) => {
         </p>
 
         <p style="color: #336633; font-size: 15px">
-          Warm regards,,<br />
+          Warm regards,<br />
           COP29 Nigeria
         </p>
       </div>
