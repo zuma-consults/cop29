@@ -352,17 +352,17 @@ module.exports = {
       await event.save();
 
       const organizer = await User.findById(event.organizerId);
-      const { delegates } = organizer;
+      const delegates = organizer.delegates;
       const subject = "Meeting Rescheduled.";
       const message1 = `Dear Delegate, we would like to inform you that the meeting for ${organizer.name} has been rescheduled. Sorry for the inconvenience.`;
       const message2 = `The updated meeting is scheduled for ${newSlot.timeSpan} on ${newSlot.date}. Kindly ensure your timely arrival for accreditation prior to the meeting. We look forward to your participation.`;
 
-      const approvedDelegates = delegates.filter(
+      const approvedDelegates = delegates?.filter(
         (delegate) => delegate.copApproved === "approved"
       );
 
       await Promise.all(
-        approvedDelegates.map(async (delegate) => {
+        approvedDelegates?.map(async (delegate) => {
           try {
             await sendEmail(
               delegate.email,

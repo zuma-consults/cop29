@@ -47,7 +47,9 @@ export const request = async (config: AxiosRequestConfig): Promise<any> => {
         if (
           window.location.pathname !== "/" &&
           window.location.pathname !== "/negotiator" &&
-          !window.location.pathname.startsWith("/verify") &&
+          window.location.pathname !== "/login" &&
+          window.location.pathname !== "/profile" &&
+          window.location.pathname.startsWith("/verify") &&
           window.location.pathname !== "/signup"
         ) {
           // Show the error toast with user-friendly messages

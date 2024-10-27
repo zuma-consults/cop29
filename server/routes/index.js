@@ -6,5 +6,6 @@ require("./endpoints/Admin-Auth")(app);
 require("./endpoints/Event")(app);
 require("./endpoints/Slots")(app);
 require("./endpoints/Message")(app);
+require("./endpoints/PavillionSlots")(app);
 
 module.exports = app;

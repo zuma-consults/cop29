@@ -25,7 +25,10 @@ function AccountActivation() {
     if (data?.status) {
       toast.success("Account activated successfully");
       navigate("/verify/success");
-    } 
+    } else{
+      // toast.success("Account activated successfully");
+      navigate("/verify/resend");
+    }
     
     // else {
     //   toast.error(
