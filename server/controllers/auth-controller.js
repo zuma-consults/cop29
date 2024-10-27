@@ -765,7 +765,7 @@ module.exports = {
       }
 
       // Find all users sorted by creation date
-      const users = await User.find(query).sort({ createdAt: 1 });
+      const users = await User.find(query).sort({ updatedAt: 1 });
 
       // Define a helper function to replace file extensions
       const replaceFileExtension = (filePath) => {
