@@ -73,13 +73,21 @@ const CopTable: React.FC = () => {
 
   const { data, refetch, isFetching } = useGetAllCopApplicants(memoizedFilters);
 
+  // useEffect(() => {
+  //   if (data?.data) {
+  //     setTotalRows(data.data.totalUsers);
+  //     setItemsPerPage(data?.data?.length || 300);
+  //   }
+  // }, [data]);
   useEffect(() => {
     if (data?.data) {
       setTotalRows(data.data.totalUsers);
-      setItemsPerPage(data?.data?.length || 300);
+      if (data?.data?.length && data.data.length !== itemsPerPage) {
+        setItemsPerPage(data.data.length);
+      }
     }
-  }, [data]);
-  
+  }, [data, itemsPerPage]);
+
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
