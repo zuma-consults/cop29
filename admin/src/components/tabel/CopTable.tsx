@@ -75,7 +75,7 @@ const CopTable: React.FC = () => {
 
   useEffect(() => {
     if (data?.data) {
-      setTotalRows(data?.data?.length);
+      setTotalRows(data?.data);
       setItemsPerPage(data?.data?.length);
     }
   }, [data.data]);
@@ -285,7 +285,7 @@ const CopTable: React.FC = () => {
           fixedHeaderScrollHeight="600px"
           pagination
           paginationServer
-          paginationPerPage={data?.data?.length || itemsPerPage}
+          paginationPerPage={itemsPerPage}
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
