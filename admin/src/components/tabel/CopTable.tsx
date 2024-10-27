@@ -78,7 +78,7 @@ const CopTable: React.FC = () => {
       setTotalRows(data.data.length);
       setItemsPerPage(data.data.length);
     }
-  }, [data]);
+  }, [data.data]);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prevFilters) => ({
@@ -216,7 +216,8 @@ const CopTable: React.FC = () => {
     () => userProfile?.role?.modules?.includes("export"),
     [userProfile]
   );
-
+console.log(data?.data)
+console.log(data)
   return (
     <>
       {(isFetching || loadingApproval || loadingDecline) && <Loader />}
@@ -283,7 +284,7 @@ const CopTable: React.FC = () => {
           fixedHeaderScrollHeight="600px"
           pagination
           paginationServer
-          paginationPerPage={data?.data.length || itemsPerPage}
+          paginationPerPage={data?.data.length}
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
