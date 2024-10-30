@@ -2,19 +2,24 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { formatDate1 } from "../../utils/helper";
 import {
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Modal,
 } from "@mui/material";
-import { Button, Chip } from "@mui/material";
+import { Button } from "@mui/material";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { useApproveEvent, useDeclineEvent } from "../../hooks/useEvent";
 import Loader from "../../components/ui/Loader";
+import { BiEditAlt } from "react-icons/bi";
+import EditTimeSlot from "../../components/edit-event-timeSlot";
 
 const EventDetails: React.FC = () => {
   const location = useLocation();
+  const [open, setOpen] = useState(false);
 
   const event = location.state as {
     status: string;
@@ -30,7 +35,7 @@ const EventDetails: React.FC = () => {
   if (!event) {
     return <div>Meeting not found</div>;
   }
-  const { title, start, end, description, organizer, id, countId } = event;
+  const { title, start, end, description, organizer, id } = event;
 
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
   const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
@@ -68,7 +73,7 @@ const EventDetails: React.FC = () => {
       {(loadingApproval || loadingDecline) && <Loader />}
 
       <div className="px-5 py-10 bg-gray-100">
-        <div className="flex items-center justify-start mb-5">
+        <div className="flex items-center justify-between mb-5">
           <Button
             variant="outlined"
             color="success"
@@ -76,6 +81,28 @@ const EventDetails: React.FC = () => {
             onClick={() => window.history.back()}
           >
             Go Back
+          </Button>
+          <Button
+            onClick={() => setOpen(true)}
+            sx={{
+              backgroundColor: "green",
+              color: "white",
+              width: "fit-content",
+              paddingY: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              fontSize: "13px",
+              gap: "8px",
+              "&:hover": {
+                backgroundColor: "#e8f5e9",
+                color: "black",
+              },
+            }}
+          >
+            Edit Meeting time slot
+            <BiEditAlt size={20} />
           </Button>
         </div>
 
@@ -171,6 +198,34 @@ const EventDetails: React.FC = () => {
           )}
         </div>
       </div>
+
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="create-event-modal"
+        aria-describedby="create-event-form"
+      >
+        <Box
+          sx={{
+            position: "absolute" as "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: { xs: "90%", sm: "80%", md: "60%" },
+            my: 10,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            maxHeight: "90vh",
+            overflowY: "auto",
+            margin: "auto",
+            outline: "none",
+            borderRadius: "8px",
+          }}
+        >
+          <EditTimeSlot setOpen={setOpen} event={event} />
+        </Box>
+      </Modal>
       <Dialog open={openApproveDialog} onClose={handleClose}>
         <DialogTitle>Confirm Approval</DialogTitle>
         <DialogContent>

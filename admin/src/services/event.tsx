@@ -42,6 +42,20 @@ export const getAllEvents = async (params?: Record<string, any>) => {
   }
 };
 
+export const editTimslot = async (slotId: string, id:string) => {
+  try {
+    const config = {
+      method: "put",
+      url: `reschedule/${id}`,
+      data: { slotId },
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getAllCalender = async () => {
   try {
     const config = {

@@ -67,7 +67,9 @@ const Profile: React.FC = () => {
     if ( allow === null) {
       cookies.remove("accessToken");
       cookies.remove("profile");
-      // localStorage.clear();
+      localStorage.removeItem("allow")
+      localStorage.removeItem("copNotice")
+      localStorage.removeItem("userProfile")
       logout();
     }
   }, []);

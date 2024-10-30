@@ -5,6 +5,7 @@ import {
   createEvent,
   declineCopEvent,
   declineEvent,
+  editTimslot,
   generateInvoice,
   getAllApplicants,
   getAllApprovedOrganizations,
@@ -37,17 +38,17 @@ export const useCreateEvent = ({
 };
 
 export const useScheduleMeeting = ({
-  setOpen,
+  setOpenSchedule,
   refetchAllEvents,
 }: {
-  setOpen: (value: boolean) => void;
+  setOpenSchedule: (value: boolean) => void;
   refetchAllEvents: () => void;
 }) => {
   return useMutation(scheduleMeeting, {
     onSuccess: (result) => {
       if (result?.status) {
         toast.success("Meeting Scheduled Successfully");
-        setOpen(false);
+        setOpenSchedule(false);
         refetchAllEvents();
       }
     },
@@ -74,6 +75,28 @@ export const useGetAllEvents = (queryParams?: Record<string, any>) => {
       retry: 1,
     }
   );
+};
+
+export const useEditEvent = ({
+  setOpen,
+}: {
+  setOpen: (value: boolean) => void;
+}) => {
+  return useMutation(({ slotId, id }: { slotId: string; id: string }) => editTimslot(slotId, id), {
+    onSuccess: (result) => {
+      if (result?.status) {
+        toast.success("Meeting Updated Successfully");
+        setOpen(false);
+      } else {
+        toast.error(
+          result.message || "Meeting Update failed. Please try again."
+        );
+      }
+    },
+    onError: (_error) => {
+      toast.error("Meeting Update failed. Please try again.");
+    },
+  });
 };
 
 export const useGetCalender = () => {
