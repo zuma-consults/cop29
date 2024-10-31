@@ -419,9 +419,9 @@ module.exports = {
           return errorHandler(res, "Not authorized", 409);
         }
 
-        if (findUser.email === "rumezulike@yahoo.com") {
-          if (findUser.delegates.length >= 4) {
-            return errorHandler(res, "You can only add four delegates.", 403);
+        if (findUser.email === "bodunoye@gmail.com") {
+          if (findUser.delegates.length >= 100) {
+            return errorHandler(res, "You can only add 100 delegates.", 403);
           }
         } else {
           if (findUser.delegates.length >= 3) {
