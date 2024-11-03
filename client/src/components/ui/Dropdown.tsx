@@ -16,7 +16,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
       >
         {title}
       </button>
-      {open && (
+      {/* {open && (
         <div className="absolute right-0 w-[300px] shadow-lg rounded-md z-[5000] bg-green-900 ">
           {items.map((item, index) => (
             <a
@@ -28,7 +28,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
             </a>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   );
 };

@@ -150,8 +150,8 @@ function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/negotiator" element={<NegotiatorForm />} />
+      {/* <Route path="/signup" element={<Signup />} />
+      <Route path="/negotiator" element={<NegotiatorForm />} /> */}
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route
         path="/forgot-confirmation"
