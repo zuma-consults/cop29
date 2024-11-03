@@ -112,7 +112,7 @@ const Hero: React.FC = () => {
               How It Works
             </HashLink>
             <Link
-              to="/intl-org"
+              // to="/intl-org"
               className="text-center w-full rounded py-4 px-2 flex justify-center items-center text-white bg-orange-500 hover:bg-orange-400 transition"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
