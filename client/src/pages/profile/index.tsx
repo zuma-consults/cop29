@@ -200,12 +200,12 @@ const Profile: React.FC = () => {
             </div>
           )}
           {/* Custom Modal Component */}
-          <AddDelegateModal
+          {/* <AddDelegateModal
             isOpen={isModalOpen}
             onClose={() => setModalOpen(false)}
             refetch={refetch}
             id={user?.data?.id}
-          />
+          /> */}
           {/* <SideEvent
             isOpen={isSideModalOpen}
             onClose={() => setSideModalOpen(false)}
