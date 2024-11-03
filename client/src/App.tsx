@@ -162,18 +162,18 @@ function App() {
         element={<VerificationConfirmation />}
       />
       <Route path="/reset-password/:id" element={<ResetPassword />} />
-      <Route path="/verify/:id" element={<AccountActivation />} />
-      <Route path="/verify/resend" element={<ResendActivation />} />
-      <Route path="/verify/success" element={<ActivationSuccess />} />
+      {/* <Route path="/verify/:id" element={<AccountActivation />} /> */}
+      {/* <Route path="/verify/resend" element={<ResendActivation />} /> */}
+      {/* <Route path="/verify/success" element={<ActivationSuccess />} /> */}
 
       <Route path="/" element={<AppLayout />}>
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/" element={<Home />} />
         <Route path="/contact-us" element={<Contact />} />
-        <Route path="/intl-org" element={<InternationalOrg />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/create-event" element={<CreateEvent />} />
-        <Route path="/event/:id" element={<EventDetails />} />
+        {/* <Route path="/intl-org" element={<InternationalOrg />} /> */}
+        {/* <Route path="/events" element={<Events />} /> */}
+        {/* <Route path="/create-event" element={<CreateEvent />} />
+        <Route path="/event/:id" element={<EventDetails />} /> */}
         <Route path="/profile" element={<Profile />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="*" element={<NotFound />} />
