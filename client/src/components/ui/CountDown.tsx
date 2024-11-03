@@ -41,7 +41,7 @@ const CountdownTimer: React.FC = () => {
   return (
     <div className="flex flex-col items-center  text-white p-6 rounded-lg md:absolute m-3 top-0 right-10">
       <h1 className="text-2xl font-bold mb-4 text-center uppercase">
-        The portal will close in:
+        Request for Accreditaion has Closed.
       </h1>
       {timeLeft ? (
         <div className="flex space-x-4">
@@ -63,7 +63,8 @@ const CountdownTimer: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="text-xl font-semibold">Registration has ended</div>
+        // <div className="text-xl font-semibold">Registration has ended</div>
+        <div className="text-xl font-semibold"></div>
       )}
     </div>
   );
