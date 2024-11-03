@@ -157,10 +157,10 @@ function App() {
         path="/forgot-confirmation"
         element={<ForgotPasswordConfirmation />}
       />
-      <Route
+      {/* <Route
         path="/verify-confirmation"
         element={<VerificationConfirmation />}
-      />
+      /> */}
       <Route path="/reset-password/:id" element={<ResetPassword />} />
       {/* <Route path="/verify/:id" element={<AccountActivation />} /> */}
       {/* <Route path="/verify/resend" element={<ResendActivation />} /> */}
