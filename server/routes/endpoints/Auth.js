@@ -32,14 +32,14 @@ const {
 } = require("../../middlewares/middleware");
 let routes = (app) => {
   // app.post("/register", createUser);
-  app.post("/org/register", createOrganisationAsUser);
-  app.post("/negotiator/register", createOrganisationAsNegotiator);
+  // app.post("/org/register", createOrganisationAsUser);
+  // app.post("/negotiator/register", createOrganisationAsNegotiator);
   app.get("/users", authAdmin, getAllUsers);
   app.get("/negotiators", authAdmin, getAllNegotiators);
   app.get("/user/:id", authAdmin, getUserById);
   app.get("/token", auth, getUserByToken);
   app.put("/user/:id", authAdmin, updateUserById);
-  app.put("/add-delegate/:id", auth, addDelegatesToOrganisation);
+  // app.put("/add-delegate/:id", auth, addDelegatesToOrganisation);
   app.put("/password/user/", auth, changeUserPasswordById);
   // app.delete("/user/:id", deleteUserById);
   app.post("/login", login);
