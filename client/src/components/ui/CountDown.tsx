@@ -12,7 +12,7 @@ type TimeLeft =
 
 const CountdownTimer: React.FC = () => {
   const calculateTimeLeft = (): TimeLeft => {
-    const registrationEndDate = new Date("2024-11-03T23:59:59"); // Set your end date and time here
+    const registrationEndDate = new Date("2024-11-05T23:59:59"); // Set your end date and time here
     const now = new Date();
     const difference = registrationEndDate.getTime() - now.getTime();
 
@@ -41,8 +41,8 @@ const CountdownTimer: React.FC = () => {
   return (
     <div className="flex flex-col items-center  text-white p-6 rounded-lg md:absolute m-3 top-0 right-10">
       <h1 className="text-2xl font-bold mb-4 text-center uppercase">
-        {/* The portal will close in: */}
-        Request for Accreditation has Closed.
+        The portal will close in:
+        {/* Request for Accreditation has Closed. */}
       </h1>
       {timeLeft ? (
         <div className="flex space-x-4">
