@@ -423,6 +423,10 @@ module.exports = {
           if (findUser.delegates.length >= 100) {
             return errorHandler(res, "You can only add 100 delegates.", 403);
           }
+        } else if (findUser.email === "chinedu.igwe@yahoo.com") {
+          if (findUser.delegates.length >= 8) {
+            return errorHandler(res, "You can only add 8 delegates.", 403);
+          }
         } else {
           if (findUser.delegates.length >= 3) {
             return errorHandler(res, "You can only add three delegates.", 403);
