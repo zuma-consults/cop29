@@ -150,27 +150,27 @@ function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/negotiator" element={<NegotiatorForm />} />
+      {/* <Route path="/signup" element={<Signup />} /> */}
+      {/* <Route path="/negotiator" element={<NegotiatorForm />} /> */}
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route
         path="/forgot-confirmation"
         element={<ForgotPasswordConfirmation />}
       />
-      <Route
+      {/* <Route
         path="/verify-confirmation"
         element={<VerificationConfirmation />}
-      />
+      /> */}
       <Route path="/reset-password/:id" element={<ResetPassword />} />
-      <Route path="/verify/:id" element={<AccountActivation />} />
-      <Route path="/verify/resend" element={<ResendActivation />} />
-      <Route path="/verify/success" element={<ActivationSuccess />} />
+      {/* <Route path="/verify/:id" element={<AccountActivation />} /> */}
+      {/* <Route path="/verify/resend" element={<ResendActivation />} /> */}
+      {/* <Route path="/verify/success" element={<ActivationSuccess />} /> */}
 
       <Route path="/" element={<AppLayout />}>
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/" element={<Home />} />
         <Route path="/contact-us" element={<Contact />} />
-        <Route path="/intl-org" element={<InternationalOrg />} />
+        {/* <Route path="/intl-org" element={<InternationalOrg />} /> */}
         {/* <Route path="/events" element={<Events />} /> */}
         {/* <Route path="/create-event" element={<CreateEvent />} />
         <Route path="/event/:id" element={<EventDetails />} /> */}
