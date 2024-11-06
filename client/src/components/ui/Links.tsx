@@ -101,7 +101,7 @@ const Links: React.FC<LinksProps> = ({
               >
                 Login
               </Link>
-              <div
+              {/* <div
                 className={`bg-green-800 text-white px-3 py-[6px] rounded ${
                   location.pathname === "/signup"
                     ? "bg-green-900"
@@ -109,7 +109,7 @@ const Links: React.FC<LinksProps> = ({
                 }`}
               >
                 <Dropdown title="Create Account" items={accreditationItems} />
-              </div>
+              </div> */}
             </>
           )}
         </div>
