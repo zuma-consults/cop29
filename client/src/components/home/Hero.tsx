@@ -71,7 +71,7 @@ const Hero: React.FC = () => {
           </p>
           <div className="grid md:grid-cols-2 md:justify-start justify-center items-center gap-4 mt-10 md:mt-0 w-full">
             <div
-              // onClick={() => handleNavigate("delegates")}
+              onClick={() => handleNavigate("delegates")}
               className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-green-800 hover:bg-green-700 transition"
               // data-aos="fade-up"
               // data-aos-duration="1000"
@@ -80,7 +80,7 @@ const Hero: React.FC = () => {
               Request Accreditation (Delegates)
             </div>
             <div
-              // onClick={() => handleNavigate("negotiators")}
+              onClick={() => handleNavigate("negotiators")}
               className="text-center w-full rounded py-4 flex justify-center items-center text-white bg-blue-800 hover:bg-green-700 transition"
               // data-aos="fade-up"
               // data-aos-duration="1000"
@@ -112,7 +112,7 @@ const Hero: React.FC = () => {
               How It Works
             </HashLink>
             <Link
-              to="/#"
+              to="/intl-org"
               className="text-center w-full rounded py-4 px-2 flex justify-center items-center text-white bg-orange-500 hover:bg-orange-400 transition"
             >
               <FaCalendarAlt className="text-2xl mr-2" />
