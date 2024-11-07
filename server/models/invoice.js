@@ -4,14 +4,10 @@ const InvoiceSchema = new mongoose.Schema(
   {
     amount: { type: String },
     paid: { type: Boolean, default: false },
-    eventId: {
+    eventIds: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Events",
-    },
-    generatedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Staff",
-    },
+      ref: "Side-Events",
+    }],
   },
   {
     toJSON: {
