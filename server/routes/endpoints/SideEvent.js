@@ -7,7 +7,7 @@ const {
 } = require("../../controllers/pavillion-controller");
 const { auth, authAdmin, authRole } = require("../../middlewares/middleware");
 let routes = (app) => {
-  // app.post("/side-event", auth, createSideEventByOrganization);
+  app.post("/side-event", auth, createSideEventByOrganization);
   app.get("/side-event", auth, getOrganizationSideEvent);
   // app.delete("/side/:id", deleteEventById);
   // app.post("/event/admin", authRole("Super Admin"), createEventByAdmin);
