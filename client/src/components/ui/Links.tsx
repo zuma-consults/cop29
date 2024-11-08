@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLogout } from "../custom-hooks/useAuth";
 import { useState, useEffect } from "react";
-import Dropdown from "./Dropdown";
+// import Dropdown from "./Dropdown";
 
 interface LinksProps {
   direction?: "row" | "column" | "col";
@@ -20,10 +20,10 @@ const Links: React.FC<LinksProps> = ({
 
   const { mutate: logout } = useLogout();
 
-  const accreditationItems = [
-    { title: "Delegates", path: "/signup" },
-    { title: "Negotiators", path: "/negotiator" },
-  ];
+  // const accreditationItems = [
+  //   { title: "Delegates", path: "/signup" },
+  //   { title: "Negotiators", path: "/negotiator" },
+  // ];
 
   useEffect(() => {
     // Check localStorage for user profile on mount

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, QueryClient } from "react-query";
-import { login, logout, getProfile, register, orgRegister, activate, reset, forgot, resendActivation, negotiatorRegister } from "../../services/auth";
+import { login, logout, getProfile, register, orgRegister, activate, reset, forgot, resendActivation, negotiatorRegister, getPavillionSlots, getMySideEvents } from "../../services/auth";
 
 // Create instances of QueryClient and Cookies
 const queryClient = new QueryClient();
@@ -48,6 +48,14 @@ export const useLogout = () => {
 export const useGetProfile = () => {
   return useQuery("profile", getProfile);
 };
+
+export const useGetPavillionSlots = () => {
+  return useQuery("pavillion-slots", getPavillionSlots);
+}
+
+export const useGetMySideEvents = () => {
+  return useQuery("side-event", getMySideEvents);
+}
 
 export const useActivate = () => {
   return useMutation(() => activate());

@@ -122,6 +122,34 @@ export const getProfile = async () => {
   }
 };
 
+export const getPavillionSlots = async () => {
+  try {
+    const config = {
+      method: "get",
+      url: "pavillion-slots",
+    };
+    const responseData = await request(config);
+    return responseData.data;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+};
+
+export const getMySideEvents = async () => {
+  try {
+    const config = {
+      method: "get",
+      url: "side-event",
+    };
+    const responseData = await request(config);
+    return responseData.data;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+};
+
 export const activate = async () => {
   try {
     const options = {

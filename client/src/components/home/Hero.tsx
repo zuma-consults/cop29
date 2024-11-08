@@ -1,27 +1,28 @@
 import React from "react";
 import { FaCalendarAlt, FaInfoCircle, FaQuestionCircle } from "react-icons/fa";
 import { AiOutlineFolderView } from "react-icons/ai";
-import { Link, useNavigate } from "react-router-dom";
+// import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CountdownTimer from "../ui/CountDown";
 import { HashLink } from "react-router-hash-link";
 
 const Hero: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const handleOpenPDF = () => {
     const pdfUrl = "/images/overview.pdf"; // Replace with the actual PDF URL
     window.open(pdfUrl, "_blank");
   };
 
-  const handleNavigate = (type: string) => {
-    if (type === "delegates") {
-      localStorage.setItem("accreditationType", "delegates");
-      navigate("/profile");
-    }
-    if (type === "negotiators") {
-      localStorage.setItem("accreditationType", "negotiators");
-      navigate("/profile");
-    }
-  };
+  // const handleNavigate = (type: string) => {
+  //   if (type === "delegates") {
+  //     localStorage.setItem("accreditationType", "delegates");
+  //     navigate("/profile");
+  //   }
+  //   if (type === "negotiators") {
+  //     localStorage.setItem("accreditationType", "negotiators");
+  //     navigate("/profile");
+  //   }
+  // };
 
   return (
     <section
