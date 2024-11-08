@@ -92,10 +92,8 @@ const sendInvoiceEmail = async (to, name, amount, events) => {
           Your application has been received. To complete the process, kindly make a payment of <strong>₦${amount}</strong> to the following account:
         </p>
         <p style="text-align: center; margin: 20px 0; font-size: 15px;">
-          <strong>Account Name:</strong> COP29 Nigeria Events<br />
-          <strong>Bank:</strong> Nigeria National Bank<br />
-          <strong>Account Number:</strong> 1234567890<br />
-          <strong>Sort Code:</strong> 123456<br />
+          <strong>Account Name:</strong> National Council on Climate Change <br />
+          <strong>Account Number:</strong> 0020104165045 Naira Account (TSA)<br />
         </p>
         <p style="color: #336633; font-size: 15px;">
         Upon completing your payment, please upload the payment confirmation via your profile page. Please note that the reservation for your event slot(s) is provisional and will be held for a maximum of 24 hours. If proof of payment is not received within this time frame, your request will be automatically canceled.
