@@ -423,9 +423,9 @@ module.exports = {
           if (findUser.delegates.length >= 100) {
             return errorHandler(res, "You can only add 100 delegates.", 403);
           }
-        } else if (findUser.email === "obimba.temple@foreignaffairs.gov.ng") {
-          if (findUser.delegates.length >= 6) {
-            return errorHandler(res, "You can only add 6 delegates.", 403);
+        } else if (findUser.email === "jidenoble2000@yahoo.com") {
+          if (findUser.delegates.length >= 8) {
+            return errorHandler(res, "You can only add 8 delegates.", 403);
           }
         } else {
           if (findUser.delegates.length >= 3) {
@@ -1105,7 +1105,7 @@ module.exports = {
       return errorHandler(res, error.message, error.statusCode);
     }
   },
-  getAllUsersNoDelegates: async (req, res) => {
+  getAllUsersNoDelegatessss: async (req, res) => {
     try {
       const query = {
         // verifiedEmail: true,
@@ -1198,13 +1198,85 @@ module.exports = {
       //   })
       // );
 
+      // await Promise.all(
+      //   result.map(async (element) => {
+      //     try {
+      //       await sendEmailNoDelegates(
+      //         element.email,
+      //         element.organization,
+      //         "Reminder COP29 Registration",
+      //         msg3,
+      //         msg4
+      //       );
+      //     } catch (emailError) {
+      //       console.error(
+      //         `Failed to send email to ${element.email}:`,
+      //         emailError
+      //       );
+      //     }
+      //   })
+      // );
+
+      // Return success response
+      return successHandler(
+        res,
+        "Verified email users with no delegates",
+        result
+      );
+    } catch (error) {
+      return errorHandler(res, error.message, error.statusCode || 500);
+    }
+  },
+  getAllUsersNoDelegates: async (req, res) => {
+    try {
+      const query = {
+        verifiedEmail: true,
+        category: { $ne: "Negotiator" },
+        status: "approved",
+      };
+
+      const page = 5;
+      const limit = 50;
+      const skip = (page - 1) * limit;
+
+      // Fetch users matching the query
+      // const users = await User.find(query).sort({ createdAt: -1 });
+      const users = await User.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
+      console.log(users.length);
+
+      const msg1 = `Congratulations on successfully creating an account for your organization on our platform. 
+          <br></br>
+          <br></br>
+          We observed that your organisation is yet to add delegates. Kindly proceed to complete the process by:
+          <ol>
+          <li style="color: #336633; font-size: 15px;">Logging into your account and visiting your profile page.</li>
+          <li style="color: #336633; font-size: 15px;">Click the 'add delegate(s)/nominee(s)' button.</li>
+          <li style="color: #336633; font-size: 15px;">Fill out the form and upload the required documents for each delegate.</li>
+          </ol>
+          `;
+      const msg2 = `For more information on how to add delegates and manage your organization’s profile,
+           visit the 'How it Works' section of the portal.  <br></br> <br></br> If you have any questions or need further assistance, reach out to us using the 'contact us' form on the portal.`;
+
+      const msg3 = `
+      We are thrilled to announce the opening of Nigeria's official pavilion at the Blue Zone for COP29, 
+      and we are excited to invite you to apply to host side events at the pavilion!`;
+      const msg4 = `
+      Each slot is available for a fee of 1 million Naira, with a limit of 2 slots per organization.
+      <br />
+      <br />
+      To apply, simply log in to your profile on the portal (https://nigccdelegation.natccc.gov.ng) and submit your application today!
+      `;
+      // Send emails concurrently
       await Promise.all(
-        result.map(async (element) => {
+        users.map(async (element) => {
           try {
             await sendEmailNoDelegates(
               element.email,
-              element.organization,
-              "Reminder COP29 Registration",
+              element.name,
+              "Invitation to Host Side Events at Nigeria's Official COP29 Pavilion",
               msg3,
               msg4
             );
@@ -1217,11 +1289,19 @@ module.exports = {
         })
       );
 
+      // await sendEmailNoDelegates(
+      //   "nuhuahmed365@gmail.com",
+      //   "Ahmed",
+      //   "Invitation to Host Side Events at Nigeria's Official COP29 Pavilion",
+      //   msg3,
+      //   msg4
+      // );
+
       // Return success response
       return successHandler(
         res,
         "Verified email users with no delegates",
-        result
+        users
       );
     } catch (error) {
       return errorHandler(res, error.message, error.statusCode || 500);
