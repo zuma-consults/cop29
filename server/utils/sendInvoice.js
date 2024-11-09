@@ -98,9 +98,51 @@ const sendInvoiceEmail = async (to, name, amount, events) => {
         <p style="color: #336633; font-size: 15px;">
         Upon completing your payment, please upload the payment confirmation via your profile page. Please note that the reservation for your event slot(s) is provisional and will be held for a maximum of 24 hours. If proof of payment is not received within this time frame, your request will be automatically canceled.
         </p>      
-        <p style="color: #336633; font-size: 15px;">
+
+        <h4 style="color: #003300; margin-top: 30px;">NATIONAL COUNCIL ON CLIMATE CHANGE COP29 PAYMENT GUIDE</h4>
+          <p style="color: #336633; font-size: 15px; margin-bottom: 20px">
+            Payments can now be made via the channel below:
+          </p>
+  
+          <p style="color: #336633; font-size: 15px; margin-bottom: 10px;">
+            1. Go to <a href="https://www.remita.net" style="color: #004d00; text-decoration: none;">www.remita.net</a><br />
+            2. Click on "Pay TSA and States"<br />
+            3. Click on "FGN: Federal Government of Nigeria"<br />
+            4. Click "Who do you want to pay *" (type NATIONAL COUNCIL ON CLIMATE CHANGE)<br />
+            5. Click "Name of service/purpose *" (type NCCC Resourcing Activities & Grant)<br />
+            6. Click "Description *" (type description of payment)<br />
+            7. Click "GIFMIS CODE (If unknown contact the MDA) *" (type GIFMIS CODE)<br />
+            8. Enter the Amount, Payer's name, Payer Phone, and Payer Email<br />
+            9. Click "I'm not a robot"<br />
+            10. Click "Submit"
+          </p>
+  
+          <p style="color: #336633; font-size: 15px; margin-bottom: 10px;">
+            You can choose to pay using the following options:
+            <ul style="margin-left: 20px; color: #336633;">
+              <li>Debit/Credit Cards</li>
+              <li>Bank Transfer</li>
+              <li>USSD</li>
+              <li>At a Bank Branch</li>
+              <li>With Internet Banking</li>
+            </ul>
+          </p>
+  
+          <p style="color: #336633; font-size: 15px; margin-bottom: 10px;">
+            <strong>(1)</strong> If you choose to pay at a Bank Branch, take your RRR and the total amount to pay and visit any Bank Branch to make the payment.<br />
+            <strong>(2)</strong> If you choose to pay with your card, please allow the process to complete before you move to the next step. If not, you will not get the RRR in your email because of interruption.<br />
+            <br />
+            Please note your Remita Retrieval Reference (RRR).
+          </p>
+  
+          <p style="color: #336633; font-size: 15px; margin-bottom: 20px;">
+            Payers will be issued an electronic receipt following payment or a bank teller, which should be taken to the National Council on Climate Change. You can call Mr. Sadiq at 0809 898 7738 for any assistance.
+          </p>
+
+          <p style="color: #336633; font-size: 15px;">
           If you have any questions, please contact us at: <a href="mailto:copregistration@natccc.gov.ng">copregistration@natccc.gov.ng</a>
-        </p>
+          </p>
+
       </div>
       <p style="color: #336633; font-size: 15px">
         Best regards,<br />
