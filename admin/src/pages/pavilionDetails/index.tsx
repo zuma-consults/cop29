@@ -49,8 +49,6 @@ const EventDetails: React.FC = () => {
     noOfSpeakers,
   } = event;
 
-  console.log("xxxxx side-event", event);
-
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
   const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
   const [status, setStatus] = useState(event.status);
