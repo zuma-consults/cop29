@@ -10,6 +10,8 @@ import {
   getAllApplicants,
   getAllApprovedOrganizations,
   getAllEvents,
+  getAllEventsForCalendar,
+  getAllPavilions,
   getAllTimeSlots,
   scheduleMeeting,
 } from "../services/event";
@@ -77,34 +79,57 @@ export const useGetAllEvents = (queryParams?: Record<string, any>) => {
   );
 };
 
+export const useGetAllPavilions = (queryParams?: Record<string, any>) => {
+  const memoizedQueryParams = useMemo(() => {
+    return Object.fromEntries(
+      Object?.entries(queryParams || {})?.filter(([_, value]) => value !== "")
+    );
+  }, [queryParams]);
+  return useQuery(
+    ["AllPavilions", memoizedQueryParams],
+    () => getAllPavilions(memoizedQueryParams),
+    {
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+      cacheTime: 30 * 60 * 1000,
+      retry: 1,
+    }
+  );
+};
+
 export const useEditEvent = ({
   setOpen,
 }: {
   setOpen: (value: boolean) => void;
 }) => {
-  return useMutation(({ slotId, id }: { slotId: string; id: string }) => editTimslot(slotId, id), {
-    onSuccess: (result) => {
-      if (result?.status) {
-        toast.success("Meeting Updated Successfully");
-        setOpen(false);
-      } else {
-        toast.error(
-          result.message || "Meeting Update failed. Please try again."
-        );
-      }
-    },
-    onError: (_error) => {
-      toast.error("Meeting Update failed. Please try again.");
-    },
-  });
+  return useMutation(
+    ({ slotId, id }: { slotId: string; id: string }) => editTimslot(slotId, id),
+    {
+      onSuccess: (result) => {
+        if (result?.status) {
+          toast.success("Meeting Updated Successfully");
+          setOpen(false);
+          window.location.href = "/meetings";
+        } else {
+          toast.error(
+            result.message || "Meeting Update failed. Please try again."
+          );
+        }
+      },
+      onError: (_error) => {
+        toast.error("Meeting Update failed. Please try again.");
+      },
+    }
+  );
 };
 
 export const useGetCalender = () => {
-  return useQuery(["events-calendar"], getAllEvents, {
+  return useQuery(["events-calendar"], getAllEventsForCalendar, {
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchInterval: false,
-    cacheTime: 30 * 60 * 1000,
+    // cacheTime: 30 * 60 * 1000,
     retry: 1,
   });
 };

@@ -42,7 +42,36 @@ export const getAllEvents = async (params?: Record<string, any>) => {
   }
 };
 
-export const editTimslot = async (slotId: string, id:string) => {
+export const getAllEventsForCalendar = async (params?: Record<string, any>) => {
+  try {
+    const config = {
+      method: "get",
+      url: "side-events",
+      params,
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// pavilion
+export const getAllPavilions = async (params?: Record<string, any>) => {
+  try {
+    const config = {
+      method: "get",
+      url: "pavillion-slots",
+      params,
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const editTimslot = async (slotId: string, id: string) => {
   try {
     const config = {
       method: "put",
@@ -60,7 +89,7 @@ export const getAllCalender = async () => {
   try {
     const config = {
       method: "get",
-      url: "events",
+      url: "side-events",
     };
     const responseData = await request(config);
     return responseData;
