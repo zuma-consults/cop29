@@ -198,7 +198,7 @@ module.exports = {
         }
 
         // Ensure the slot is available for booking
-        if (slot.title !== "open") {
+        if (slot.bookingStatus !== "open") {
           return errorHandler(
             res,
             `Slot with details ${slot.date}, ${slot.timeSpan} is not open. Please select a different slot.`,
