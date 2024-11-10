@@ -42,6 +42,20 @@ export const getAllEvents = async (params?: Record<string, any>) => {
   }
 };
 
+export const getAllEventsForCalendar = async (params?: Record<string, any>) => {
+  try {
+    const config = {
+      method: "get",
+      url: "side-events",
+      params,
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // pavilion
 export const getAllPavilions = async (params?: Record<string, any>) => {
   try {
