@@ -198,7 +198,7 @@ module.exports = {
         }
 
         // Ensure the slot is available for booking
-        if (slot.bookingStatus !== "open") {
+        if (slot.title !== "open") {
           return errorHandler(
             res,
             `Slot with details ${slot.date}, ${slot.timeSpan} is not open. Please select a different slot.`,
@@ -616,11 +616,11 @@ module.exports = {
         return errorHandler(res, "No Event found with the ID", 404);
       }
 
-      // Ensure the event is in "processing" state before updating
-      if (event.status !== "processing") {
+      // Ensure the event is in "pending" state before updating
+      if (event.status !== "pending") {
         return errorHandler(
           res,
-          `Event status is not in processing state. Event has been ${event.status}. already`,
+          `Event status is not in pending state. Event has been ${event.status}. already`,
           400
         );
       }
@@ -643,7 +643,7 @@ module.exports = {
             : { bookingStatus: "open" };
 
         const slot = await Slot.findByIdAndUpdate(
-          updatedEvent.slotId,
+          updatedEvent.pavillionSlotId,
           slotUpdate,
           { new: true }
         );
