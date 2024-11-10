@@ -168,11 +168,18 @@ module.exports = {
   },
   createEventByAdminNew: async (req, res) => {
     try {
-      const { slotArray, title, description, noOfSpeakers, organizer,email } =
+      const { slotArray, title, description, noOfSpeakers, organizer, email } =
         req.body;
 
       // Check if all required fields are provided
-      if (!description || !slotArray || !title || !noOfSpeakers || !organizer || !email) {
+      if (
+        !description ||
+        !slotArray ||
+        !title ||
+        !noOfSpeakers ||
+        !organizer ||
+        !email
+      ) {
         return errorHandler(
           res,
           "Some fields are still blank. Could you please provide the missing details?",
@@ -664,6 +671,59 @@ module.exports = {
 
         // Find all events for the organizer
         const events = await Event.find({ organizerId });
+        if (!events || events.length === 0) {
+          return errorHandler(res, "No events found.", 404);
+        }
+
+        // Handle image uploads
+        let image;
+        if (files && files.length > 0) {
+          const file = files[0];
+
+          // Upload to Cloudinary
+          const uploadResult = await uploadToCloudinary(
+            file.path,
+            file.filename,
+            "COP29 Events"
+          );
+          image = uploadResult.url;
+        }
+
+        // If there's an image, update all events with proof of payment
+        if (image) {
+          const updatedEvents = await Promise.all(
+            events.map(async (event) => {
+              if (!Array.isArray(event.proofOfPayment)) {
+                event.proofOfPayment = [];
+              }
+              event.proofOfPayment.push(image);
+              return event.save();
+            })
+          );
+
+          // Send success response with updated events
+          return successHandler(res, "Proof of Payment successfully added.");
+        } else {
+          return errorHandler(res, "No proof of payment file uploaded.", 400);
+        }
+      } catch (error) {
+        return errorHandler(res, error.message, error.statusCode || 500);
+      }
+    });
+  },
+  uploadProofByAdmin: async (req, res) => {
+    const { id } = req.params;
+
+    upload(req, res, async (err) => {
+      if (err) {
+        return errorHandler(res, err.message || "File upload error", 400);
+      }
+
+      try {
+        const { files } = req;
+
+        // Find all events for the organizer
+        const events = await Event.find({ _id: id });
         if (!events || events.length === 0) {
           return errorHandler(res, "No events found.", 404);
         }
