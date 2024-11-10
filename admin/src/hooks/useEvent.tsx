@@ -10,6 +10,7 @@ import {
   getAllApplicants,
   getAllApprovedOrganizations,
   getAllEvents,
+  getAllEventsForCalendar,
   getAllPavilions,
   getAllTimeSlots,
   scheduleMeeting,
@@ -124,11 +125,11 @@ export const useEditEvent = ({
 };
 
 export const useGetCalender = () => {
-  return useQuery(["events-calendar"], getAllEvents, {
+  return useQuery(["events-calendar"], getAllEventsForCalendar, {
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchInterval: false,
-    cacheTime: 30 * 60 * 1000,
+    // cacheTime: 30 * 60 * 1000,
     retry: 1,
   });
 };

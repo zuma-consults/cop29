@@ -166,6 +166,107 @@ module.exports = {
       return errorHandler(res, error.message, error.statusCode || 500);
     }
   },
+  createEventByAdminNew: async (req, res) => {
+    try {
+      const { slotArray, title, description, noOfSpeakers, organizer, email } =
+        req.body;
+
+      // Check if all required fields are provided
+      if (
+        !description ||
+        !slotArray ||
+        !title ||
+        !noOfSpeakers ||
+        !organizer ||
+        !email
+      ) {
+        return errorHandler(
+          res,
+          "Some fields are still blank. Could you please provide the missing details?",
+          400
+        );
+      }
+
+      // Initialize an array to hold the events to be created
+      let eventsToCreate = [];
+
+      // Loop through the slots in the slotArray
+      for (let slotId of slotArray) {
+        const slot = await Slot.findById(slotId);
+        if (!slot) {
+          return errorHandler(res, `Slot with id ${slotId} not found.`, 404);
+        }
+
+        // Ensure the slot is available for booking
+        if (slot.bookingStatus !== "open") {
+          return errorHandler(
+            res,
+            `Slot with details ${slot.date}, ${slot.timeSpan} is not open. Please select a different slot.`,
+            409
+          );
+        }
+
+        // Create a new event object
+        const newEvent = new Event({
+          organizer,
+          title,
+          description,
+          noOfSpeakers,
+          preferredSlotId: slotId,
+          pavillionSlotId: slotId,
+          start: slot.start,
+          end: slot.end,
+          date: slot.date,
+          ...req.body,
+        });
+
+        // Add the new event to the eventsToCreate array
+        eventsToCreate.push(newEvent);
+      }
+
+      // Save events and slots only if all events are successfully created
+      let savedEvents = [];
+      for (let event of eventsToCreate) {
+        const savedEvent = await event.save(); // Save event
+        const slot = await Slot.findById(savedEvent.pavillionSlotId); // Retrieve the slot by pavillionSlotId
+
+        // Update the slot's status and title
+        if (slot) {
+          slot.bookingStatus = "pending"; // Update slot status
+          slot.title = title; // Update slot title
+          await slot.save(); // Save the updated slot
+        }
+
+        savedEvents.push(savedEvent);
+      }
+
+      // Calculate the total amount for the invoice
+      const amount = savedEvents.length * 1000000;
+
+      await Invoice.create({
+        amount,
+        eventIds: savedEvents.map((event) => event._id),
+      });
+
+      // Send an email with the invoice details
+      await sendInvoiceEmail(
+        email,
+        organizer,
+        amount.toLocaleString(),
+        savedEvents
+      );
+
+      // Respond with success message and saved events
+      return successHandler(
+        res,
+        "Your request has been successfully submitted. An invoice has been sent to your email. Kindly review the details and complete the payment within 24 hours to secure your slot. Failure to do so will result in the cancellation of your request.",
+        savedEvents
+      );
+    } catch (error) {
+      console.log(error);
+      return errorHandler(res, error.message, error.statusCode || 500);
+    }
+  },
   createEventByAdmin: async (req, res) => {
     let bookedBy = req.admin;
     try {
@@ -593,18 +694,68 @@ module.exports = {
           const updatedEvents = await Promise.all(
             events.map(async (event) => {
               if (!Array.isArray(event.proofOfPayment)) {
-                event.proofOfPayment = []; 
+                event.proofOfPayment = [];
               }
-              event.proofOfPayment.push(image); 
+              event.proofOfPayment.push(image);
               return event.save();
             })
           );
 
           // Send success response with updated events
-          return successHandler(
-            res,
-            "Proof of Payment successfully added.",          
+          return successHandler(res, "Proof of Payment successfully added.");
+        } else {
+          return errorHandler(res, "No proof of payment file uploaded.", 400);
+        }
+      } catch (error) {
+        return errorHandler(res, error.message, error.statusCode || 500);
+      }
+    });
+  },
+  uploadProofByAdmin: async (req, res) => {
+    const { id } = req.params;
+
+    upload(req, res, async (err) => {
+      if (err) {
+        return errorHandler(res, err.message || "File upload error", 400);
+      }
+
+      try {
+        const { files } = req;
+
+        // Find all events for the organizer
+        const events = await Event.find({ _id: id });
+        if (!events || events.length === 0) {
+          return errorHandler(res, "No events found.", 404);
+        }
+
+        // Handle image uploads
+        let image;
+        if (files && files.length > 0) {
+          const file = files[0];
+
+          // Upload to Cloudinary
+          const uploadResult = await uploadToCloudinary(
+            file.path,
+            file.filename,
+            "COP29 Events"
           );
+          image = uploadResult.url;
+        }
+
+        // If there's an image, update all events with proof of payment
+        if (image) {
+          const updatedEvents = await Promise.all(
+            events.map(async (event) => {
+              if (!Array.isArray(event.proofOfPayment)) {
+                event.proofOfPayment = [];
+              }
+              event.proofOfPayment.push(image);
+              return event.save();
+            })
+          );
+
+          // Send success response with updated events
+          return successHandler(res, "Proof of Payment successfully added.");
         } else {
           return errorHandler(res, "No proof of payment file uploaded.", 400);
         }
