@@ -19,7 +19,7 @@ import User from "./pages/user";
 import ContactUs from "./pages/contact-us";
 import International from "./pages/international";
 import EventDetails from "./pages/eventDetails";
-import PavilionDetails from "./pages/PavilionDetails";
+import PavilionDetails from "./pages/pavilionDetails";
 import OrganisationDetails from "./pages/organisationDetails";
 import NegotiatorsDetails from "./pages/negotiatorsDetails";
 import Cop from "./pages/cop";

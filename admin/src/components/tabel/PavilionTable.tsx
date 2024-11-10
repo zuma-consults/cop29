@@ -3,49 +3,55 @@ import React, { useState, useCallback, useMemo, useEffect } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
-import { useGetAllPavilions } from "../../hooks/useEvent";
+import { useGetAllEvents } from "../../hooks/useEvent";
 import ColumnFilter from "../columnFilter";
+import { formatTime } from "../../utils/helper";
 import Loader from "../ui/Loader";
 import { Link } from "react-router-dom";
 import { useGetProfile } from "../../hooks/useAuth";
 
 interface TableRow {
-  id: string;
+  id: number;
+  countId: number;
+  image: string;
+  status: string;
   title: string;
-  date: string;
+  date: any;
+  organizer: string;
+  invoice?: string;
+  description: string;
   start: string;
   end: string;
-  bookingStatus: string;
-  timeSpan: string;
 }
 
-const PavilionTable: React.FC = () => {
+const EventTable: React.FC = () => {
   const [page, setPage] = useState(1);
   const [totalRows, setTotalRows] = useState<number>(0);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(200);
+  const [iteamsPerPage, setIteamsPerPage] = useState<number>(200);
   const [searchTerm, setSearchTerm] = useState("");
 
   const [filters, setFilters] = useState({
     search: "",
-    bookingStatus: "open",
+    tags: "",
     page,
   });
 
   const memoizedFilters = useMemo(
     () => ({
       search: filters?.search,
-      bookingStatus: filters?.bookingStatus,
+      tag: filters?.tags,
       page: filters?.page,
-      perPage: itemsPerPage,
+      perPage: iteamsPerPage,
     }),
-    [filters.search, filters.bookingStatus, filters.page, itemsPerPage]
+    [filters.search, filters.tags, filters.page, iteamsPerPage]
   );
 
-  const { data, isFetching, refetch } = useGetAllPavilions(memoizedFilters);
+  const { data, isFetching, refetch } = useGetAllEvents(memoizedFilters);
 
   useEffect(() => {
     if (data?.data) {
-      setTotalRows(data.data.length);
+      setTotalRows(data.data.totalItems);
+      setIteamsPerPage(data.data.itemsPerPage);
     }
   }, [data]);
 
@@ -54,9 +60,11 @@ const PavilionTable: React.FC = () => {
   };
 
   const filteredData = useMemo(() => {
-    if (!searchTerm) return data?.data || [];
-    return data?.data.filter((event: TableRow) =>
-      event.title.toLowerCase().includes(searchTerm.toLowerCase())
+    if (!searchTerm) return data?.data?.events || [];
+    return data?.data?.events.filter(
+      (event: TableRow) =>
+        event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        event.organizer.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm, data]);
 
@@ -68,10 +76,10 @@ const PavilionTable: React.FC = () => {
   }, []);
 
   const handleResetFilter = useCallback((key: string) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [key]: key === "search" ? "" : key === "bookingStatus" ? "open" : 1,
-    }));
+    setFilters((prevFilters: any) => {
+      const { [key]: removedFilter, ...rest } = prevFilters;
+      return rest;
+    });
   }, []);
 
   const handlePageChange = (page: number) => {
@@ -83,7 +91,7 @@ const PavilionTable: React.FC = () => {
   };
 
   const handlePerRowsChange = (newPerPage: number, page: number) => {
-    setItemsPerPage(newPerPage);
+    setIteamsPerPage(newPerPage);
     setFilters((prevFilters) => ({
       ...prevFilters,
       page,
@@ -91,7 +99,7 @@ const PavilionTable: React.FC = () => {
   };
 
   const handleDownloadCSV = useCallback(() => {
-    saveAsCSV({ data: filteredData, filename: "Pavilion Slots List" });
+    saveAsCSV({ data: filteredData, filename: "COP29 Events List" });
   }, [filteredData]);
 
   useEffect(() => {
@@ -117,6 +125,14 @@ const PavilionTable: React.FC = () => {
     {
       name: (
         <Box style={{ display: "flex", alignItems: "center" }}>
+          <Typography className="capitalize">Organization</Typography>
+        </Box>
+      ),
+      selector: (row) => row?.organizer ?? "N/A",
+    },
+    {
+      name: (
+        <Box style={{ display: "flex", alignItems: "center" }}>
           <Typography className="capitalize">Title</Typography>
           <ColumnFilter
             columnKey="search"
@@ -125,31 +141,57 @@ const PavilionTable: React.FC = () => {
           />
         </Box>
       ),
-      selector: (row) => row.title || "N/A",
+      selector: (row) => row?.title ?? "N/A",
     },
     {
       name: "Date",
-      selector: (row) => row.date,
+      selector: (row) => row?.start,
       format: (row) => (
         <Typography variant="body2" color="text.secondary">
-          {new Date(row.date).toLocaleDateString()}
+          {new Date(row?.start).toLocaleDateString()}
         </Typography>
       ),
     },
     {
-      name: "Time",
-      selector: (row) => row.timeSpan,
+      name: "Duration",
+      selector: (row) => row?.start,
+      format: (row) => (
+        <Typography variant="body2" color="text.secondary">
+          {formatTime(row?.start)} - {formatTime(row?.end)}
+        </Typography>
+      ),
     },
-    {
-      name: "Status",
-      selector: (row) => row.bookingStatus,
-    },
+    // {
+    //   name: "Status",
+    //   selector: (row) => row?.status ?? "N/A",
+    //   cell: (row) => (
+    //     <div className="text-left capitalize flex items-center">
+    //       {row.status === "approved" ? (
+    //         <Chip
+    //           label={row.status}
+    //           color="success"
+    //           sx={{
+    //             textTransform: "capitalize",
+    //           }}
+    //         />
+    //       ) : (
+    //         <Chip
+    //           label={row?.status}
+    //           color="warning"
+    //           sx={{
+    //             textTransform: "capitalize",
+    //           }}
+    //         />
+    //       )}
+    //     </div>
+    //   ),
+    // },
     {
       name: "Action",
       cell: (row) => (
         <div className="flex justify-end cursor-pointer">
           <Link
-            to={`/pavilion/${row.id}`}
+            to={`/pavilion/${row?.countId}`}
             state={{ ...row }}
             className="w-[150px] cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out rounded-lg"
           >
@@ -222,7 +264,7 @@ const PavilionTable: React.FC = () => {
           )}
           <div className="my-4">
             <TextField
-              label="Search by title"
+              label="Search by title or organizer"
               variant="outlined"
               fullWidth
               value={searchTerm}
@@ -240,7 +282,7 @@ const PavilionTable: React.FC = () => {
           fixedHeaderScrollHeight="600px"
           pagination
           paginationServer
-          paginationPerPage={itemsPerPage}
+          paginationPerPage={iteamsPerPage}
           paginationTotalRows={totalRows}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handlePerRowsChange}
@@ -253,4 +295,4 @@ const PavilionTable: React.FC = () => {
   );
 };
 
-export default PavilionTable;
+export default EventTable;
