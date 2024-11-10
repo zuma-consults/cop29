@@ -1,9 +1,9 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Chip, TextField, Typography } from "@mui/material";
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { GoArrowRight, GoDownload } from "react-icons/go";
 import saveAsCSV from "json-to-csv-export";
-import { useGetAllEvents } from "../../hooks/useEvent";
+import { useGetAllSideEvents } from "../../hooks/useEvent";
 import ColumnFilter from "../columnFilter";
 import { formatTime } from "../../utils/helper";
 import Loader from "../ui/Loader";
@@ -22,6 +22,7 @@ interface TableRow {
   description: string;
   start: string;
   end: string;
+  proofOfPayment: any;
 }
 
 const EventTable: React.FC = () => {
@@ -46,7 +47,7 @@ const EventTable: React.FC = () => {
     [filters.search, filters.tags, filters.page, iteamsPerPage]
   );
 
-  const { data, isFetching, refetch } = useGetAllEvents(memoizedFilters);
+  const { data, isFetching, refetch } = useGetAllSideEvents(memoizedFilters);
 
   useEffect(() => {
     if (data?.data) {
@@ -161,31 +162,44 @@ const EventTable: React.FC = () => {
         </Typography>
       ),
     },
-    // {
-    //   name: "Status",
-    //   selector: (row) => row?.status ?? "N/A",
-    //   cell: (row) => (
-    //     <div className="text-left capitalize flex items-center">
-    //       {row.status === "approved" ? (
-    //         <Chip
-    //           label={row.status}
-    //           color="success"
-    //           sx={{
-    //             textTransform: "capitalize",
-    //           }}
-    //         />
-    //       ) : (
-    //         <Chip
-    //           label={row?.status}
-    //           color="warning"
-    //           sx={{
-    //             textTransform: "capitalize",
-    //           }}
-    //         />
-    //       )}
-    //     </div>
-    //   ),
-    // },
+    {
+      name: "Paid",
+      selector: (row) => row?.proofOfPayment ?? "N/A",
+      cell: (row) => (
+        <div className="text-left capitalize flex items-center">
+          {row?.proofOfPayment && row.proofOfPayment.length > 0 ? (
+            <Chip
+              label="Yes"
+              color="success"
+              sx={{
+                textTransform: "capitalize",
+              }}
+            />
+          ) : (
+            <Chip
+              label="No"
+              color="warning"
+              sx={{
+                textTransform: "capitalize",
+              }}
+            />
+          )}
+        </div>
+      ),
+    },
+    {
+      name: "Status",
+      selector: (row) => row?.status ?? "N/A",
+      cell: (row) => {
+        return row?.status === "approved" ? (
+          <Chip label="approved" color="success" className="capitalize" />
+        ) : row?.status === "pending" ? (
+          <Chip label="pending" color="warning" />
+        ) : (
+          <Chip label="declined" color="error" />
+        );
+      },
+    },
     {
       name: "Action",
       cell: (row) => (

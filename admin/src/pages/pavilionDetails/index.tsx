@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { formatDate1 } from "../../utils/helper";
 import {
   Box,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,10 +13,15 @@ import {
 } from "@mui/material";
 import { Button } from "@mui/material";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
-import { useApproveEvent, useDeclineEvent } from "../../hooks/useEvent";
+import {
+  useApproveEvent,
+  useApproveSideEvent,
+  useDeclineEvent,
+  useDeclineSideEvent,
+} from "../../hooks/useEvent";
 import Loader from "../../components/ui/Loader";
 import { BiEditAlt } from "react-icons/bi";
-import EditTimeSlot from "../../components/edit-event-timeSlot";
+import UploadPayment from "../../components/upload-payment";
 
 const EventDetails: React.FC = () => {
   const location = useLocation();
@@ -30,12 +36,14 @@ const EventDetails: React.FC = () => {
     organizer: string;
     id: number;
     countId: number;
+    proofOfPayment: any;
   };
 
   if (!event) {
     return <div>Meeting not found</div>;
   }
-  const { title, start, end, description, organizer, id } = event;
+  const { title, start, end, description, organizer, id, proofOfPayment } =
+    event;
 
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
   const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
@@ -48,9 +56,9 @@ const EventDetails: React.FC = () => {
   };
 
   const { mutate: mutateApproval, isLoading: loadingApproval } =
-    useApproveEvent();
+    useApproveSideEvent();
   const { mutate: mutateDecline, isLoading: loadingDecline } =
-    useDeclineEvent();
+    useDeclineSideEvent();
 
   const handelActionEvent = async (type: string) => {
     if (type === "approve") {
@@ -59,10 +67,10 @@ const EventDetails: React.FC = () => {
           setStatus("approved");
         },
       });
-    } else if (type === "decline") {
+    } else if (type === "declined") {
       mutateDecline(id, {
         onSuccess: () => {
-          setStatus("decline");
+          setStatus("declined");
         },
       });
     }
@@ -101,7 +109,7 @@ const EventDetails: React.FC = () => {
               },
             }}
           >
-            Edit Meeting time slot
+            Upload Proof of Payment
             <BiEditAlt size={20} />
           </Button>
         </div>
@@ -109,7 +117,7 @@ const EventDetails: React.FC = () => {
         <div className="relative  border-green-200 pb-6 sm:pb-8 md:pb-10">
           <div className="mt-6 sm:mt-8 md:mt-10 grid gap-4 sm:gap-6 md:gap-8">
             <div>
-              {/* {status === "approved" ? (
+              {status === "approved" ? (
                 <Chip
                   label={status}
                   color="success"
@@ -125,7 +133,7 @@ const EventDetails: React.FC = () => {
                     textTransform: "capitalize",
                   }}
                 />
-              )} */}
+              )}
 
               <div className="text-gray-900 text-[24px] sm:text-[32px] md:text-[40px] w-full md:w-[50%] font-bold">
                 Title: {title}
@@ -138,7 +146,13 @@ const EventDetails: React.FC = () => {
               </p>
             </div>
             <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
-              Objective:
+              Organizer:
+              <div className="w-full text-[12px] sm:text-[14px] text-gray-600 font-normal">
+                {organizer}
+              </div>
+            </div>
+            <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
+              Description:
               <div className="w-full text-[12px] sm:text-[14px] text-gray-600 font-normal">
                 {description}
               </div>
@@ -148,6 +162,28 @@ const EventDetails: React.FC = () => {
               Organization:
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
                 {organizer ? organizer : "N/A"}
+              </p>
+            </div>
+            <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
+              Paid
+              <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
+                {proofOfPayment && proofOfPayment.length > 0 ? (
+                  <Chip
+                    label="Yes"
+                    color="success"
+                    sx={{
+                      textTransform: "capitalize",
+                    }}
+                  />
+                ) : (
+                  <Chip
+                    label="No"
+                    color="warning"
+                    sx={{
+                      textTransform: "capitalize",
+                    }}
+                  />
+                )}
               </p>
             </div>
           </div>
@@ -162,9 +198,9 @@ const EventDetails: React.FC = () => {
               }}
             />
           </div>
-          {status !== "approved" && status !== "decline" && (
+          {status !== "approved" && status !== "declined" && (
             <div className="flex items-center justify-end gap-10">
-              {status === "processing" ? (
+              {status === "pending" ? (
                 <Button
                   variant="contained"
                   color="success"
@@ -174,16 +210,7 @@ const EventDetails: React.FC = () => {
                 >
                   Approve
                 </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="warning"
-                  className="absolute bottom-0 right-0"
-                  onClick={() => handelActionEvent("generateInvoice")}
-                >
-                  Make payment
-                </Button>
-              )}
+              ) : null}
 
               <Button
                 variant="contained"
@@ -223,7 +250,7 @@ const EventDetails: React.FC = () => {
             borderRadius: "8px",
           }}
         >
-          <EditTimeSlot setOpen={setOpen} event={event} />
+          <UploadPayment setOpen={setOpen} event={event} />
         </Box>
       </Modal>
       <Dialog open={openApproveDialog} onClose={handleClose}>
@@ -263,7 +290,7 @@ const EventDetails: React.FC = () => {
           <Button
             onClick={() => {
               handleClose();
-              handelActionEvent("decline");
+              handelActionEvent("declined");
             }}
             color="error"
           >
