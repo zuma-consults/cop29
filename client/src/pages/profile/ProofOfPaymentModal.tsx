@@ -19,7 +19,7 @@ const ProofOfPaymentModal: React.FC<ProofOfPaymentModalProps> = ({
   const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const cookies = new Cookies();
-  let url = "http://localhost:6001/api/v1/proof";
+  let url = "https://cop29.onrender.com/api/v1/proof";
   let access = cookies.get("accessToken");
 
   const formik = useFormik({
