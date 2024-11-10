@@ -92,7 +92,7 @@ function App() {
               </motion.div>
             }
           />
-          <Route
+{/*           <Route
             path="/pavilion"
             element={
               <motion.div
@@ -105,7 +105,7 @@ function App() {
                 <Pavilion />
               </motion.div>
             }
-          />
+          /> */}
           <Route
             path="/invoice"
             element={

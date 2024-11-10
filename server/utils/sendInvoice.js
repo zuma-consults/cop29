@@ -36,18 +36,28 @@ const sendInvoiceEmail = async (to, name, amount, events) => {
             }</td>
             <td style="padding: 10px; border: 1px solid #ddd; text-align: left;">
             ${event.date.toLocaleString("en-GB", {
-              weekday: "short", 
-              year: "numeric",  
-              month: "short",   
-              day: "numeric",   
-              hour: "2-digit",  
+              weekday: "short",
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
               minute: "2-digit",
-              second: "2-digit" 
+              second: "2-digit",
             })}
           </td>          
-            <td style="padding: 10px; border: 1px solid #ddd; text-align: left;">${
-              event.start
-            } - ${event.end}</td>
+          <td style="padding: 10px; border: 1px solid #ddd; text-align: left;">
+                  ${new Date(event.start).toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              })} - 
+              ${new Date(event.end).toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              })}
+            </td>
+
           </tr>`
         )
         .join("")}
