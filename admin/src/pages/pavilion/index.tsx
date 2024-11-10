@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import { IoCreateSharp } from "react-icons/io5";
 import PavilionTable from "../../components/tabel/PavilionTable";
 import CreatePavilion from "../../components/create-pavilion";
-import { useGetAllEvents } from "../../hooks/useEvent";
+import { useGetAllSideEvents } from "../../hooks/useEvent";
 import Loader from "../../components/ui/Loader";
 
 const Event: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const { refetch, isFetching } = useGetAllEvents();
+  const { refetch, isFetching} = useGetAllSideEvents();
 
   return (
     <>
@@ -39,7 +39,7 @@ const Event: React.FC = () => {
                   },
                 }}
               >
-                Create pavilion
+                Create side event
                 <IoCreateSharp size={20} />
               </Button>
             </div>
