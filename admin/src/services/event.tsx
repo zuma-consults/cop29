@@ -89,7 +89,7 @@ export const getAllCalender = async () => {
   try {
     const config = {
       method: "get",
-      url: "events",
+      url: "side-events",
     };
     const responseData = await request(config);
     return responseData;
