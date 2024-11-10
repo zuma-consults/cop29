@@ -5,6 +5,7 @@ const {
   getAllEvents,
   uploadProof,
   createEventByAdminNew,
+  uploadProofByAdmin,
 } = require("../../controllers/pavillion-controller");
 const { auth, authAdmin, authRole } = require("../../middlewares/middleware");
 let routes = (app) => {
@@ -23,6 +24,7 @@ let routes = (app) => {
   // app.delete("/event/:id", authAdmin, deleteEventById);
   // app.get("/invoices", authAdmin, getAllInvoices);
   app.put("/proof", auth, uploadProof);
+  app.put("/proof/:id", authAdmin, uploadProofByAdmin);
 };
 
 module.exports = routes;
