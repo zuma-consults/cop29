@@ -1,6 +1,6 @@
 import { CgOrganisation } from "react-icons/cg";
 import { MdEvent } from "react-icons/md";
-import { RiAdminFill } from "react-icons/ri";
+import { RiAdminFill, RiAncientPavilionFill } from "react-icons/ri";
 import { FaPersonBreastfeeding } from "react-icons/fa6";
 import { FaCalendarAlt } from "react-icons/fa";
 import { TbSquareLetterC } from "react-icons/tb";
@@ -13,11 +13,11 @@ export const navConfig = [
     icon: <MdEvent size={24} />,
     path: "/meetings",
   },
-  // {
-  //   title: "Delegates",
-  //   icon: <IoIosPeople size={24} />,
-  //   path: "/delegate",
-  // },
+  {
+    title: "Pavilion",
+    icon: <RiAncientPavilionFill size={24} />,
+    path: "/pavilion",
+  },
   {
     title: "Organizations",
     icon: <CgOrganisation size={24} />,

@@ -8,17 +8,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import AppLayout from "./layouts/AppLayout";
 import PublicRoute from "./layouts/PublicRoute";
 import ScrollToTop from "./layouts/ScrollToTop";
-import Delegate from "./pages/delegate";
 import Organization from "./pages/organization";
 import Negotiators from "./pages/negotiators";
 import Calender from "./pages/calender";
 import PaCalender from "./pages/pacalender";
 import Event from "./pages/sideEvent";
+import Pavilion from "./pages/pavilion";
 import Invoice from "./pages/invoice";
 import User from "./pages/user";
 import ContactUs from "./pages/contact-us";
 import International from "./pages/international";
 import EventDetails from "./pages/eventDetails";
+import PavilionDetails from "./pages/PavilionDetails";
 import OrganisationDetails from "./pages/organisationDetails";
 import NegotiatorsDetails from "./pages/negotiatorsDetails";
 import Cop from "./pages/cop";
@@ -49,20 +50,6 @@ function App() {
           <Route path="/reset-password/:id" element={<ResetPassword />} />
         </Route>
         <Route path="/" element={<AppLayout />}>
-          {/* <Route
-            path="/delegate"
-            element={
-              <motion.div
-                key={location.pathname}
-                variants={pageVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-              >
-                <Delegate />
-              </motion.div>
-            }
-          /> */}
           <Route
             path="/organizations"
             element={
@@ -102,6 +89,20 @@ function App() {
                 exit="exit"
               >
                 <Event />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/pavilion"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                key={location.pathname}
+                animate="animate"
+                exit="exit"
+              >
+                <Pavilion />
               </motion.div>
             }
           />
@@ -200,6 +201,20 @@ function App() {
                 exit="exit"
               >
                 <EventDetails />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/pavilion/:id"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                key={location.pathname}
+                animate="animate"
+                exit="exit"
+              >
+                <PavilionDetails />
               </motion.div>
             }
           />
