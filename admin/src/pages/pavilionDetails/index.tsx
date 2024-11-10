@@ -13,12 +13,7 @@ import {
 } from "@mui/material";
 import { Button } from "@mui/material";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
-import {
-  useApproveEvent,
-  useApproveSideEvent,
-  useDeclineEvent,
-  useDeclineSideEvent,
-} from "../../hooks/useEvent";
+import { useApproveSideEvent, useDeclineSideEvent } from "../../hooks/useEvent";
 import Loader from "../../components/ui/Loader";
 import { BiEditAlt } from "react-icons/bi";
 import UploadPayment from "../../components/upload-payment";
@@ -37,13 +32,24 @@ const EventDetails: React.FC = () => {
     id: number;
     countId: number;
     proofOfPayment: any;
+    noOfSpeakers: number;
   };
 
   if (!event) {
     return <div>Meeting not found</div>;
   }
-  const { title, start, end, description, organizer, id, proofOfPayment } =
-    event;
+  const {
+    title,
+    start,
+    end,
+    description,
+    organizer,
+    id,
+    proofOfPayment,
+    noOfSpeakers,
+  } = event;
+
+  console.log("xxxxx side-event", event);
 
   const [openApproveDialog, setOpenApproveDialog] = React.useState(false);
   const [openDeclineDialog, setOpenDeclineDialog] = React.useState(false);
@@ -154,7 +160,7 @@ const EventDetails: React.FC = () => {
             <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
               Description:
               <div className="w-full text-[12px] sm:text-[14px] text-gray-600 font-normal">
-                {description}
+                {description ? description : "N/A"}
               </div>
             </div>
 
@@ -162,6 +168,12 @@ const EventDetails: React.FC = () => {
               Organization:
               <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
                 {organizer ? organizer : "N/A"}
+              </p>
+            </div>
+            <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
+              No. of Speakers:
+              <p className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
+                {noOfSpeakers ? noOfSpeakers : "N/A"}
               </p>
             </div>
             <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
