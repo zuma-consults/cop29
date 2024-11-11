@@ -1307,6 +1307,29 @@ module.exports = {
       return errorHandler(res, error.message, error.statusCode || 500);
     }
   },
+  updateAttendance: async (req, res) => {
+    try {
+      const { id } = req.params;
+      // Find the user that contains the delegate with the specified _id
+      const user = await User.findOne({ "delegates._id": id });
+      if (!user) {
+        return errorHandler(res, "Delegate not found", 404);
+      }
+
+      // // Find the specific delegate and update their copApproved status
+      const delegate = user.delegates.id(id);
+      if (!delegate) {
+        return errorHandler(res, "Delegate not found", 404);
+      }
+
+      delegate.present = true;
+      await user.save();
+
+      return successHandler(res, `Marked Present`, delegate);
+    } catch (error) {
+      return errorHandler(res, "Error Occurred", error.statusCode || 500);
+    }
+  },
 };
 
 function validatePassword(password) {
