@@ -23,6 +23,7 @@ const {
   getDataOverview,
   getAllApprovedOrganizations,
   getAllUsersNoDelegates,
+  updateAttendance,
 } = require("../../controllers/auth-controller");
 const {
   auth,
@@ -46,6 +47,7 @@ let routes = (app) => {
   app.post("/logout", auth, logout);
   app.get("/applicants", authAdmin, getAllCopApplicants);
   app.put("/approve/:id", authAdmin, updateCopApproval);
+  app.put("/present/:id", authAdmin, updateAttendance);
   app.post("/forgot-password", forgotPassword);
   app.post("/admin-forgot-password", forgotPasswordAdmin);
   app.post("/reset-password", verifyPasswordToken, resetPassword);

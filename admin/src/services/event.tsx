@@ -13,6 +13,19 @@ export const createEvent = async (data: any) => {
     console.log(error);
   }
 };
+export const createSideEvent = async (data: any) => {
+  try {
+    const config = {
+      method: "post",
+      url: "admin/side-event",
+      data,
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const scheduleMeeting = async (data: any) => {
   try {
@@ -41,6 +54,19 @@ export const getAllEvents = async (params?: Record<string, any>) => {
     console.log(error);
   }
 };
+export const getAllSideEvents = async (params?: Record<string, any>) => {
+  try {
+    const config = {
+      method: "get",
+      url: "side-events",
+      params,
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getAllEventsForCalendar = async (params?: Record<string, any>) => {
   try {
@@ -56,27 +82,29 @@ export const getAllEventsForCalendar = async (params?: Record<string, any>) => {
   }
 };
 
-// pavilion
-export const getAllPavilions = async (params?: Record<string, any>) => {
-  try {
-    const config = {
-      method: "get",
-      url: "pavillion-slots",
-      params,
-    };
-    const responseData = await request(config);
-    return responseData;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const editTimslot = async (slotId: string, id: string) => {
   try {
     const config = {
       method: "put",
       url: `reschedule/${id}`,
       data: { slotId },
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const uploadPayment = async (formData: FormData) => {
+  try {
+    const config = {
+      method: "put",
+      url: `/proof/${formData.get("id")}`,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: formData,
     };
     const responseData = await request(config);
     return responseData;
@@ -111,6 +139,21 @@ export const getAllTimeSlots = async () => {
     console.log(error);
   }
 };
+
+// pavilion
+export const getAllPavilions = async () => {
+  try {
+    const config = {
+      method: "get",
+      url: "pavillion-slots",
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getAllApprovedOrganizations = async () => {
   try {
     const config = {
@@ -138,6 +181,19 @@ export const approveEvent = async (id: number) => {
     console.log(error);
   }
 };
+export const approveSideEvent = async (id: number) => {
+  try {
+    const config = {
+      method: "put",
+      url: `status/side-event/${id}`,
+      data: { status: "approved" },
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const declineEvent = async (id: number) => {
   try {
@@ -145,6 +201,20 @@ export const declineEvent = async (id: number) => {
       method: "put",
       url: `status/event/${id}`,
       data: { status: "rejected" },
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const declineSideEvent = async (id: number) => {
+  try {
+    const config = {
+      method: "put",
+      url: `status/side-event/${id}`,
+      data: { status: "declined" },
     };
     const responseData = await request(config);
     return responseData;
