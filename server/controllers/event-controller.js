@@ -591,7 +591,7 @@ module.exports = {
       const user = await User.findOne({
         $or: [{ "delegates.code": code }, { "delegates.email": code }],
       }).select(
-        "name category state reasonForAttendance contactName contactDesignation phone delegates id"
+        "name category state reasonForAttendance contactName contactDesignation phone delegates"
       );
   
       if (!user) {
@@ -630,6 +630,7 @@ module.exports = {
           department: delegate?.department,
           code: delegate?.code,
           status: delegate?.copApproved,
+          id: delegate?._id,
         })),
         events, // Return the found events
       };
