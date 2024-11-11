@@ -591,7 +591,7 @@ module.exports = {
       const user = await User.findOne({
         $or: [{ "delegates.code": code }, { "delegates.email": code }],
       }).select(
-        "name category state reasonForAttendance contactName contactDesignation phone delegates"
+        "name category state reasonForAttendance contactName contactDesignation phone delegates id"
       );
   
       if (!user) {
