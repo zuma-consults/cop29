@@ -1,5 +1,5 @@
 import { CgOrganisation } from "react-icons/cg";
-import { MdEvent } from "react-icons/md";
+import { MdEvent, MdOutlineAppRegistration } from "react-icons/md";
 import { RiAdminFill, RiAncientPavilionFill } from "react-icons/ri";
 import { FaPersonBreastfeeding } from "react-icons/fa6";
 import { FaCalendarAlt } from "react-icons/fa";
@@ -63,5 +63,10 @@ export const navConfig = [
     title: "International Requests",
     icon: <TiWorldOutline size={24} />,
     path: "/international",
+  },
+  {
+    title: "Reception",
+    icon: <MdOutlineAppRegistration size={24} />,
+    path: "/reception",
   },
 ];

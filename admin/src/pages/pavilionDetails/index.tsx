@@ -198,6 +198,27 @@ const EventDetails: React.FC = () => {
                 )}
               </p>
             </div>
+            <div className="text-[18px] sm:text-[20px] md:text-[22px] font-bold grid gap-2 sm:gap-3">
+              Proof of Payment
+              <div className="text-gray-600 text-[12px] sm:text-[14px] font-medium">
+                {proofOfPayment && proofOfPayment.length > 0 ? (
+                  proofOfPayment?.map((link: string, index: number) => (
+                    <p key={index}>
+                      <a
+                        href={link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline"
+                      >
+                        Proof {index + 1}
+                      </a>
+                    </p>
+                  ))
+                ) : (
+                  <p>No proof of payment available</p>
+                )}
+              </div>
+            </div>
           </div>
           <div>
             <hr
