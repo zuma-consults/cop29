@@ -79,23 +79,6 @@ const sideEventColumns = [
     selector: (row: ISideEvent) => row.noOfSpeakers,
     sortable: true,
   },
-  // {
-  //   name: "Preferred Slot",
-  //   selector: (row: ISideEvent) => {
-  //     const formattedDate = new Date(row.preferredSlotId.date)
-  //       .toLocaleDateString("en-GB", {
-  //         day: "2-digit",
-  //         month: "short",
-  //         year: "numeric",
-  //       })
-  //       .replace(/ /g, "-");
-
-  //     const timeSpan = row.preferredSlotId.timeSpan;
-
-  //     return `${formattedDate} from ${timeSpan}`;
-  //   },
-  //   sortable: true,
-  // },
   {
     name: "Time Slot",
     selector: (row: ISideEvent) => {
@@ -361,4 +344,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile;
+export default Profile
