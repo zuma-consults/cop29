@@ -54,6 +54,21 @@ export const getAllEvents = async (params?: Record<string, any>) => {
     console.log(error);
   }
 };
+
+export const getCode = async (params?: Record<string, any>) => {
+  try {
+    const config = {
+      method: "get",
+      url: "code",
+      params,
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getAllSideEvents = async (params?: Record<string, any>) => {
   try {
     const config = {
@@ -88,6 +103,19 @@ export const editTimslot = async (slotId: string, id: string) => {
       method: "put",
       url: `reschedule/${id}`,
       data: { slotId },
+    };
+    const responseData = await request(config);
+    return responseData;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const markPresent = async (id: string) => {
+  try {
+    const config = {
+      method: "put",
+      url: `present/${id}`,
     };
     const responseData = await request(config);
     return responseData;

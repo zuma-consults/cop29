@@ -13,6 +13,7 @@ import Negotiators from "./pages/negotiators";
 import Calender from "./pages/calender";
 import PaCalender from "./pages/pacalender";
 import Event from "./pages/sideEvent";
+import Reception from "./pages/reception";
 import Pavilion from "./pages/pavilion";
 import Invoice from "./pages/invoice";
 import User from "./pages/user";
@@ -92,7 +93,21 @@ function App() {
               </motion.div>
             }
           />
-{/*           <Route
+          <Route
+            path="/reception"
+            element={
+              <motion.div
+                variants={pageVariants}
+                initial="initial"
+                key={location.pathname}
+                animate="animate"
+                exit="exit"
+              >
+                <Reception />
+              </motion.div>
+            }
+          />
+          <Route
             path="/pavilion"
             element={
               <motion.div
@@ -105,7 +120,7 @@ function App() {
                 <Pavilion />
               </motion.div>
             }
-          /> */}
+          />
           <Route
             path="/invoice"
             element={

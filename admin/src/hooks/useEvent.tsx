@@ -17,6 +17,8 @@ import {
   getAllPavilions,
   getAllSideEvents,
   getAllTimeSlots,
+  getCode,
+  markPresent,
   scheduleMeeting,
   uploadPayment,
 } from "../services/event";
@@ -105,6 +107,25 @@ export const useGetAllEvents = (queryParams?: Record<string, any>) => {
   );
 };
 
+export const useGetCode = (queryParams?: Record<string, any>) => {
+  const memoizedQueryParams = useMemo(() => {
+    return Object.fromEntries(
+      Object?.entries(queryParams || {})?.filter(([_, value]) => value !== "")
+    );
+  }, [queryParams]);
+  return useQuery(
+    ["getCode", memoizedQueryParams],
+    () => getCode(memoizedQueryParams),
+    {
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+      cacheTime: 30 * 60 * 1000,
+      retry: 1,
+    }
+  );
+};
+
 export const useGetAllSideEvents = (queryParams?: Record<string, any>) => {
   const memoizedQueryParams = useMemo(() => {
     return Object.fromEntries(
@@ -112,7 +133,7 @@ export const useGetAllSideEvents = (queryParams?: Record<string, any>) => {
     );
   }, [queryParams]);
   return useQuery(
-    ["AllEvents", memoizedQueryParams],
+    ["AllSideEvents", memoizedQueryParams],
     () => getAllSideEvents(memoizedQueryParams),
     {
       staleTime: 5 * 60 * 1000,
@@ -148,6 +169,28 @@ export const useEditEvent = ({
       },
     }
   );
+};
+
+export const useMarkPresent = ({
+  setOpen,
+}: {
+  setOpen: (value: boolean) => void;
+}) => {
+  return useMutation(({ id }: { id: string }) => markPresent(id), {
+    onSuccess: (result) => {
+      if (result?.status) {
+        toast.success("attendance marked Successfully");
+        setOpen(false);
+      } else {
+        toast.error(
+          result.message || "attendance mark failed. Please try again."
+        );
+      }
+    },
+    onError: (_error) => {
+      toast.error("attendance mark failed. Please try again.");
+    },
+  });
 };
 
 export const useUploadPayment = ({
