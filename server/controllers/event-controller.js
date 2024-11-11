@@ -630,6 +630,7 @@ module.exports = {
           department: delegate?.department,
           code: delegate?.code,
           status: delegate?.copApproved,
+          id: delegate?._id,
         })),
         events, // Return the found events
       };
