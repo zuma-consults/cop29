@@ -4,6 +4,7 @@ import Hero from "../../components/home/Hero";
 import World from "../../components/home/World";
 import Data from "../../components/home/Data";
 import { getOverview } from "../../services/overview";
+import VideoWithForm from "../../components/home/Pavilion";
 
 interface OverviewData {
   totalDelegates: number;
@@ -73,7 +74,7 @@ const Home: React.FC = () => {
     <div className="w-[100vw] h-[100%] relative overflow-x-hidden">
       {isModalVisible && <Modal onClose={handleCloseModal} />}
       <Hero />
-      {/* <LatestEvents /> */}
+      <VideoWithForm />
       <World />
 
       {loading ? (
